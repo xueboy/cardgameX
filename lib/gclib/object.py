@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.DBConnection import DBConnection
-import gclib.gcjson
+from gclib.gcjson import gcjson
 
 
 
@@ -12,18 +12,22 @@ class object():
 	def install(self):
 		return 0
 		
-		
-	def get(self, id):
-		conn = DBconnection.getConnection()
-		res = conn.query("SELECT * FROM " + self.__class__.__name__ + " WHERE id = %d", id)
+	@classmethod	
+	def get(cls, id):
+		conn = DBConnection.getConnection()		
+		res = conn.query("SELECT * FROM " + cls.__name__ + " WHERE id = %s", [id])
 		if len(res) == 1:
-			load(gcjson.loads(id, res[0][2]))
-		return
+			obj = cls()
+			t = type(obj)
+			obj.load(id, gcjson.loads(res[0][1]))
+			return obj
+		
+		return None
 		
 		
 	def delete(self):
 		conn = DBconnection.getConnection()
-		res = conn.query("DELETE FROM " + self.__class__.__name__ + " WHERE id = %d", self.id)
+		res = conn.query("DELETE FROM " + self.__class__.__name__ + " WHERE id = %s", [self.id])
 		if len(res) == 1:
 			load(gcjson.loads(res[0][2]))
 		return
@@ -33,10 +37,7 @@ class object():
 		return [0]
 	
 	
-	def load(self, id, data):
-		
-		
-		
+	def load(self, id, data):		
 		return 0
 		
 		

@@ -6,8 +6,12 @@ from django.db import connections, connection, transaction
 
 class DBConnection:
 	
+	
+	
+	
 	def __init__(self, conn):
 		self.myconnection = conn
+		self.last_id = -1
 		
 		
 	@staticmethod  
@@ -26,6 +30,8 @@ class DBConnection:
 	def excute(self, sql,param):
 		cursor = self.myconnection.cursor()
 		cursor.execute(sql, param)
+		self.last_id = cursor.lastrowid
 		transaction.commit_unless_managed()		
 		
-		
+	def insert_id(self):	
+		return self.last_id

@@ -4,7 +4,6 @@
 from gclib.object import object
 
 
-class gcuser(object):
-	
+class gcuser(object):	
 	def test(self):
 		return

@@ -27,8 +27,7 @@ class user(gcuser):
 		return data
 		
 		
-	def load(self, data):
-		init()
+	def load(self, id, data):
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
@@ -36,3 +35,5 @@ class user(gcuser):
 		self.gold = data['gold']
 		self.exp = data['exp']
 		self.vipLevel = data['vipLevel']
+		
+		

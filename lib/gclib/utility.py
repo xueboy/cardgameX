@@ -12,6 +12,7 @@ def HttpResponse500():
 def onLogin(request, user):
 	request.session['user_id'] = user.id
 
-def amendRequest(request):
+def amendRequest(request,cls):
 	userid = request.session['user_id']	
-	request.user = user.get(userid)
+	request.user = cls.get(userid)
+		

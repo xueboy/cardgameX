@@ -7,6 +7,7 @@ from gclib.config import config as conf
 from gclib.gcaccount import gcaccount
 from game.models.account import account
 from gclib.utility import HttpResponse500, amendRequest, onLogin
+from game.models.user import user
 
 
 
@@ -33,11 +34,13 @@ def info(request):
 	
 def config(request):
 	
-	amendRequest(request)
+	amendRequest(request,user)
 	data = {}
+	t1 = type (request.user)
 	t = request.user.getdata()	
 	data['user'] = t
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	if dungeon_config_md5 != conf.getMd5('dungeon'):
-		data['dungeon'] = conf.getConfig('dungeon')	
+		data['dungeon'] = conf.getConfig('dungeon')
+		data['dungeon_md5'] = conf.getMd5('dungeon')
 	return HttpResponse(gcjson.dumps(data))
