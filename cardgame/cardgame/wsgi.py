@@ -23,7 +23,7 @@ import sys
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "cardgame.settings"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cardgame.settings")
-sys.path.append(r'D:\Project\lib')
+sys.path.append(r'D:\Project\cardgameX\lib')
 
 
 # This application object is used by any WSGI server configured to use this
