@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'login', gameadmin.views.admin.login),
     url(r'dungeon', gameadmin.views.main.dungeon),
     url(r'index', gameadmin.views.main.index),
+    url(r'level', gameadmin.views.main.level),
     
 )

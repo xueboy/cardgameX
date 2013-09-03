@@ -7,6 +7,9 @@ from gclib.gcjson import gcjson
 
 
 class object():
+	"""
+	encapsulate data access mothed.
+	"""
 	
 	
 	def install(self):
@@ -42,6 +45,10 @@ class object():
 		
 		
 	def save(self):
+		conn = DBConnection.getConnection()
+		data = self.getdate()
+		dumpstr = gcjson.dump(data)
+		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s", [dumpstr])
 		return 0
 		
 		

@@ -27,4 +27,23 @@ def dungeon(request):
 			return render(request, 'dungeon.html', {'config': res[0][2]})
 		else:
 			conn.excute("INSERT INTO config (confname, conf) VALUES ('dungeon', '')", [])
-			return render(request, 'dungeon.html', {'config':''})	
+			return render(request, 'dungeon.html', {'config':''})
+				
+def level(request):
+	if request.method == 'POST':
+		confstr = request.POST['config']
+		try:
+			confjson = gcjson.loads(confstr)		
+			conn = DBConnection.getConnection();
+			conn.excute("UPDATE config SET conf = %s WHERE confname = 'level'", [confstr])
+			return render(request, 'index.html', {})
+		except:
+			return render(request, 'level.html', {'config':confstr})
+	else:
+		conn = DBConnection.getConnection()
+		res = conn.query("SELECT * FROM config WHERE confname = %s", ['level'])
+		if len(res) == 1:			
+			return render(request, 'level.html', {'config': res[0][2]})
+		else:
+			conn.excute("INSERT INTO config (confname, conf) VALUES ('level', '')", [])
+			return render(request, 'level.html', {'config':''})
