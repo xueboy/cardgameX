@@ -6,7 +6,7 @@ from gclib.gcjson import gcjson
 from gclib.config import config as conf
 from gclib.gcaccount import gcaccount
 from game.models.account import account
-from gclib.utility import HttpResponse500, amendRequest
+from gclib.utility import HttpResponse500, amendRequest, onLogin
 
 
 
@@ -19,9 +19,7 @@ def index(request):
 		if user == None:
 			raise Http500("server error")
 			return HttpResponse500()
-		request.gc_user = user	
-		request.session['user']	 = user
-		
+		onLogin(request, user)		
 		return HttpResponse(gcjson.dumps(user.getdata()))
 	return HttpResponse("Hello, world. You're at the test page index.")
 
@@ -37,13 +35,9 @@ def config(request):
 	
 	amendRequest(request)
 	data = {}
-	
-	
-	t = request.user.getdata()
-	
+	t = request.user.getdata()	
 	data['user'] = t
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	if dungeon_config_md5 != conf.getMd5('dungeon'):
-		data['dungeon'] = conf.getConfig('dungeon')
-	
+		data['dungeon'] = conf.getConfig('dungeon')	
 	return HttpResponse(gcjson.dumps(data))
