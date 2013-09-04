@@ -22,13 +22,12 @@ class config:
 		return gcjson.loads(config.getConfigStr(confname))			
 				
 	@staticmethod 
-	def getMd5(confname):
-		confstr = config.getConfigStr(confname)
-		confobj = gcjson.loads(confstr)		
+	def getMd5(confname):		
+		confobj = config.getConfig(confname)
 		confpurestr = gcjson.dumps(confobj)	
 		m = md5.new()		
 		m.update(confpurestr)		
-		return m.hexdigest().decode('utf-8'), confpurestr
+		return m.hexdigest().decode('utf-8')
 			
 	@staticmethod
 	def createConfig(confname):
