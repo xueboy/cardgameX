@@ -28,7 +28,7 @@ class config:
 		confpurestr = gcjson.dumps(confobj)	
 		m = md5.new()		
 		m.update(confpurestr)		
-		return m.hexdigest().decode('utf-8')
+		return m.hexdigest().decode('utf-8'), confpurestr
 			
 	@staticmethod
 	def createConfig(confname):

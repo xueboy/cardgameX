@@ -42,8 +42,9 @@ def config(request):
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
 	if dungeon_config_md5 != conf.getMd5('dungeon'):
-		data['dungeon'] = conf.getConfig('dungeon')
-		data['dungeon_md5'] = conf.getMd5('dungeon')
+		#data['dungeon'] = conf.getConfig('dungeon')
+		#data['dungeon_md5'] = conf.getMd5('dungeon')
+		 data['dungeon_md5'] ,data['dungeon'] = conf.getMd5('dungeon')
 	if level_config_md5 != conf.getMd5('level'):
 		data['level'] = conf.getConfig('level')
 		data['level_md5'] = conf.getMd5('level')
