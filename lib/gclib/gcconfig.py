@@ -6,7 +6,7 @@ from DBConnection import DBConnection
 import md5
 
 
-class config:
+class gcconfig:
 	
 	@staticmethod 
 	def getConfigStr(confname):
@@ -19,11 +19,10 @@ class config:
 	
 	@staticmethod 
 	def getConfig(confname):
-		return gcjson.loads(config.getConfigStr(confname))			
+		return gcjson.loads(gcconfig.getConfigStr(confname))			
 				
 	@staticmethod 
-	def getMd5(confname):		
-		confobj = config.getConfig(confname)
+	def getMd5(confobj):		
 		confpurestr = gcjson.dumps(confobj).encode("utf-8")
 		m = md5.new()		
 		m.update(confpurestr)

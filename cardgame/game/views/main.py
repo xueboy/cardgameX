@@ -3,8 +3,7 @@
 
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
-from gclib.config import config as conf
-from gclib.gcaccount import gcaccount
+from game.utility.config import config as conf
 from game.models.account import account
 from gclib.utility import HttpResponse500, amendRequest, onLogin
 from game.models.user import user
@@ -20,8 +19,13 @@ def index(request):
 		if user == None:
 			raise Http500("server error")
 			return HttpResponse500()
-		onLogin(request, user)		
-		return HttpResponse(gcjson.dumps(user.getdata()))
+		onLogin(request, user)
+		
+		data = {}
+		data['user'] = user.getClientData()
+		dungeon = user.getDungeon()
+		data['dungeon'] = dungeon.getClientData()		
+		return HttpResponse(gcjson.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
 
 
@@ -38,10 +42,10 @@ def config(request):
 	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
-	if dungeon_config_md5 != conf.getMd5('dungeon'):
-		data['dungeon'] = conf.getConfig('dungeon')
-		data['dungeon_md5'] = conf.getMd5('dungeon')
-	if level_config_md5 != conf.getMd5('level'):
-		data['level'] = conf.getConfig('level')
-		data['level_md5'] = conf.getMd5('level')	
+	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
+		data['dungeon'] = conf.getClientConfig('dungeon')
+		data['dungeon_md5'] = conf.getClientConfig('dungeon')
+	if level_config_md5 != conf.getClientConfig('level'):
+		data['level'] = conf.getClientConfig('level')
+		data['level_md5'] = conf.getClientConfig('level')	
 	return HttpResponse(gcjson.dumps(data))

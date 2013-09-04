@@ -40,11 +40,10 @@ class gcaccount(object):
 		conn = DBConnection.getConnection()		
 		usr = self.userObject()
 		usr.init(self)
-		usr.install()				
-		self.roleid = conn.insert_id()
-		
-		self.saveRoleId()
-		
+		usr.install(0)
+		self.roleid = usr.id
+		self.saveRoleId()	
+		usr.saveRoleId()	
 		return usr
 		
 	def userObject(self):
@@ -62,8 +61,6 @@ class gcaccount(object):
 		
 		
 	def saveRoleId(self):
-		conn = DBConnection.getConnection()
-		id = self.id
-		reloid = self.roleid
-		conn.excute("UPDATE account SET roleid = %s WHERE id = %s", [self.roleid, self.id])
+		conn = DBConnection.getConnection()				
+		conn.excute("UPDATE account SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
 		return None

@@ -5,7 +5,7 @@ from django.shortcuts import render
 from gclib.DBConnection import DBConnection
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
-from gclib.config import config
+from gclib.gcconfig import gcconfig
 
 def index(request):
 	return render(request, 'index.html', {})
@@ -22,20 +22,22 @@ def monster(request):
 				
 def card(request):
 	return generalConfigRequestProcess(request, 'card')
+def game(request):
+	return generalConfigRequestProcess(request, 'game')
 				
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
 		try:
-			config.setConfig(confname, confstr)		
+			gcconfig.setConfig(confname, confstr)		
 			return render(request, 'index.html', {})
 		except:
 			return render(request, confname + '.html', {'config':confstr})
 	else:
-		conf = config.getConfigStr(confname)		
+		conf = gcconfig.getConfigStr(confname)		
 		if conf != '':			
-			return render(request, confname + '.html', {'config': config.getConfigStr(confname)})
+			return render(request, confname + '.html', {'config': gcconfig.getConfigStr(confname)})
 		else:
-			config.createConfig(confname)			
+			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})

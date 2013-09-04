@@ -6,19 +6,17 @@
 </head>
 
 <body>
-<form id="/admin/monster/" name="form1" method="post" action="">{% csrf_token %}
+<form id="/admin/game/" name="form1" method="post" action="">{% csrf_token %}
 <p align="center"><a href="/admin/index">主页</a></p>
-<p>怪物设定</p>
+<p>游戏设定</p>
   <label>
   <textarea name="config" rows=45 cols="180">{{ config }}</textarea>
   </label>
   <p>
     <label>
-   
-      <div align="center">
-        <input type="submit" name="Submit" value="保存" />
-        
-        </div>
+    	<div align="center">
+        <input type="submit" name="Submit" value="保存" />        
+      </div>
     </label>
   </p>
 </form>

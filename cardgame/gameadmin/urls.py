@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'index', gameadmin.views.main.index),
     url(r'level', gameadmin.views.main.level),
     url(r'monster', gameadmin.views.main.monster),
-    url(r'card', gameadmin.views.main.card),    
+    url(r'card', gameadmin.views.main.card),
+    url(r'game', gameadmin.views.main.game),
 )
