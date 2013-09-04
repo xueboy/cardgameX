@@ -5,5 +5,6 @@ from gclib.object import object
 
 
 class gcuser(object):	
-	def test(self):
+	def init(self, acc):
+		self.id = 0
 		return

@@ -28,9 +28,9 @@ class gcaccount(object):
 		conn = DBConnection.getConnection()				
 		res = conn.query("SELECT * FROM user WHERE id = %s", [self.roleid])
 		if len(res) == 1:
-			usr = self.userObject()						
-			usr.init(self)
-			usr.load(self.roleid, gcjson.loads(res[0][1]))
+			usr = self.userObject()
+			usr.init(self)		
+			usr.load(self.roleid, gcjson.loads(res[0][2]))
 			usr.id = self.roleid
 			return usr
 		else:
@@ -40,9 +40,7 @@ class gcaccount(object):
 		conn = DBConnection.getConnection()		
 		usr = self.userObject()
 		usr.init(self)
-		data = gcjson.dumps(usr.getdata())
-		conn.excute("INSERT INTO user (object) VALUES (%s)", [data])
-		#t = help(conn.myconnection)
+		usr.install()				
 		self.roleid = conn.insert_id()
 		
 		self.saveRoleId()

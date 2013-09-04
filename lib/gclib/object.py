@@ -13,6 +13,8 @@ class object():
 	
 	
 	def install(self):
+		conn = DBconnection.getConnection()
+		conn.excute("INSERT INTO " + cls.__name__ + "(roleid, object) VALUES (%s, %s)", [self.id, self.getdate()])		
 		return 0
 		
 	@classmethod	
@@ -22,7 +24,7 @@ class object():
 		if len(res) == 1:
 			obj = cls()
 			t = type(obj)
-			obj.load(id, gcjson.loads(res[0][1]))
+			obj.load(id, gcjson.loads(res[0][2]))
 			return obj
 		
 		return None
@@ -30,9 +32,7 @@ class object():
 		
 	def delete(self):
 		conn = DBconnection.getConnection()
-		res = conn.query("DELETE FROM " + self.__class__.__name__ + " WHERE id = %s", [self.id])
-		if len(res) == 1:
-			load(gcjson.loads(res[0][2]))
+		conn.excute("DELETE FROM " + self.__class__.__name__ + " WHERE id = %s", [self.id])		
 		return
 		
 		

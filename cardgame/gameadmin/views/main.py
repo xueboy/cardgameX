@@ -47,3 +47,23 @@ def level(request):
 		else:
 			conn.excute("INSERT INTO config (confname, conf) VALUES ('level', '')", [])
 			return render(request, 'level.html', {'config':''})
+				
+				
+def monster(request):
+	if request.method == 'POST':
+		confstr = request.POST['config']
+		try:
+			confjson = gcjson.loads(confstr)		
+			conn = DBConnection.getConnection();
+			conn.excute("UPDATE config SET conf = %s WHERE confname = 'monster'", [confstr])
+			return render(request, 'index.html', {})
+		except:
+			return render(request, 'monster.html', {'config':confstr})
+	else:
+		conn = DBConnection.getConnection()
+		res = conn.query("SELECT * FROM config WHERE confname = %s", ['monster'])
+		if len(res) == 1:			
+			return render(request, 'monster.html', {'config': res[0][2]})
+		else:
+			conn.excute("INSERT INTO config (confname, conf) VALUES ('monster', '')", [])
+			return render(request, 'monster.html', {'config':''})

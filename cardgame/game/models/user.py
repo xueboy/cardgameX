@@ -5,6 +5,7 @@ from gclib.gcuser import gcuser
 
 class user(gcuser):
 	def init(self, acc):
+		gcuser.init(self, acc)
 		self.id = acc.roleid
 		self.name = acc.username
 		self.level = 1
