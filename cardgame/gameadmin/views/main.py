@@ -5,6 +5,7 @@ from django.shortcuts import render
 from gclib.DBConnection import DBConnection
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
+from gclib.config import config
 
 def index(request):
 	return render(request, 'index.html', {})
@@ -34,7 +35,7 @@ def generalConfigRequestProcess(request, confname):
 	else:
 		conf = config.getConfigStr(confname)		
 		if conf != '':			
-			return render(request, confname + '.html', {'config': config.getConfigStr()})
+			return render(request, confname + '.html', {'config': config.getConfigStr(confname)})
 		else:
 			config.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
