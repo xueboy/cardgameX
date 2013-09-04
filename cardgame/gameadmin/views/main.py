@@ -11,59 +11,33 @@ def index(request):
 
 
 def dungeon(request):
-	if request.method == 'POST':
-		confstr = request.POST['config']
-		try:
-			confjson = gcjson.loads(confstr)		
-			conn = DBConnection.getConnection();
-			conn.excute("UPDATE config SET conf = %s WHERE confname = 'dungeon'", [confstr])
-			return render(request, 'index.html', {})
-		except:
-			return render(request, 'dungeon.html', {'config':confstr})
-	else:
-		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM config WHERE confname = %s", ['dungeon'])
-		if len(res) == 1:			
-			return render(request, 'dungeon.html', {'config': res[0][2]})
-		else:
-			conn.excute("INSERT INTO config (confname, conf) VALUES ('dungeon', '')", [])
-			return render(request, 'dungeon.html', {'config':''})
+	return generalConfigRequestProcess(request, 'dungeon')		
 				
 def level(request):
-	if request.method == 'POST':
-		confstr = request.POST['config']
-		try:
-			confjson = gcjson.loads(confstr)		
-			conn = DBConnection.getConnection();
-			conn.excute("UPDATE config SET conf = %s WHERE confname = 'level'", [confstr])
-			return render(request, 'index.html', {})
-		except:
-			return render(request, 'level.html', {'config':confstr})
-	else:
-		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM config WHERE confname = %s", ['level'])
-		if len(res) == 1:			
-			return render(request, 'level.html', {'config': res[0][2]})
-		else:
-			conn.excute("INSERT INTO config (confname, conf) VALUES ('level', '')", [])
-			return render(request, 'level.html', {'config':''})
-				
+	return generalConfigRequestProcess(request, 'level')				
 				
 def monster(request):
+	return generalConfigRequestProcess(request, 'monster')			
+				
+def card(request):
+	return generalConfigRequestProcess(request, 'card')
+				
+				
+def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
 		try:
 			confjson = gcjson.loads(confstr)		
 			conn = DBConnection.getConnection();
-			conn.excute("UPDATE config SET conf = %s WHERE confname = 'monster'", [confstr])
+			conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])
 			return render(request, 'index.html', {})
 		except:
-			return render(request, 'monster.html', {'config':confstr})
+			return render(request, confname + '.html', {'config':confstr})
 	else:
 		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM config WHERE confname = %s", ['monster'])
+		res = conn.query("SELECT * FROM config WHERE confname = %s", [confname])
 		if len(res) == 1:			
-			return render(request, 'monster.html', {'config': res[0][2]})
+			return render(request, confname + '.html', {'config': res[0][2]})
 		else:
-			conn.excute("INSERT INTO config (confname, conf) VALUES ('monster', '')", [])
-			return render(request, 'monster.html', {'config':''})
+			conn.excute("INSERT INTO config (confname, conf) VALUES (%s, '')", [confname])
+			return render(request, confname + '.html', {'config':''})
