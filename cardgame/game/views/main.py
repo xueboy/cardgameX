@@ -35,10 +35,7 @@ def info(request):
 def config(request):
 	
 	amendRequest(request,user)
-	data = {}
-	t1 = type (request.user)
-	t = request.user.getdata()	
-	data['user'] = t
+	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
 	if dungeon_config_md5 != conf.getMd5('dungeon'):
