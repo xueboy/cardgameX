@@ -24,9 +24,9 @@ class config:
 	@staticmethod 
 	def getMd5(confname):		
 		confobj = config.getConfig(confname)
-		confpurestr = gcjson.dumps(confobj)	
+		confpurestr = gcjson.dumps(confobj).encode("utf-8")
 		m = md5.new()		
-		m.update(confpurestr)		
+		m.update(confpurestr)
 		return m.hexdigest().decode('utf-8')
 			
 	@staticmethod
