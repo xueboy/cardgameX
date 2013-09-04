@@ -44,10 +44,7 @@ def config(request):
 	if dungeon_config_md5 != conf.getMd5('dungeon'):
 		data['dungeon'] = conf.getConfig('dungeon')
 		data['dungeon_md5'] = conf.getMd5('dungeon')
-		#data['dungeon_md5'] ,data['dungeon_str'] = conf.getMd5('dungeon')
-		#data['dungeon'] = conf.getConfig('dungeon')
 	if level_config_md5 != conf.getMd5('level'):
 		data['level'] = conf.getConfig('level')
-		data['level_md5'] = conf.getMd5('level')
-	
+		data['level_md5'] = conf.getMd5('level')	
 	return HttpResponse(gcjson.dumps(data))
