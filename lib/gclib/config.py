@@ -25,10 +25,21 @@ class config:
 	def getMd5(confname):
 		confstr = config.getConfigStr(confname)
 		confobj = gcjson.loads(confstr)		
-		confpurestr = gcjson.dumps(confobj).decode('utf-8')		
+		confpurestr = gcjson.dumps(confobj)	
 		m = md5.new()		
 		m.update(confpurestr)		
 		return m.hexdigest().decode('utf-8')
 			
-
+	@staticmethod
+	def createConfig(confname):
+		conn = DBConnection.getConnection()
+		conn.excute("INSERT INTO config (confname, conf) VALUES (%s, '')", [confname])
+		
+	@staticmethod
+	def setConfig(confname, confstr):
+		confjson = gcjson.loads(confstr)		
+		conn = DBConnection.getConnection();
+		conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])
+		
+	
 	

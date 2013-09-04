@@ -27,17 +27,14 @@ def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
 		try:
-			confjson = gcjson.loads(confstr)		
-			conn = DBConnection.getConnection();
-			conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])
+			config.setConfig(confname, confstr)		
 			return render(request, 'index.html', {})
 		except:
 			return render(request, confname + '.html', {'config':confstr})
 	else:
-		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM config WHERE confname = %s", [confname])
-		if len(res) == 1:			
-			return render(request, confname + '.html', {'config': res[0][2]})
+		conf = config.getConfigStr(confname)		
+		if conf != '':			
+			return render(request, confname + '.html', {'config': config.getConfigStr()})
 		else:
-			conn.excute("INSERT INTO config (confname, conf) VALUES (%s, '')", [confname])
+			config.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
