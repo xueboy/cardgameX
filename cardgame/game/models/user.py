@@ -20,6 +20,7 @@ class user(gcuser):
 		self.exp = 0
 		self.vipLevel = 1
 		self.stamina_last_recover = currentTime()
+		self.last_card_no = 0
 		
 	
 	def getData(self):	
@@ -32,6 +33,8 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
+		data['last_card_no'] = self.last_card_no
+		print data
 		return data
 		
 	def getClientData(self):
@@ -56,17 +59,22 @@ class user(gcuser):
 		self.exp = data['exp']
 		self.vipLevel = data['vipLevel']
 		if not data.has_key('stamina_last_recover'):
-			data['stamina_last_recover'] = currentTime()
+			data['stamina_last_recover'] = currentTime()		
 		self.stamina_last_recover = data['stamina_last_recover']
+		if not data.has_key('last_card_no'):
+			data['last_card_no'] = 0
+		self.last_card_no = data['last_card_no']
 		
-	
-		
+	def getCardNo(self):
+		self.last_card_no = self.last_card_no + 1
+		return self.last_card_no		
 		
 	def getDungeon(self):				
 		dun = dungeon.get(self.id)
 		if dun == None:			
 			dun = dungeon()
 			dun.install(self.roleid)
+		dun.user = self
 		return dun
 	
 	
@@ -77,6 +85,7 @@ class user(gcuser):
 		if inv == None:			
 			inv = inventory()
 			inv.install(self.roleid)
+		inv.user = self
 		return inv
 	
 	def updateStamina(self):

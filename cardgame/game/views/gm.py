@@ -9,18 +9,20 @@ def add_card(request):
 	usr = request.user
 	inv = usr.getInventory()	
 	if inv.addCard(card_id) == None:
-		return HttpResponse("add card field")	
+		return HttpResponse("add card field")
+	usr.save()
 	inv.save()
 	data = {}
 	data['card'] = inv.getClientData()	
 	return HttpResponse(gcjson.dumps(data))	
 
 def del_card(request):
-	idx = int(request.GET['index'])
+	name = int(request.GET['name'])
 	usr = request.user
 	inv = usr.getInventory()	
-	if inv.delCard(idx) == 0:
+	if inv.delCard(name) == 0:
 		return HttpResponse("del card field")	
+	usr.save()	
 	inv.save()
 	return HttpResponse(gcjson.dumps({}))	
 		

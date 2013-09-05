@@ -40,7 +40,7 @@ class config(gcconfig):
 			b['field'] = []
 			for field in battle['field']:
 				f = {}
-				f['FieldId'] = field['FieldId']
+				f['fieldId'] = field['fieldId']
 				f['battleSmallName'] = field['battleSmallName']
 				f['battlePower'] = field['battlePower']
 				f['totalRound'] = field['totalRound']
