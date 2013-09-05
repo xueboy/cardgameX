@@ -23,13 +23,14 @@ class object():
 		return 0
 		
 	@classmethod	
-	def get(cls, id):
+	def get(cls, roleid):
 		conn = DBConnection.getConnection()		
-		res = conn.query("SELECT * FROM " + cls.__name__ + " WHERE roleid = %s", [id])
+		res = conn.query("SELECT * FROM " + cls.__name__ + " WHERE roleid = %s", [roleid])
 		if len(res) == 1:
 			obj = cls()
-			t = type(obj)
-			obj.load(id, gcjson.loads(res[0][2]))			
+			obj.id = res[0][0]
+			obj.roleid = res[0][1]			
+			obj.load(roleid, gcjson.loads(res[0][2]))			
 			return obj		
 		return None
 		
@@ -42,13 +43,14 @@ class object():
 	def getData(self):
 		return [0]	
 	
-	def load(self, id, data):		
+	def load(self, roleid, data):		
 		return 0		
 		
 	def save(self):
 		conn = DBConnection.getConnection()
-		data = self.getdate()
-		dumpstr = gcjson.dump(data)
+		data = self.getData()
+		dumpstr = gcjson.dumps(data)
+		print dumpstr,  self.__class__.__name__
 		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s", [dumpstr])
 		return 0
 		

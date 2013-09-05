@@ -47,7 +47,7 @@ class user(gcuser):
 		return data
 		
 		
-	def load(self, id, data):
+	def load(self, roleid, data):
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
@@ -63,7 +63,7 @@ class user(gcuser):
 		
 		
 	def getDungeon(self):				
-		dun = dungeon.get(self.roleid)
+		dun = dungeon.get(self.id)
 		if dun == None:			
 			dun = dungeon()
 			dun.install(self.roleid)
@@ -71,7 +71,9 @@ class user(gcuser):
 	
 	
 	def getInventory(self):
-		inv = inventory.get(self.roleid)
+		if self.id == 0:
+			raise "error"
+		inv = inventory.get(self.id)
 		if inv == None:			
 			inv = inventory()
 			inv.install(self.roleid)
