@@ -33,8 +33,7 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
-		data['last_card_no'] = self.last_card_no
-		print data
+		data['last_card_no'] = self.last_card_no		
 		return data
 		
 	def getClientData(self):

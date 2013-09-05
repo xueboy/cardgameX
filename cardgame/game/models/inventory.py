@@ -27,7 +27,7 @@ class inventory(object):
 		carconf = config.getConfig('card')				
 		if carconf.has_key(card_id):
 			data = {}
-			data['carid'] = card_id
+			data['cardid'] = card_id
 			data['id'] = self.generateName()
 			self.cards.append(data)			
 			return data

@@ -14,15 +14,15 @@ def add_card(request):
 	inv.save()
 	data = {}
 	data['card'] = inv.getClientData()	
-	return HttpResponse(gcjson.dumps(data))	
+	return HttpResponse(gcjson.dumps({'card': inv.getClientData()	}))	
 
 def del_card(request):
-	name = int(request.GET['name'])
+	name = int(request.GET['id'])
 	usr = request.user
 	inv = usr.getInventory()	
 	if inv.delCard(name) == 0:
 		return HttpResponse("del card field")	
 	usr.save()	
-	inv.save()
-	return HttpResponse(gcjson.dumps({}))	
+	inv.save()	
+	return HttpResponse(gcjson.dumps({'card':inv.getClientData}))	
 		

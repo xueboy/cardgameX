@@ -50,7 +50,6 @@ class object():
 		conn = DBConnection.getConnection()
 		data = self.getData()
 		dumpstr = gcjson.dumps(data)
-		print dumpstr,  self.__class__.__name__
 		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s", [dumpstr])
 		return 0
 		
