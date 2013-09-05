@@ -54,3 +54,6 @@ def config(request):
 		data['game'] = conf.getClientConfig('game')
 #		data['game_md5'] = conf.getClientConfigMd5('game')		
 	return HttpResponse(gcjson.dumps(data))
+	
+def api(request):
+	return
