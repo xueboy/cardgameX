@@ -27,15 +27,15 @@ class inventory(object):
 		carconf = config.getConfig('card')				
 		if carconf.has_key(card_id):
 			data = {}
-			data['id'] = card_id
-			data['name'] = self.generateName()
+			data['carid'] = card_id
+			data['id'] = self.generateName()
 			self.cards.append(data)			
 			return data
 		return None
 		
 	def delCard(self, name):
 		for card in self.cards:
-			if card['name'] == name:
+			if card['id'] == name:
 				self.cards.remove(card)
 				return 1
 		return 0	
