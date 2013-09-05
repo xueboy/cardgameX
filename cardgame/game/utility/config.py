@@ -9,10 +9,11 @@ class config(gcconfig):
 	def getClientConfig(confname):
 		conf = config.getConfig(confname)
 		if confname == 'dungeon':
-			conf = config.dungeonFilter(conf)
-			return conf
+			return config.dungeonFilter(conf)			
 		if confname == 'game':
 			return conf
+		if confname == 'card':
+			return config.cardFileter(conf)
 		return None
 	
 	
@@ -47,6 +48,34 @@ class config(gcconfig):
 				b['field'].append(f)
 			data.append(b)			
 		return data
+		
+	def cardFileter(conf):
+		data = {}
+		for cardid in conf:
+			c = {}
+			c['imageId'] = conf[cardid]['imageId']
+			c['icon'] = conf[cardid]['icon']
+			c['job'] = conf[cardid]['job']
+			c['name'] = conf[cardid]['name']
+			c['type'] = conf[cardid]['type']
+			c['attackTurn'] = conf[cardid]['attackTurn']
+			c['leadership'] = conf[cardid]['leadership']
+			c['nature'] = conf[cardid]['nature']
+			c['maxLevel'] = conf[cardid]['maxLevel']
+			c['hp'] = conf[cardid]['hp']
+			c['attack'] = conf[cardid]['attack']
+			c['recove'] = conf[cardid]['recove']
+			c['agile'] = conf[cardid]['agile']			
+			c['skillId'] = conf[cardid]['skillId']
+			c['price'] = conf[cardid]['price']
+			c['evoPrice'] = conf[cardid]['evoPrice']
+			c['evoId'] = conf[cardid]['evoId']
+			c['evoMaterial'] = conf[cardid]['evoMaterial']
+			c['describe'] = conf[cardid]['describe']
+			
+			
+			
+			
 	
 	
 	@staticmethod
