@@ -48,7 +48,8 @@ class config(gcconfig):
 				b['field'].append(f)
 			data.append(b)			
 		return data
-		
+	
+	@staticmethod	
 	def cardFileter(conf):
 		data = {}
 		for cardid in conf:
