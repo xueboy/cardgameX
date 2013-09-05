@@ -1,4 +1,4 @@
-#coding:utf-8
+#coding:utf-8\
 #!/usr/bin/env python
 
 from django.http import HttpResponse
@@ -15,15 +15,16 @@ def index(request):
 	pwd = request.GET['password']
 	acc = account.login(username, pwd)
 	if acc != None:
-		user = acc.getUser()
-		if user == None:
+		usr = acc.getUser()
+		if usr == None:
 			raise Http500("server error")
 			return HttpResponse500()
-		onLogin(request, user)
+		onLogin(request, usr)
 		
 		data = {}
-		data['user'] = user.getClientData()
-		dungeon = user.getDungeon()
+		usr.updateStamina()
+		data['user'] = usr.getClientData()
+		dungeon = usr.getDungeon()
 		data['dungeon'] = dungeon.getClientData()		
 		return HttpResponse(gcjson.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
@@ -36,16 +37,20 @@ def info(request):
 	info[u'status'] = u'OK'
 	return HttpResponse(gcjson.dumps(info))
 	
-def config(request):
-	
+def config(request):	
 	amendRequest(request,user)
 	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
+	game_config_md5 = request.GET['game_config_md5']
+	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
 		data['dungeon'] = conf.getClientConfig('dungeon')
-		data['dungeon_md5'] = conf.getClientConfig('dungeon')
-	if level_config_md5 != conf.getClientConfig('level'):
+#		data['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
+	if level_config_md5 != conf.getClientConfigMd5('level'):
 		data['level'] = conf.getClientConfig('level')
-		data['level_md5'] = conf.getClientConfig('level')	
+#		data['level_md5'] = conf.getClientConfigMd5('level')	
+	if game_config_md5 != conf.getClientConfigMd5('game'):
+		data['game'] = conf.getClientConfig('game')
+#		data['game_md5'] = conf.getClientConfigMd5('game')		
 	return HttpResponse(gcjson.dumps(data))

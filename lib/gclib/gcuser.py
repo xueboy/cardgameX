@@ -9,7 +9,7 @@ class gcuser(object):
 		self.id = 0
 		return
 		
-	def update1(self):
+	def update(self):
 		return
 		
 	def saveRoleId(self):

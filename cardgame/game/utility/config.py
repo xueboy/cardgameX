@@ -10,7 +10,9 @@ class config(gcconfig):
 		conf = config.getConfig(confname)
 		if confname == 'dungeon':
 			conf = config.dungeonFilter(conf)
-			return conf		
+			return conf
+		if confname == 'game':
+			return conf
 		return None
 	
 	

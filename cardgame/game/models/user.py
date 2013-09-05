@@ -85,8 +85,17 @@ class user(gcuser):
 			point = stamina_recover_before // stamina_recove_interval
 			self.stamina_last_recover += point * stamina_recove_interval
 			self.stamina += point
+			if self.stamina > maxStamina:
+				self.stamina = maxStamina
 			
-	def update1(self):
-		self.updateStamina();
+	def update(self):
+		return
+		
+	def costStamina(self, point):
+		maxStamina = config.getMaxStamina(sefl.level)
+		if maxStamina == self.stamina:
+			self.stamina_last_recover = currentTime()
+		self.stamina -= point
+		
 			
 		

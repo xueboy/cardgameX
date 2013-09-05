@@ -24,14 +24,12 @@ class DBConnection:
 	def query(self, sql, param):
 		cursor = self.myconnection.cursor()
 		cursor.execute(sql, param)
-		print sql, param
 		return cursor.fetchall()
 		
 		
 	def excute(self, sql,param):
 		cursor = self.myconnection.cursor()
 		cursor.execute(sql, param)
-		print sql, param
 		self.last_id = cursor.lastrowid
 		transaction.commit_unless_managed()		
 		

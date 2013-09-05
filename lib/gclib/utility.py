@@ -16,9 +16,8 @@ def onLogin(request, user):
 def amendRequest(request,cls):
 	userid = request.session['user_id']
 	usr = cls.get(userid)
-	print cls, userid
 	request.user = usr
-	usr.update1()
+	usr.update()
 		
 		
 def currentTime():

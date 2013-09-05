@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     url(r'index', game.views.main.index),
     url(r'info', game.views.main.info),
     url(r'config', game.views.main.config),
+    url(r'api', game.views.main.api)
 )

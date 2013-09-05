@@ -19,7 +19,6 @@ class object():
 		conn = DBConnection.getConnection()
 		conn.excute("INSERT INTO " + self.__class__.__name__ + "(roleid, object) VALUES (%s, %s)", [roleid, gcjson.dumps(self.getData())])
 		self.id = conn.insert_id()
-		print "last id is ", self.id
 		self.roleid = roleid
 		return 0
 		
@@ -30,11 +29,7 @@ class object():
 		if len(res) == 1:
 			obj = cls()
 			t = type(obj)
-			obj.load(id, gcjson.loads(res[0][2]))
-			print res[0][2]
-			print cls
-			print (t)
-			print "*****************************get object*********************************", cls.__name__, id
+			obj.load(id, gcjson.loads(res[0][2]))			
 			return obj		
 		return None
 		
