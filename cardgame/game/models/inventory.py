@@ -108,7 +108,7 @@ class inventory(object):
 			self.team[0] = ''
 			usr.leader = {}
 		else:
-			self.team[1] = self.getCard(cardid)['id']		
+			self.team[0] = self.getCard(cardid)['id']		
 		usr.leader = cardid
 		return self.team
 	
