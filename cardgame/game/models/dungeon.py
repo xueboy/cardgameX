@@ -5,6 +5,7 @@ from gclib.object import object
 from random import sample
 from gclib.DBConnection import DBConnection
 from gclib.gcjson import gcjson
+from game.utility.config import config
 
 
 
@@ -13,8 +14,12 @@ class dungeon(object):
 	def __init__(self):
 		self.normal_recored = []		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
 		self.last_dungeon = {}			#{battleid:'', fieldid:''}  last available dungeon
-		self.reinforce_list = []		#[roleid]	list	
+		self.reinforce_list = []		#[roleid]	list
 		
+	def init(self):		
+		conf = config.getConfig('dungeon')
+		self.last_dungeon['battleid'] = conf[0]['battleId']
+		self.last_dungeon['fieldid'] = conf[0]['field'][0]['fieldId']
 	
 
 	
@@ -48,12 +53,11 @@ class dungeon(object):
 		res = conn.query(sql, [','.join(excludeRoleids)])
 		data = []
 		for record in res:
+			if record[0] == usr.roleid:
+				continue
 			vol = usr.__class__()
 			vol.load(record[0], gcjson.loads(record[2]))
 			data.append(vol.getFriendData())
-			print vol.getFriendData()
-			print vol.roleid
-			print record[0]
 		return data
 				
 	

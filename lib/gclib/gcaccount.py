@@ -44,6 +44,7 @@ class gcaccount(object):
 		conn = DBConnection.getConnection()		
 		usr = self.userObject()
 		usr.init(self)
+		usr.last_login = self.last_login
 		usr.install(0)
 		self.roleid = usr.id
 		self.saveRoleId()	

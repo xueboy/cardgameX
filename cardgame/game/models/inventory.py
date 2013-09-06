@@ -13,6 +13,9 @@ class inventory(object):
 		self.cards = []
 		self.team = ['', '', '', '', '']
 		
+	def init(self):
+		return
+		
 		
 	def getData(self):
 		return {'cards':self.cards, 'team': self.team}

@@ -8,22 +8,35 @@ from gclib.utility import currentTime
 from game.utility.config import config
 
 class user(gcuser):
+	
+	def __init__(self):
+		self.id = 0
+		self.roleid = 0
+		self.name = ''
+		self.level = 0
+		self.stamina = 0
+		self.gems = 0
+		self.gold = 0
+		self.exp = 0
+		self.vipLevel = 0
+		self.stamina_last_recover = currentTime()
+		self.last_card_no = 0
+		self.leader = ''
+		self.friends = {}
+		self.friend_request = {}
+		self.last_login = currentTime()		
+		
+	
 	def init(self, acc):
 		gcuser.init(self, acc)
 		self.id = acc.roleid
 		self.roleid = acc.roleid
 		self.name = acc.username
 		self.level = 1
-		self.stamina = 100
-		self.gems = 0
-		self.gold = 0
-		self.exp = 0
+		self.stamina = 100		
 		self.vipLevel = 1
 		self.stamina_last_recover = currentTime()
-		self.last_card_no = 0
-		self.leader = ''	#cardid
-		self.friends = {}
-		
+		self.last_card_no = 0		
 	
 	def getData(self):	
 		data = {}
@@ -102,6 +115,7 @@ class user(gcuser):
 		dun = dungeon.get(self.id)
 		if dun == None:	
 			dun = dungeon()
+			dun.init()
 			dun.install(self.roleid)
 		dun.user = self
 		return dun
@@ -113,6 +127,7 @@ class user(gcuser):
 		inv = inventory.get(self.id)
 		if inv == None:
 			inv = inventory()
+			inv.init()
 			inv.install(self.roleid)
 		inv.user = self
 		return inv
