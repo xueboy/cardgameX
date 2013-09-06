@@ -55,11 +55,9 @@ class config(gcconfig):
 		for cardid in conf:
 			c = {}
 			c['imageId'] = conf[cardid]['imageId']
-			c['icon'] = conf[cardid]['icon']
-			c['job'] = conf[cardid]['job']
+			c['icon'] = conf[cardid]['icon']			
 			c['name'] = conf[cardid]['name']
-			c['type'] = conf[cardid]['type']
-			c['attackTurn'] = conf[cardid]['attackTurn']
+			c['type'] = conf[cardid]['type']			
 			c['leadership'] = conf[cardid]['leadership']
 			c['nature'] = conf[cardid]['nature']
 			c['maxLevel'] = conf[cardid]['maxLevel']
@@ -67,8 +65,7 @@ class config(gcconfig):
 			c['attack'] = conf[cardid]['attack']
 			c['recove'] = conf[cardid]['recove']
 			c['agile'] = conf[cardid]['agile']			
-			c['skillId'] = conf[cardid]['skillId']
-			c['price'] = conf[cardid]['price']
+			c['skillId'] = conf[cardid]['skillId']			
 			c['evoPrice'] = conf[cardid]['evoPrice']
 			c['evoId'] = conf[cardid]['evoId']
 			c['evoMaterial'] = conf[cardid]['evoMaterial']

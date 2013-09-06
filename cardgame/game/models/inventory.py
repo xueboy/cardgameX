@@ -11,17 +11,19 @@ class inventory(object):
 	
 	def __init__(self):
 		self.cards = []
+		self.team = ['', '', '', '', '']
 		
 		
 	def getData(self):
-		return self.cards
+		return {'cards':self.cards, 'team': self.team}
 		
 	def getClientData(self):
-		return self.cards
+		return {'card':self.cards, 'team': self.team}
 		
 	def load(self, roleid, data):
 		self.roleid = roleid
-		self.cards = data
+		self.cards = data['cards']
+		self.team = data['team']
 		
 	def addCard(self, card_id):
 		carconf = config.getConfig('card')				
@@ -29,6 +31,8 @@ class inventory(object):
 			data = {}
 			data['cardid'] = card_id
 			data['id'] = self.generateName()
+			data['level'] = 1
+			data['exp'] = 0
 			self.cards.append(data)			
 			return data
 		return None
@@ -49,3 +53,59 @@ class inventory(object):
 		noLen = len(str(no))
 		name = str(serveridLen) + str(serverid) + str(roleidLen) + str(self.roleid) + ts + str(noLen) + str(no)		
 		return name
+		
+		
+	def getCard(self, cardid):
+		for card in self.cards:			
+			if card['id'] == cardid:
+				return card
+		return None
+	
+	def setTeam(self, cardid1, cardid2, cardid3, cardid4):
+		
+		if cardid1 != '':
+			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == self.team[0]:
+				return self.team			
+		if cardid2 != '':
+			if cardid2 == cardid3 or cardid2 == cardid4 or cardid2 == self.team[0]:
+				return self.team			
+		if cardid3 != '':
+			if cardid3 == cardid4 or cardid3 == self.team[0]:
+				return self.team			
+		if cardid4 != '':
+			if cardid4 == self.team[0]:
+				return self.team	
+		
+		if cardid1 == '':
+			self.team[1] = ''
+		else:
+			self.team[1] = self.getCard(cardid1)['id']
+		if cardid2 == '':
+			self.team[2] = ''
+		else:
+			self.team[2] = self.getCard(cardid2)['id']
+		if cardid3 == '':
+			self.team[3] = ''
+		else:
+			self.team[3] = self.getCard(cardid3)['id']
+		if cardid4 == '':
+			self.team[4] = ''
+		self:
+			self.team[4] = self.getCard(cardid4)['id']		
+		return self.team
+	
+	def setLeader(self, cardid):
+		if cardid != ''
+			if cardid == self.team[1] or cardid == self.team[2] or cardid == self.team[3] or cardid == self.team[4]:
+				return self.team
+		usr = self.user
+		
+		if cardid == '':
+			self.team[0] = ''
+		else:
+			self.team[1] = self.getCard(cardid)['id']		
+		usr.leader = {'id':cardid, 'level':leader['level']}		
+		return self.team
+	
+		
+		

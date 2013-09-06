@@ -5,11 +5,12 @@ from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, amendRequest, onLogin
+from gclib.utility import HttpResponse500, amendRequest, onLogin, currentTime
 from game.models.user import user
 import game.views.dungeon
 import game.views.gm
 from game.game_def import viewsmap
+
 
 
 
@@ -24,6 +25,7 @@ def index(request):
 			raise Http500("server error")
 			return HttpResponse500()
 		onLogin(request, usr)
+		usr.last_login = currentTime()
 		
 		data = {}
 		usr.updateStamina()
@@ -32,7 +34,7 @@ def index(request):
 		data['dungeon'] = dun.getClientData()
 		inv = usr.getInventory()
 		data['inventory'] = inv.getClientData()
-		return HttpResponse(gcjson.dumps(data))
+		return HttpResponse(gcjson.dumps(data))		
 	return HttpResponse("Hello, world. You're at the test page index.")
 
 

@@ -49,7 +49,7 @@ class object():
 	def save(self):
 		conn = DBConnection.getConnection()
 		data = self.getData()
-		dumpstr = gcjson.dumps(data)
+		dumpstr = gcjson.dumps(data)	
 		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s", [dumpstr])
 		return 0
 		

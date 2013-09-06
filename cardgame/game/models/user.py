@@ -21,6 +21,8 @@ class user(gcuser):
 		self.vipLevel = 1
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
+		self.leader = {}
+		self.friends = {}
 		
 	
 	def getData(self):	
@@ -33,7 +35,11 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
-		data['last_card_no'] = self.last_card_no		
+		data['last_card_no'] = self.last_card_no
+		data['last_login'] = self.last_login
+		data['friend_request'] = self.friend_request
+		data['leader'] = self.leader
+		data['friends'] = self.friends
 		return data
 		
 	def getClientData(self):
@@ -46,6 +52,8 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover
+		data['friend_request'] = self.friend_request
+		data['friends'] = self.friends
 		return data
 		
 		
@@ -63,6 +71,19 @@ class user(gcuser):
 		if not data.has_key('last_card_no'):
 			data['last_card_no'] = 0
 		self.last_card_no = data['last_card_no']
+		if not data.has_key('last_login'):
+			data['last_login'] = currentTime()
+		self.last_login = data['last_login']
+		if not data.has_key('friend_request'):
+			data['friend_request'] = {}
+		self.friend_request = data['friend_request']
+		if not data.has_key('leader'):
+			data['leader'] = ''
+		self.leader = data['leader']
+		if not data.has_key('friends'):
+			data['friends'] = {}
+		self.friends = data['friends']
+			
 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
@@ -108,4 +129,21 @@ class user(gcuser):
 		self.stamina -= point
 		
 			
+	def addFriendRequest(self, requestRoleid, requestData):
+		self.friend_request[requestRoleid] = requestData
+		
+	def confirmFriendRequest(self, friend, isConfirm):
+		if isConfirm != 0:
+			self.addFriend(friend)
+			friend.addFriend(self)
+			self.save()
+			friend.save()			
+		else:
+			del self.friend_request[friend.roleid]
+			self.save()			
+	
+	def addFreind(self, friend):
+		self.friends[friend.roleid] =  {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
+			
+		
 		

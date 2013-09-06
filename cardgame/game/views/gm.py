@@ -14,7 +14,7 @@ def add_card(request):
 	inv.save()
 	data = {}
 	data['card'] = inv.getClientData()	
-	return HttpResponse(gcjson.dumps({'card': inv.getClientData()	}))	
+	return HttpResponse(gcjson.dumps(data))	
 
 def del_card(request):
 	name = int(request.GET['id'])
