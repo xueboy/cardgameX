@@ -44,7 +44,7 @@ class object():
 		return [0]	
 	
 	def load(self, roleid, data):		
-		return 0		
+		return 0
 		
 	def save(self):
 		conn = DBConnection.getConnection()

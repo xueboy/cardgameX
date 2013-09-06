@@ -4,6 +4,7 @@
 
 from django.http import HttpResponse
 from game.utility.config import config
+from gclib.gcjson import gcjson
 
 def enter(request):
 	
@@ -14,8 +15,8 @@ def enter(request):
 	dunConf = config.getConfig('dungeon')
 	
 	if dun.canEnterNormal(dunConf, battleId, fieldId) == True:
-		return
-		
-	return HttpResponse('enter dungeon')
+		reinforce = dun.getReinforcement()
+		return HttpResponse(gcjson.dumps({'reinforce':reinforce}))
+	return HttpResponse('not available dungeon')
 	
 	

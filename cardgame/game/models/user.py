@@ -58,6 +58,7 @@ class user(gcuser):
 		
 	def getFriendData(self):
 		data = {}
+		data['roleid'] = self.roleid
 		data['name'] = self.name
 		data['level'] = self.level
 		data['leader'] = self.leader
@@ -65,6 +66,7 @@ class user(gcuser):
 		return data
 		
 	def load(self, roleid, data):
+		self.roleid = roleid
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
