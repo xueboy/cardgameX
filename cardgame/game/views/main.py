@@ -33,7 +33,7 @@ def index(request):
 		dun = usr.getDungeon()
 		data['dungeon'] = dun.getClientData()
 		inv = usr.getInventory()
-		data['inventory'] = inv.getClientData()
+		data.update(inv.getClientData())
 		return HttpResponse(gcjson.dumps(data))		
 	return HttpResponse("Hello, world. You're at the test page index.")
 
