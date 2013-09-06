@@ -17,7 +17,7 @@ def add_card(request):
 	return HttpResponse(gcjson.dumps(data))	
 
 def del_card(request):
-	name = int(request.GET['id'])
+	cardid = int(request.GET['id'])
 	usr = request.user
 	inv = usr.getInventory()	
 	if inv.delCard(name) == 0:

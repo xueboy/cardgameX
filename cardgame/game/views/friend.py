@@ -9,7 +9,7 @@ def friend_request(request):
 	friendid = request.GET['friend_id']
 	friend = user.get(friendid)
 	if friend != None:		
-		friend.addFriendRequest(usr.roleid, {'name': usr.name, 'level': usr.level, 'last_login': usr.last_login, 'leader': usr.leader})
+		friend.addFriendRequest(usr.roleid, usr)
 	return HttpResponse(gcjson.dumps('OK'))
 		
 		

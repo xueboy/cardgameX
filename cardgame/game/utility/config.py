@@ -70,12 +70,10 @@ class config(gcconfig):
 			c['evoId'] = conf[cardid]['evoId']
 			c['evoMaterial'] = conf[cardid]['evoMaterial']
 			c['describe'] = conf[cardid]['describe']
-			
-			
-			
-			
-	
-	
+			data[cardid] = c
+		return data
+		
+		
 	@staticmethod
 	def getMaxStamina(level):
 		levelConf = config.getConfig('level')

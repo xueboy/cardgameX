@@ -21,7 +21,7 @@ class user(gcuser):
 		self.vipLevel = 1
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
-		self.leader = {}
+		self.leader = {}	#petid
 		self.friends = {}
 		
 	
@@ -139,8 +139,8 @@ class user(gcuser):
 		self.stamina -= point
 		
 			
-	def addFriendRequest(self, requestRoleid, requestData):
-		self.friend_request[requestRoleid] = requestData
+	def addFriendRequest(self, requestRoleid, friend):
+		self.friend_request[requestRoleid] = {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
 		
 	def confirmFriendRequest(self, friend, isConfirm):
 		if isConfirm != 0:
