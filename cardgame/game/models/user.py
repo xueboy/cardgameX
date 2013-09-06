@@ -145,5 +145,7 @@ class user(gcuser):
 	def addFreind(self, friend):
 		self.friends[friend.roleid] =  {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
 			
+	
+			
 		
 		

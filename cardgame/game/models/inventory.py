@@ -90,12 +90,12 @@ class inventory(object):
 			self.team[3] = self.getCard(cardid3)['id']
 		if cardid4 == '':
 			self.team[4] = ''
-		self:
+		else:
 			self.team[4] = self.getCard(cardid4)['id']		
 		return self.team
 	
 	def setLeader(self, cardid):
-		if cardid != ''
+		if cardid != '':
 			if cardid == self.team[1] or cardid == self.team[2] or cardid == self.team[3] or cardid == self.team[4]:
 				return self.team
 		usr = self.user
