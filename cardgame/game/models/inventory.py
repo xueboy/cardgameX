@@ -37,7 +37,9 @@ class inventory(object):
 			return data
 		return None
 		
-	def delCard(self, name):
+	def delCard(self, cardid):
+		if self.team.count (cardid) > 0:
+			return 0
 		for card in self.cards:
 			if card['id'] == name:
 				self.cards.remove(card)

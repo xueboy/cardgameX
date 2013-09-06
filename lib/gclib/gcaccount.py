@@ -4,6 +4,8 @@ from gclib.gcjson import gcjson
 from gclib.object import object
 from gclib.DBConnection import DBConnection
 from gclib.gcuser import gcuser
+from gclib.utility import currentTime
+import time
 
 
 class gcaccount(object):
@@ -17,6 +19,7 @@ class gcaccount(object):
 			acc.username = res[0][1]			
 			acc.roleid = res[0][3]
 			acc.opendid = res[0][4]
+			acc.saveLogin()
 			return acc
 		return None
 			
@@ -32,6 +35,7 @@ class gcaccount(object):
 			usr.init(self)		
 			usr.load(self.roleid, gcjson.loads(res[0][2]))
 			usr.id = self.roleid
+			usr.last_login = self.last_login
 			return usr
 		else:
 			return self.makeUser()
@@ -63,4 +67,10 @@ class gcaccount(object):
 	def saveRoleId(self):
 		conn = DBConnection.getConnection()				
 		conn.excute("UPDATE account SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
-		return None
+		
+	def saveLogin(self):
+		self.last_login = currentTime()
+		conn = DBConnection.getConnection()				
+		conn.excute("UPDATE account SET lastlogin = %s WHERE id = %s", [time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.last_login)), self.id])	
+		
+		

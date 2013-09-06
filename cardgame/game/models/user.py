@@ -21,7 +21,7 @@ class user(gcuser):
 		self.vipLevel = 1
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
-		self.leader = {}	#petid
+		self.leader = ''	#cardid
 		self.friends = {}
 		
 	
@@ -40,6 +40,7 @@ class user(gcuser):
 		data['friend_request'] = self.friend_request
 		data['leader'] = self.leader
 		data['friends'] = self.friends
+		data['last_login'] = self.last_login
 		return data
 		
 	def getClientData(self):
@@ -54,6 +55,14 @@ class user(gcuser):
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		return {'user': data, 'friends': self.friends, 'friend_request':self.friend_request}
 		
+		
+	def getFriendData(self):
+		data = {}
+		data['name'] = self.name
+		data['level'] = self.level
+		data['leader'] = self.leader
+		data['last_login'] = self.last_login
+		return data
 		
 	def load(self, roleid, data):
 		self.name = data['name']
@@ -88,9 +97,10 @@ class user(gcuser):
 		return self.last_card_no		
 		
 	def getDungeon(self):				
-		dun = dungeon.get(self.id)			
-		dun = dungeon()
-		dun.install(self.roleid)
+		dun = dungeon.get(self.id)
+		if dun == None:	
+			dun = dungeon()
+			dun.install(self.roleid)
 		dun.user = self
 		return dun
 	
@@ -99,8 +109,9 @@ class user(gcuser):
 		if self.id == 0:
 			raise "error"
 		inv = inventory.get(self.id)
-		inv = inventory()
-		inv.install(self.roleid)
+		if inv == None:
+			inv = inventory()
+			inv.install(self.roleid)
 		inv.user = self
 		return inv
 	
@@ -140,7 +151,7 @@ class user(gcuser):
 		
 			
 	def addFriendRequest(self, requestRoleid, friend):
-		self.friend_request[requestRoleid] = {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
+		self.friend_request[requestRoleid] = friend.getFriendData()
 		
 	def confirmFriendRequest(self, friend, isConfirm):
 		if isConfirm != 0:
@@ -153,7 +164,7 @@ class user(gcuser):
 			self.save()			
 	
 	def addFreind(self, friend):
-		self.friends[str(friend.roleid)] =  {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
+		self.friends[str(friend.roleid)] =  friend.getFriendData()
 	
 	def getFriend(self, friendRoleid):
 		if self.friends.has_key(str(friendRoleid)):
