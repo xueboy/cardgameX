@@ -18,7 +18,7 @@ class inventory(object):
 		return {'cards':self.cards, 'team': self.team}
 		
 	def getClientData(self):
-		return {'card':self.cards, 'team': self.team}
+		return {'cards':self.cards, 'team': self.team}
 		
 	def load(self, roleid, data):
 		self.roleid = roleid
