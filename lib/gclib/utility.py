@@ -10,8 +10,9 @@ def HttpResponse500():
 	response.status_code = 500
 	return resonse
 
-def onLogin(request, user):
-	request.session['user_id'] = user.id
+def onUserLogin(request, usr):
+	request.session['user_id'] = usr.id
+	usr.onLogin()
 
 def amendRequest(request,cls):
 	userid = request.session['user_id']

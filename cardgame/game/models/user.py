@@ -51,10 +51,8 @@ class user(gcuser):
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
-		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover
-		data['friend_request'] = self.friend_request
-		data['friends'] = self.friends
-		return data
+		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
+		return {'user': data, 'friends': self.friends, 'friend_request':self.friend_request}
 		
 		
 	def load(self, roleid, data):
@@ -90,10 +88,9 @@ class user(gcuser):
 		return self.last_card_no		
 		
 	def getDungeon(self):				
-		dun = dungeon.get(self.id)
-		if dun == None:			
-			dun = dungeon()
-			dun.install(self.roleid)
+		dun = dungeon.get(self.id)			
+		dun = dungeon()
+		dun.install(self.roleid)
 		dun.user = self
 		return dun
 	
@@ -102,13 +99,15 @@ class user(gcuser):
 		if self.id == 0:
 			raise "error"
 		inv = inventory.get(self.id)
-		if inv == None:			
-			inv = inventory()
-			inv.install(self.roleid)
+		inv = inventory()
+		inv.install(self.roleid)
 		inv.user = self
 		return inv
 	
 	def updateStamina(self):
+		"""
+		ckeck and do if stamina recover.
+		"""
 		maxStamina = config.getMaxStamina(self.level)
 		stamina_recover_before = currentTime() - self.stamina_last_recover
 		stamina_recove_interval = config.getConfig('game')['statmina_recove_interval']
@@ -118,6 +117,17 @@ class user(gcuser):
 			self.stamina += point
 			if self.stamina > maxStamina:
 				self.stamina = maxStamina
+				
+	def gainExp(self, exp):
+		"""
+		gain exp
+		"""
+		self.exp = exp
+		levelConf = config.getConfig('level')
+		while levelConf.has_key(str(self.level)) and self.exp > levelConf[self.level]['levelExp']:
+			self.level = self.level + 1
+			self.exp = self.exp - levelConf[str(self.level)]['levelExp']			
+			self.onLevelup()
 			
 	def update(self):
 		return
@@ -143,9 +153,24 @@ class user(gcuser):
 			self.save()			
 	
 	def addFreind(self, friend):
-		self.friends[friend.roleid] =  {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
-			
+		self.friends[str(friend.roleid)] =  {'name': friend.name, 'level': friend.level, 'last_login': friend.last_login, 'leader': friend.leader}
 	
+	def getFriend(self, friendRoleid):
+		if self.friends.has_key(str(friendRoleid)):
+			return friends[str(friendRoleid)]
 			
+	def updateToFriend(self):
+		for key in self.friends:
+			friend = user.get(key)
+			friend.addFreind(self)
+			friend.save()
+			
+			
+	def onLogin(self):
+		return
 		
+		
+		
+	def onLevelup(self):
+		return
 		
