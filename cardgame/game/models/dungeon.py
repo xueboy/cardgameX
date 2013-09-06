@@ -29,17 +29,21 @@ class dungeon(object):
 					return False
 		return False	
 		
-	def getVolunteer(self):
-		
+	def getVolunteer(self):		
 		usr = self.user
-		friendRoleids = usr.friends.keys()
-		conn = DBConnection.getConnection()
-		
+		excludeRoleids = usr.friends.keys()
+		excludeRoleids.extend(self.reinfore_list)
+		conn = DBConnection.getConnection()		
 		sql = "SELECT * FROM user WHERE roleid NOT IN (%s) ORDER BY RAND() LIMIT 3"
-		conn.excute(sql, [','.join(friendRoleids)])
-		
+		res = conn.query(sql, [','.join(friendRoleids)])
+		data = []
+		for record in res:
+			vol = user()
+			vol.load(record[0], record[2])
+			data.append(vol.getFriendData)
+		return data
+				
 	
 	def getReinforcement(self):
-		usr = self.user
-		friendRoleid = usr.friends.keys()
-		sql
+		vols = self.getVolunteer()
+		
