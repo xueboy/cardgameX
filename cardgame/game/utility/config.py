@@ -42,9 +42,8 @@ class config(gcconfig):
 				f = {}
 				f['fieldId'] = field['fieldId']
 				f['battleSmallName'] = field['battleSmallName']
-				f['battlePower'] = field['battlePower']
-				f['totalRound'] = field['totalRound']
-				f['degree'] = field['degree']
+				f['stamina'] = field['stamina']				
+				f['difficult'] = field['difficult']
 				b['field'].append(f)
 			data.append(b)			
 		return data

@@ -15,6 +15,9 @@ class dungeon(object):
 		self.normal_recored = []		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
 		self.last_dungeon = {}			#{battleid:'', fieldid:''}  last available dungeon
 		self.reinforce_list = []		#[roleid]	list
+		self.last_reinforce_time = 0
+		self.curren_field = None
+		self.reinforeces = None
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')
@@ -30,17 +33,27 @@ class dungeon(object):
 		return data
 		
 	def getClientData(self):
-		return self.getData()		
+		return self.getData()
 		
-	def canEnterNormal(self, conf, battleId, fieldId):
-		if (not self.last_dungeon.has_key('battleId')) or (not self.last_dungeon.has_key('fieldId')):
-			return conf[0]['battleId'] == battleId and conf[0]['field'][0]['fieldId'] == fieldId
+	def updateReinforce(self):
+		now = currentTime()
+		tmLast = time.localtime()
+		tmNow = time.localtime()
+		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
+			self.reinforce_list = []
+			last_reinforce_time = currentTime()
+		
+	
+		
+	def canEnterNormal(self, conf, battleid, fieldid):
+		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
+			return conf[0]['battleid'] == battleid and conf[0]['field'][0]['fieldid'] == fieldid
 		
 		for battle in conf:
 			for field in battle['field']:
-				if battle['battleId'] == battleId and field['fieldId'] == fieldId:
+				if battle['battleid'] == battleid and field['fieldid'] == fieldid:
 					return True
-				if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
+				if battle['battleid'] == self.last_dungeon['battleid'] and field['fieldid'] == self.last_dungeon['fieldid']:
 					return False
 		return False	
 		
@@ -62,8 +75,9 @@ class dungeon(object):
 				
 	
 	def getReinforcement(self):
-		usr = self.user		
-		reinforce = self.getVolunteer()		
+		usr = self.user
+		self.updateReinforce()
+		reinforces = self.getVolunteer()		
 		friendRoleids = usr.friends.keys()
 		for i in self.reinforce_list:
 			friendRoleids.remove(i)				
@@ -72,7 +86,15 @@ class dungeon(object):
 			scount = len(friendRoleids)
 		friendRoleids = sample(friendRoleids, scount)
 		for i in friendRoleids:
-			reinforce.append(usr.friends[i])
-
-		
+			reinforces.append(usr.friends[i])
+			self.reinforces = reinforce
 		return reinforce
+		
+	def setCurrentField(self, battleid, fieldid):
+		self.curren_field = {'battleid':battleid, 'fieldid':fieldid}
+	
+	def getCurrentField(self):
+		return self.curren_field
+		
+	def setReinforce(self, ls):
+		self.reinforeces = ls
