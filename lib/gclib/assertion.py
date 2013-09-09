@@ -1,0 +1,3 @@
+﻿ 
+
+class Assertion(Exception):pass

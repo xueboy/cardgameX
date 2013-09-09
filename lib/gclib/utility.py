@@ -3,6 +3,7 @@
 
 from django.http import HttpResponse
 import time
+import random
 
 
 def HttpResponse500():
@@ -18,8 +19,23 @@ def amendRequest(request,cls):
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	request.user = usr
-	usr.update()
-		
+	usr.update()	
 		
 def currentTime():
 	return int(time.time())
+	
+def hit(probs):
+	"""
+	give a weight list and randmon choose a element depend on weights as probablity.
+	"""
+	total = sum(probs)
+	seed = random.randint(0, total)
+	
+	i = 0
+	for p in probs:
+		if total < p:
+			return i
+		i = i + 1
+		total = total - p
+		
+	raise Assertion( 'unexpect result')

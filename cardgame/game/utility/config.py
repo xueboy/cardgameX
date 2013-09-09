@@ -34,14 +34,13 @@ class config(gcconfig):
 			b = {}
 			b['battleId'] = battle['battleId']
 			b['rule'] = battle['rule']
-			b['battleBigName'] = battle['battleBigName']
-			b['battleBigNameEn'] = battle['battleBigNameEn']
+			b['battleName'] = battle['battleName']			
 			b['battleImageId'] = battle['battleImageId']
 			b['field'] = []
 			for field in battle['field']:
 				f = {}
 				f['fieldId'] = field['fieldId']
-				f['battleSmallName'] = field['battleSmallName']
+				f['fieldName'] = field['fieldName']
 				f['stamina'] = field['stamina']				
 				f['difficult'] = field['difficult']
 				b['field'].append(f)

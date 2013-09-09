@@ -32,5 +32,5 @@ def start(request):
 			if battleConf['battleId'] == dun.currenField['battleid']:
 				for fieldConf in battleConf:
 					if fieldConf['fieldid'] == dun.curren_field['fieldid']:
-						return
+						pass
 						
