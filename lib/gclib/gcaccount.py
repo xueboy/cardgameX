@@ -72,6 +72,14 @@ class gcaccount(object):
 	def saveLogin(self):
 		self.last_login = currentTime()
 		conn = DBConnection.getConnection()				
-		conn.excute("UPDATE account SET lastlogin = %s WHERE id = %s", [time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.last_login)), self.id])	
+		conn.excute("UPDATE account SET lastlogin = %s WHERE id = %s", [time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.last_login)), self.id])
+		
+	@staticmethod
+	def getRoleid(name):
+		conn = DBConnection.getConnection()				
+		res = conn.query("SELECT * FROM account WHERE username = %s", name)
+		if len(res) == 1:
+			return res[0][3]
+		return 0
 		
 		

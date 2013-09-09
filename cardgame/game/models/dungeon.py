@@ -9,6 +9,7 @@ from game.utility.config import config
 
 
 
+
 class dungeon(object):
 	
 	def __init__(self):
@@ -99,3 +100,14 @@ class dungeon(object):
 	def setReinforce(self, ls):
 		self.reinforeces = ls
 		
+	def arrangeWaves(self, field):
+		waves = []		
+		for wave in field['wave']:
+			cnt = wave['count'][hit(wave['count_prob'])]
+			monsters = random.sample(wave['monster'].keys(), cnt)
+			for monster in monsters:
+				pass
+				
+			
+			return None
+		return
