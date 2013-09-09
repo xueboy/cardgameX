@@ -43,14 +43,14 @@ class object():
 	def getData(self):
 		return [0]	
 	
-	def load(self, roleid, data):		
+	def load(self, roleid, data):
 		return 0
 		
 	def save(self):
 		conn = DBConnection.getConnection()
 		data = self.getData()
 		dumpstr = gcjson.dumps(data)	
-		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s", [dumpstr])
+		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
 		return 0
 		
 	@classmethod

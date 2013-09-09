@@ -29,13 +29,24 @@ def hit(probs):
 	give a weight list and randmon choose a element depend on weights as probablity.
 	"""
 	total = sum(probs)
-	seed = random.randint(0, total)
+	seed = random.randint(0, total - 1)
 	
 	i = 0
 	for p in probs:
-		if total < p:
+		if seed < p:
 			return i
 		i = i + 1
-		total = total - p
+		seed = seed - p
 		
 	raise Assertion( 'unexpect result')
+	
+def drop(weight):
+	"""
+	give a weight and test if drop
+	"""
+	seed = random.randint(0, 1000)
+	return seed < weight
+	
+	
+def randint():
+	return random.randint(0, 1000)

@@ -3,16 +3,18 @@
 
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
-
-
+from game.models.account import account
+from game.models.user import user
 
 def friend_request(request):
 	usr = request.user
 	friendid = request.GET['friend_id']
+	from game.models.user import user
 	friend = user.get(friendid)
 	if friend != None:		
-		friend.addFriendRequest(usr.roleid, usr)
-	return HttpResponse(gcjson.dumps('OK'))
+		data = friend.addFriendRequest(usr)		
+		return HttpResponse(gcjson.dumps(data))		
+	return HttpResponse(gcjson.dumps({friend:{}}))
 		
 		
 def friend_confirm(request):
@@ -20,22 +22,30 @@ def friend_confirm(request):
 	isConfirm = request.GET['is_confirm']
 	friendid = request.GET['friend_id']
 	friend = user.get(friendid)
-	if friend != None:		
-		usr.confirmFriendRequest(friend, isConfirm)		
-	return HttpResponse(gcjson.dumps({'friends': usr.friends, 'friend_request': usr.friend_request}))
+	if friend != None:
+		if usr.confirmFriendRequest(friend, isConfirm) == 0:
+			HttpResponse(gcjson.dumps({'msg': 'friend_max_count'}))
+	return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
 
 
 def search_friend(request):
 	usr = request.user
 	
 	friendname = request.GET['friend_name']
-	
-	from game.models.account import account
-	from game.models.user import user
-	friendid = account.getRoleid(friendname)
-	
+		
+	friendid = account.getRoleid(friendname)	
 	friend = user.get(friendid)
 	if friend != None:
 		return HttpResponse(gcjson.dumps({'friend':friend.getFriendData()}))
 	else:
 		return HttpResponse(gcjson.dumps({'friend': {}}))
+			
+			
+def delete_friend(request):
+	usr = request.user
+	
+	friendid = request.GET['friend_id']
+	if usr.deleteFriend(friendid) == 1:
+		return HttpResponse(gcjson.dumps({'friend_delete':friendid}))
+	else:
+		return HttpResponse(gcjson.dumps({'msg':'friend_not_exist'}))

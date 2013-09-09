@@ -76,6 +76,7 @@ class user(gcuser):
 		data['level'] = self.level
 		data['leader'] = self.leader
 		data['last_login'] = self.last_login
+		data['create_time'] = currentTime()
 		return data
 		
 	def load(self, roleid, data):
@@ -167,20 +168,28 @@ class user(gcuser):
 		self.stamina -= point
 		
 			
-	def addFriendRequest(self, requestRoleid, friend):
-		self.friend_request[requestRoleid] = friend.getFriendData()
+	def addFriendRequest(self, friend):
+		data = friend.getFriendData()
+		self.friend_request[friend.roleid] = data
+		self.save()
+		return data
 		
 	def confirmFriendRequest(self, friend, isConfirm):
+		if len(self.friends) >= 30:
+			return 0
 		if isConfirm != 0:
 			self.addFriend(friend)
 			friend.addFriend(self)
+			del self.friend_request[friend.roleid]
 			self.save()
-			friend.save()			
+			friend.save()
+			return friend.roleid
 		else:
 			del self.friend_request[friend.roleid]
-			self.save()			
+			self.save()
+			return friend.roleid
 	
-	def addFreind(self, friend):
+	def addFriend(self, friend):
 		self.friends[str(friend.roleid)] =  friend.getFriendData()
 	
 	def getFriend(self, friendRoleid):
@@ -193,6 +202,15 @@ class user(gcuser):
 			friend.addFreind(self)
 			friend.save()
 			
+	def deleteFriend(self, friendid):
+		if self.friends.has_key(friendid):
+			friend = user.get(friendid)
+			del self.friends[friendid]
+			del friend.friends[str(self.roleid)]			
+			self.save()
+			friend.save()
+			return 1
+		return 0
 			
 	def onLogin(self):
 		return

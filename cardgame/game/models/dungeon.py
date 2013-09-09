@@ -6,6 +6,7 @@ from random import sample
 from gclib.DBConnection import DBConnection
 from gclib.gcjson import gcjson
 from game.utility.config import config
+from gclib.utility import randint
 
 
 
@@ -104,10 +105,36 @@ class dungeon(object):
 		waves = []		
 		for wave in field['wave']:
 			cnt = wave['count'][hit(wave['count_prob'])]
-			monsters = random.sample(wave['monster'].keys(), cnt)
-			for monster in monsters:
-				pass
+			monsters = random.sample(wave['monster'].keys(), cnt)			
+			for monsterid in monsters:
+				rd = randint()
+				dropData = {}
+				dropData['money'] = monsters[monsterid]['money']
 				
-			
-			return None
-		return
+				cardData = monsters[monsterid]['card']
+				drop = 0
+				if cardData.has_key('drop'):
+					drop = cardData['drop']
+				if rd < drop:
+					dropData['card'] = {}
+					dropData['card']['cardid'] =  cardData['id']
+					dropData['card']['level'] = cardData['level']
+				else:					
+					rd = rd - cardData['drop']
+					itemData = monsters[monsterid]['item']
+					if itemData.has_key('drop'):
+						drop = itemData['drop']
+						if rd < drop:
+							dropData['item'] = {}
+							dropData['item']['itemid'] = itemData['id']
+						else:
+							rd = rd - drop
+							equipData = monsters[monsterid]['equipment']
+							if equipData.has_key('drop'):
+								drop = equipData['drop']
+								if rd < drop:
+									dropData['equipment'] = {}
+									dropData['equipment'] = equipData['id']
+				waves.append(dropData)
+		self.curren_field_drop = waves			
+		return waves

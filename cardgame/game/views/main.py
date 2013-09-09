@@ -9,8 +9,17 @@ from gclib.utility import HttpResponse500, amendRequest, onUserLogin, currentTim
 from game.models.user import user
 import game.views.dungeon
 import game.views.gm
-from game.game_def import viewsmap
+import game.views.card
+import game.views.friend
+import sys
 
+
+viewsmap = {
+	'dungeon':sys.modules['game.views.dungeon'],
+	'gm':sys.modules['game.views.gm'],
+	'card':sys.modules['game.views.card'],
+	'friend':sys.modules['game.views.friend']
+}
 
 
 
