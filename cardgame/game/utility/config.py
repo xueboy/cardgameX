@@ -35,7 +35,7 @@ class config(gcconfig):
 			b['battleId'] = battle['battleId']
 			b['rule'] = battle['rule']
 			b['battleName'] = battle['battleName']			
-			b['battleImageId'] = battle['battleImageId']
+			b['imageId'] = battle['imageId']
 			b['field'] = []
 			for field in battle['field']:
 				f = {}

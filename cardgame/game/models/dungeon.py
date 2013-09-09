@@ -98,3 +98,10 @@ class dungeon(object):
 		
 	def setReinforce(self, ls):
 		self.reinforeces = ls
+		
+	def arrangeWaves(self, field):
+		waves = []		
+		for wave in field['wave']:
+			count = wave['count'][hit(wave['count_prob'])
+			
+	return
