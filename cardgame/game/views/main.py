@@ -74,7 +74,7 @@ def config(request):
 	if card_config_md5 != conf.getClientConfigMd5('card'):
 		data['card'] = conf.getClientConfig('card')
 #		data['game_md5'] = conf.getClientConfigMd5('game')
-if card_config_md5 != conf.getClientConfigMd5('monster'):
+	if card_config_md5 != conf.getClientConfigMd5('monster'):
 		data['monster'] = conf.getClientConfig('monster')
 #		data['monster_md5'] = conf.getClientConfigMd5('monster')
 	return HttpResponse(gcjson.dumps(data))
