@@ -25,8 +25,12 @@ def monster(request):
 				
 def card(request):
 	return generalConfigRequestProcess(request, 'card')
+	
 def game(request):
 	return generalConfigRequestProcess(request, 'game')
+
+def skill(request):
+	return generalConfigRequestProcess(request, 'skill')
 				
 				
 def generalConfigRequestProcess(request, confname):
@@ -54,7 +58,10 @@ def dungeon_import(request):
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())
 			
 		dungeon_sheet = wb.sheet_by_index(0)
-		monster_sheet = wb.sheet_by_index(2)
+		monster_sheet = wb.sheet_by_index(2)		
+		
+		for row in range(dungeon_sheet.nrows):
+			pass
 		
 	
 	return HttpResponse('OK')

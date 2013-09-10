@@ -62,6 +62,8 @@ def config(request):
 	game_config_md5 = request.GET['game_config_md5']
 	card_config_md5 = request.GET['card_config_md5']
 	monster_config_md5 = request.GET['monster_config_md5']
+	skill_config_md5 = request.GET['skill_config_md5']
+	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
 		data['dungeon'] = conf.getClientConfig('dungeon')
@@ -74,9 +76,12 @@ def config(request):
 	if card_config_md5 != conf.getClientConfigMd5('card'):
 		data['card'] = conf.getClientConfig('card')
 #		data['game_md5'] = conf.getClientConfigMd5('game')
-	if card_config_md5 != conf.getClientConfigMd5('monster'):
+	if monster_config_md5 != conf.getClientConfigMd5('monster'):
 		data['monster'] = conf.getClientConfig('monster')
 #		data['monster_md5'] = conf.getClientConfigMd5('monster')
+	if skill_config_md5 != conf.getClientConfigMd5('skill'):
+		data['skill'] = conf.getClientConfig('skill')
+#		data['skill_md5'] = conf.getClientConfigMd5('skill')
 	return HttpResponse(gcjson.dumps(data))
 	
 def api(request, m, f):

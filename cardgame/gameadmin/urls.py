@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'monster', gameadmin.views.main.monster),
     url(r'card', gameadmin.views.main.card),
     url(r'game', gameadmin.views.main.game),
+    url(r'skill', gameadmin.views.main.skill),
     
 )

@@ -16,6 +16,8 @@ class config(gcconfig):
 			return config.cardFileter(conf)
 		if confname == 'monster':
 			return conf
+		if confname == 'skill':
+			return conf
 		return None
 	
 	
