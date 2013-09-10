@@ -14,6 +14,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'card':
 			return config.cardFileter(conf)
+		if confname == 'monster':
+			return conf
 		return None
 	
 	
@@ -22,10 +24,7 @@ class config(gcconfig):
 		confobj = config.getClientConfig(confname)
 		if confobj != None:
 			return config.getMd5(confobj)
-		return ''
-		
-		
-		
+		return ''		
 			
 	@staticmethod
 	def dungeonFilter(conf):
