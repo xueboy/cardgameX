@@ -6,6 +6,9 @@ from gclib.DBConnection import DBConnection
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from gclib.gcconfig import gcconfig
+import xlrd
+from xlrd import USE_MMAP
+import sys
 
 def index(request):
 	return render(request, 'index.html', {})
@@ -41,3 +44,17 @@ def generalConfigRequestProcess(request, confname):
 		else:
 			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
+				
+def dungeon_import(request):
+	if request.method == 'POST':
+		dungeon_file = request.FILES.get('dungeon_file')		
+		if dungeon_file == None:
+			return HttpResponse('关卡xlsx文件未上传')
+			
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())
+			
+		dungeon_sheet = wb.sheet_by_index(0)
+		monster_sheet = wb.sheet_by_index(2)
+		
+	
+	return HttpResponse('OK')

@@ -12,6 +12,7 @@
   <label>
   <textarea name="config" rows=45 cols="180">{{ config }}</textarea>
   </label>
+ 
   <p>
     <label>
    
@@ -22,5 +23,9 @@
     </label>
   </p>
 </form>
+<form id = "" name="form1" action="/admin/dungeon_import/" method="post" enctype="multipart/form-data">{% csrf_token %}
+ <p><input name="dungeon_file" type="file" /></p>
+  <input name="Submit" type="submit" value="上传" />
+  </form>
 </body>
 </html>
