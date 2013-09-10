@@ -16,7 +16,8 @@ def enter(request):
 	
 	if dun.canEnterNormal(dunConf, battleid, fieldid) == True:
 		reinforce = dun.getReinforcement()
-		dun.setCurrentFiled(battleid, fieldid)
+		dun.setCurrentField(battleid, fieldid)
+		dun.save()
 		return HttpResponse(gcjson.dumps({'reinforce':reinforce}))
 	return HttpResponse('not available dungeon')
 	
@@ -25,12 +26,16 @@ def start(request):
 	reinforceid = request.GET['reinforce_id']	
 	usr = request.user
 	dun = usr.getDungeon()
-	
-	if dun.reinforeces.index(reinforceid) > -1:
+	ls = dun.reinforces
+	if dun.isReinforceExist(reinforceid):
 		dunConf = config.getConfig('dungeon')
 		for battleConf in dunConf:
-			if battleConf['battleId'] == dun.currenField['battleid']:
-				for fieldConf in battleConf:
-					if fieldConf['fieldid'] == dun.curren_field['fieldid']:
+			if battleConf['battleId'] == dun.curren_field['battleid']:
+				for fieldConf in battleConf['field']:
+					if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 						waves = dun.arrangeWaves(fieldConf)
 						return HttpResponse(gcjson.dumps(waves))
+		return HttpResponse(gcjson.dumps({'msg':'field not exist'}))
+	else: 
+		return HttpResponse(gcjson.dumps({'msg':'reinforce not exist', 'reinforce': dun.reinforces}))
+			

@@ -6,7 +6,9 @@ from random import sample
 from gclib.DBConnection import DBConnection
 from gclib.gcjson import gcjson
 from game.utility.config import config
-from gclib.utility import randint
+from gclib.utility import randint, currentTime, hit
+import time
+import random
 
 
 
@@ -14,12 +16,13 @@ from gclib.utility import randint
 class dungeon(object):
 	
 	def __init__(self):
+		self.roleid = 0
 		self.normal_recored = []		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
 		self.last_dungeon = {}			#{battleid:'', fieldid:''}  last available dungeon
-		self.reinforce_list = []		#[roleid]	list
+		self.reinforced_list = []		#[roleid]	list
 		self.last_reinforce_time = 0
 		self.curren_field = None
-		self.reinforeces = None
+		self.reinforces = None
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')
@@ -30,39 +33,54 @@ class dungeon(object):
 	
 	def getData(self):
 		data = {}
-		#data['normal_recrod'] = self.normal_recored
+		data['normal_recored'] = self.normal_recored
 		data['last_dungeon'] = self.last_dungeon		
+		data['reinforced_list'] = self.reinforced_list
+		data['last_reinforce_time'] = self.last_reinforce_time
+		data['curren_field'] = self.curren_field
+		data['reinforces'] = self.reinforces
 		return data
 		
+	def load(self, roleid, data):
+		self.roleid = roleid
+		self.normal_recored = data['normal_recored']
+		self.last_dungeon = data['last_dungeon']
+		self.reinforced_list = data['reinforced_list']
+		self.last_reinforce_time = data['last_reinforce_time']
+		self.curren_field = data['curren_field']
+		self.reinforces = data['reinforces']		
+		
 	def getClientData(self):
-		return self.getData()
+		data = {}
+		data['last_dungeon'] = self.last_dungeon		
+		return data
 		
 	def updateReinforce(self):
 		now = currentTime()
 		tmLast = time.localtime()
 		tmNow = time.localtime()
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
-			self.reinforce_list = []
-			last_reinforce_time = currentTime()
+			self.reinforced_list = []
+			last_reinforced_time = currentTime()
 		
 	
 		
 	def canEnterNormal(self, conf, battleid, fieldid):
 		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
-			return conf[0]['battleid'] == battleid and conf[0]['field'][0]['fieldid'] == fieldid
+			return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
 		
 		for battle in conf:
 			for field in battle['field']:
-				if battle['battleid'] == battleid and field['fieldid'] == fieldid:
+				if battle['battleId'] == battleid and field['fieldId'] == fieldid:
 					return True
-				if battle['battleid'] == self.last_dungeon['battleid'] and field['fieldid'] == self.last_dungeon['fieldid']:
+				if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
 					return False
 		return False	
 		
 	def getVolunteer(self):		
 		usr = self.user
 		excludeRoleids = usr.friends.keys()
-		excludeRoleids.extend(self.reinforce_list)		
+		excludeRoleids.extend(self.reinforced_list)		
 		conn = DBConnection.getConnection()		
 		sql = "SELECT * FROM user WHERE roleid NOT IN (%s) ORDER BY RAND() LIMIT 3"
 		res = conn.query(sql, [','.join(excludeRoleids)])
@@ -81,7 +99,7 @@ class dungeon(object):
 		self.updateReinforce()
 		reinforces = self.getVolunteer()		
 		friendRoleids = usr.friends.keys()
-		for i in self.reinforce_list:
+		for i in self.reinforced_list:
 			friendRoleids.remove(i)				
 		scount = 8
 		if scount > len(friendRoleids):
@@ -89,55 +107,60 @@ class dungeon(object):
 		friendRoleids = sample(friendRoleids, scount)
 		for i in friendRoleids:
 			reinforces.append(usr.friends[i])
-			self.reinforces = reinforce
-		return reinforce
+		self.reinforces = reinforces
+		return reinforces
 		
 	def setCurrentField(self, battleid, fieldid):
-		self.curren_field = {'battleid':battleid, 'fieldid':fieldid}
+		self.curren_field = {'battleid':battleid, 'fieldid':fieldid}	
 	
-	def getCurrentField(self):
-		return self.curren_field
 		
 	def setReinforce(self, ls):
 		self.reinforeces = ls
+		
+	def isReinforceExist(self, reinforceid):
+		for reinforce in self.reinforces:
+			if reinforce['roleid'] == int(reinforceid):
+				return True
+		return False
+			
 		
 	def arrangeWaves(self, field):
 		waves = []		
 		for wave in field['wave']:
 			cnt = wave['count'][hit(wave['count_prob'])]
 			monsters = random.sample(wave['monster'].keys(), cnt)			
+			waveData = {}
 			for monsterid in monsters:
 				rd = randint()
 				dropData = {}
-				dropData['money'] = monsters[monsterid]['money']
+				dropData['money'] = wave['monster'][monsterid]['money']
 				
-				cardData = monsters[monsterid]['card']
+				cardData = wave['monster'][monsterid]['card']
 				drop = 0
 				if cardData.has_key('drop'):
 					drop = cardData['drop']
-				if rd < drop:
-					dropData['card'] = {}
-					dropData['card']['cardid'] =  cardData['id']
-					dropData['card']['level'] = cardData['level']
-				else:					
-					rd = rd - cardData['drop']
-					itemData = monsters[monsterid]['item']
-					if itemData.has_key('drop'):
-						drop = itemData['drop']
-						if rd < drop:
-							dropData['item'] = {}
-							dropData['item']['itemid'] = itemData['id']
-						else:
-							rd = rd - drop
-							equipData = monsters[monsterid]['equipment']
-							if equipData.has_key('drop'):
-								drop = equipData['drop']
-								if rd < drop:
-									dropData['equipment'] = {}
-									dropData['equipment'] = equipData['id']
-				waveData = {}
+					if rd < drop:
+						dropData['card'] = {}
+						dropData['card']['cardid'] =  cardData['id']
+						dropData['card']['level'] = cardData['level']
+					else:					
+						rd = rd - cardData['drop']
+						itemData = wave['monster'][monsterid]['item']
+						if itemData.has_key('drop'):
+							drop = itemData['drop']
+							if rd < drop:
+								dropData['item'] = {}
+								dropData['item']['itemid'] = itemData['id']
+							else:
+								rd = rd - drop
+								equipData = monsters[monsterid]['equipment']
+								if equipData.has_key('drop'):
+									drop = equipData['drop']
+									if rd < drop:
+										dropData['equipment'] = {}
+										dropData['equipment'] = equipData['id']				
 				waveData[monsterid] = {}
 				waveData[monsterid]['drop'] = dropData
-				waves.append(waveData)
+			waves.append(waveData)
 		self.curren_field_waves = waves			
 		return waves
