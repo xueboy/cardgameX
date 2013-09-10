@@ -135,6 +135,9 @@ class dungeon(object):
 								if rd < drop:
 									dropData['equipment'] = {}
 									dropData['equipment'] = equipData['id']
-				waves.append(dropData)
-		self.curren_field_drop = waves			
+				waveData = {}
+				waveData[monsterid] = {}
+				waveData[monsterid]['drop'] = dropData
+				waves.append(waveData)
+		self.curren_field_waves = waves			
 		return waves

@@ -9,7 +9,6 @@ from game.models.user import user
 def friend_request(request):
 	usr = request.user
 	friendid = request.GET['friend_id']
-	from game.models.user import user
 	friend = user.get(friendid)
 	if friend != None:		
 		data = friend.addFriendRequest(usr)		

@@ -81,5 +81,3 @@ class gcaccount(object):
 		if len(res) == 1:
 			return res[0][3]
 		return 0
-		
-		

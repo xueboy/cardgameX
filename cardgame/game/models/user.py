@@ -177,7 +177,7 @@ class user(gcuser):
 	def confirmFriendRequest(self, friend, isConfirm):
 		if len(self.friends) >= 30:
 			return 0
-		if isConfirm != 0:
+		if isConfirm != '0':
 			self.addFriend(friend)
 			friend.addFriend(self)
 			del self.friend_request[friend.roleid]
