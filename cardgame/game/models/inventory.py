@@ -61,8 +61,6 @@ class inventory(object):
 		
 		
 	def getCard(self, cardid):
-		if self.team.count(cardid) > 0:
-			return None
 		for card in self.cards:			
 			if card['id'] == cardid:
 				return card

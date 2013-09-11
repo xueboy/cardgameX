@@ -6,7 +6,7 @@ from gclib.gcjson import gcjson
 from game.models.account import account
 from game.models.user import user
 
-def friend_request(request):
+def request(request):
 	usr = request.user
 	friendid = request.GET['friend_id']
 	friend = user.get(friendid)
@@ -16,7 +16,7 @@ def friend_request(request):
 	return HttpResponse(gcjson.dumps({friend:{}}))
 		
 		
-def friend_confirm(request):
+def confirm(request):
 	usr = request.user
 	isConfirm = request.GET['is_confirm']
 	friendid = request.GET['friend_id']
@@ -27,11 +27,9 @@ def friend_confirm(request):
 	return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
 
 
-def search_friend(request):
-	usr = request.user
-	
-	friendname = request.GET['friend_name']
-		
+def friend(request):
+	usr = request.user	
+	friendname = request.GET['friend_name']		
 	friendid = account.getRoleid(friendname)	
 	friend = user.get(friendid)
 	if friend != None:
@@ -40,9 +38,8 @@ def search_friend(request):
 		return HttpResponse(gcjson.dumps({'friend': {}}))
 			
 			
-def delete_friend(request):
-	usr = request.user
-	
+def friend(request):
+	usr = request.user	
 	friendid = request.GET['friend_id']
 	if usr.deleteFriend(friendid) == 1:
 		return HttpResponse(gcjson.dumps({'friend_delete':friendid}))

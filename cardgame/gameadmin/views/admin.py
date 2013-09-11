@@ -1,7 +1,6 @@
 #coding:utf-8
 #!/usr/bin/env python
 
-from gameadmin.forms.loginform import LoginForm
 from gclib.DBConnection import DBConnection
 from django.shortcuts import render
 from django.http import HttpResponse
