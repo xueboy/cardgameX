@@ -29,9 +29,20 @@ def confirm(request):
 
 def search(request):
 	usr = request.user	
-	friendname = request.GET['friend_name']		
+	friendname = request.GET['friend_name']
+	#friendname = unicode(friendname,'unicode-escape')
+	#friendname = eval('u"' + friendname + '"')
+	#friendname = eval(friendname)
+#	friendname= unicode(friendname,"utf-8") 
+	#s = "'" + friendname + "'.decode('unicode_escape')"
+	#friendname = eval( s)
+	
+	
+
+	
 	friendid = account.getRoleid(friendname)	
 	friend = user.get(friendid)
+	
 	if friend != None:
 		return HttpResponse(gcjson.dumps({'friend':friend.getFriendData()}))
 	else:
@@ -40,7 +51,7 @@ def search(request):
 			
 def delete(request):
 	usr = request.user	
-	friendid = request.GET['friend_id']
+	friendid = request.GET['friend_id'].decode('utf-8')
 	if usr.deleteFriend(friendid) == 1:
 		return HttpResponse(gcjson.dumps({'friend_delete':friendid}))
 	else:

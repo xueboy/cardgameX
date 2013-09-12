@@ -80,5 +80,5 @@ class gcaccount(object):
 		conn = DBConnection.getConnection()				
 		res = conn.query("SELECT * FROM account WHERE nickname = %s", [name])
 		if len(res) == 1:
-			return res[0][3]
+			return res[0][4]
 		return 0
