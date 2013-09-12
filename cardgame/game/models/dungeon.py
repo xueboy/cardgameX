@@ -50,7 +50,11 @@ class dungeon(object):
 		self.last_reinforce_time = data['last_reinforce_time']
 		self.curren_field = data['curren_field']
 		self.reinforces = data['reinforces']
-		self.curren_field_waves = data['curren_field_waves']
+		if data.has_key('curren_field_waves'):
+			self.curren_field_waves = data['curren_field_waves']
+		else self.curren_field_waves = []
+		
+			
 		
 	def getClientData(self):
 		data = {}

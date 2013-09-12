@@ -70,6 +70,7 @@ def start(request):
 					data['wave_arrages'] = waves
 					data['gold'] = usr.gold
 					data['stamina'] = usr.stamina
+					
 					return HttpResponse(gcjson.dumps(data))
 		return HttpResponse(gcjson.dumps({'msg':'field not exist'}))
 	else: 
