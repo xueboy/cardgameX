@@ -52,7 +52,8 @@ class dungeon(object):
 		self.reinforces = data['reinforces']
 		if data.has_key('curren_field_waves'):
 			self.curren_field_waves = data['curren_field_waves']
-		else self.curren_field_waves = []
+		else:
+			self.curren_field_waves = []
 		
 			
 		
