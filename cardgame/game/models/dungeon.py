@@ -65,8 +65,8 @@ class dungeon(object):
 		
 	def updateReinforce(self):
 		now = currentTime()
-		tmLast = time.localtime()
-		tmNow = time.localtime()
+		tmLast = time.localtime(last_reinforced_time)
+		tmNow = time.localtime(now)
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
 			self.reinforced_list = []
 			last_reinforced_time = currentTime()

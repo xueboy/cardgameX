@@ -31,7 +31,7 @@ class user(gcuser):
 		gcuser.init(self, acc)
 		self.id = acc.roleid
 		self.roleid = acc.roleid
-		self.name = acc.username
+		self.name = acc.nickname
 		self.level = 1
 		self.stamina = 100		
 		self.vipLevel = 1

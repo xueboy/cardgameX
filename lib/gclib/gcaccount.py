@@ -16,9 +16,10 @@ class gcaccount(object):
 		if len(res) == 1:
 			acc = cls.accountObject()
 			acc.id = res[0][0]
-			acc.username = res[0][1]			
-			acc.roleid = res[0][3]
-			acc.opendid = res[0][4]
+			acc.username = res[0][1]
+			acc.nickname = res[0][3]		
+			acc.roleid = res[0][4]
+			acc.opendid = res[0][5]
 			acc.saveLogin()
 			return acc
 		return None

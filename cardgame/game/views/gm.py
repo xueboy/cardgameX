@@ -26,3 +26,11 @@ def del_card(request):
 	inv.save()	
 	return HttpResponse(gcjson.dumps({'card':inv.getClientData}))	
 		
+def add_money(request):
+	money = int(request.GET['money'])
+	usr = request.user
+	
+	usr.gold = usr.gold + money
+	
+	usr.save()
+	return HttpResponse(gcjson.dumps({'gold':usr.gold}))
