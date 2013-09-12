@@ -21,7 +21,7 @@ class dungeon(object):
 		self.last_dungeon = {}			#{battleid:'', fieldid:''}  last available dungeon
 		self.reinforced_list = []		#[roleid]	list
 		self.last_reinforce_time = 0
-		self.curren_field = None
+		self.curren_field = ['','']
 		self.reinforces = None
 		
 	def init(self):		
@@ -60,7 +60,7 @@ class dungeon(object):
 	def getClientData(self):
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
-		data['curren_field_waves'] = self.curren_field_waves
+		#data['curren_field_waves'] = self.curren_field_waves
 		return data
 		
 	def updateReinforce(self):
@@ -108,7 +108,8 @@ class dungeon(object):
 		reinforces = self.getVolunteer()		
 		friendRoleids = usr.friends.keys()
 		for i in self.reinforced_list:
-			friendRoleids.remove(i)				
+			if friendRoleids.count(i) > 0:
+				friendRoleids.remove(i)				
 		scount = 8
 		if scount > len(friendRoleids):
 			scount = len(friendRoleids)
@@ -175,7 +176,28 @@ class dungeon(object):
 				waveData[monsterid] = {}
 				waveData[monsterid]['drop'] = dropData
 			waves.append(waveData)
-		self.curren_field_waves = waves			
+		self.curren_field_waves = waves
+		self.save()
 		return waves
 		
-		
+	def award(self):
+		usr = self.user
+		inv = usr.getInventory()
+		awardMoney = 0
+		awardCard = []
+		awardItem = []
+		awardEquipment = []
+		waves = self.curren_field_waves
+		for wave in waves:
+			for monsterid in wave:
+				dropData = wave[monsterid]['drop']
+				if dropData.has_key('money'):
+					awardMoney = dropData['money']
+					usr.gold = usr.gold + awardMoney
+				if dropData.has_key('card'):
+					cardid = dropData['card']['id']
+					cardleve = dropData['card']['level']
+					awardCard.append(inv.addCard(cardid, cardleve))	
+		self.curren_field_waves = []
+		usr.save()		
+		return awardItem	

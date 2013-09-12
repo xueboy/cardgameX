@@ -151,9 +151,9 @@ class user(gcuser):
 		"""
 		gain exp
 		"""
-		self.exp = exp
+		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
-		while levelConf.has_key(str(self.level)) and self.exp > levelConf[self.level]['levelExp']:
+		while levelConf.has_key(str(self.level)) and self.exp > levelConf[str(self.level)]['levelExp']:
 			self.level = self.level + 1
 			self.exp = self.exp - levelConf[str(self.level)]['levelExp']			
 			self.onLevelup()

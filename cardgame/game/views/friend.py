@@ -27,7 +27,7 @@ def confirm(request):
 	return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
 
 
-def friend(request):
+def search(request):
 	usr = request.user	
 	friendname = request.GET['friend_name']		
 	friendid = account.getRoleid(friendname)	
@@ -38,7 +38,7 @@ def friend(request):
 		return HttpResponse(gcjson.dumps({'friend': {}}))
 			
 			
-def friend(request):
+def delete(request):
 	usr = request.user	
 	friendid = request.GET['friend_id']
 	if usr.deleteFriend(friendid) == 1:

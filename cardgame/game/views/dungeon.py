@@ -39,6 +39,8 @@ def start(request):
 	conf = config.getConfig('card')
 	leader = None
 	reinforce = None
+	if dun.curren_field['battleid'] == '' or dun.curren_field['fieldid'] == '':
+		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))
 	if dun.isReinforceExist(reinforceid):
 		reinforce = user.get(reinforceid)
 		rei_inv = reinforce.getInventory()
@@ -65,16 +67,36 @@ def start(request):
 						usr.gold = usr.gold - goldCost
 						reinforce.gold = reinforce.gold + goldCast
 						reinforce.save()
-						usr.save()														
+						usr.save()						
+													
 					data = {}
 					data['wave_arrages'] = waves
 					data['gold'] = usr.gold
 					data['stamina'] = usr.stamina
 					
 					return HttpResponse(gcjson.dumps(data))
-		return HttpResponse(gcjson.dumps({'msg':'field not exist'}))
+		return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))
 	else: 
-		return HttpResponse(gcjson.dumps({'msg':'reinforce not exist', 'reinforce': dun.reinforces}))
+		return HttpResponse(gcjson.dumps({'msg':'reinforce_not_exist', 'reinforce': dun.reinforces}))
 			
 def end(request):
-	pass
+	usr = request.user
+	dun = usr.getDungeon()	
+	dunConf = config.getConfig('dungeon')
+	for battleConf in dunConf:
+		if battleConf['battleId'] == dun.curren_field['battleid']:
+			for fieldConf in battleConf['field']:
+				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+					exp = fieldConf['exp']					
+					usr.gainExp(exp)
+					awardCard = dun.award()					
+					data = {}					
+					data['exp'] = usr.exp
+					data['level'] = usr.level
+					data['gold'] = usr.gold
+					data['add_card'] = awardCard
+					dun.curren_field = ['','']
+					dun.save()
+					return HttpResponse(gcjson.dumps(data))
+					
+	return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))

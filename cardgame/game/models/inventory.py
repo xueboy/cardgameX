@@ -28,13 +28,13 @@ class inventory(object):
 		self.cards = data['cards']
 		self.team = data['team']
 		
-	def addCard(self, card_id):
+	def addCard(self, card_id, level = 1):
 		carconf = config.getConfig('card')				
 		if carconf.has_key(card_id):
 			data = {}
 			data['cardid'] = card_id
 			data['id'] = self.generateName()
-			data['level'] = 1
+			data['level'] = level
 			data['exp'] = 0
 			self.cards.append(data)			
 			return data
