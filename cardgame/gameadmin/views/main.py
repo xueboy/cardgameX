@@ -63,7 +63,9 @@ def dungeon_import(request):
 		dropConf = {}
 		for rownum in range(4,drop_sheet.nrows):
 			row = drop_sheet.row_values(rownum)
-			monsterId = row[0]
+			monsterId = str(row[0])
+			if monsterId == '' or monsterId == '0.0':
+				continue
 			dropCard = row[17]
 			dropCardLevel = row[18]
 			dropCardProb = row[20]
@@ -71,18 +73,21 @@ def dungeon_import(request):
 			dropItemProb = row[22]
 			dropEquipment = row[23]
 			dropEquipmentProb = row[26]
-			dropMoney = row[28]
+			dropMoney = int(row[28])
 			dropConf[str(monsterId)] = {}
 			cardConf = {}
-			cardConf['id'] = dropCard
-			cardConf['level'] = dropCardLevel
-			cardConf['drop'] = dropCardProb
+			if dropCard != '':
+				cardConf['id'] = dropCard
+				cardConf['level'] = int(dropCardLevel)
+				cardConf['drop'] = int(dropCardProb)
 			itemConf = {}
-			itemConf['id'] = dropItem
-			itemConf['drop'] = dropItemProb
+			if dropItem != '':
+				itemConf['id'] = dropItem
+				itemConf['drop'] = int(dropItemProb)
 			equipmentConf = {}
-			equipmentConf['id'] = dropEquipment
-			equipmentConf['drop'] = dropEquipmentProb
+			if dropEquipment != '':
+				equipmentConf['id'] = dropEquipment
+				equipmentConf['drop'] = int(dropEquipmentProb)
 			dropConf[str(monsterId)]['money'] = dropMoney
 			dropConf[str(monsterId)]['card'] = cardConf
 			dropConf[str(monsterId)]['item'] = itemConf
@@ -92,11 +97,13 @@ def dungeon_import(request):
 		dunConf = {'battleId':''}
 		fieldConf = None
 		waveConf = None
+		if dropConf.has_key(''):
+			return HttpResponse('1')
 		
 		for rownum in range(4,dungeon_sheet.nrows):
 			row = dungeon_sheet.row_values(rownum)
 			battleId = row[1]
-			rule = row[2]			
+			rule = int(row[2])
 			battleName = row[3]
 			imageId = row[5]
 			fieldId = row[6]
@@ -156,81 +163,96 @@ def read_waves(row, dropConf):
 def read_wave(row, idx, dropConf):
 	wave = {}
 	wave['monster'] = {}
-	monster1 = row[idx + 0]
-	monster2 = row[idx + 1]
-	monster3 = row[idx + 2]
-	monster4 = row[idx + 3]
-	monster5 = row[idx + 4]
+	monster1 = str(row[idx + 0])
+	monster2 = str(row[idx + 1])
+	monster3 = str(row[idx + 2])
+	monster4 = str(row[idx + 3])
+	monster5 = str(row[idx + 4])
 	if dropConf.has_key(str(monster1)):
 		wave['monster'][monster1] = dropConf[str(monster1)]
-	else: 
-		wave['monster'][monster1] = {}
+	else:
+		if monster1 != '' and monster1 != '0.0':
+			wave['monster'][monster1] = {}
 	
 	if dropConf.has_key(str(monster2)):
 		wave['monster'][monster2] = dropConf[str(monster2)]
-	else: 
-		wave['monster'][monster2] = {}
+	else:
+		if monster2 != '' and monster2 != '0.0':
+			wave['monster'][monster2] = {}
 		
 	if dropConf.has_key(str(monster3)):
 		wave['monster'][monster3] = dropConf[str(monster3)]
 	else: 
-		wave['monster'][monster3] = {}
+		if monster3 != '' and monster3 != '0.0':
+			wave['monster'][monster3] = {}
 		
 	if dropConf.has_key(str(monster4)):
 		wave['monster'][monster4] = dropConf[str(monster4)]
-	else: 
-		wave['monster'][monster4] = {}
+	else:
+		if monster4 != '' and monster4 != '0.0':
+			wave['monster'][monster4] = {}
 		
 	if dropConf.has_key(str(monster5)):
 		wave['monster'][monster5] = dropConf[str(monster5)]
-	else: 
-		wave['monster'][monster5] = {}
+	else:
+		if monster5 != '' and monster5 != '0.0':
+			wave['monster'][monster5] = {}
 			
 	wave['boss'] = {}
 			
-	boss1 = row[idx + 5]
-	boss2 = row[idx + 6]
-	boss3 = row[idx + 7]
-	boss4 = row[idx + 8]
-	boss5 = row[idx + 9]
-	boss6 = row[idx + 10]
+	boss1 = str(row[idx + 5])
+	boss2 = str(row[idx + 6])
+	boss3 = str(row[idx + 7])
+	boss4 = str(row[idx + 8])
+	boss5 = str(row[idx + 9])
+	boss6 = str(row[idx + 10])
 	
 	if dropConf.has_key(str(boss1)):
-		wave['monster'][boss1] = dropConf[str(boss1)]
-	else: 
-		wave['monster'][boss1] = {}
+		wave['boss'][boss1] = dropConf[str(boss1)]
+	else:
+		if boss1 != '':
+			wave['boss'][boss1] = {}
 		
 	if dropConf.has_key(str(boss2)):
-		wave['monster'][boss2] = dropConf[str(boss2)]
-	else: 
-		wave['monster'][boss2] = {}
+		wave['boss'][boss2] = dropConf[str(boss2)]
+	else:
+		if boss2 != '':
+			wave['boss'][boss2] = {}
 		
 	if dropConf.has_key(str(boss3)):
-		wave['monster'][boss3] = dropConf[str(boss3)]
-	else: 
-		wave['monster'][boss3] = {}
+		wave['boss'][boss3] = dropConf[str(boss3)]
+	else:
+		if boss3 != '':
+			wave['boss'][boss3] = {}
 		
 	if dropConf.has_key(str(boss4)):
-		wave['monster'][boss4] = dropConf[str(boss4)]
+		wave['boss'][boss4] = dropConf[str(boss4)]
 	else: 
-		wave['monster'][boss4] = {}
+		if boss4 != '':
+			wave['boss'][boss4] = {}
 		
 	if dropConf.has_key(str(boss5)):
-		wave['monster'][boss5] = dropConf[str(boss5)]
+		wave['boss'][boss5] = dropConf[str(boss5)]
 	else: 
-		wave['monster'][boss5] = {}
+		if boss5 != '':
+			wave['boss'][boss5] = {}
 		
 	if dropConf.has_key(str(boss6)):
-		wave['monster'][boss6] = dropConf[str(boss6)]
-	else: 
-		wave['monster'][boss6] = {}
+		wave['boss'][boss6] = dropConf[str(boss6)]
+	else:
+		if boss6 != '':
+			wave['boss'][boss6] = {}
 	
-	if monster1 == '' or monster1 == '0' and boss1 == '' or boss1 == '0':		
+	if (monster1 == '' or monster1 == '0' or monster1 == '0.0') and (boss1 == '' or boss1 == '0' or boss1 == '0.0'):		
 		return None	
 	
 	ls = str(row[idx + 11]).split(',')
 	wave['count'] =  [ int( eval(x) ) for x in ls if x ]
+	if sum(wave['count']) == 0:
+		return None
 	ls = str(row[idx + 12]).split(',')
 	wave['count_prob'] = [ int( eval(x) ) for x in ls if x ]
+	if sum(wave['count_prob']) == 0:
+		return None
 	wave['more'] = int(row[idx + 13])
 	return wave

@@ -5,6 +5,16 @@
 from django.http import HttpResponse
 from game.utility.config import config
 from gclib.gcjson import gcjson
+from game.models.user import user
+
+reinforce_price = [
+	[20, 1],
+	[50, 2],
+	[100, 3],
+	[150, 4],
+	[200, 5]
+]
+
 
 def enter(request):
 	
@@ -26,16 +36,44 @@ def start(request):
 	reinforceid = request.GET['reinforce_id']	
 	usr = request.user
 	dun = usr.getDungeon()
-	ls = dun.reinforces
+	conf = config.getConfig('card')
+	leader = None
+	reinforce = None
 	if dun.isReinforceExist(reinforceid):
-		dunConf = config.getConfig('dungeon')
-		for battleConf in dunConf:
-			if battleConf['battleId'] == dun.curren_field['battleid']:
-				for fieldConf in battleConf['field']:
-					if fieldConf['fieldId'] == dun.curren_field['fieldid']:
-						waves = dun.arrangeWaves(fieldConf)
-						return HttpResponse(gcjson.dumps(waves))
+		reinforce = user.get(reinforceid)
+		rei_inv = reinforce.getInventory()
+		leaderid = rei_inv.team[0]	
+		leader = rei_inv.getCard(leaderid)
+		dun.reinforced_list.append(reinforceid)		
+	dunConf = config.getConfig('dungeon')
+	for battleConf in dunConf:
+		if battleConf['battleId'] == dun.curren_field['battleid']:
+			for fieldConf in battleConf['field']:
+				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+					waves = dun.arrangeWaves(fieldConf)
+					staminaCost = fieldConf['stamina']
+					if usr.stamina < staminaCost:
+						return HttpResponse(gcjson.dumps({'msg':'not_enught_stamina'}))
+					usr.stamina = usr.stamina - staminaCost							
+					goldCast = 0
+					if leader != None:
+						start = conf[leader['id']]['star']
+						level = leader['leader']
+						goldCost = reinforce_price[star - 1][0] + reinforce_price[star - 1][1] * level
+						if usr.gold < goldCost:
+							return HttpResponse(gcjson.dumps({'msg':'not_enught_gold'}))
+						usr.gold = usr.gold - goldCost
+						reinforce.gold = reinforce.gold + goldCast
+						reinforce.save()
+						usr.save()														
+					data = {}
+					data['wave_arrages'] = waves
+					data['gold'] = usr.gold
+					data['stamina'] = usr.stamina
+					return HttpResponse(gcjson.dumps(data))
 		return HttpResponse(gcjson.dumps({'msg':'field not exist'}))
 	else: 
 		return HttpResponse(gcjson.dumps({'msg':'reinforce not exist', 'reinforce': dun.reinforces}))
 			
+def end(request):
+	pass

@@ -39,6 +39,7 @@ class dungeon(object):
 		data['last_reinforce_time'] = self.last_reinforce_time
 		data['curren_field'] = self.curren_field
 		data['reinforces'] = self.reinforces
+		data['curren_field_waves'] = self.curren_field_waves
 		return data
 		
 	def load(self, roleid, data):
@@ -48,11 +49,13 @@ class dungeon(object):
 		self.reinforced_list = data['reinforced_list']
 		self.last_reinforce_time = data['last_reinforce_time']
 		self.curren_field = data['curren_field']
-		self.reinforces = data['reinforces']		
+		self.reinforces = data['reinforces']
+		self.curren_field_waves = data['curren_field_waves']
 		
 	def getClientData(self):
 		data = {}
-		data['last_dungeon'] = self.last_dungeon		
+		data['last_dungeon'] = self.last_dungeon
+		data['curren_field_waves'] = self.curren_field_waves
 		return data
 		
 	def updateReinforce(self):
@@ -82,8 +85,8 @@ class dungeon(object):
 		excludeRoleids = usr.friends.keys()
 		excludeRoleids.extend(self.reinforced_list)		
 		conn = DBConnection.getConnection()		
-		sql = "SELECT * FROM user WHERE roleid NOT IN (%s) ORDER BY RAND() LIMIT 3"
-		res = conn.query(sql, [','.join(excludeRoleids)])
+		sql = "SELECT * FROM user WHERE roleid NOT IN (" + ','.join(excludeRoleids) + ") ORDER BY RAND() LIMIT 3"
+		res = conn.query(sql, [])
 		data = []
 		for record in res:
 			if record[0] == usr.roleid:
@@ -118,6 +121,8 @@ class dungeon(object):
 		self.reinforeces = ls
 		
 	def isReinforceExist(self, reinforceid):
+		if reinforceid == '':
+			return False
 		for reinforce in self.reinforces:
 			if reinforce['roleid'] == int(reinforceid):
 				return True
@@ -127,10 +132,13 @@ class dungeon(object):
 	def arrangeWaves(self, field):
 		waves = []		
 		for wave in field['wave']:
-			cnt = wave['count'][hit(wave['count_prob'])]
+			cnt = 0
+			if sum(wave['count_prob']) != 0 and sum(wave['count']):
+				cnt = wave['count'][hit(wave['count_prob'])]
 			monsters = random.sample(wave['monster'].keys(), cnt)			
 			waveData = {}
 			for monsterid in monsters:
+				print monsters
 				rd = randint()
 				dropData = {}
 				dropData['money'] = wave['monster'][monsterid]['money']
@@ -164,3 +172,5 @@ class dungeon(object):
 			waves.append(waveData)
 		self.curren_field_waves = waves			
 		return waves
+		
+		
