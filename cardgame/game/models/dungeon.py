@@ -23,6 +23,7 @@ class dungeon(object):
 		self.last_reinforce_time = 0
 		self.curren_field = ['','']
 		self.reinforces = None
+		self.curren_field_waves = []
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')
