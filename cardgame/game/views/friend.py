@@ -9,7 +9,7 @@ from game.models.user import user
 def request(request):
 	usr = request.user
 	friendid = request.GET['friend_id']
-	friend = user.get(friendid)
+	friend = user.get(int(friendid))
 	if friend != None:		
 		data = friend.addFriendRequest(usr)		
 		return HttpResponse(gcjson.dumps(data))		
@@ -20,11 +20,14 @@ def confirm(request):
 	usr = request.user
 	isConfirm = request.GET['is_confirm']
 	friendid = request.GET['friend_id']
-	friend = user.get(friendid)
+	friend = user.get(int(friendid))
 	if friend != None:
 		if usr.confirmFriendRequest(friend, isConfirm) == 0:
 			HttpResponse(gcjson.dumps({'msg': 'friend_max_count'}))
-	return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
+	if isConfirm == '0':
+		return HttpResponse(gcjson.dumps({'friend_request_delete': friendid}))
+	else:
+		return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
 
 
 def search(request):

@@ -180,12 +180,12 @@ class user(gcuser):
 		if isConfirm != '0':
 			self.addFriend(friend)
 			friend.addFriend(self)
-			del self.friend_request[friend.roleid]
+			del self.friend_request[str(friend.roleid)]
 			self.save()
 			friend.save()
 			return friend.roleid
 		else:
-			del self.friend_request[friend.roleid]
+			del self.friend_request[str(friend.roleid)]
 			self.save()
 			return friend.roleid
 	

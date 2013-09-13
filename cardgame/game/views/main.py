@@ -87,8 +87,12 @@ def config(request):
 def api(request, m, f):
 	try:
 		amendRequest(request,user)
-		if viewsmap.has_key(m) :		
-			fun = getattr(viewsmap[m], f)
-			return fun(request)	
-	except:		
+	except KeyError:
 		return info(request)
+	if viewsmap.has_key(m) :		
+		fun = getattr(viewsmap[m], f)
+		return fun(request)	
+
+	return HttpResponse('api')
+	
+	
