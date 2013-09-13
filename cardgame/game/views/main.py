@@ -49,10 +49,10 @@ def index(request):
 
 def info(request):
 	
-	info = {}
+	info = {}	
 	#info[u'dungeon_config_md5'] =  config.getMd5('dungeon')
 	info[u'status'] = u'OK'
-	return HttpResponse(gcjson.dumps(info))
+	return HttpResponse(gcjson.dumps({'info':info}))
 	
 def config(request):	
 	amendRequest(request,user)
@@ -85,8 +85,10 @@ def config(request):
 	return HttpResponse(gcjson.dumps(data))
 	
 def api(request, m, f):
-	amendRequest(request,user)
-	if viewsmap.has_key(m) :		
-		fun = getattr(viewsmap[m], f)
-		return fun(request)	
-	return HttpResponse("url error.")
+	try:
+		amendRequest(request,user)
+		if viewsmap.has_key(m) :		
+			fun = getattr(viewsmap[m], f)
+			return fun(request)	
+	except:		
+		return info(request)

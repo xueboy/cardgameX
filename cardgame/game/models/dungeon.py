@@ -23,7 +23,7 @@ class dungeon(object):
 		self.last_reinforce_time = 0
 		self.curren_field = ['','']
 		self.reinforces = None
-		self.curren_field_waves = []
+		self.curren_field_waves = []		
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')
@@ -66,11 +66,11 @@ class dungeon(object):
 		
 	def updateReinforce(self):
 		now = currentTime()
-		tmLast = time.localtime(last_reinforced_time)
+		tmLast = time.localtime(self.last_reinforce_time)
 		tmNow = time.localtime(now)
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
 			self.reinforced_list = []
-			last_reinforced_time = currentTime()
+			last_reinforce_time = currentTime()
 		
 	
 		
@@ -90,8 +90,12 @@ class dungeon(object):
 		usr = self.user
 		excludeRoleids = usr.friends.keys()
 		excludeRoleids.extend(self.reinforced_list)		
-		conn = DBConnection.getConnection()		
-		sql = "SELECT * FROM user WHERE roleid NOT IN (" + ','.join(excludeRoleids) + ") ORDER BY RAND() LIMIT 3"
+		conn = DBConnection.getConnection()
+		sql = ''
+		if len(excludeRoleids) == 0:
+			sql = "SELECT * FROM user WHERE roleid ORDER BY RAND() LIMIT 3"
+		else:
+			sql = "SELECT * FROM user WHERE roleid NOT IN (" + ','.join(excludeRoleids) + ") ORDER BY RAND() LIMIT 3"
 		res = conn.query(sql, [])
 		data = []
 		for record in res:
