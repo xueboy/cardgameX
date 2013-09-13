@@ -175,17 +175,20 @@ class user(gcuser):
 		return data
 		
 	def confirmFriendRequest(self, friend, isConfirm):
-		if len(self.friends) >= 2:
-			return 0
+		
 		if isConfirm != '0':
+			if len(self.friends) >= 2:			
+				return 0
 			self.addFriend(friend)
 			friend.addFriend(self)
 			del self.friend_request[str(friend.roleid)]
+			print friend.roleid			
 			self.save()
 			friend.save()
 			return friend.roleid
 		else:
 			del self.friend_request[str(friend.roleid)]
+			print friend.roleid			
 			self.save()
 			return friend.roleid
 	

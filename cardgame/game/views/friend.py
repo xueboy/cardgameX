@@ -23,7 +23,7 @@ def confirm(request):
 	friend = user.get(int(friendid))
 	if friend != None:
 		if usr.confirmFriendRequest(friend, isConfirm) == 0:
-			HttpResponse(gcjson.dumps({'msg': 'friend_max_count'}))
+			return HttpResponse(gcjson.dumps({'msg': 'friend_max_count'}))
 	if isConfirm == '0':
 		return HttpResponse(gcjson.dumps({'friend_request_delete': friendid}))
 	else:
