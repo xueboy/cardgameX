@@ -196,11 +196,11 @@ class dungeon(object):
 		for wave in waves:
 			for monsterid in wave:
 				dropData = wave[monsterid]['drop']
-				if dropData.has_key('money'):
-					awardMoney = dropData['money']
+				awardMoney = dropData['money']
+				if awardMoney != 0:
 					usr.gold = usr.gold + awardMoney
 				if dropData.has_key('card'):
-					cardid = dropData['card']['id']
+					cardid = dropData['card']['cardid']
 					cardleve = dropData['card']['level']
 					awardCard.append(inv.addCard(cardid, cardleve))	
 		self.curren_field_waves = []
