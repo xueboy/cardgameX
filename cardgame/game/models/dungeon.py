@@ -203,6 +203,8 @@ class dungeon(object):
 					cardid = dropData['card']['cardid']
 					cardleve = dropData['card']['level']
 					awardCard.append(inv.addCard(cardid, cardleve))	
+					
 		self.curren_field_waves = []
-		usr.save()		
-		return awardItem	
+		usr.save()
+		inv.save()
+		return awardCard	
