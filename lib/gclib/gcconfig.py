@@ -15,7 +15,7 @@ class gcconfig:
 		if len(res) > 0:
 			return res[0][2]
 		else:
-			return ''	
+			return None
 	
 	@staticmethod 
 	def getConfig(confname):

@@ -18,6 +18,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'skill':
 			return conf
+		if confname == 'pet_level':
+			return conf
 		return None
 	
 	

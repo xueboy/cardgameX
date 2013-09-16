@@ -21,9 +21,6 @@ viewsmap = {
 	'friend':sys.modules['game.views.friend']
 }
 
-
-
-
 def index(request):
 	username = request.GET['username']
 	pwd = request.GET['password']
@@ -63,25 +60,23 @@ def config(request):
 	card_config_md5 = request.GET['card_config_md5']
 	monster_config_md5 = request.GET['monster_config_md5']
 	skill_config_md5 = request.GET['skill_config_md5']
+	pet_level_config_md5 = request.GET['pet_level_config_md5']
 	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
 		data['dungeon'] = conf.getClientConfig('dungeon')
-#		data['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
 	if level_config_md5 != conf.getClientConfigMd5('level'):
 		data['level'] = conf.getClientConfig('level')
-#		data['level_md5'] = conf.getClientConfigMd5('level')	
 	if game_config_md5 != conf.getClientConfigMd5('game'):
 		data['game'] = conf.getClientConfig('game')
 	if card_config_md5 != conf.getClientConfigMd5('card'):
 		data['card'] = conf.getClientConfig('card')
-#		data['game_md5'] = conf.getClientConfigMd5('game')
 	if monster_config_md5 != conf.getClientConfigMd5('monster'):
 		data['monster'] = conf.getClientConfig('monster')
-#		data['monster_md5'] = conf.getClientConfigMd5('monster')
 	if skill_config_md5 != conf.getClientConfigMd5('skill'):
 		data['skill'] = conf.getClientConfig('skill')
-#		data['skill_md5'] = conf.getClientConfigMd5('skill')
+	if pet_level_config_md5 != conf.getClientConfigMd5('pet_level'):
+		data['pet_level'] = conf.getClientConfig('pet_level')
 	return HttpResponse(gcjson.dumps(data))
 	
 def api(request, m, f):

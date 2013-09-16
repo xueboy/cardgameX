@@ -31,35 +31,110 @@ def game(request):
 
 def skill(request):
 	return generalConfigRequestProcess(request, 'skill')
+	
+def pet_level(request):
+	return generalConfigRequestProcess(request, 'pet_level')
 				
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
-		#try:
-		gcconfig.setConfig(confname, confstr)		
-		return render(request, 'index.html', {})
-		#except:
-		#	return render(request, confname + '.html', {'config':confstr})
+		try:
+			gcconfig.setConfig(confname, confstr)		
+			return render(request, 'index.html', {})
+		except:
+			return render(request, confname + '.html', {'config':confstr})
 	else:
 		conf = gcconfig.getConfigStr(confname)		
-		if conf != '':			
+		if conf != None:			
 			return render(request, confname + '.html', {'config': gcconfig.getConfigStr(confname)})
 		else:
 			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
 				
+def level_import(request):
+	if request.method == 'POST':
+		level_file = request.FILES.get('level_file')
+		if level_file == None:
+			return HttpResponse('等级文件未上传')
+	
+	wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, level_file.read())
+	sheet = wb.sheet_by_index(0)
+	
+	conf = {}
+	for rownum in range(6,sheet.nrows):
+		row = sheet.row_values(rownum)
+		level = row[0]
+		exp = row[1]
+		sp = row[2]
+		leadership = row[3]
+		friend = row[4]
+			
+		levelConf = {}
+		levelConf['levelExp'] = int(exp)
+		levelConf['sp'] = int(sp)
+		levelConf['leadership'] = int(leadership)
+		levelConf['friend'] = int(friend)
+		levelConf[str(int(level))] = conf
+	return HttpResponse(gcjson.dumps(conf))
+	
+def skill_import(request):
+	if request.method == 'POST':
+		skill_file = request.FILES.get('skill_file')		
+							
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())			
+		sheet = wb.sheet_by_index(0)		
+		
+		conf = {}
+		for rownum in range(4,sheet.nrows):
+			row = sheet.row_values(rownum)	
+			skillid = row[0]
+			name = row[1]
+			icon = row[2]
+			rate = row[3]
+			desc = row[4]
+			nature = row[5]
+			maxLevel = row[6]
+			triggerType = row[7]
+			type = row[8]
+			startEffect = row[9]
+			inprocessEffect = row[10]
+			finishEffect = row[11]
+			
+			
+def pet_level_import(request):
+	if request.method == 'POST':
+		pet_level_file = request.FILES.get('pet_level_file')
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, pet_level_file.read())
+		sheet = wb.sheet_by_index(0)
+		
+		conf = {}
+		for rownum in range(3, sheet.nrows):
+			row = sheet.row_values(rownum)
+			level = str(int(row[0]))
+			star1Exp = int(row[1])
+			star2Exp = int(row[2])
+			star3Exp = int(row[3])
+			star4Exp = int(row[4])
+			levelConf = []
+			levelConf.append(star1Exp)
+			levelConf.append(star2Exp)
+			levelConf.append(star3Exp)
+			levelConf.append(star4Exp)
+			conf[str(level)] = levelConf
+	return HttpResponse(gcjson.dumps(conf))
+				
 def dungeon_import(request):
 	if request.method == 'POST':
 		dungeon_file = request.FILES.get('dungeon_file')		
 		if dungeon_file == None:
-			return HttpResponse('关卡xlsx文件未上传')
-			
-		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())
-			
+			return HttpResponse('关卡xlsx文件未上传')			
+					
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())			
 		dungeon_sheet = wb.sheet_by_index(0)
 		drop_sheet = wb.sheet_by_index(2)		
-		
+				
 		dropConf = {}
 		for rownum in range(4,drop_sheet.nrows):
 			row = drop_sheet.row_values(rownum)

@@ -155,7 +155,7 @@ class user(gcuser):
 		levelConf = config.getConfig('level')
 		while levelConf.has_key(str(self.level)) and self.exp > levelConf[str(self.level)]['levelExp']:
 			self.level = self.level + 1
-			self.exp = self.exp - levelConf[str(self.level)]['levelExp']			
+			self.exp = self.exp - levelConf[str(self.level - 1)]['levelExp']			
 			self.onLevelup()
 			
 	def update(self):
