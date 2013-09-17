@@ -36,7 +36,7 @@ def start(request):
 	reinforceid = request.GET['reinforce_id']	
 	usr = request.user
 	dun = usr.getDungeon()
-	conf = config.getConfig('card')
+	conf = config.getConfig('pet')
 	leader = None
 	reinforce = None
 	if dun.curren_field['battleid'] == '' or dun.curren_field['fieldid'] == '':

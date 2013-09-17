@@ -22,8 +22,3 @@ def login(request):
 			
 	else:
 		return render(request, 'login.html', {})
-			
-			
-			
-			
-		
