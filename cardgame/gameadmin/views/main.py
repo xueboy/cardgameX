@@ -23,9 +23,6 @@ def level(request):
 def monster(request):
 	return generalConfigRequestProcess(request, 'monster')			
 				
-def card(request):
-	return generalConfigRequestProcess(request, 'card')
-	
 def game(request):
 	return generalConfigRequestProcess(request, 'game')
 
@@ -37,7 +34,11 @@ def pet(request):
 	
 def pet_level(request):
 	return generalConfigRequestProcess(request, 'pet_level')
-				
+	
+def prompt(request):
+	return generalConfigRequestProcess(request, 'prompt')
+	
+
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -103,33 +104,37 @@ def skill_import(request):
 			startEffect = row[10]
 			inprocessEffect = row[11]
 			finishEffect = row[12]
-			fun1id = row[13]
-			fun1name = row[14]
-			fun1nature = []
-			fun1nature.append(row[15])
-			fun1nature.append(int(row[16]))
-			fun1nature.append(row[17])
-			fun1nature.append(int(row[18]))
-			fun1target = row[19]
-			fun1valueType = row[21]
-			fun1value = row[22]
-			fun1levelUp = row[23]
-			fun1buffid = row[24]
-			fun1duration = row[25]
 			
-			fun2id = row[26]
-			fun2name = row[27]
-			fun2nature = []
-			fun2nature.append(int(row[28]))
-			fun2nature.append(int(row[29]))
-			fun2nature.append(int(row[30]))
-			fun2nature.append(int(row[31]))
-			fun2target = row[32]
-			fun2valueType = row[34]
-			fun2value = row[35]
-			fun2levelUp = row[36]
-			fun2buffid = row[37]
-			fun2duration = row[38]
+			fun1id = row[13]
+			if fun1id != 0.0:				
+				fun1name = row[14]
+				fun1nature = []
+				#fun1nature.append(row[15])
+				fun1nature.append(int(row[16]))
+				#fun1nature.append(row[17])
+				fun1nature.append(int(row[18]))
+				fun1target = row[19]
+				fun1valueType = row[21]
+				fun1value = row[22]
+				fun1levelUp = row[23]
+				fun1buffid = row[24]
+				fun1duration = row[25]			
+			
+			fun2id = row[26]				
+			if fun2id != 0.0:				
+				fun2name = row[27]
+				fun2nature = []
+				fun2nature.append(int(row[28]))
+				fun2nature.append(int(row[29]))
+				fun2nature.append(int(row[30]))
+				fun2nature.append(int(row[31]))
+				fun2target = row[32]
+				fun2valueType = row[34]
+				fun2value = row[35]
+				fun2levelUp = row[36]
+				fun2buffid = row[37]
+				fun2duration = row[38]
+				
 			skillConf = {}
 			skillConf['name'] = name
 			skillConf['icon'] = icon
@@ -144,27 +149,29 @@ def skill_import(request):
 			skillConf['finishEffect'] = finishEffect
 			skillConf['function'] = {}
 			
-			funConf = {}
-			funConf['name'] = fun1name
-			funConf['nature'] = fun1nature
-			funConf['target'] = fun1target
-			funConf['valueType'] = fun1valueType
-			funConf['valueAmount'] = fun1value
-			funConf['levelup'] = fun1levelUp
-			funConf['buffid'] = fun1buffid
-			funConf['duration'] = fun1duration
-			skillConf['function'][str(fun1id)] = funConf
+			if fun1id != 0.0:
+				funConf = {}
+				funConf['name'] = fun1name
+				funConf['nature'] = fun1nature
+				funConf['target'] = fun1target
+				funConf['valueType'] = fun1valueType
+				funConf['valueAmount'] = fun1value
+				funConf['levelup'] = fun1levelUp
+				funConf['buffid'] = fun1buffid
+				funConf['duration'] = fun1duration
+				skillConf['function'][str(fun1id)] = funConf
 			
-			funConf = {}
-			funConf['name'] = fun2name
-			funConf['nature'] = fun2nature
-			funConf['target'] = fun2target
-			funConf['valueType'] = fun2valueType
-			funConf['valueAmount'] = fun2value
-			funConf['levelup'] = fun2levelUp
-			funConf['buffid'] = fun2buffid
-			funConf['duration'] = fun2duration
-			skillConf['function'][str(fun2id)] = funConf
+			if fun2id != 0.0:
+				funConf = {}
+				funConf['name'] = fun2name
+				funConf['nature'] = fun2nature
+				funConf['target'] = fun2target
+				funConf['valueType'] = fun2valueType
+				funConf['valueAmount'] = fun2value
+				funConf['levelup'] = fun2levelUp
+				funConf['buffid'] = fun2buffid
+				funConf['duration'] = fun2duration
+				skillConf['function'][str(fun2id)] = funConf
 			conf[str(skillid)] = skillConf
 		
 		return HttpResponse(gcjson.dumps(conf))

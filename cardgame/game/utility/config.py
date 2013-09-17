@@ -12,8 +12,8 @@ class config(gcconfig):
 			return config.dungeonFilter(conf)			
 		if confname == 'game':
 			return conf
-		if confname == 'card':
-			return config.cardFileter(conf)
+		if confname == 'pet':
+			return config.petFileter(conf)
 		if confname == 'monster':
 			return conf
 		if confname == 'skill':
@@ -51,7 +51,7 @@ class config(gcconfig):
 		return data
 	
 	@staticmethod	
-	def cardFileter(conf):
+	def petFileter(conf):
 		data = {}
 		for cardid in conf:
 			c = {}

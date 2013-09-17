@@ -49,6 +49,7 @@ def info(request):
 	info = {}	
 	#info[u'dungeon_config_md5'] =  config.getMd5('dungeon')
 	info[u'status'] = u'OK'
+	#info['greet'] = u'ÄãºÃ'
 	return HttpResponse(gcjson.dumps({'info':info}))
 	
 def config(request):	
@@ -77,7 +78,9 @@ def config(request):
 		data['skill'] = conf.getClientConfig('skill')
 	if pet_level_config_md5 != conf.getClientConfigMd5('pet_level'):
 		data['pet_level'] = conf.getClientConfig('pet_level')
-	return HttpResponse(gcjson.dumps(data))
+	p = gcjson.dumps(data)
+	print(p)
+	return HttpResponse(p)
 	
 def api(request, m, f):
 	try:
