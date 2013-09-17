@@ -57,7 +57,7 @@ def config(request):
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
 	game_config_md5 = request.GET['game_config_md5']
-	card_config_md5 = request.GET['card_config_md5']
+	pet_config_md5 = request.GET['pet_config_md5']
 	monster_config_md5 = request.GET['monster_config_md5']
 	skill_config_md5 = request.GET['skill_config_md5']
 	pet_level_config_md5 = request.GET['pet_level_config_md5']
@@ -69,8 +69,8 @@ def config(request):
 		data['level'] = conf.getClientConfig('level')
 	if game_config_md5 != conf.getClientConfigMd5('game'):
 		data['game'] = conf.getClientConfig('game')
-	if card_config_md5 != conf.getClientConfigMd5('card'):
-		data['card'] = conf.getClientConfig('card')
+	if pet_config_md5 != conf.getClientConfigMd5('pet'):
+		data['pet'] = conf.getClientConfig('pet')
 	if monster_config_md5 != conf.getClientConfigMd5('monster'):
 		data['monster'] = conf.getClientConfig('monster')
 	if skill_config_md5 != conf.getClientConfigMd5('skill'):
