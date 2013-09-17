@@ -20,6 +20,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'pet_level':
 			return conf
+		if confname == 'level':
+			return conf
 		return None
 	
 	
