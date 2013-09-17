@@ -37,7 +37,9 @@ def pet_level(request):
 	
 def prompt(request):
 	return generalConfigRequestProcess(request, 'prompt')
-	
+
+def garcha(request):
+	return generalConfigRequestProcess(request, 'garcha')	
 
 				
 def generalConfigRequestProcess(request, confname):
@@ -56,35 +58,79 @@ def generalConfigRequestProcess(request, confname):
 			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
 				
+def garcha_import(request):
+	if request.method == 'POST':
+		garcha_file = request.FILES.get('garcha_file')
+		if garcha_file = None:
+			return HttpResponse('抽奖武将xlsx文件未上传')
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, garcha_file.read())
+		sheet = wb.sheet_by_index(0)
+		
+		conf = {}
+		for rownum in range(4, sheet.nrows):
+			row = sheet.row_values(rownum)
+			cardid = row[0]
+			name = row[1]
+			star = row[2]
+			level = row[3]
+			group = row[5]
+			prob = row[6]
+			
+			#conf[str(int(prob)]
+
+
+def prompt_import(request):
+	if request.method == 'POST':
+		prompt_file = request.FILES.get('prompt_file')
+		if prompt_file == None:
+			return HttpResponse('小帖士xlsx文件未上传')
+			
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, prompt_file.read())
+		sheet = wb.sheet_by_index(0)
+		
+		conf = {}
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			promptid = row[0]
+			prompt = row[1]
+			conf[promptid] = prompt
+			
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('prompt_import')
+
+
 def level_import(request):
 	if request.method == 'POST':
 		level_file = request.FILES.get('level_file')
 		if level_file == None:
-			return HttpResponse('等级文件未上传')
+			return HttpResponse('等级xlsx文件未上传')			
 	
-	wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, level_file.read())
-	sheet = wb.sheet_by_index(0)
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, level_file.read())
+		sheet = wb.sheet_by_index(0)
 	
-	conf = {}
-	for rownum in range(6,sheet.nrows):
-		row = sheet.row_values(rownum)
-		level = row[0]
-		exp = row[1]
-		sp = row[2]
-		leadership = row[3]
-		friend = row[4]
+		conf = {}
+		for rownum in range(6,sheet.nrows):
+			row = sheet.row_values(rownum)
+			level = row[0]
+			exp = row[1]
+			sp = row[2]
+			leadership = row[3]
+			friend = row[4]
 			
-		levelConf = {}
-		levelConf['levelExp'] = int(exp)
-		levelConf['sp'] = int(sp)
-		levelConf['leadership'] = int(leadership)
-		levelConf['friend'] = int(friend)
-		levelConf[str(int(level))] = conf
-	return HttpResponse(gcjson.dumps(conf))
+			levelConf = {}
+			levelConf['levelExp'] = int(exp)
+			levelConf['sp'] = int(sp)
+			levelConf['leadership'] = int(leadership)
+			levelConf['friend'] = int(friend)
+			levelConf[str(int(level))] = conf
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('prompt_import')
 	
 def skill_import(request):
 	if request.method == 'POST':
 		skill_file = request.FILES.get('skill_file')		
+		if skill_file == None:
+			return HttpResponse('技能xlsx文件未上传')
 							
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, skill_file.read())			
 		sheet = wb.sheet_by_index(0)		

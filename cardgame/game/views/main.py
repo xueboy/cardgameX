@@ -62,6 +62,7 @@ def config(request):
 	monster_config_md5 = request.GET['monster_config_md5']
 	skill_config_md5 = request.GET['skill_config_md5']
 	pet_level_config_md5 = request.GET['pet_level_config_md5']
+	prompt_config_md5 = request.GET['prompt_config_md5']
 	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
@@ -78,8 +79,9 @@ def config(request):
 		data['skill'] = conf.getClientConfig('skill')
 	if pet_level_config_md5 != conf.getClientConfigMd5('pet_level'):
 		data['pet_level'] = conf.getClientConfig('pet_level')
+	if prompt_config_md5 != conf.getClientConfigMd5('prompt'):
+		data['prompt'] = conf.getClientConfig('prompt')
 	p = gcjson.dumps(data)
-	print(p)
 	return HttpResponse(p)
 	
 def api(request, m, f):

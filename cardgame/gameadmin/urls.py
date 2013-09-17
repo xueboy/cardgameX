@@ -23,6 +23,6 @@ urlpatterns = patterns('',
     url(r'^pet_level/$', gameadmin.views.main.pet_level),
     url(r'^pet_level_import/$', gameadmin.views.main.pet_level_import),
     url(r'^prompt/$', gameadmin.views.main.prompt),
-    
-    
+    url(r'^garcha/$', gameadmin.views.main.garcha),
+    url(r'^garcha_import/$', gameadmin.views.main.garcha_import),    
 )
