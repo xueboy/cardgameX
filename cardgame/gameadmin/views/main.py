@@ -32,6 +32,9 @@ def game(request):
 def skill(request):
 	return generalConfigRequestProcess(request, 'skill')
 	
+def pet(request):
+	return generalConfigRequestProcess(request, 'pet')
+	
 def pet_level(request):
 	return generalConfigRequestProcess(request, 'pet_level')
 				
@@ -82,7 +85,7 @@ def skill_import(request):
 	if request.method == 'POST':
 		skill_file = request.FILES.get('skill_file')		
 							
-		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dungeon_file.read())			
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, skill_file.read())			
 		sheet = wb.sheet_by_index(0)		
 		
 		conf = {}
@@ -91,20 +94,144 @@ def skill_import(request):
 			skillid = row[0]
 			name = row[1]
 			icon = row[2]
-			rate = row[3]
+			prob = row[3]
 			desc = row[4]
-			nature = row[5]
-			maxLevel = row[6]
-			triggerType = row[7]
+			nature = row[6]
+			maxLevel = row[7]
+			triggerType = row[8]
+			type = row[9]
+			startEffect = row[10]
+			inprocessEffect = row[11]
+			finishEffect = row[12]
+			fun1id = row[13]
+			fun1name = row[14]
+			fun1nature = []
+			fun1nature.append(row[15])
+			fun1nature.append(int(row[16]))
+			fun1nature.append(row[17])
+			fun1nature.append(int(row[18]))
+			fun1target = row[19]
+			fun1valueType = row[21]
+			fun1value = row[22]
+			fun1levelUp = row[23]
+			fun1buffid = row[24]
+			fun1duration = row[25]
+			
+			fun2id = row[26]
+			fun2name = row[27]
+			fun2nature = []
+			fun2nature.append(int(row[28]))
+			fun2nature.append(int(row[29]))
+			fun2nature.append(int(row[30]))
+			fun2nature.append(int(row[31]))
+			fun2target = row[32]
+			fun2valueType = row[34]
+			fun2value = row[35]
+			fun2levelUp = row[36]
+			fun2buffid = row[37]
+			fun2duration = row[38]
+			skillConf = {}
+			skillConf['name'] = name
+			skillConf['icon'] = icon
+			skillConf['prob'] = prob
+			skillConf['desc'] = desc
+			skillConf['nature'] = nature
+			skillConf['maxLevel'] = maxLevel
+			skillConf['triggerType'] = triggerType
+			skillConf['type'] = type
+			skillConf['startEffect'] = startEffect
+			skillConf['inprocessEffect'] = inprocessEffect
+			skillConf['finishEffect'] = finishEffect
+			skillConf['function'] = {}
+			
+			funConf = {}
+			funConf['name'] = fun1name
+			funConf['nature'] = fun1nature
+			funConf['target'] = fun1target
+			funConf['valueType'] = fun1valueType
+			funConf['valueAmount'] = fun1value
+			funConf['levelup'] = fun1levelUp
+			funConf['buffid'] = fun1buffid
+			funConf['duration'] = fun1duration
+			skillConf['function'][str(fun1id)] = funConf
+			
+			funConf = {}
+			funConf['name'] = fun2name
+			funConf['nature'] = fun2nature
+			funConf['target'] = fun2target
+			funConf['valueType'] = fun2valueType
+			funConf['valueAmount'] = fun2value
+			funConf['levelup'] = fun2levelUp
+			funConf['buffid'] = fun2buffid
+			funConf['duration'] = fun2duration
+			skillConf['function'][str(fun2id)] = funConf
+			conf[str(skillid)] = skillConf
+		
+		return HttpResponse(gcjson.dumps(conf))
+		
+	return HttpResponse('skill_import')
+			
+def pet_import(request):
+	if request.method == 'POST':
+		pet_file = request.FILES.get('pet_file')
+		if pet_file == None:
+			return HttpResponse("宠物xlsx文件未上传")
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, pet_file.read())
+		sheet = wb.sheet_by_index(1)
+		
+		conf = {}
+		for rownum in range(3, sheet.nrows):
+			row = sheet.row_values(rownum)
+			petid = row[3]
+			imageid = row[4]
+			icon = row[5]
+			name = row[6]
 			type = row[8]
-			startEffect = row[9]
-			inprocessEffect = row[10]
-			finishEffect = row[11]
-			
-			
+			leadership = row[10]
+			nature = row[12]
+			star = row[13]
+			maxLevel = row[14]
+			hp = row[15]
+			attack = row[16]
+			recover = row[17]
+			agile = row[18]
+			skillid = row[19]
+			evoPrice = row[23]
+			evoId = row[24]
+			evoObjectId = []
+			evoObjectId.append(str(row[25]))
+			evoObjectId.append(str(row[26]))
+			evoObjectId.append(str(row[27]))
+			evoObjectId.append(str(row[28]))
+			desc = row[29]
+			petConf = {}
+			petConf['imageId'] = imageid
+			petConf['icon'] = icon
+			petConf['name'] = name
+			petConf['type'] = type
+			petConf['leadership'] = leadership
+			petConf['nature'] = nature
+			petConf['star'] = star
+			petConf['maxLevel'] = maxLevel
+			petConf['hp'] = hp
+			petConf['attack'] = attack
+			petConf['recover'] = recover
+			petConf['agile'] = agile
+			petConf['skillId'] = skillid
+			petConf['evoPrice'] = evoPrice
+			petConf['evoId'] = evoId
+			petConf['evoMaterial'] = evoObjectId
+			petConf['describe'] = desc
+			conf[str(petid)] = petConf
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('pet_import')
+									
 def pet_level_import(request):
 	if request.method == 'POST':
 		pet_level_file = request.FILES.get('pet_level_file')
+		if pet_level_file == None:
+			return HttpResponse('宠物等级xlsx文件未上传')
 		
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, pet_level_file.read())
 		sheet = wb.sheet_by_index(0)
@@ -123,7 +250,8 @@ def pet_level_import(request):
 			levelConf.append(star3Exp)
 			levelConf.append(star4Exp)
 			conf[str(level)] = levelConf
-	return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('pet_level_import')
 				
 def dungeon_import(request):
 	if request.method == 'POST':

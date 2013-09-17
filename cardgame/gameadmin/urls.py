@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^level_import/$', gameadmin.views.main.level_import),
     url(r'^dungeon_import/$', gameadmin.views.main.dungeon_import),
     url(r'^skill_import/$', gameadmin.views.main.skill_import),
+    url(r'^pet/$', gameadmin.views.main.pet),
+    url(r'^pet_import/$', gameadmin.views.main.pet_import),
     url(r'^pet_level/$', gameadmin.views.main.pet_level),
     url(r'^pet_level_import/$', gameadmin.views.main.pet_level_import),
     
