@@ -61,8 +61,9 @@ def generalConfigRequestProcess(request, confname):
 def garcha_import(request):
 	if request.method == 'POST':
 		garcha_file = request.FILES.get('garcha_file')
-		if garcha_file = None:
+		if garcha_file == None:
 			return HttpResponse('抽奖武将xlsx文件未上传')
+			
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, garcha_file.read())
 		sheet = wb.sheet_by_index(0)
 		
@@ -76,8 +77,19 @@ def garcha_import(request):
 			group = row[5]
 			prob = row[6]
 			
-			#conf[str(int(prob)]
-
+			key = int(prob)
+			garchaConf = {}
+			garchaConf['cardId'] = cardid
+			garchaConf['name'] = name
+			garchaConf['star'] = star
+			garchaConf['level'] = level
+			garchaConf['group'] = group
+			
+			if not conf.has_key(key):
+				conf[key] = []
+			conf[key].append(garchaConf)
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('garcha_import')
 
 def prompt_import(request):
 	if request.method == 'POST':

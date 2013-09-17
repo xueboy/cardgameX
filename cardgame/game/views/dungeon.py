@@ -95,7 +95,10 @@ def end(request):
 					data['level'] = usr.level
 					data['gold'] = usr.gold
 					data['add_card'] = awardCard
-					dun.curren_field = ['','']
+					if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
+						dun.nextField()
+					dun.curren_field = {}
+					data['last_dungeon'] = dun.last_dungeon
 					dun.save()
 					return HttpResponse(gcjson.dumps(data))
 					

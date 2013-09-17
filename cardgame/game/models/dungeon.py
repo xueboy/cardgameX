@@ -207,4 +207,21 @@ class dungeon(object):
 		self.curren_field_waves = []
 		usr.save()
 		inv.save()
-		return awardCard	
+		return awardCard
+	
+	def nextField(self):
+		for battleConf in dunConf:
+			if battleConf['battleId'] == dun.curren_field['battleid']:
+				for fieldConf in battleConf['field']:
+					if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+						i = battleConf['field'].index(fieldConf)
+						if len (battleConf['field']) > (i + 1):
+							dun.last_dungeon['fieldid'] = battleConf['field'][i + 1]['fieldId']
+						else:
+							i = dunConf.index(battleConf)
+							if len(dunConf) > (i + 1):
+								dun.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
+								dun.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
+						
+						
+					
