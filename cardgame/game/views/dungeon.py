@@ -80,6 +80,10 @@ def start(request):
 		return HttpResponse(gcjson.dumps({'msg':'reinforce_not_exist', 'reinforce': dun.reinforces}))
 			
 def end(request):
+	battleId = request.GET['battle_id']
+	fieldId = request.GET['field_id']
+	if dun.curren_field['battleid'] != battleId or fieldId != dun.curren_field['fieldid']:
+		return HttpResponse({'msg':'dungeon_finished'})
 	usr = request.user
 	dun = usr.getDungeon()	
 	dunConf = config.getConfig('dungeon')

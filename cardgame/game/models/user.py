@@ -24,7 +24,9 @@ class user(gcuser):
 		self.leader = ''
 		self.friends = {}
 		self.friend_request = {}
-		self.last_login = currentTime()		
+		self.last_login = currentTime()
+		self.dun = None
+		self.inv = None
 		
 	
 	def init(self, acc):
@@ -112,25 +114,29 @@ class user(gcuser):
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no		
 		
-	def getDungeon(self):				
+	def getDungeon(self):
+		if self.dun != None:
+			return self.dun
+			
 		dun = dungeon.get(self.id)
 		if dun == None:	
 			dun = dungeon()
 			dun.init()
 			dun.install(self.roleid)
 		dun.user = self
-		return dun
-	
+		self.dun = dun
+		return dun	
 	
 	def getInventory(self):
-		if self.id == 0:
-			raise "error"
+		if self.inv != None:
+			return self.inv		
 		inv = inventory.get(self.id)
 		if inv == None:
 			inv = inventory()
 			inv.init()
 			inv.install(self.roleid)
 		inv.user = self
+		self.inv = inv
 		return inv
 	
 	def updateStamina(self):
@@ -214,7 +220,7 @@ class user(gcuser):
 			friend.save()
 			return 1
 		return 0
-			
+	
 	def onLogin(self):
 		return
 		
