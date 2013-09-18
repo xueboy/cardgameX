@@ -21,6 +21,7 @@ class inventory(object):
 		return {'cards':self.cards, 'team': self.team}
 		
 	def getClientData(self):
+		cards = []
 		return {'cards':self.cards, 'team': self.team}
 		
 	def load(self, roleid, data):
@@ -35,7 +36,7 @@ class inventory(object):
 			data['cardid'] = card_id
 			data['id'] = self.generateName()
 			data['level'] = level
-			data['exp'] = 0
+			data['exp'] = 0			
 			self.cards.append(data)			
 			return data
 		return None
@@ -44,7 +45,7 @@ class inventory(object):
 		if self.team.count (cardid) > 0:
 			return 0
 		for card in self.cards:
-			if card['id'] == name:
+			if card['id'] == cardid:
 				self.cards.remove(card)
 				return 1
 		return 0	

@@ -84,3 +84,4 @@ class config(gcconfig):
 		if levelConf.has_key(levelKey):
 			return levelConf[levelKey]['sp']
 		return 0
+		
