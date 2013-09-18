@@ -12,7 +12,7 @@ class gcjson():
 		strTemp = ''
 		newS = ''
 		while idx != -1:
-			idx = s.find('\n', lsidx, len(s) - idx)
+			idx = s.find('\n', lsidx, len(s) - 1)
 			if idx == -1:
 				strTemp = s[lsidx:]
 			else:
