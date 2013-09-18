@@ -379,6 +379,8 @@ def dungeon_import(request):
 			stamina = int(row[9])
 			exp = int(row[11])
 			difficult = int(row[12])
+			mayDrop1 = int(row[13])
+			mayDrop2 = int(row[14])
 			if dunConf['battleId'] != battleId:
 				if dunConf['battleId'] != '':
 					Conf.append(dunConf)
@@ -403,27 +405,27 @@ def dungeon_import(request):
 	
 def read_waves(row, dropConf):	
 	waveConf = []	
-	wave = read_wave(row, 13, dropConf)	
+	wave = read_wave(row, 15, dropConf)	
 	waveConf.append(wave)	
-	wave = read_wave(row, 27, dropConf)
+	wave = read_wave(row, 29, dropConf)
 	if wave:
 		waveConf.append(wave)
-		wave = read_wave(row, 41, dropConf)
+		wave = read_wave(row, 43, dropConf)
 		if wave:
 			waveConf.append(wave)
-			wave = read_wave(row, 55, dropConf)
+			wave = read_wave(row, 57, dropConf)
 			if wave:
 				waveConf.append(wave)
-				wave = read_wave(row, 69, dropConf)
+				wave = read_wave(row, 71, dropConf)
 				if wave:
 					waveConf.append(wave)
-					wave = read_wave(row, 83, dropConf)
+					wave = read_wave(row, 85, dropConf)
 					if wave:
 						waveConf.append(wave)
-						wave = read_wave(row, 97, dropConf)
+						wave = read_wave(row, 99, dropConf)
 						if wave:
 							waveConf.append(wave)
-							wave = read_wave(row, 111, dropConf)
+							wave = read_wave(row, 113, dropConf)
 							if wave:
 								waveConf.append(wave)	
 	return waveConf
