@@ -81,12 +81,14 @@ def start(request):
 			
 def end(request):
 	battleId = request.GET['battle_id']
-	fieldId = request.GET['field_id']
-	if dun.curren_field['battleid'] != battleId or fieldId != dun.curren_field['fieldid']:
-		return HttpResponse({'msg':'dungeon_finished'})
+	fieldId = request.GET['field_id']	
 	usr = request.user
 	dun = usr.getDungeon()	
 	dunConf = config.getConfig('dungeon')
+	
+	if dun.curren_field['battleid'] != battleId or fieldId != dun.curren_field['fieldid']:
+		return HttpResponse(gcjson.dumps({'msg':'dungeon_finished'}))
+	
 	for battleConf in dunConf:
 		if battleConf['battleId'] == dun.curren_field['battleid']:
 			for fieldConf in battleConf['field']:
