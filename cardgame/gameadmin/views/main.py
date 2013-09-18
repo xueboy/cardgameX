@@ -334,14 +334,14 @@ def dungeon_import(request):
 			monsterId = str(row[0])
 			if monsterId == '' or monsterId == '0.0':
 				continue
-			dropCard = row[17]
-			dropCardLevel = row[18]
-			dropCardProb = row[20]
-			dropItem = row[21]
-			dropItemProb = row[22]
-			dropEquipment = row[23]
-			dropEquipmentProb = row[26]
-			dropMoney = int(row[28])
+			dropCard = row[18]
+			dropCardLevel = row[19]
+			dropCardProb = row[21]
+			dropItem = row[22]
+			dropItemProb = row[23]
+			dropEquipment = row[24]
+			dropEquipmentProb = row[27]
+			dropMoney = int(row[29])
 			dropConf[str(monsterId)] = {}
 			cardConf = {}
 			if dropCard != '':
@@ -374,13 +374,13 @@ def dungeon_import(request):
 			rule = int(row[2])
 			battleName = row[3]
 			imageId = row[5]
-			fieldId = row[6]
-			fieldName = row[7]
-			stamina = int(row[9])
-			exp = int(row[11])
-			difficult = int(row[12])
-			mayDrop1 = int(row[13])
-			mayDrop2 = int(row[14])
+			fieldId = row[7]
+			fieldName = row[8]
+			stamina = int(row[10])
+			exp = int(row[12])
+			difficult = int(row[13])
+			mayDrop1 = row[14]
+			mayDrop2 = row[15]
 			if dunConf['battleId'] != battleId:
 				if dunConf['battleId'] != '':
 					Conf.append(dunConf)
@@ -406,29 +406,30 @@ def dungeon_import(request):
 	
 def read_waves(row, dropConf):	
 	waveConf = []	
-	wave = read_wave(row, 15, dropConf)	
-	waveConf.append(wave)	
-	wave = read_wave(row, 29, dropConf)
+	wave = read_wave(row, 16, dropConf)
 	if wave:
-		waveConf.append(wave)
-		wave = read_wave(row, 43, dropConf)
+		waveConf.append(wave)	
+		wave = read_wave(row, 30, dropConf)
 		if wave:
 			waveConf.append(wave)
-			wave = read_wave(row, 57, dropConf)
+			wave = read_wave(row, 44, dropConf)
 			if wave:
 				waveConf.append(wave)
-				wave = read_wave(row, 71, dropConf)
+				wave = read_wave(row, 58, dropConf)	
 				if wave:
 					waveConf.append(wave)
-					wave = read_wave(row, 85, dropConf)
+					wave = read_wave(row, 72, dropConf)
 					if wave:
 						waveConf.append(wave)
-						wave = read_wave(row, 99, dropConf)
+						wave = read_wave(row, 86, dropConf)
 						if wave:
 							waveConf.append(wave)
-							wave = read_wave(row, 113, dropConf)
+							wave = read_wave(row, 100, dropConf)
 							if wave:
-								waveConf.append(wave)	
+								waveConf.append(wave)
+								wave = read_wave(row, 114, dropConf)
+								if wave:
+									waveConf.append(wave)	
 	return waveConf
 	
 def read_wave(row, idx, dropConf):

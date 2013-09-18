@@ -210,6 +210,7 @@ class dungeon(object):
 		return awardCard
 	
 	def nextField(self):
+		dunConf = config.getConfig('dungeon')
 		for battleConf in dunConf:
 			if battleConf['battleId'] == dun.curren_field['battleid']:
 				for fieldConf in battleConf['field']:
