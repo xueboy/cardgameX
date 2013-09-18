@@ -395,7 +395,8 @@ def dungeon_import(request):
 			fieldConf['fieldName'] = fieldName
 			fieldConf['stamina'] = stamina
 			fieldConf['exp'] = exp
-			fieldConf['difficult'] = difficult			
+			fieldConf['difficult'] = difficult
+			fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
 			fieldConf['wave'] = read_waves(row, dropConf)
 			dunConf['field'].append(fieldConf)
 		Conf.append(dunConf)
