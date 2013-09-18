@@ -29,7 +29,7 @@ class inventory(object):
 		self.team = data['team']
 		
 	def addCard(self, card_id, level = 1):
-		carconf = config.getConfig('card')				
+		carconf = config.getConfig('pet')				
 		if carconf.has_key(card_id):
 			data = {}
 			data['cardid'] = card_id
