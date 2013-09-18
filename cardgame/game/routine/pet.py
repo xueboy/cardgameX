@@ -54,6 +54,7 @@ class pet:
 		if destCard['level'] >= levelLimit:
 			destCard['level'] = levelLimit
 			destCard['exp'] = 0
+		inv.save()
 		return destCard, sourceCardid
 				
 
@@ -66,4 +67,5 @@ class pet:
 		total += card['exp']
 		return total
 		
+
 		
