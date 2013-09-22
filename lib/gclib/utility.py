@@ -16,6 +16,7 @@ def onUserLogin(request, usr):
 	usr.onLogin()
 
 def amendRequest(request,cls):
+	print(request.session.keys())
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	request.user = usr

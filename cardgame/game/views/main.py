@@ -40,6 +40,7 @@ def index(request):
 		data['dungeon'] = dun.getClientData()
 		inv = usr.getInventory()
 		data.update(inv.getClientData())
+		print(request.session.keys())
 		return HttpResponse(gcjson.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
 
@@ -85,10 +86,10 @@ def config(request):
 	return HttpResponse(p)
 	
 def api(request, m, f):
-	try:
-		amendRequest(request,user)
-	except KeyError:
-		return info(request)
+#	try:
+	amendRequest(request,user)
+#	except KeyError:
+#		return info(request)
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)
 		return fun(request)	
