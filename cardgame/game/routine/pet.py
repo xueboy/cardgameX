@@ -30,9 +30,6 @@ class pet:
 		destCard = inv.getCard(destCardid)
 		sourceCard = []
 		
-		if not pet.isCardAvailable(usr, destCardid):
-			return destCard, []
-		
 		for cardid in sourceCardid:
 			if not pet.isCardAvailable(usr, cardid):
 				return destCard,[]
