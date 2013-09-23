@@ -86,10 +86,10 @@ def config(request):
 	return HttpResponse(p)
 	
 def api(request, m, f):
-#	try:
-	amendRequest(request,user)
-#	except KeyError:
-#		return info(request)
+	try:
+		amendRequest(request,user)
+	except KeyError:
+		return info(request)
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)
 		return fun(request)	

@@ -212,7 +212,7 @@ class dungeon(object):
 	def nextField(self):
 		dunConf = config.getConfig('dungeon')
 		for battleConf in dunConf:
-			if battleConf['battleId'] == dun.curren_field['battleid']:
+			if battleConf['battleId'] == self.curren_field['battleid']:
 				for fieldConf in battleConf['field']:
 					if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 						i = battleConf['field'].index(fieldConf)
