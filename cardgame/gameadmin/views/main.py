@@ -81,7 +81,7 @@ def monster_import(request):
 			level = row[9]
 			hp = row[10]
 			attack = row[11]
-			recover = row[12]
+			recovery = row[12]
 			agile = row[13]
 			prob = row[14]
 			skillId = []
@@ -104,7 +104,7 @@ def monster_import(request):
 			monsterConf['level'] = level
 			monsterConf['hp'] = hp
 			monsterConf['attack'] = attack
-			monsterConf['recover'] = recover
+			monsterConf['recovery'] = recovery
 			monsterConf['agile'] = agile
 			monsterConf['probability'] = prob
 			monsterConf['skillId'] = skillId
