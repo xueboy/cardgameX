@@ -148,8 +148,7 @@ class dungeon(object):
 				cnt = wave['count'][hit(wave['count_prob'])]
 			monsters = random.sample(wave['monster'].keys(), cnt)			
 			waveData = {}
-			for monsterid in monsters:
-				print monsters
+			for monsterid in monsters:				
 				rd = randint()
 				dropData = {}
 				dropData['money'] = wave['monster'][monsterid]['money']
@@ -214,15 +213,15 @@ class dungeon(object):
 		for battleConf in dunConf:
 			if battleConf['battleId'] == self.curren_field['battleid']:
 				for fieldConf in battleConf['field']:
-					if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+					if fieldConf['fieldId'] == self.curren_field['fieldid']:
 						i = battleConf['field'].index(fieldConf)
 						if len (battleConf['field']) > (i + 1):
-							dun.last_dungeon['fieldid'] = battleConf['field'][i + 1]['fieldId']
+							self.last_dungeon['fieldid'] = battleConf['field'][i + 1]['fieldId']
 						else:
 							i = dunConf.index(battleConf)
 							if len(dunConf) > (i + 1):
-								dun.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
-								dun.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
+								self.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
+								self.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
 						
 						
 					
