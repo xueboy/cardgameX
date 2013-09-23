@@ -18,10 +18,10 @@ class dungeon(object):
 	def __init__(self):
 		self.roleid = 0
 		self.normal_recored = []		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
-		self.last_dungeon = {}			#{battleid:'', fieldid:''}  last available dungeon
+		self.last_dungeon = {'battleid':'', 'fieldid':''}			#{battleid:'', fieldid:''}  last available dungeon
 		self.reinforced_list = []		#[roleid]	list
 		self.last_reinforce_time = 0
-		self.curren_field = ['','']
+		self.curren_field = {'battleid':'', 'fieldid':''}
 		self.reinforces = None
 		self.curren_field_waves = []		
 		
