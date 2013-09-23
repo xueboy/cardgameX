@@ -64,3 +64,8 @@ def level_up(request):
 		
 	dest, source = pet.levelup(usr, destCard, sourceCardId)
 	return HttpResponse(gcjson.dumps({'update_card':dest, 'delete_card':source}))
+		
+def garcha(request):
+	usr = request.user
+	
+	garchaType = request.GET['type']	

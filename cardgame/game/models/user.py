@@ -27,6 +27,7 @@ class user(gcuser):
 		self.last_login = currentTime()
 		self.dun = None
 		self.inv = None
+		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 		
 	
 	def init(self, acc):
@@ -56,6 +57,7 @@ class user(gcuser):
 		data['leader'] = self.leader
 		data['friends'] = self.friends
 		data['last_login'] = self.last_login
+		data['garcha'] = self.garcha
 		return data
 		
 	def getClientData(self):
@@ -223,7 +225,6 @@ class user(gcuser):
 	
 	def onLogin(self):
 		return
-		
 		
 		
 	def onLevelup(self):

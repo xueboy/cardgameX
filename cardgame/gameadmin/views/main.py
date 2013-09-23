@@ -57,7 +57,62 @@ def generalConfigRequestProcess(request, confname):
 		else:
 			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
+
+def monster_import(request):
+	if request.method == 'POST':
+		monster_file = request.FILES.get('monster_file')
+		if monster_file == None:
+			return HttpResponse('怪物xlsx文件未上传')
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, monster_file.read())
+		
+		sheet = wb.sheet_by_index(2)
+		conf = {}
 				
+		for rownum in range(3, sheet.nrows):
+			row = sheet.row_values(rownum)
+			monsterId = row[0]
+			imageId = row[1]
+			icon = row[2]
+			name = row[3]
+			type = row[5]
+			nature = row[7]
+			distance = row[8]
+			level = row[9]
+			hp = row[10]
+			attack = row[11]
+			recover = row[12]
+			agile = row[13]
+			prob = row[14]
+			skillId = []
+			skillId.append(row[15])
+			if row[16] != '':
+				skillId.append(row[16])
+			if row[17] != '':
+				skillId.append(row[17])
+			if row[18] != '':
+				skillId.append(row[18])
+			
+			monsterConf = {}
+			monsterConf['monsterId'] = monsterId
+			monsterConf['imageId'] = imageId
+			monsterConf['icon'] = icon
+			monsterConf['name'] = name
+			monsterConf['type'] = type
+			monsterConf['nature'] = nature
+			monsterConf['distance'] = distance
+			monsterConf['levle'] = level
+			monsterConf['hp'] = hp
+			monsterConf['attack'] = attack
+			monsterConf['recover'] = recover
+			monsterConf['agile'] = agile
+			monsterConf['probability'] = prob
+			monsterConf['skillId'] = skillId
+			conf[monsterId] = monsterConf
+		return HttpResponse(gcjson.dumps(conf))
+	return HttpResponse('monster_import')
+			
+			
 def garcha_import(request):
 	if request.method == 'POST':
 		garcha_file = request.FILES.get('garcha_file')
@@ -65,29 +120,36 @@ def garcha_import(request):
 			return HttpResponse('抽奖武将xlsx文件未上传')
 			
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, garcha_file.read())
-		sheet = wb.sheet_by_index(0)
+		sheets = []
+		sheets.append(wb.sheet_by_index(0))
+		sheets.append(wb.sheet_by_index(1))
+		sheets.append(wb.sheet_by_index(2))
+		sheets.append(wb.sheet_by_index(3))
+		sheets.append(wb.sheet_by_index(4))
 		
-		conf = {}
-		for rownum in range(4, sheet.nrows):
-			row = sheet.row_values(rownum)
-			cardid = row[0]
-			name = row[1]
-			star = row[2]
-			level = row[3]
-			group = row[5]
-			prob = row[6]
-			
-			key = int(prob)
-			garchaConf = {}
-			garchaConf['cardId'] = cardid
-			garchaConf['name'] = name
-			garchaConf['star'] = star
-			garchaConf['level'] = level
-			garchaConf['group'] = group
-			
-			if not conf.has_key(key):
-				conf[key] = []
-			conf[key].append(garchaConf)
+		conf = []
+		for sheet in sheets:
+			garchaCataConf = {}
+			cardsConf = []
+			total_prob = 0
+			for rownum in range(4, sheet.nrows):
+				row = sheet.row_values(rownum)
+				cardid = row[0]
+				name = row[1]				
+				level = row[2]				
+				prob = row[3]
+				
+				key = int(prob)
+				garchaConf = {}
+				garchaConf['cardId'] = cardid
+				garchaConf['name'] = name				
+				garchaConf['level'] = level
+				garchaConf['prob'] = prob
+				total_prob = total_prob + prob
+				cardsConf.append(garchaConf)				
+			garchaCataConf['cards'] = cardsConf
+			garchaCataConf['totalProb'] = total_prob
+			conf.append(garchaCataConf)
 		return HttpResponse(gcjson.dumps(conf))
 	return HttpResponse('garcha_import')
 
