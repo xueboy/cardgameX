@@ -101,7 +101,7 @@ def monster_import(request):
 			monsterConf['type'] = type
 			monsterConf['nature'] = nature
 			monsterConf['distance'] = distance
-			monsterConf['levle'] = level
+			monsterConf['level'] = level
 			monsterConf['hp'] = hp
 			monsterConf['attack'] = attack
 			monsterConf['recover'] = recover
