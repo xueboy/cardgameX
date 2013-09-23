@@ -66,7 +66,7 @@ class config(gcconfig):
 			c['maxLevel'] = conf[cardid]['maxLevel']
 			c['hp'] = conf[cardid]['hp']
 			c['attack'] = conf[cardid]['attack']
-			c['recove'] = conf[cardid]['recove']
+			c['recover'] = conf[cardid]['recover']
 			c['agile'] = conf[cardid]['agile']			
 			c['skillId'] = conf[cardid]['skillId']			
 			c['evoPrice'] = conf[cardid]['evoPrice']
