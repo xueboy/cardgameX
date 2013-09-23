@@ -196,7 +196,7 @@ def level_import(request):
 			levelConf['sp'] = int(sp)
 			levelConf['leadership'] = int(leadership)
 			levelConf['friend'] = int(friend)
-			levelConf[str(int(level))] = conf
+			conf[str(int(level))] = levelConf
 		return HttpResponse(gcjson.dumps(conf))
 	return HttpResponse('prompt_import')
 	
