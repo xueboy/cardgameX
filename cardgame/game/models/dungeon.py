@@ -146,7 +146,12 @@ class dungeon(object):
 			cnt = 0
 			if sum(wave['count_prob']) != 0 and sum(wave['count']):
 				cnt = wave['count'][hit(wave['count_prob'])]
-			monsters = random.sample(wave['monster'].keys(), cnt)			
+			print field['fieldId']
+			print	wave['monster'].keys(), cnt
+			monsters = random.sample(wave['monster'].keys(), cnt)
+			
+			monsters.extend(wave['boss'].keys())
+			
 			waveData = {}
 			for monsterid in monsters:				
 				rd = randint()

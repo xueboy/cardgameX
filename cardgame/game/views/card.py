@@ -4,7 +4,7 @@
 from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from game.routine.pet import pet
-from game.routine.garcha import garcha
+from game.routine.garcha import garcha as garchaR
 
 def set_team(request):
  	 usr = request.user
@@ -77,6 +77,6 @@ def garcha(request):
 	elif garchaAmount == '3':
 		garchaAmount = 10000
 	
-	res = garcha.garcha_once(usr, garchaAmount)
+	res = garchaR.garcha_once(usr, garchaAmount)
 	
 	return HttpResponse(gcjson.dumps(res))

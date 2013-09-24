@@ -40,15 +40,13 @@ def start(request):
 	leader = None
 	reinforce = None
 	if dun.curren_field['battleid'] == '' or dun.curren_field['fieldid'] == '':
-		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))
-	print dun.reinforces
+		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))	
 	if dun.isReinforceExist(reinforceid):
 		reinforce = user.get(reinforceid)
 		rei_inv = reinforce.getInventory()
 		leaderid = rei_inv.team[0]	
 		leader = rei_inv.getCard(leaderid)
-		dun.reinforced_list.append(reinforceid)		
-	print dun.curren_field
+		dun.reinforced_list.append(reinforceid)			
 	dunConf = config.getConfig('dungeon')
 	for battleConf in dunConf:
 		if battleConf['battleId'] == dun.curren_field['battleid']:
@@ -104,7 +102,7 @@ def end(request):
 					data['add_card'] = awardCard
 					if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
 						dun.nextField()
-					dun.curren_field = {}
+					dun.curren_field = {'battleid':'', 'fieldid':''}
 					data['last_dungeon'] = dun.last_dungeon
 					dun.save()
 					return HttpResponse(gcjson.dumps(data))

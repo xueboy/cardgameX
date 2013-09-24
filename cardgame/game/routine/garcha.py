@@ -1,4 +1,6 @@
-﻿from gclib.utility import randint
+﻿import random
+from gclib.utility import randint
+from game.utility.config import config
 
 garcha_prob_table = {
 	'garcha_10_free':[8000, 2000, 0, 0, 0],
@@ -18,46 +20,57 @@ class garcha:
 		garchaConf = config.getConfig('garcha')
 		gameConf = config.getConfig('game')
 		
-		garcha = None
+		garchaInfo = None
 		if garchaAmount == 10:
-			garcha = usr.garcha['garcha10']
+			garchaInfo = usr.garcha['garcha10']
 		elif garchaAmount == 100:
-			garcha = usr.garcha['garcha100']
+			garchaInfo = usr.garcha['garcha100']
 		elif garchaAmount == 10000:
-			garcha = usr.garcha['garcha10000']
+			garchaInfo = usr.garcha['garcha10000']
 		
-		isFirstTime = (garcha['last_time'] == 0)
+		isFirstTime = (garchaInfo['last_time'] == 0)
 		isFree = False
 		if garchaAmount == 10:
-			isFree = ((garcha['count'] - gameConf['garcha_10_times']) > 0) and ((currentTime() - garcha['last_time']) > gameConf['garcha_10_cooldown'])
+			isFree = ((garchaInfo['count'] - gameConf['garcha_10_times']) > 0) and ((currentTime() - garchaInfo['last_time']) > gameConf['garcha_10_cooldown'])
 		elif garchaAmount == 100:
-			isFree = ((garcha['count'] - gameConf['garcha_100_times']) > 0) and ((currentTime() - garcha['last_time']) > gameConf['garcha_100_cooldown'])
+			isFree = ((garchaInfo['count'] - gameConf['garcha_100_times']) > 0) and ((currentTime() - garchaInfo['last_time']) > gameConf['garcha_100_cooldown'])
 		elif garchaAmount == 10000:
-			isFree = ((garcha['count'] - gameConf['garcha_10000_times']) > 0) and ((currentTime() - garcha['last_time']) > gameConf['garcha_10000_cooldown'])
+			isFree = ((garchaInfo['count'] - gameConf['garcha_10000_times']) > 0) and ((currentTime() - garchaInfo['last_time']) > gameConf['garcha_10000_cooldown'])
 			
 		garchaCostGold = 0
 		garchaCostGem = 0
+		garchaType = ''
 		if not isFree:
 			if garchaAmount == 10:
 				garchaCostGold = gameConf['garcha_10_price']['gold']
 				garchaCostGem = gameConf['garcha_10_price']['gem']
+				garchaType = 'garcha_10'
 			elif garchaAmount == 100:
 				garchaCostGold = gameConf['garcha_100_price']['gold']
 				garchaCostGem = gameConf['garcha_100_price']['gem']
+				garchaType = 'garcha_100'
 			elif garchaAmount == 10000:
 				garchaCostGold = gameConf['garcha_10000_price']['gold']
-				garchaCostGem = gameConf['garcha_10000_price']['gem']			
+				garchaCostGem = gameConf['garcha_10000_price']['gem']
+				garchaType = 'garcha_10000'
+		else:
+			if garchaAmount == 10:
+				garchaType = 'garcha_10_free'
+			elif garchaAmount == 100:
+				garchaType = 'garcha_100_free'
+			elif garchaAmount == 10000:
+				garchaType = 'garcha_10000_free'
 		
 		if usr.gold < garchaCostGold:
 			return {'msg':'gold_not_enough'}
-		if usr.gems < garchaCostGem:
+		if usr.gem < garchaCostGem:
 			return {'msg':'gem_not_enough'}
 			
 		
 		cataConf = None
 		if (not isFirstTime) or garchaAmount == 10:
 			prob = garcha_prob_table[garchaType]
-			cata = garcha_cata(prob)
+			cata = garcha.garcha_cata(prob)
 			cataConf = garchaConf[cata]
 		else:
 			if garchaAmount == 100:
@@ -65,18 +78,20 @@ class garcha:
 			elif garchaAmount == 10000:
 				cata = garchaConf[2]
 		
-		r = randint()
+		r = random.randint(0, cataConf['totalProb'] - 1)
 		garchaCard = None
 		for card in cataConf['cards']:
 			if r >  card['prob']:
 				r = r - card['prob']
 			else:
+				print(card['cardId'], card['level'])
 				garchaCard = inv.addCard(card['cardId'], card['level'])
 				break;
 		
+		usr.gold = usr.gold - garchaCostGold
+		usr.gem = usr.gem - garchaCostGem
 		
-		
-		return {'garcha_card':garchaCard}		
+		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem }		
 	
 	@staticmethod	
 	def garcha_cata(prob):

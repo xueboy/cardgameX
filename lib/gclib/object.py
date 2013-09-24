@@ -20,7 +20,7 @@ class object():
 		conn.excute("INSERT INTO " + self.__class__.__name__ + "(roleid, object) VALUES (%s, %s)", [roleid, gcjson.dumps(self.getData())])
 		self.id = conn.insert_id()
 		self.roleid = roleid
-		return 0
+		return self.id
 		
 	@classmethod	
 	def get(cls, roleid):

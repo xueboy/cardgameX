@@ -15,7 +15,7 @@ class user(gcuser):
 		self.name = ''
 		self.level = 0
 		self.stamina = 0
-		self.gems = 0
+		self.gem = 0
 		self.gold = 0
 		self.exp = 0
 		self.vipLevel = 0
@@ -46,7 +46,7 @@ class user(gcuser):
 		data['name'] = self.name
 		data['level'] = self.level
 		data['stamina'] = self.stamina
-		data['gems'] = self.gems
+		data['gem'] = self.gem
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
@@ -65,7 +65,7 @@ class user(gcuser):
 		data['name'] = self.name
 		data['level'] = self.level
 		data['stamina'] = self.stamina
-		data['gems'] = self.gems
+		data['gem'] = self.gem
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
@@ -88,7 +88,7 @@ class user(gcuser):
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
-		self.gems = data['gems']
+		self.gem = data['gem']
 		self.gold = data['gold']
 		self.exp = data['exp']
 		self.vipLevel = data['vipLevel']
