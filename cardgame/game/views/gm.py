@@ -31,12 +31,17 @@ def del_card(request):
 		
 def add_money(request):
 	money = int(request.GET['money'])
-	usr = request.user
-	
-	usr.gold = usr.gold + money
-	
+	usr = request.user	
+	usr.gold = usr.gold + money	
 	usr.save()
 	return HttpResponse(gcjson.dumps({'gold':usr.gold}))
+		
+def add_gem(request):
+	gem = int(request.GET['gem'])
+	usr = request.user
+	usr.gem = usr.gem + gem
+	usr.save()
+	return HttpResponse(gcjson.dumps({'gem':usr.gem}))
 		
 def gain_exp_card(request):
 	cardid = request.GET['card_id']
