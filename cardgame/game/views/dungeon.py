@@ -29,7 +29,7 @@ def enter(request):
 		dun.setCurrentField(battleid, fieldid)
 		dun.save()
 		return HttpResponse(gcjson.dumps({'reinforce':reinforce}))
-	return HttpResponse('not available dungeon')
+	return HttpResponse('field_not_available')
 	
 	
 def start(request):
@@ -41,12 +41,14 @@ def start(request):
 	reinforce = None
 	if dun.curren_field['battleid'] == '' or dun.curren_field['fieldid'] == '':
 		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))
+	print dun.reinforces
 	if dun.isReinforceExist(reinforceid):
 		reinforce = user.get(reinforceid)
 		rei_inv = reinforce.getInventory()
 		leaderid = rei_inv.team[0]	
 		leader = rei_inv.getCard(leaderid)
 		dun.reinforced_list.append(reinforceid)		
+	print dun.curren_field
 	dunConf = config.getConfig('dungeon')
 	for battleConf in dunConf:
 		if battleConf['battleId'] == dun.curren_field['battleid']:
@@ -75,9 +77,8 @@ def start(request):
 					data['stamina'] = usr.stamina
 					
 					return HttpResponse(gcjson.dumps(data))
-		return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))
-	else: 
-		return HttpResponse(gcjson.dumps({'msg':'reinforce_not_exist', 'reinforce': dun.reinforces}))
+	return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))
+	
 			
 def end(request):
 	battleId = request.GET['battle_id']
