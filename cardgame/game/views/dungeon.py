@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from game.utility.config import config
 from gclib.gcjson import gcjson
 from game.models.user import user
+import time
+
 
 reinforce_price = [
 	[20, 1],
@@ -33,21 +35,23 @@ def enter(request):
 	
 	
 def start(request):
+	print (time.clock() * 10000)
 	reinforceid = request.GET['reinforce_id']	
 	usr = request.user
 	dun = usr.getDungeon()
 	conf = config.getConfig('pet')
+	dunConf = config.getConfig('dungeon')	
 	leader = None
 	reinforce = None
 	if dun.curren_field['battleid'] == '' or dun.curren_field['fieldid'] == '':
-		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))	
+		return HttpResponse(gcjson.dumps({'msg':'field_not_enter'}))		
 	if dun.isReinforceExist(reinforceid):
 		reinforce = user.get(reinforceid)
 		rei_inv = reinforce.getInventory()
 		leaderid = rei_inv.team[0]	
 		leader = rei_inv.getCard(leaderid)
-		dun.reinforced_list.append(reinforceid)			
-	dunConf = config.getConfig('dungeon')
+		dun.reinforced_list.append(reinforceid)	
+	
 	for battleConf in dunConf:
 		if battleConf['battleId'] == dun.curren_field['battleid']:
 			for fieldConf in battleConf['field']:
@@ -56,7 +60,7 @@ def start(request):
 					staminaCost = fieldConf['stamina']
 					if usr.stamina < staminaCost:
 						return HttpResponse(gcjson.dumps({'msg':'not_enught_stamina'}))
-					usr.stamina = usr.stamina - staminaCost							
+					usr.stamina = usr.stamina - staminaCost												
 					goldCast = 0
 					if leader != None:
 						start = conf[leader['id']]['star']
@@ -67,8 +71,7 @@ def start(request):
 						usr.gold = usr.gold - goldCost
 						reinforce.gold = reinforce.gold + goldCast
 						reinforce.save()
-						usr.save()						
-													
+						usr.save()												
 					data = {}
 					data['wave_arrages'] = waves
 					data['gold'] = usr.gold

@@ -145,9 +145,7 @@ class dungeon(object):
 		for wave in field['wave']:
 			cnt = 0
 			if sum(wave['count_prob']) != 0 and sum(wave['count']):
-				cnt = wave['count'][hit(wave['count_prob'])]
-			print field['fieldId']
-			print	wave['monster'].keys(), cnt
+				cnt = wave['count'][hit(wave['count_prob'])]			
 			monsters = random.sample(wave['monster'].keys(), cnt)
 			
 			monsters.extend(wave['boss'].keys())

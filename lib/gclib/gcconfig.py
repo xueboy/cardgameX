@@ -3,6 +3,7 @@
 
 from gcjson import gcjson
 from DBConnection import DBConnection
+from gccache import gccache
 import md5
 
 
@@ -19,7 +20,12 @@ class gcconfig:
 	
 	@staticmethod 
 	def getConfig(confname):
-		return gcjson.loads(gcconfig.getConfigStr(confname))			
+		conf = gccache.loc_getValue('config:' + confname)
+		if conf == None:
+			conf = gcjson.loads(gcconfig.getConfigStr(confname))
+			gccache.loc_setValue('config:' + confname, conf)
+		#conf = gcjson.loads(gcconfig.getConfigStr(confname))
+		return conf
 				
 	@staticmethod 
 	def getMd5(confobj):		
@@ -32,12 +38,14 @@ class gcconfig:
 	def createConfig(confname):
 		conn = DBConnection.getConnection()
 		conn.excute("INSERT INTO config (confname, conf) VALUES (%s, '')", [confname])
+		gccache.loc_delete('config:' + confname)
 		
 	@staticmethod
 	def setConfig(confname, confstr):
 		confjson = gcjson.loads(confstr)		
 		conn = DBConnection.getConnection();
 		conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])
+		gccache.loc_delete('config:' + confname)
 		
 	
 	

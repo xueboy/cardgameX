@@ -51,9 +51,9 @@ def generalConfigRequestProcess(request, confname):
 		except:
 			return render(request, confname + '.html', {'config':confstr})
 	else:
-		conf = gcconfig.getConfigStr(confname)		
-		if conf != None:			
-			return render(request, confname + '.html', {'config': gcconfig.getConfigStr(confname)})
+		confstr = gcconfig.getConfigStr(confname)		
+		if confstr != None:			
+			return render(request, confname + '.html', {'config': confstr})
 		else:
 			gcconfig.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
@@ -544,37 +544,37 @@ def read_wave(row, idx, dropConf):
 	if dropConf.has_key(str(boss1)):
 		wave['boss'][boss1] = dropConf[str(boss1)]
 	else:
-		if boss1 != '':
+		if boss1 != '' and boss1 != '0.0':
 			wave['boss'][boss1] = {}
 		
 	if dropConf.has_key(str(boss2)):
 		wave['boss'][boss2] = dropConf[str(boss2)]
 	else:
-		if boss2 != '':
+		if boss2 != '' and boss2 != '0.0':
 			wave['boss'][boss2] = {}
 		
 	if dropConf.has_key(str(boss3)):
 		wave['boss'][boss3] = dropConf[str(boss3)]
 	else:
-		if boss3 != '':
+		if boss3 != '' and boss3 != '0.0':
 			wave['boss'][boss3] = {}
 		
 	if dropConf.has_key(str(boss4)):
 		wave['boss'][boss4] = dropConf[str(boss4)]
 	else: 
-		if boss4 != '':
+		if boss4 != '' and boss4 != '0.0':
 			wave['boss'][boss4] = {}
 		
 	if dropConf.has_key(str(boss5)):
 		wave['boss'][boss5] = dropConf[str(boss5)]
 	else: 
-		if boss5 != '':
+		if boss5 != '' and boss5 != '0.0':
 			wave['boss'][boss5] = {}
 		
 	if dropConf.has_key(str(boss6)):
 		wave['boss'][boss6] = dropConf[str(boss6)]
 	else:
-		if boss6 != '':
+		if boss6 != '' and boss6 != '0.0':
 			wave['boss'][boss6] = {}
 	
 	if (monster1 == '' or monster1 == '0' or monster1 == '0.0') and (boss1 == '' or boss1 == '0' or boss1 == '0.0'):		

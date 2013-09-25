@@ -113,6 +113,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   # 'django.middleware.cache.UpdateCacheMiddleware',
+   # 'django.middleware.common.CommonMiddleware',
+   # 'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'cardgame.urls'
@@ -126,6 +129,17 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     "D:\Project\cardgame\gameadmin\templates"
 )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '192.168.0.155:11211',
+    },
+    'in_memery': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake'
+    }
+}
 
 INSTALLED_APPS = (
     'django.contrib.auth',
