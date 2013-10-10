@@ -1,19 +1,20 @@
 ﻿import hashlib
+from django.views.decorators.csrf import csrf_exempt
 
-
+@csrf_exempt
 def set_avatar(request):
 	
-	sex = request.GET['sex']
-	avatar = request.body
+	gender = request.GET['gender']
+	avatar = request.body	
 	usr = request.user
 	
-	m = md5.new(avatar)		
-	file_name = string.join(m.hexdigest() , str(usr.roleid), ".png")
+	m = hashlib.md5(avatar)		
+	file_name = "".join([m.hexdigest() , str(usr.roleid), ".img"])
 	
 	f = open(file_name, "ab")
-	for chunk in avatar.chunks():
-		f.write(chunk)		
+	f.write(avatar)		
 	f.close()
+	return {}
 		
 	
 	

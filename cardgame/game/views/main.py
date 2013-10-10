@@ -2,7 +2,6 @@
 #!/usr/bin/env python
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from gclib.gcjson import gcjson
 from game.utility.config import config as conf
 from game.models.account import account
@@ -102,13 +101,14 @@ def api(request, m, f):
 		ret = fun(request)
 		
 		notify = endRequest(request)
-		ret.update(notify)
+		if notify:
+			ret.update(notify)
 		
 		return HttpResponse(gcjson.dumps(ret))
 
 	return HttpResponse('api')
 
-@csrf_exempt
+
 def test(request):	
 	#print "aaa"
 	f = request.body
