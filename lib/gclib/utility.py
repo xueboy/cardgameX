@@ -15,11 +15,18 @@ def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
 	usr.onLogin()
 
-def amendRequest(request,cls):	
+def beginRequest(request,cls):	
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	request.user = usr
 	usr.update()	
+
+def endRequest(request):
+	user = request.user
+	notify = user.notify	
+	user.notify = {}
+	user.save()
+	return notify
 		
 def currentTime():
 	return int(time.time())
@@ -50,3 +57,12 @@ def drop(weight):
 	
 def randint():
 	return random.randint(0, 1000)
+	
+	
+def retrieval_object(func):
+	"""
+	mark this funtion return a object whitch need to save db.
+	"""
+	def retrieval_fun(obj):     
+		return func(obj)        
+	return retrieval_fun

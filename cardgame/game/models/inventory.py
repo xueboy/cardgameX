@@ -12,6 +12,7 @@ class inventory(object):
 	def __init__(self):
 		self.cards = []
 		self.team = ['', '', '', '', '']
+		self.user = None
 		
 	def init(self):
 		return

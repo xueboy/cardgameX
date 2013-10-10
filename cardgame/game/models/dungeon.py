@@ -23,7 +23,8 @@ class dungeon(object):
 		self.last_reinforce_time = 0
 		self.curren_field = {'battleid':'', 'fieldid':''}
 		self.reinforces = None
-		self.curren_field_waves = []		
+		self.curren_field_waves = []
+		self.user = None
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')

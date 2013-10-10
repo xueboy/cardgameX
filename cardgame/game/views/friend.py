@@ -1,7 +1,6 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from game.models.account import account
 from game.models.user import user
@@ -11,23 +10,26 @@ def request(request):
 	friendid = request.GET['friend_id']
 	friend = user.get(int(friendid))
 	if friend != None:		
-		data = friend.addFriendRequest(usr)		
-		return HttpResponse(gcjson.dumps(data))		
-	return HttpResponse(gcjson.dumps({friend:{}}))
+		friendNw = friend.getNetwork()
+		data = friendNw.addFriendRequest(usr)		
+		return data
+	return {friend:{}}
 		
 		
 def confirm(request):
 	usr = request.user
 	isConfirm = request.GET['is_confirm']
 	friendid = request.GET['friend_id']
-	friend = user.get(int(friendid))
+	friend = user.get(int(friendid))	
 	if friend != None:
-		if usr.confirmFriendRequest(friend, isConfirm) == 0:
-			return HttpResponse(gcjson.dumps({'msg': 'friend_max_count'}))
+		friendNw = friend.getNetwork()
+		usrNw = usrNw.getNetwork()
+		if usrNw.confirmFriendRequest(friend, isConfirm) == 0:
+			return {'msg': 'friend_max_count'}
 	if isConfirm == '0':
-		return HttpResponse(gcjson.dumps({'friend_request_delete': friendid}))
+		return {'friend_request_delete': friendid}
 	else:
-		return HttpResponse(gcjson.dumps({'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}))
+		return {'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}
 
 
 def search(request):
@@ -38,15 +40,28 @@ def search(request):
 	friend = user.get(friendid)
 	
 	if friend != None:
-		return HttpResponse(gcjson.dumps({'friend':friend.getFriendData()}))
+		return {'friend':friend.getFriendData()}
 	else:
-		return HttpResponse(gcjson.dumps({'friend': {}}))
+		return {'friend': {}}
 			
 			
 def delete(request):
 	usr = request.user	
-	friendid = request.GET['friend_id'].decode('utf-8')
-	if usr.deleteFriend(friendid) == 1:
-		return HttpResponse(gcjson.dumps({'friend_delete':friendid}))
+	friendid = request.GET['friend_id']
+	usrNw = usr.getNetwork()
+	if usrNw.deleteFriend(friendid) == 1:
+		return {'friend_delete':friendid}
 	else:
-		return HttpResponse(gcjson.dumps({'msg':'friend_not_exist'}))
+		return {'msg':'friend_not_exist'}
+			
+def message(request):
+	friendid = request.GET['friend_id']
+	msg = request.GET['message']
+	usr = request.user
+	
+	toUser = user.get(int(friendid))
+	if toUser:	
+		usrNw = usr.getNetwork()
+		usrNw.sendMessage(toUser, msg)
+		return {}	
+	return {'msg':'friend_not_found'}

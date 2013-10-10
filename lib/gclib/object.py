@@ -13,7 +13,8 @@ class object():
 	
 	def __init__(self):
 		self.id = 0
-		self.roleid = 0		
+		self.roleid = 0
+		self.__needSave = False
 	
 	def install(self, roleid):
 		conn = DBConnection.getConnection()
@@ -52,6 +53,13 @@ class object():
 		dumpstr = gcjson.dumps(data)	
 		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
 		return 0
+	
+	def do_save(self):
+		conn = DBConnection.getConnection()
+		data = self.getData()
+		dumpstr = gcjson.dumps(data)	
+		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
+		
 		
 	@classmethod
 	def syncdb(cls):

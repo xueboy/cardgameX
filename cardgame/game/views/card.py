@@ -1,7 +1,6 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from game.routine.pet import pet
 from game.routine.garcha import garcha as garchaR
@@ -15,7 +14,7 @@ def set_team(request):
  	 cardid4 = request.GET['card_id4']
  	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4)
  	 inv.save()
- 	 return HttpResponse(gcjson.dumps(team))
+ 	 return team
 
 
 def set_leader(request):
@@ -24,7 +23,7 @@ def set_leader(request):
 	cardid = request.GET['card_id']	
 	team = inv.setLeader(cardid)
 	inv.save()
-	return HttpResponse(gcjson.dumps(team))
+	return team
 	
 def level_up(request):
 	usr = request.user
@@ -64,7 +63,7 @@ def level_up(request):
 		sourceCardId.append(sourceCard6)		
 		
 	dest, source = pet.levelup(usr, destCard, sourceCardId)
-	return HttpResponse(gcjson.dumps({'update_card':dest, 'delete_card':source}))
+	return {'update_card':dest, 'delete_card':source}
 		
 def garcha(request):
 	usr = request.user
@@ -75,8 +74,6 @@ def garcha(request):
 	elif garchaAmount == '2':
 		garchaAmount = 100
 	elif garchaAmount == '3':
-		garchaAmount = 10000
-	
-	res = garchaR.garcha_once(usr, garchaAmount)
-	
-	return HttpResponse(gcjson.dumps(res))
+		garchaAmount = 10000	
+	res = garchaR.garcha_once(usr, garchaAmount)	
+	return res

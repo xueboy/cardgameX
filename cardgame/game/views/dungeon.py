@@ -2,7 +2,6 @@
 #!/usr/bin/env python
 
 
-from django.http import HttpResponse
 from game.utility.config import config
 from gclib.gcjson import gcjson
 from game.models.user import user
@@ -76,8 +75,8 @@ def enter(request):
 					data['gold'] = usr.gold
 					data['stamina'] = usr.stamina
 					
-					return HttpResponse(gcjson.dumps(data))
-	return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))
+					return data
+	return {'msg':'field_not_exist'}
 	
 			
 def end(request):
@@ -107,6 +106,6 @@ def end(request):
 					dun.curren_field = {'battleid':'', 'fieldid':''}
 					data['last_dungeon'] = dun.last_dungeon
 					dun.save()
-					return HttpResponse(gcjson.dumps(data))
+					return data
 					
-	return HttpResponse(gcjson.dumps({'msg':'field_not_exist'}))
+	return {'msg':'field_not_exist'}

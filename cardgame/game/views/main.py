@@ -2,23 +2,28 @@
 #!/usr/bin/env python
 
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from gclib.gcjson import gcjson
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, amendRequest, onUserLogin, currentTime
+from gclib.utility import HttpResponse500, beginRequest, onUserLogin, currentTime, endRequest
 from game.models.user import user
 import game.views.dungeon
 import game.views.gm
 import game.views.card
 import game.views.friend
+import game.views.profile
 import sys
+#from PIL import Image
+#import StringIO
 
 
 viewsmap = {
 	'dungeon':sys.modules['game.views.dungeon'],
 	'gm':sys.modules['game.views.gm'],
 	'card':sys.modules['game.views.card'],
-	'friend':sys.modules['game.views.friend']
+	'friend':sys.modules['game.views.friend'],
+	'profile': sys.modules['game.views.profile']
 }
 
 def index(request):
@@ -40,6 +45,9 @@ def index(request):
 		data['dungeon'] = dun.getClientData()
 		inv = usr.getInventory()
 		data.update(inv.getClientData())		
+		nw = usr.getNetwork()
+		data.update(nw.getClientData())		
+		usr.save()
 		return HttpResponse(gcjson.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
 
@@ -53,7 +61,7 @@ def info(request):
 	return HttpResponse(gcjson.dumps({'info':info}))
 	
 def config(request):	
-	amendRequest(request,user)
+	beginRequest(request,user)
 	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
@@ -86,13 +94,36 @@ def config(request):
 	
 def api(request, m, f):
 	try:
-		amendRequest(request,user)
+		beginRequest(request,user)
 	except KeyError:
 		return info(request)
 	if viewsmap.has_key(m) :		
-		fun = getattr(viewsmap[m], f)
-		return fun(request)	
+		fun = getattr(viewsmap[m], f)		
+		ret = fun(request)
+		
+		notify = endRequest(request)
+		ret.update(notify)
+		
+		return HttpResponse(gcjson.dumps(ret))
 
 	return HttpResponse('api')
+
+@csrf_exempt
+def test(request):	
+	#print "aaa"
+	f = request.body
+	#img = Image.new()
+	#img.putdata(f)
+	#print f
+	#img = Image.open(StringIO.StringIO(f))
+	#print img
+#	img.save(r"d:/img.png", "png")
+	return HttpResponse(f, mimetype="image/png")
 	
+def setAvatar(request):
+	f = request.body
+	img = Image()
+	imp.putdata()
+	
+	#img.
 	

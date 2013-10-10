@@ -1,7 +1,6 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from django.http import HttpResponse
 from gclib.gcjson import gcjson
 from game.utility.config import config
 
@@ -11,37 +10,37 @@ def add_card(request):
 	inv = usr.getInventory()
 	card = inv.addCard(card_id)
 	if card == None:
-		return HttpResponse("add card fail")
+		return {'msg':'fail_add_card'}
 	usr.save()
 	inv.save()
 	
 	data = {}
 	data['add_card'] = card
-	return HttpResponse(gcjson.dumps(data))	
+	return data
 
 def del_card(request):
 	cardid = int(request.GET['id'])
 	usr = request.user
 	inv = usr.getInventory()	
 	if inv.delCard(cardid) == 0:
-		return HttpResponse("del card fail")	
+		return {'msg':"fail_del_card"}
 	usr.save()	
 	inv.save()	
-	return HttpResponse(gcjson.dumps({'card':inv.getClientData}))	
+	return {'card':inv.getClientData}
 		
 def add_money(request):
 	money = int(request.GET['money'])
 	usr = request.user	
 	usr.gold = usr.gold + money	
 	usr.save()
-	return HttpResponse(gcjson.dumps({'gold':usr.gold}))
+	return {'gold':usr.gold}
 		
 def add_gem(request):
 	gem = int(request.GET['gem'])
 	usr = request.user
 	usr.gem = usr.gem + gem
 	usr.save()
-	return HttpResponse(gcjson.dumps({'gem':usr.gem}))
+	return {'gem':usr.gem}
 		
 def gain_exp_card(request):
 	cardid = request.GET['card_id']
@@ -71,7 +70,7 @@ def gain_exp_card(request):
 		else:
 			card['exp'] = exp
 	inv.save()
-	return HttpResponse(gcjson.dumps({'update_card':card}))
+	return {'update_card':card}
 			
 		
 	

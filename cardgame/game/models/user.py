@@ -4,7 +4,8 @@
 from gclib.gcuser import gcuser
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
-from gclib.utility import currentTime
+from game.models.network import network
+from gclib.utility import currentTime, retrieval_object
 from game.utility.config import config
 
 class user(gcuser):
@@ -21,13 +22,13 @@ class user(gcuser):
 		self.vipLevel = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
-		self.leader = ''
-		self.friends = {}
-		self.friend_request = {}
+		self.leader = ''		
 		self.last_login = currentTime()
 		self.dun = None
 		self.inv = None
+		self.network = None
 		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
+		self.notify = {}
 		
 	
 	def init(self, acc):
@@ -52,12 +53,12 @@ class user(gcuser):
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
 		data['last_card_no'] = self.last_card_no
-		data['last_login'] = self.last_login
-		data['friend_request'] = self.friend_request
+		data['last_login'] = self.last_login		
 		data['leader'] = self.leader
-		data['friends'] = self.friends
+
 		data['last_login'] = self.last_login
 		data['garcha'] = self.garcha
+		data['notify'] = self.notify
 		return data
 		
 	def getClientData(self):
@@ -70,7 +71,7 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
-		return {'user': data, 'friends': self.friends, 'friend_request':self.friend_request}
+		return {'user': data}
 		
 		
 	def getFriendData(self):
@@ -91,31 +92,19 @@ class user(gcuser):
 		self.gem = data['gem']
 		self.gold = data['gold']
 		self.exp = data['exp']
-		self.vipLevel = data['vipLevel']
-		if not data.has_key('stamina_last_recover'):
-			data['stamina_last_recover'] = currentTime()		
-		self.stamina_last_recover = data['stamina_last_recover']
-		if not data.has_key('last_card_no'):
-			data['last_card_no'] = 0
-		self.last_card_no = data['last_card_no']
-		if not data.has_key('last_login'):
-			data['last_login'] = currentTime()
-		self.last_login = data['last_login']
-		if not data.has_key('friend_request'):
-			data['friend_request'] = {}
-		self.friend_request = data['friend_request']
-		if not data.has_key('leader'):
-			data['leader'] = ''
-		self.leader = data['leader']
-		if not data.has_key('friends'):
-			data['friends'] = {}
-		self.friends = data['friends']
-			
+		self.vipLevel = data['vipLevel']		
+		self.stamina_last_recover = data['stamina_last_recover']		
+		self.last_card_no = data['last_card_no']		
+		self.last_login = data['last_login']		
+		self.leader = data['leader']		
+		self.notify = data['notify']
+			 
 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no		
-		
+	
+	@retrieval_object
 	def getDungeon(self):
 		if self.dun != None:
 			return self.dun
@@ -124,11 +113,12 @@ class user(gcuser):
 		if dun == None:	
 			dun = dungeon()
 			dun.init()
-			dun.install(self.roleid)
+			dun.install(self.id)
 		dun.user = self
 		self.dun = dun
-		return dun	
+		return self.dun
 	
+	@retrieval_object
 	def getInventory(self):
 		if self.inv != None:
 			return self.inv		
@@ -136,10 +126,23 @@ class user(gcuser):
 		if inv == None:
 			inv = inventory()
 			inv.init()
-			inv.install(self.roleid)
+			inv.install(self.id)
 		inv.user = self
 		self.inv = inv
-		return inv
+		return self.inv
+		
+	@retrieval_object
+	def getNetwork(self):
+		if self.network != None:
+			return self.network
+		nt = network.get(self.id)
+		if nt == None:
+			nt = network()
+			nt.init()
+			nt.install(self.id)
+		nt.user = self
+		self.network = nt
+		return self.network
 	
 	def updateStamina(self):
 		"""
@@ -174,38 +177,6 @@ class user(gcuser):
 		if maxStamina == self.stamina:
 			self.stamina_last_recover = currentTime()
 		self.stamina -= point
-		
-			
-	def addFriendRequest(self, friend):
-		data = friend.getFriendData()
-		self.friend_request[friend.roleid] = data
-		self.save()
-		return data
-		
-	def confirmFriendRequest(self, friend, isConfirm):
-		
-		if isConfirm != '0':
-			if len(self.friends) >= 2:			
-				return 0
-			self.addFriend(friend)
-			friend.addFriend(self)
-			del self.friend_request[str(friend.roleid)]
-			print friend.roleid			
-			self.save()
-			friend.save()
-			return friend.roleid
-		else:
-			del self.friend_request[str(friend.roleid)]
-			print friend.roleid			
-			self.save()
-			return friend.roleid
-	
-	def addFriend(self, friend):
-		self.friends[str(friend.roleid)] =  friend.getFriendData()
-	
-	def getFriend(self, friendRoleid):
-		if self.friends.has_key(str(friendRoleid)):
-			return friends[str(friendRoleid)]
 			
 	def updateToFriend(self):
 		for key in self.friends:
