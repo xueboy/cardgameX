@@ -23,7 +23,7 @@ def confirm(request):
 	friend = user.get(int(friendid))	
 	if friend != None:
 		friendNw = friend.getNetwork()
-		usrNw = usrNw.getNetwork()
+		usrNw = usr.getNetwork()
 		if usrNw.confirmFriendRequest(friend, isConfirm) == 0:
 			return {'msg': 'friend_max_count'}
 	if isConfirm == '0':
@@ -65,12 +65,29 @@ def message(request):
 	if toUser:	
 		usrNw = usr.getNetwork()
 		toUserNw = toUser.getNetwork()
-		if not toUserNw.isBan(usr.roleid):
-			usrNw.sendMessage(toUser, msg)
-			return {}
-		else:
+		if toUserNw.isBan(usr.roleid):
 			return {'msg':'user_is_in_ban'}
+		usrNw.sendMessage(toUser, msg)
+		return {}			
 	return {'msg':'friend_not_found'}
+		
+def mail(request):
+	friendid = request.GET['friend_id']
+	mail = request.GET['mail']
+	usr = request.user	
+	
+	if friendid == usr.roleid:
+		return {'msg':'friend_can_not_self'}
+			
+	toUser = user.get(friend_id)
+	if toUser:
+		if toUserNw.isBan(usr.roleid):
+			return {'msg':'user_is_in_ban'}
+		usrNw.sendMail(toUser, mail)
+		return {}
+	return {'msg':'friend_not_found'}
+
+	
 		
 def ban(request):
 	banid = request.GET['ban_id']

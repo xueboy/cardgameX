@@ -9,7 +9,9 @@ class network(object):
 	
 	def __init__(self):
 		object.__init__(self)
-		self.message = []				
+		self.message = []
+		self.mail = []
+		self.email = []			
 		self.gift = {}						#{roleid:'#depend'}
 		self.jail = {}						#[{'roleid':'', 'name':'abc'}]
 		self.friends = {}
@@ -22,7 +24,9 @@ class network(object):
 		data['friend_request'] = self.friend_request
 		data['friends'] = self.friends
 		data['message'] = self.message
-		data['blacklist'] = self.blacklist
+		data['mail'] = self.mail
+		data['email'] = self.email
+		data['blacklist'] = self.blacklist		
 		return data		
 	
 	def getClientData(self):
@@ -30,6 +34,8 @@ class network(object):
 		data['friends'] = self.friends
 		data['friend_request'] = self.friend_request
 		data['message'] = self.message
+		data['mail'] = self.mail
+		data['email'] = self.email
 		return data
 		
 	def load(self, roleid, data):
@@ -37,29 +43,44 @@ class network(object):
 		self.friend_request = data['friend_request']
 		self.friends = data['friends']
 		self.message = data['message']
+		self.mail = data['mail']
+		self.email = data['email']
 		
 	def addFriendRequest(self, friend):
+		user = self.user
 		data = friend.getFriendData()
-		self.friend_request[friend.roleid] = data
+		data.update({'type':'firend_request'})
+		self.email.append(data)
 		self.save()
+		if not user.notify.has_key('notify_email'):
+			user.notify['notify_email'] = []
+		user.notify['notify_email'].append(data)
 		return data	
 		
 	def confirmFriendRequest(self, friend, isConfirm):
 		
-		if isConfirm != '0':
-			if len(self.friends) >= 2:			
-				return 0
+		requestEmail = None
+		for email in self.email:
+			if email['type'] == 'firend_request' and email['roleid'] == friend:
+				requestEmail = email
+				break
+		
+		if not requestEmail:
+			return 0
+		
+		if isConfirm != '0':			
 			
 			self.addFriend(friend)
-			friend.addFriend(self)
-			del self.friend_request[str(friend.roleid)]
+			friendNw = friend.getNetwork()
+			friendNw.addFriend(self)			
 			self.save()
-			friend.save()
-			return friend.roleid
-		else:
-			del self.friend_request[str(friend.roleid)]
+			friend.save()			
+		else:			
 			self.save()
-			return friend.roleid
+			
+		self.email.remove(requestEmail)
+		self.save()
+		
 	
 	def addFriend(self, friend):
 		self.friends[str(friend.roleid)] =  friend.getFriendData()
@@ -81,14 +102,16 @@ class network(object):
 		toUser.save()
 		toUserNw.save()
 		
-	def talk(self, toUser, msg):
+	def sendMail(self, toUser, mail):
 		toUserNw = toUser.getNetwork()		
 		msgData = self.user.getFriendData()	
-		msgData.update({'message':msg, 'send_time': currentTime()})		
-		if not toUser.notify['notify_talk']:
-			toUser.notify['notify_talk'] = []
-		toUser.notify['notify_talk'].append(msgData)
+		msgData.update({'mail':mail, 'send_time': currentTime()})		
+		toUserNw.mail.append(msgData)
+		if not toUser.notify['notify_mail']:
+			toUser.notify['notify_mail'] = []
+		toUser.notify['notify_mail'].append(msgData)
 		toUser.save()
+		toUserNw.save()
 		
 		
 	def ban(self, ben_roleid, ben_name):
