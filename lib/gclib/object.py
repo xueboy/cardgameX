@@ -15,6 +15,7 @@ class object():
 		self.id = 0
 		self.roleid = 0
 		self.__needSave = False
+		self.extend_columns = []
 	
 	def install(self, roleid):
 		conn = DBConnection.getConnection()
@@ -31,8 +32,12 @@ class object():
 			obj = cls()
 			obj.id = res[0][0]
 			obj.roleid = res[0][1]			
-			obj.load(roleid, gcjson.loads(res[0][2]))			
-			return obj		
+			obj.load(roleid, gcjson.loads(res[0][2]))
+			i = 0			
+			for column in obj.extend_columns:
+				setattr(obj, column, res[0][3 + i])
+				i = i + 1
+			return obj
 		return None
 		
 		
@@ -50,8 +55,15 @@ class object():
 	def save(self):
 		conn = DBConnection.getConnection()
 		data = self.getData()
-		dumpstr = gcjson.dumps(data)	
-		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
+		dumpstr = gcjson.dumps(data)
+		update_columns = ['object = %s']
+		update_value = [dumpstr]
+		for column in self.extend_columns:
+			update_columns.append(column + ' = %s')
+			update_value.append(getattr(self, column))
+		update_value.append(self.id)		
+		sql = "UPDATE " + self.__class__.__name__ + " SET " + ', '.join(update_columns) + " WHERE id = %s"			
+		conn.excute(sql, update_value)
 		return 0
 	
 	def do_save(self):

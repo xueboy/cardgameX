@@ -8,11 +8,13 @@ class network(object):
 		
 	
 	def __init__(self):
+		object.__init__(self)
 		self.message = []				
 		self.gift = {}						#{roleid:'#depend'}
 		self.jail = {}						#[{'roleid':'', 'name':'abc'}]
 		self.friends = {}
 		self.friend_request = {}
+		self.blacklist = []
 		self.user = None
 		
 	def getData(self):
@@ -20,6 +22,7 @@ class network(object):
 		data['friend_request'] = self.friend_request
 		data['friends'] = self.friends
 		data['message'] = self.message
+		data['blacklist'] = self.blacklist
 		return data		
 	
 	def getClientData(self):
@@ -50,13 +53,11 @@ class network(object):
 			self.addFriend(friend)
 			friend.addFriend(self)
 			del self.friend_request[str(friend.roleid)]
-			print friend.roleid			
 			self.save()
 			friend.save()
 			return friend.roleid
 		else:
 			del self.friend_request[str(friend.roleid)]
-			print friend.roleid			
 			self.save()
 			return friend.roleid
 	
@@ -88,4 +89,21 @@ class network(object):
 			toUser.notify['notify_talk'] = []
 		toUser.notify['notify_talk'].append(msgData)
 		toUser.save()
+		
+		
+	def ban(self, ben_roleid, ben_name):
+		self.blacklist.append({'roleid':ben_roleid, 'name':ben_name, 'create_time':currentTime()})
+			
+	def updateBlacklist(self):
+		gameConf = config.getConfig('game')
+		expire = gameConf['blacklist_expiry_date']
+		now = currentTime()		
+		self.blacklist = filter(lambda ban: ban['create_time'] + exp > now, self.blacklist)
+			
+	def isBan(self, ban_roleid):
+		self.updateBlacklist()
+		for ban in self.blacklist:
+			if ban['roleid'] == ban_roleid:
+				return True
+		return False
 		

@@ -6,12 +6,10 @@ from django.db import connections, connection, transaction
 
 class DBConnection:
 	
-	
-	
-	
 	def __init__(self, conn):
 		self.myconnection = conn
 		self.last_id = -1
+		self.cursor = None
 		
 		
 	@staticmethod  
@@ -22,9 +20,17 @@ class DBConnection:
 		
 		
 	def query(self, sql, param):
-		cursor = self.myconnection.cursor()
-		cursor.execute(sql, param)
-		return cursor.fetchall()
+		self.cursor = self.myconnection.cursor()
+		self.cursor.execute(sql, param)
+		return self.cursor.fetchall()
+		
+	def columns(self):
+		if not self.cursor:
+			return None
+		col = []
+		for desc in self.cursor.description:
+			col.append(desc[0])
+		return col
 		
 		
 	def excute(self, sql,param):

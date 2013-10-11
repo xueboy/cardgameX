@@ -10,6 +10,7 @@ import time
 class inventory(object):
 	
 	def __init__(self):
+		object.__init__(self)
 		self.cards = []
 		self.team = ['', '', '', '', '']
 		self.user = None

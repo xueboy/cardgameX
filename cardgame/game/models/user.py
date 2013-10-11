@@ -11,6 +11,7 @@ from game.utility.config import config
 class user(gcuser):
 	
 	def __init__(self):
+		gcuser.__init__(self)
 		self.id = 0
 		self.roleid = 0
 		self.name = ''
@@ -29,6 +30,8 @@ class user(gcuser):
 		self.network = None
 		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 		self.notify = {}
+		self.gender = 'male'
+		self.extend_columns.append('avatar_id')
 		
 	
 	def init(self, acc):
@@ -71,6 +74,7 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
+		data['avatar_id'] = self.avatar_id
 		return {'user': data}
 		
 		
@@ -82,6 +86,7 @@ class user(gcuser):
 		data['leader'] = self.leader
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
+		data['avatar_id'] = self.avatar_id
 		return data
 		
 	def load(self, roleid, data):

@@ -9,6 +9,10 @@ import time
 
 
 class gcaccount(object):
+	
+	def __init__(self):
+		object.__init__(self)
+	
 	@classmethod
 	def login(cls,usrname, password):
 		conn = DBConnection.getConnection()
@@ -28,18 +32,8 @@ class gcaccount(object):
 		
 		if self.roleid == 0:
 			return self.makeUser()
-					
-		conn = DBConnection.getConnection()				
-		res = conn.query("SELECT * FROM user WHERE id = %s", [self.roleid])
-		if len(res) == 1:
-			usr = self.userObject()
-			usr.init(self)		
-			usr.load(self.roleid, gcjson.loads(res[0][2]))
-			usr.id = self.roleid
-			usr.last_login = self.last_login
-			return usr
-		else:
-			return self.makeUser()
+		print self.roleid
+		return self.userObject().get(self.roleid)
 	
 	def makeUser(self):
 		conn = DBConnection.getConnection()		

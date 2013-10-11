@@ -84,7 +84,6 @@ class garcha:
 			if r >  card['prob']:
 				r = r - card['prob']
 			else:
-				print(card['cardId'], card['level'])
 				garchaCard = inv.addCard(card['cardId'], card['level'])
 				break;
 		

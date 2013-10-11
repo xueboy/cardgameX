@@ -5,6 +5,10 @@ from gclib.object import object
 from gclib.DBConnection import DBConnection
 
 class gcuser(object):	
+	
+	def __init__(self):
+		object.__init__(self)
+	
 	def init(self, acc):
 		self.id = 0
 		return

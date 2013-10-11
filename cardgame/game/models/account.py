@@ -13,5 +13,8 @@ class account(gcaccount):
 	def userObject(self):
 		return user()
 		
+	def __init__(self):
+		gcaccount.__init__(self)
+		
 	
 	

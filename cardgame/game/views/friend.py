@@ -37,8 +37,7 @@ def search(request):
 	friendname = request.GET['friend_name']
 	
 	friendid = account.getRoleid(friendname)	
-	friend = user.get(friendid)
-	
+	friend = user.get(friendid)	
 	if friend != None:
 		return {'friend':friend.getFriendData()}
 	else:
@@ -58,10 +57,29 @@ def message(request):
 	friendid = request.GET['friend_id']
 	msg = request.GET['message']
 	usr = request.user
-	
-	toUser = user.get(int(friendid))
+	toUser = None
+	if friend_id == usr.roleid:
+		toUser = usr
+	else:
+		toUser = user.get(int(friendid))
 	if toUser:	
 		usrNw = usr.getNetwork()
-		usrNw.sendMessage(toUser, msg)
-		return {}	
+		toUserNw = toUser.getNetwork()
+		if not toUserNw.isBan(usr.roleid):
+			usrNw.sendMessage(toUser, msg)
+			return {}
+		else:
+			return {'msg':'user_is_in_ban'}
 	return {'msg':'friend_not_found'}
+		
+def ban(request):
+	banid = request.GET['ban_id']
+	
+	usr = request.user
+	banUser = user.get(banid)
+	if banUser:
+		usrNw = usr.getNetwork()
+		usrNw.ban(banid, banUser.name)
+		return {}		
+	return {'msg':'friend_not_found'}
+	
