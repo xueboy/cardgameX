@@ -57,7 +57,7 @@ def enter(request):
 					waves = dun.arrangeWaves(fieldConf)
 					staminaCost = fieldConf['stamina']
 					if usr.stamina < staminaCost:
-						return HttpResponse(gcjson.dumps({'msg':'not_enught_stamina'}))
+						return {'msg':'not_enught_stamina'}
 					usr.stamina = usr.stamina - staminaCost												
 		#			goldCast = 0
 		#			if leader != None:
