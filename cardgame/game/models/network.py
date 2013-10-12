@@ -11,27 +11,29 @@ class network(object):
 		object.__init__(self)
 		self.message = []
 		self.mail = []
-		self.email = []			
+		self.email = {}			
 		self.gift = {}						#{roleid:'#depend'}
 		self.jail = {}						#[{'roleid':'', 'name':'abc'}]
-		self.friends = {}
+		self.friend = {}
 		self.friend_request = {}
 		self.blacklist = []
+		self.sequenceid = 1
 		self.user = None
 		
 	def getData(self):
 		data = {}
 		data['friend_request'] = self.friend_request
-		data['friends'] = self.friends
+		data['friend'] = self.friend
 		data['message'] = self.message
 		data['mail'] = self.mail
 		data['email'] = self.email
-		data['blacklist'] = self.blacklist		
+		data['blacklist'] = self.blacklist
+		data['sequenceid'] = self.sequenceid
 		return data		
 	
 	def getClientData(self):
 		data = {}
-		data['friends'] = self.friends
+		data['friend'] = self.friend
 		data['friend_request'] = self.friend_request
 		data['message'] = self.message
 		data['mail'] = self.mail
@@ -41,35 +43,41 @@ class network(object):
 	def load(self, roleid, data):
 		self.roleid = roleid
 		self.friend_request = data['friend_request']
-		self.friends = data['friends']
+		self.friend = data['friend']
 		self.message = data['message']
 		self.mail = data['mail']
 		self.email = data['email']
+		self.sequenceid = data['sequenceid']
+		
 		
 	def addFriendRequest(self, friend):
 		user = self.user
 		data = friend.getFriendData()
-		data.update({'type':'firend_request'})
-		self.email.append(data)
+		friendNw = friend.getNetwork()
+		requestid = str(friendNw.sequenceid)
+		friendNw.sequenceid = friendNw.sequenceid + 1
+		data.update({'type':'firend_request', 'id':requestid})		
+		self.email[requestid] = data
 		self.save()
+		friendNw.save()
 		if not user.notify.has_key('notify_email'):
 			user.notify['notify_email'] = []
 		user.notify['notify_email'].append(data)
+		user.save()
 		return data	
 		
 	def confirmFriendRequest(self, friend, isConfirm):
 		
-		requestEmail = None
-		for email in self.email:
-			if email['type'] == 'firend_request' and email['roleid'] == friend:
-				requestEmail = email
+		mailkey = None
+		for emailid in self.email:
+			if self.email[emailid]['type'] == 'firend_request' and self.email[emailid]['roleid'] == friend:
+				mailkey = emailid
 				break
 		
 		if not requestEmail:
 			return 0
 		
 		if isConfirm != '0':			
-			
 			self.addFriend(friend)
 			friendNw = friend.getNetwork()
 			friendNw.addFriend(self)			
@@ -78,19 +86,21 @@ class network(object):
 		else:			
 			self.save()
 			
-		self.email.remove(requestEmail)
+		del self.email[mailkey]
 		self.save()
 		
 	
 	def addFriend(self, friend):
-		self.friends[str(friend.roleid)] =  friend.getFriendData()
+		data = friend.getFriendData()
+		self.friend[str(friend.roleid)] =  data
+		return data
 	
 	def getFriend(self, friendRoleid):
 		if self.friends.has_key(str(friendRoleid)):
 			return friends[str(friendRoleid)]
 
-
-	def sendMessage(self, toUser, msg):
+	def sendMessage(self, toUser, msg):		
+		self.updateMessage()
 		toUserNw = toUser.getNetwork()
 		fromUserId = str(self.roleid)		
 		msgData = self.user.getFriendData()
@@ -101,6 +111,13 @@ class network(object):
 		toUser.notify['notify_message'].append(msgData)
 		toUser.save()
 		toUserNw.save()
+	
+	def updateMessage(self):
+		now = currentTime()
+		gameConf = config.getConfig('game')
+		expire = gameConf['message_expiry_date']
+		self.message = filter(lambda x:(x['send_time'] + expire) > now)
+		
 		
 	def sendMail(self, toUser, mail):
 		toUserNw = toUser.getNetwork()		
@@ -129,4 +146,34 @@ class network(object):
 			if ban['roleid'] == ban_roleid:
 				return True
 		return False
+		
+	def emailAnswer(self, id, option):
+		
+		if not self.email.has_key(id):
+			return {'msg':'email_not_exist'}
+		email = self.email[id]
+		if email['type'] == 'firend_request':
+			return self.emailAnswerFriendRequest(email, option)
+			
+		
+	def emailAnswerFriendRequest(self, mail, option):
+		if option == 'yes':
+			friendid = mail['roleid']
+			if self.friend.has_key(friendid):
+				return {'msg':'friend_already_exist'}
+			friend = self.user.get(friendid)
+			friendData = self.addFriend(friend)
+
+			friendNw = friend.getNetwork()
+			friendNw.addFriend(self.user)
+			mailid = mail['id']
+			del self.email[mailid]
+			self.save()
+			friend.save()
+			return {'email_delete':mailid, 'friend_new':friendData}
+		elif option == 'no':
+			del self.email[mail['id']]		
+			self.save()
+			return {'email_delete':mailid}
+		return {}
 		

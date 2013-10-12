@@ -30,6 +30,15 @@ def confirm(request):
 		return {'friend_request_delete': friendid}
 	else:
 		return {'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}
+			
+
+def email_anwser(request):
+	usr = request.user
+	mailid = request.GET['mail_id']
+	option = request.GET['option']	
+	usrNw = usr.getNetwork()
+	return usrNw.emailAnswer(mailid, option)
+	
 
 
 def search(request):
