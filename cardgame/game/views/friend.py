@@ -34,7 +34,7 @@ def confirm(request):
 
 def email_anwser(request):
 	usr = request.user
-	mailid = request.GET['mail_id']
+	mailid = request.GET['email_id']
 	option = request.GET['option']	
 	usrNw = usr.getNetwork()
 	return usrNw.emailAnswer(mailid, option)
@@ -96,7 +96,14 @@ def mail(request):
 		return {}
 	return {'msg':'friend_not_found'}
 
+def eamail_read(request):
+	emailid = request.GET['email_id']
 	
+	usr = request.user
+	usrNw = usr.getNetwork()
+	email = self.email[emailid]
+	usrNw.emailMarkReaded(email)
+	return {'update_email':email}
 		
 def ban(request):
 	banid = request.GET['ban_id']

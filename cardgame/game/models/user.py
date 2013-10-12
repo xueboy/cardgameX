@@ -66,6 +66,7 @@ class user(gcuser):
 		
 	def getClientData(self):
 		data = {}
+		data['roleid'] = self.roleid
 		data['name'] = self.name
 		data['level'] = self.level
 		data['stamina'] = self.stamina

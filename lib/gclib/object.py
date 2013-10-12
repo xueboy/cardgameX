@@ -47,9 +47,10 @@ class object():
 		return		
 		
 	def getData(self):
-		return [0]	
+		return {}	
 	
 	def load(self, roleid, data):
+		self.roleid = roleid
 		return 0
 		
 	def save(self):

@@ -98,13 +98,13 @@ def api(request, m, f):
 		return info(request)
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
-		ret = [fun(request)]
-		if len(ret) == 1:		
+		ret = fun(request)
+		if not isinstance(ret, tuple):		
 			notify = endRequest(request)
 			if notify:
-				ret[0].update(notify)		
-			return HttpResponse(gcjson.dumps(ret[0]))
-		if len(ret) == 2:
+				ret.update(notify)		
+			return HttpResponse(gcjson.dumps(ret))
+		else:
 			return ret[1]
 	return HttpResponse('api')
 

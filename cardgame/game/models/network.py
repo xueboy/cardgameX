@@ -176,4 +176,7 @@ class network(object):
 			self.save()
 			return {'email_delete':mailid}
 		return {}
-		
+	
+	def emailMarkReaded(self, mail):
+		mail['readed'] = True
+		self.save()
