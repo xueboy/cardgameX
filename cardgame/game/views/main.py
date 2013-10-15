@@ -46,6 +46,7 @@ def index(request):
 		data.update(inv.getClientData())		
 		nw = usr.getNetwork()
 		data.update(nw.getClientData())		
+		usr.notify = {}
 		usr.save()
 		return HttpResponse(gcjson.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
@@ -98,11 +99,11 @@ def api(request, m, f):
 		return info(request)
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
-		ret = fun(request)
+		ret = fun(request)		
 		if not isinstance(ret, tuple):		
 			notify = endRequest(request)
 			if notify:
-				ret.update(notify)		
+				ret.update({'notify':notify})		
 			return HttpResponse(gcjson.dumps(ret))
 		else:
 			return ret[1]
@@ -119,11 +120,3 @@ def test(request):
 	#print img
 #	img.save(r"d:/img.png", "png")
 	return HttpResponse(f, mimetype="image/png")
-	
-def setAvatar(request):
-	f = request.body
-	img = Image()
-	imp.putdata()
-	
-	#img.
-	

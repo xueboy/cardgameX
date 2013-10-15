@@ -14,7 +14,7 @@ def set_team(request):
  	 cardid4 = request.GET['card_id4']
  	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4)
  	 inv.save()
- 	 return team
+ 	 return {'team':team}
 
 
 def set_leader(request):
@@ -23,7 +23,7 @@ def set_leader(request):
 	cardid = request.GET['card_id']	
 	team = inv.setLeader(cardid)
 	inv.save()
-	return team
+	return {'team':team}
 	
 def level_up(request):
 	usr = request.user

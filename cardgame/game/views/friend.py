@@ -10,36 +10,18 @@ def request(request):
 	friendid = request.GET['friend_id']
 	friend = user.get(int(friendid))
 	if friend != None:		
-		friendNw = friend.getNetwork()
-		data = friendNw.addFriendRequest(usr)		
-		return data
-	return {friend:{}}
-		
-		
-def confirm(request):
-	usr = request.user
-	isConfirm = request.GET['is_confirm']
-	friendid = request.GET['friend_id']
-	friend = user.get(int(friendid))	
-	if friend != None:
-		friendNw = friend.getNetwork()
 		usrNw = usr.getNetwork()
-		if usrNw.confirmFriendRequest(friend, isConfirm) == 0:
-			return {'msg': 'friend_max_count'}
-	if isConfirm == '0':
-		return {'friend_request_delete': friendid}
-	else:
-		return {'friend_new': friend.getFriendData(), 'friend_request_delete': friendid}
-			
-
+		data = usrNw.addFriendRequest(friend)		
+		print usr.notify
+		return {'friend':data}
+	return {'msg':'friend_not_exist'}
+		
 def email_anwser(request):
 	usr = request.user
 	mailid = request.GET['email_id']
 	option = request.GET['option']	
 	usrNw = usr.getNetwork()
 	return usrNw.emailAnswer(mailid, option)
-	
-
 
 def search(request):
 	usr = request.user	
@@ -52,15 +34,14 @@ def search(request):
 	else:
 		return {'friend': {}}
 			
-			
 def delete(request):
 	usr = request.user	
 	friendid = request.GET['friend_id']
 	usrNw = usr.getNetwork()
-	if usrNw.deleteFriend(friendid) == 1:
-		return {'friend_delete':friendid}
-	else:
+	friend = user.get(friendid)
+	if not friend:
 		return {'msg':'friend_not_exist'}
+	return usrNw.deleteFriend(friend)	
 			
 def message(request):
 	friendid = request.GET['friend_id']

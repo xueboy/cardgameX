@@ -1,6 +1,7 @@
 ﻿from gclib.object import object
 from gclib.utility import currentTime
 
+
 class network(object):
 	
 	def init(self):
@@ -50,51 +51,38 @@ class network(object):
 		self.sequenceid = data['sequenceid']
 		
 		
-	def addFriendRequest(self, friend):
-		user = self.user
-		data = friend.getFriendData()
+	def addFriendRequest(self, friend):		
+		data = self.user.getFriendData()
 		friendNw = friend.getNetwork()
 		requestid = str(friendNw.sequenceid)
 		friendNw.sequenceid = friendNw.sequenceid + 1
 		data.update({'type':'firend_request', 'id':requestid})		
-		self.email[requestid] = data
-		self.save()
+		friendNw.email[requestid] = data		
 		friendNw.save()
-		if not user.notify.has_key('notify_email'):
-			user.notify['notify_email'] = []
-		user.notify['notify_email'].append(data)
-		user.save()
+		if not friend.notify.has_key('notify_email'):
+			friend.notify['notify_email'] = {}
+		friend.notify['notify_email'][requestid] = data
+		friend.save()		
 		return data	
 		
-	def confirmFriendRequest(self, friend, isConfirm):
-		
-		mailkey = None
-		for emailid in self.email:
-			if self.email[emailid]['type'] == 'firend_request' and self.email[emailid]['roleid'] == friend:
-				mailkey = emailid
-				break
-		
-		if not requestEmail:
-			return 0
-		
-		if isConfirm != '0':			
-			self.addFriend(friend)
-			friendNw = friend.getNetwork()
-			friendNw.addFriend(self)			
-			self.save()
-			friend.save()			
-		else:			
-			self.save()
-			
-		del self.email[mailkey]
-		self.save()
-		
-	
 	def addFriend(self, friend):
 		data = friend.getFriendData()
 		self.friend[str(friend.roleid)] =  data
 		return data
-	
+				
+	def deleteFriend(self, friend):
+		if self.friend.has_key(friend.roleid):
+			del self.friend[friend.roleid]
+			self.save()
+		else:
+			return {'msg':'friend_not_exist'}
+		otherNw = friend.getNetwork()
+		selfroleid = str(self.roleid)
+		if otherNw.friend.has_key(selfroleid):
+			del otherNw.friend[str(selfroleid)]			
+			otherNw.save()
+			return {'friend_delete':friend.roleid}
+			
 	def getFriend(self, friendRoleid):
 		if self.friends.has_key(str(friendRoleid)):
 			return friends[str(friendRoleid)]
@@ -160,7 +148,7 @@ class network(object):
 		if option == 'yes':
 			friendid = mail['roleid']
 			if self.friend.has_key(friendid):
-				return {'msg':'friend_already_exist'}
+				return {'msg':','}
 			friend = self.user.get(friendid)
 			friendData = self.addFriend(friend)
 
@@ -169,7 +157,7 @@ class network(object):
 			mailid = mail['id']
 			del self.email[mailid]
 			self.save()
-			friend.save()
+			friendNw.save()
 			return {'email_delete':mailid, 'friend_new':friendData}
 		elif option == 'no':
 			del self.email[mail['id']]		

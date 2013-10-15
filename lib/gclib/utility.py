@@ -23,7 +23,7 @@ def beginRequest(request,cls):
 
 def endRequest(request):
 	user = request.user
-	notify = user.notify	
+	notify = user.notify		
 	user.notify = {}
 	user.save()
 	return notify

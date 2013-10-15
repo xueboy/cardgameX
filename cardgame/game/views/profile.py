@@ -21,10 +21,13 @@ def set_avatar(request):
 	print(m.hexdigest())
 	
 	file_title = "".join([str(usr.roleid), ".avt"])
-	file_name = "/".join([STATIC_ROOT, "avatar", file_title])		
-	f = open(file_name, "wb")
-	f.write(avatar)
-	f.close()
+	file_name = "/".join([STATIC_ROOT, "avatar", file_title])
+	try:
+		f = open(file_name, "wb")
+		f.write(avatar)
+		f.close()
+	except:
+		return {msg:'avator_io_error'}
 	usr.save()	
 	return {'avatar_id':usr.avatar_id}
 		

@@ -189,16 +189,7 @@ class user(gcuser):
 			friend = user.get(key)
 			friend.addFreind(self)
 			friend.save()
-			
-	def deleteFriend(self, friendid):
-		if self.friends.has_key(friendid):
-			friend = user.get(friendid)
-			del self.friends[friendid]
-			del friend.friends[str(self.roleid)]			
-			self.save()
-			friend.save()
-			return 1
-		return 0
+
 	
 	def onLogin(self):
 		return
