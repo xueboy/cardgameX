@@ -1,14 +1,14 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
-from gclib.gcjson import gcjson
+
 from gclib.object import object
 from gclib.DBConnection import DBConnection
-from gclib.gcuser import gcuser
+from gclib.user import user
 from gclib.utility import currentTime
 import time
 
 
-class gcaccount(object):
+class account(object):
 	
 	def __init__(self):
 		object.__init__(self)

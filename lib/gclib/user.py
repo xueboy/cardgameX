@@ -4,7 +4,7 @@
 from gclib.object import object
 from gclib.DBConnection import DBConnection
 
-class gcuser(object):	
+class user(object):	
 	
 	def __init__(self):
 		object.__init__(self)

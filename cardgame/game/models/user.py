@@ -1,7 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from gclib.gcuser import gcuser
+from gclib.user import user as gcuser
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network

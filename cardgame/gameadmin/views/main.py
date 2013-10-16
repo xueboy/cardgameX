@@ -4,8 +4,8 @@
 from django.shortcuts import render
 from gclib.DBConnection import DBConnection
 from django.http import HttpResponse
-from gclib.gcjson import gcjson
-from gclib.gcconfig import gcconfig
+from gclib.json import json
+from gclib.config import config
 import xlrd
 from xlrd import USE_MMAP
 import sys
@@ -109,7 +109,7 @@ def monster_import(request):
 			monsterConf['probability'] = prob
 			monsterConf['skillId'] = skillId
 			conf[monsterId] = monsterConf
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('monster_import')
 			
 			
@@ -150,7 +150,7 @@ def garcha_import(request):
 			garchaCataConf['cards'] = cardsConf
 			garchaCataConf['totalProb'] = total_prob
 			conf.append(garchaCataConf)
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('garcha_import')
 
 def prompt_import(request):
@@ -169,7 +169,7 @@ def prompt_import(request):
 			prompt = row[1]
 			conf[promptid] = prompt
 			
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('prompt_import')
 
 
@@ -197,7 +197,7 @@ def level_import(request):
 			levelConf['leadership'] = int(leadership)
 			levelConf['friend'] = int(friend)
 			conf[str(int(level))] = levelConf
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('prompt_import')
 	
 def skill_import(request):
@@ -294,7 +294,7 @@ def skill_import(request):
 				skillConf['function'][str(fun2id)] = funConf
 			conf[str(skillid)] = skillConf
 		
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 		
 	return HttpResponse('skill_import')
 			
@@ -351,7 +351,7 @@ def pet_import(request):
 			petConf['evoMaterial'] = evoObjectId
 			petConf['describe'] = desc
 			conf[str(petid)] = petConf
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('pet_import')
 									
 def pet_level_import(request):
@@ -377,7 +377,7 @@ def pet_level_import(request):
 			levelConf.append(star3Exp)
 			levelConf.append(star4Exp)
 			conf[str(level)] = levelConf
-		return HttpResponse(gcjson.dumps(conf))
+		return HttpResponse(json.dumps(conf))
 	return HttpResponse('pet_level_import')
 				
 def dungeon_import(request):
@@ -461,10 +461,9 @@ def dungeon_import(request):
 			fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
 			fieldConf['wave'] = read_waves(row, dropConf)
 			dunConf['field'].append(fieldConf)
-		Conf.append(dunConf)
-			
-			
-	return HttpResponse(gcjson.dumps(Conf))
+		Conf.append(dunConf)			
+		return HttpResponse(json.dumps(Conf))
+	return HttpResponse('dungeon_import')
 	
 def read_waves(row, dropConf):	
 	waveConf = []	

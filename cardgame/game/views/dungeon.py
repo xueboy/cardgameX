@@ -3,7 +3,7 @@
 
 
 from game.utility.config import config
-from gclib.gcjson import gcjson
+from gclib.json import json
 from game.models.user import user
 import time
 

@@ -1,7 +1,7 @@
 #coding:utf-8
 #!/usr/bin/env python
 
-from gclib.gcconfig import gcconfig
+from gclib.config import config as gcconfig
 
 
 class config(gcconfig):

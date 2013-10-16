@@ -1,7 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from gclib.gcjson import gcjson
+from gclib.json import json
 from game.models.account import account
 from game.models.user import user
 

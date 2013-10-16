@@ -4,7 +4,6 @@
 from gclib.object import object
 from random import sample
 from gclib.DBConnection import DBConnection
-from gclib.gcjson import gcjson
 from game.utility.config import config
 from gclib.utility import randint, currentTime, hit
 import time

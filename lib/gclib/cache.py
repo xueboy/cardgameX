@@ -1,6 +1,6 @@
 ﻿from django.core.cache import cache, get_cache
 
-class gccache:
+class cache:
 
 	@staticmethod
 	def loc_setValue(key, val):

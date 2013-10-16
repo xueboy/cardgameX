@@ -1,7 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from gclib.gcaccount import gcaccount
+from gclib.account import account as gcaccount
 from game.models.user import user
 
 class account(gcaccount):		

@@ -1,7 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-from gclib.gcjson import gcjson
+from gclib.json import json
 from game.routine.pet import pet
 from game.routine.garcha import garcha as garchaR
 

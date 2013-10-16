@@ -82,6 +82,7 @@ class network(object):
 			del otherNw.friend[str(selfroleid)]			
 			otherNw.save()
 			return {'friend_delete':friend.roleid}
+		
 			
 	def getFriend(self, friendRoleid):
 		if self.friends.has_key(str(friendRoleid)):

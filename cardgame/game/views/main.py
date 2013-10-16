@@ -2,7 +2,8 @@
 #!/usr/bin/env python
 
 from django.http import HttpResponse
-from gclib.gcjson import gcjson
+from gclib.json import *
+from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
 from gclib.utility import HttpResponse500, beginRequest, onUserLogin, currentTime, endRequest
@@ -48,7 +49,7 @@ def index(request):
 		data.update(nw.getClientData())		
 		usr.notify = {}
 		usr.save()
-		return HttpResponse(gcjson.dumps(data))
+		return HttpResponse(json.dumps(data))
 	return HttpResponse("Hello, world. You're at the test page index.")
 
 
@@ -58,7 +59,7 @@ def info(request):
 	#info[u'dungeon_config_md5'] =  config.getMd5('dungeon')
 	info[u'status'] = u'OK'
 	#info['greet'] = u'ÄãºÃ'
-	return HttpResponse(gcjson.dumps({'info':info}))
+	return HttpResponse(json.dumps({'info':info}))
 	
 def config(request):	
 	beginRequest(request,user)
@@ -89,7 +90,7 @@ def config(request):
 		data['pet_level'] = conf.getClientConfig('pet_level')
 	if prompt_config_md5 != conf.getClientConfigMd5('prompt'):
 		data['prompt'] = conf.getClientConfig('prompt')
-	p = gcjson.dumps(data)
+	p = json.dumps(data)
 	return HttpResponse(p)
 	
 def api(request, m, f):
@@ -104,19 +105,18 @@ def api(request, m, f):
 			notify = endRequest(request)
 			if notify:
 				ret.update({'notify':notify})		
-			return HttpResponse(gcjson.dumps(ret))
+			return HttpResponse(json.dumps(ret))
 		else:
 			return ret[1]
 	return HttpResponse('api')
 
 
 def test(request):	
-	#print "aaa"
-	f = request.body
-	#img = Image.new()
-	#img.putdata(f)
-	#print f
-	#img = Image.open(StringIO.StringIO(f))
-	#print img
-#	img.save(r"d:/img.png", "png")
-	return HttpResponse(f, mimetype="image/png")
+	
+	url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
+	
+	f = curl.url(url)
+	print f
+	
+	
+	return HttpResponse(f, mimetype="text/plain")
