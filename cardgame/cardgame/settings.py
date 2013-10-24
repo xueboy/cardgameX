@@ -147,8 +147,7 @@ CACHES = {
     }
 }
 
-INSTALLED_APPS = (
-		'concurrent_server',
+INSTALLED_APPS = (		
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
