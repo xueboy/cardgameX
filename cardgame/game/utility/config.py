@@ -22,6 +22,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'level':
 			return conf
+		if confname == 'equipment':
+			return conf
 		return None
 	
 	

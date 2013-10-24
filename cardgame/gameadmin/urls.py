@@ -25,5 +25,7 @@ urlpatterns = patterns('',
     url(r'^pet_level_import/$', gameadmin.views.main.pet_level_import),
     url(r'^prompt/$', gameadmin.views.main.prompt),
     url(r'^garcha/$', gameadmin.views.main.garcha),
-    url(r'^garcha_import/$', gameadmin.views.main.garcha_import),    
+    url(r'^garcha_import/$', gameadmin.views.main.garcha_import),
+    url(r'^equipment/$', gameadmin.views.main.equipment),
+    url(r'^equipment_import/$', gameadmin.views.main.equipment_import),    
 )

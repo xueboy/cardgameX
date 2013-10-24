@@ -18,7 +18,6 @@ def set_avatar(request):
 	
 	m = hashlib.md5(avatar)
 	usr.avatar_id = m.hexdigest()
-	print(m.hexdigest())
 	
 	file_title = "".join([str(usr.roleid), ".avt"])
 	file_name = "/".join([STATIC_ROOT, "avatar", file_title])
@@ -54,3 +53,7 @@ def get_avatar_id(request):
 		return {'avatar_md5':m.hexdigest()}
 	except:
 		return {'avatar_md5':''}
+			
+			
+def idle(request):
+	return {}

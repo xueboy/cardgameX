@@ -1,5 +1,7 @@
 ﻿from gclib.object import object
 from gclib.utility import currentTime
+from game.utility.config import config
+from game.models.massyell import massyell
 
 
 class network(object):
@@ -10,8 +12,8 @@ class network(object):
 	
 	def __init__(self):
 		object.__init__(self)
-		self.message = []
-		self.mail = []
+		self.message = {}
+		self.mail = {}
 		self.email = {}			
 		self.gift = {}						#{roleid:'#depend'}
 		self.jail = {}						#[{'roleid':'', 'name':'abc'}]
@@ -22,8 +24,7 @@ class network(object):
 		self.user = None
 		
 	def getData(self):
-		data = {}
-		data['friend_request'] = self.friend_request
+		data = {}		
 		data['friend'] = self.friend
 		data['message'] = self.message
 		data['mail'] = self.mail
@@ -33,17 +34,27 @@ class network(object):
 		return data		
 	
 	def getClientData(self):
+		
+		
+		avatarmap = {}	
+		
+		for key in self.message:
+			otherid = self.message[key]['roleid']
+			if not avatarmap.has_key(otherid):
+				usr = self.user.__class__.get(otherid)
+				if usr:
+					avatarmap[otherid] = usr.avatar_id
+			self.message[key]['avatar_id'] = avatarmap[otherid]			
+				
 		data = {}
-		data['friend'] = self.friend
-		data['friend_request'] = self.friend_request
+		data['friend'] = self.friend	
 		data['message'] = self.message
 		data['mail'] = self.mail
 		data['email'] = self.email
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
-		self.friend_request = data['friend_request']
+		self.roleid = roleid		
 		self.friend = data['friend']
 		self.message = data['message']
 		self.mail = data['mail']
@@ -92,30 +103,34 @@ class network(object):
 		self.updateMessage()
 		toUserNw = toUser.getNetwork()
 		fromUserId = str(self.roleid)		
-		msgData = self.user.getFriendData()
-		msgData.update({'message':msg, 'send_time': currentTime()})
-		toUserNw.message.append(msgData)		
+		requestid = str(toUserNw.sequenceid)
+		toUserNw.sequenceid = toUserNw.sequenceid + 1
+		msgData = self.user.getFriendData()		
+		msgData.update({'message':msg, 'send_time': currentTime(), 'id':requestid})
+		toUserNw.message[requestid] = msgData
 		if not toUser.notify.has_key('notify_message'):
-			toUser.notify['notify_message'] = []
-		toUser.notify['notify_message'].append(msgData)
+			toUser.notify['notify_message'] = {}
+		toUser.notify['notify_message'][requestid] = msgData
 		toUser.save()
 		toUserNw.save()
 	
 	def updateMessage(self):
 		now = currentTime()
 		gameConf = config.getConfig('game')
-		expire = gameConf['message_expiry_date']
-		self.message = filter(lambda x:(x['send_time'] + expire) > now)
+		expire = gameConf['message_expiry_period']
+		self.message = dict((k, v) for k,v in self.message.items() if (v['send_time'] + expire) > now)
 		
 		
 	def sendMail(self, toUser, mail):
 		toUserNw = toUser.getNetwork()		
 		msgData = self.user.getFriendData()	
-		msgData.update({'mail':mail, 'send_time': currentTime()})		
-		toUserNw.mail.append(msgData)
-		if not toUser.notify['notify_mail']:
-			toUser.notify['notify_mail'] = []
-		toUser.notify['notify_mail'].append(msgData)
+		requestid = str(toUserNw.sequenceid)
+		toUserNw.sequenceid = toUserNw.sequenceid + 1
+		msgData.update({'mail':mail, 'send_time': currentTime(), 'id':requestid})		
+		toUserNw.mail[requestid] = msgData
+		if not toUser.notify.has_key('notify_mail'):
+			toUser.notify['notify_mail'] = {}
+		toUser.notify['notify_mail'][requestid] = msgData
 		toUser.save()
 		toUserNw.save()
 		
@@ -125,7 +140,7 @@ class network(object):
 			
 	def updateBlacklist(self):
 		gameConf = config.getConfig('game')
-		expire = gameConf['blacklist_expiry_date']
+		expire = gameConf['blacklist_expiry_period']
 		now = currentTime()		
 		self.blacklist = filter(lambda ban: ban['create_time'] + exp > now, self.blacklist)
 			
@@ -149,7 +164,7 @@ class network(object):
 		if option == 'yes':
 			friendid = mail['roleid']
 			if self.friend.has_key(friendid):
-				return {'msg':','}
+				return {'msg':'friend_not_exist'}
 			friend = self.user.get(friendid)
 			friendData = self.addFriend(friend)
 
@@ -166,6 +181,20 @@ class network(object):
 			return {'email_delete':mailid}
 		return {}
 	
-	def emailMarkReaded(self, mail):
-		mail['readed'] = True
-		self.save()
+	def emailMarkReaded(self, mailid):
+		if self.mail.has_key(mailid):
+			self.mail[mailid]['readed'] = True
+			self.save()
+			return mail[mailid]
+		return {}
+
+	def yell(self, name, msg):
+		ms = massyell.get(0)		
+		return ms.yell(self.roleid, name, msg)
+		
+		
+	@staticmethod
+	def yell_listen():
+		ms = massyell.get(0)
+		return {'yell':ms.listen()}
+		

@@ -48,7 +48,7 @@ def message(request):
 	msg = request.GET['message']
 	usr = request.user
 	toUser = None
-	if friend_id == usr.roleid:
+	if friendid == usr.roleid:
 		toUser = usr
 	else:
 		toUser = user.get(int(friendid))
@@ -69,10 +69,12 @@ def mail(request):
 	if friendid == usr.roleid:
 		return {'msg':'friend_can_not_self'}
 			
-	toUser = user.get(friend_id)
+	toUser = user.get(friendid)
 	if toUser:
+		toUserNw = toUser.getNetwork()
 		if toUserNw.isBan(usr.roleid):
 			return {'msg':'user_is_in_ban'}
+		usrNw = usr.getNetwork()
 		usrNw.sendMail(toUser, mail)
 		return {}
 	return {'msg':'friend_not_found'}
@@ -81,10 +83,9 @@ def eamail_read(request):
 	emailid = request.GET['email_id']
 	
 	usr = request.user
-	usrNw = usr.getNetwork()
-	email = self.email[emailid]
-	usrNw.emailMarkReaded(email)
-	return {'update_email':email}
+	usrNw = usr.getNetwork()	
+	ret = usrNw.emailMarkReaded(emailid)
+	return {'update_email':ret}
 		
 def ban(request):
 	banid = request.GET['ban_id']
@@ -97,3 +98,8 @@ def ban(request):
 		return {}		
 	return {'msg':'friend_not_found'}
 	
+def yell(request):	
+	message = request.GET['message']
+	usr = request.user
+	usrNw = usr.getNetwork()
+	return usrNw.yell(usr.name, message)

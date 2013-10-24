@@ -8,6 +8,7 @@ from game.utility.config import config as conf
 from game.models.account import account
 from gclib.utility import HttpResponse500, beginRequest, onUserLogin, currentTime, endRequest
 from game.models.user import user
+from game.models.network import network
 import game.views.dungeon
 import game.views.gm
 import game.views.card
@@ -61,8 +62,11 @@ def info(request):
 	#info['greet'] = u'ÄãºÃ'
 	return HttpResponse(json.dumps({'info':info}))
 	
-def config(request):	
-	beginRequest(request,user)
+def config(request):
+	try:	
+		beginRequest(request,user)
+	except KeyError:
+		return info(request)
 	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
@@ -72,6 +76,7 @@ def config(request):
 	skill_config_md5 = request.GET['skill_config_md5']
 	pet_level_config_md5 = request.GET['pet_level_config_md5']
 	prompt_config_md5 = request.GET['prompt_config_md5']
+	equipment_config_md5 = request.GET['equipment_config_md5']
 	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
@@ -90,6 +95,8 @@ def config(request):
 		data['pet_level'] = conf.getClientConfig('pet_level')
 	if prompt_config_md5 != conf.getClientConfigMd5('prompt'):
 		data['prompt'] = conf.getClientConfig('prompt')
+	if equipment_config_md5 != conf.getClientConfigMd5('equipment'):
+		data['equipment'] = conf.getClientConfig('equipment')
 	p = json.dumps(data)
 	return HttpResponse(p)
 	
@@ -103,6 +110,9 @@ def api(request, m, f):
 		ret = fun(request)		
 		if not isinstance(ret, tuple):		
 			notify = endRequest(request)
+			yell = network.yell_listen()
+			if yell:
+				notify.update(yell)
 			if notify:
 				ret.update({'notify':notify})		
 			return HttpResponse(json.dumps(ret))
@@ -113,10 +123,21 @@ def api(request, m, f):
 
 def test(request):	
 	
-	url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
+	#url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
+	#f = curl.url(url)
+	#print f	
+	#return HttpResponse(f, mimetype="text/plain")
 	
-	f = curl.url(url)
-	print f
-	
-	
-	return HttpResponse(f, mimetype="text/plain")
+	data = {}
+	data['notify'] = {}
+	data['notify']['notify_email'] = {}
+	data['notify']['notify_email']['1'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
+	data['notify']['notify_email']['2'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
+	data['notify']['notify_mail'] = {}
+	data['notify']['notify_mail']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
+	data['notify']['notify_mail']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
+	data['notify']['notify_message'] = {}
+	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
+	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
+
+	return HttpResponse(json.dumps(data))

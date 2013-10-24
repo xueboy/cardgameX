@@ -40,22 +40,25 @@ def prompt(request):
 
 def garcha(request):
 	return generalConfigRequestProcess(request, 'garcha')	
+	
+def equipment(request):
+	return generalConfigRequestProcess(request, 'equipment')
 
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
 		try:
-			gcconfig.setConfig(confname, confstr)		
+			config.setConfig(confname, confstr)		
 			return render(request, 'index.html', {})
 		except:
 			return render(request, confname + '.html', {'config':confstr})
 	else:
-		confstr = gcconfig.getConfigStr(confname)		
+		confstr = config.getConfigStr(confname)		
 		if confstr != None:			
 			return render(request, confname + '.html', {'config': confstr})
 		else:
-			gcconfig.createConfig(confname)			
+			config.createConfig(confname)			
 			return render(request, confname + '.html', {'config':''})
 
 def monster_import(request):
@@ -147,7 +150,7 @@ def garcha_import(request):
 				garchaConf['prob'] = prob
 				total_prob = total_prob + prob
 				cardsConf.append(garchaConf)				
-			garchaCataConf['cards'] = cardsConf
+			garchaCataConf['card'] = cardConf
 			garchaCataConf['totalProb'] = total_prob
 			conf.append(garchaCataConf)
 		return HttpResponse(json.dumps(conf))
@@ -310,46 +313,103 @@ def pet_import(request):
 		conf = {}
 		for rownum in range(3, sheet.nrows):
 			row = sheet.row_values(rownum)
-			petid = row[3]
-			imageid = row[4]
-			icon = row[5]
-			name = row[6]
-			type = row[8]
-			leadership = row[10]
-			nature = row[12]
-			star = row[13]
-			maxLevel = row[14]
-			hp = row[15]
-			attack = row[16]
-			recover = row[17]
-			agile = row[18]
-			skillid = row[19]
-			evoPrice = row[23]
-			evoId = row[24]
+			petid = unicode(row[3])
+			model = unicode(row[4])
+			icon = unicode(row[5])
+			name = unicode(row[6])
+			type = unicode(row[8])
+			nature = unicode(row[11])
+			attacktype = unicode(row[12])
+			control = int(row[13])
+			controllevel = int(row[14])
+			immunity = int(row[15])
+			immunitylevel = int(row[16])
+			star = int(row[17])
+			strenghth = int(row[18])
+			intelligence = int(row[19])
+			artifice = int(row[20])
+			hit = int(row[21])
+			dodge = int(row[22])
+			critical = int(row[23])
+			tenacity = int(row[24])
+			block = int(row[25])
+			wreck = int(row[26])
+			maxlevel = int(row[27])
+			hp = int(row[28])
+			hpgrowth = int(row[29])
+			attack = int(row[30])
+			attackgrowth = int(row[31])
+			pr = int(row[32])	#Physical Resistance
+			prgrowth = int(row[33])
+			mr = int(row[34])
+			mrgrowth = int(row[35])	#Magical Resistance
+			pa = int(row[36])	#Physical Amplification
+			pagrowth = int(row[37])
+			ma = int(row[38])	#Magical Amplification
+			magrowth = int(row[39])			
+			skillid = [unicode(row[40])]
+			if unicode(row[41]):
+				skillid.append(unicode(row[41]))
+			if unicode(row[42]):
+				skillid.append(unicode(row[42]))
+			if unicode(row[43]):
+				skillid.append(unicode(row[43]))
+			evoId = unicode(row[44])
 			evoObjectId = []
-			evoObjectId.append(str(row[25]))
-			evoObjectId.append(str(row[26]))
-			evoObjectId.append(str(row[27]))
-			evoObjectId.append(str(row[28]))
-			desc = row[29]
+			evoObjectId.append(unicode(row[45]))
+			evoObjectId.append(unicode(row[46]))
+			evoObjectId.append(unicode(row[47]))			
+			evoPrice = int(row[48])
+			desc = unicode(row[49])
+			luck = []
+			if unicode(row[50]):
+				luck.append(unicode(row[50]))
+			if unicode(row[51]):
+				luck.append(unicode(row[51]))
+			if unicode(row[52]):
+				luck.append(unicode(row[52]))
+			if unicode(row[53]):
+				luck.append(unicode(row[54]))
 			petConf = {}
-			petConf['imageId'] = imageid
+			petConf['model'] = model
 			petConf['icon'] = icon
 			petConf['name'] = name
 			petConf['type'] = type
-			petConf['leadership'] = leadership
 			petConf['nature'] = nature
+			petConf['attacktype'] = attacktype
+			petConf['control'] = control
+			petConf['controllevel'] = controllevel
+			petConf['immunity'] = immunity			
+			petConf['immunitylevel'] = immunitylevel
 			petConf['star'] = star
-			petConf['maxLevel'] = maxLevel
+			petConf['strenghth'] = strenghth
+			petConf['intelligence'] = intelligence
+			petConf['artifice'] = artifice
+			petConf['hit'] = hit
+			petConf['dodge'] = dodge
+			petConf['critical'] = critical
+			petConf['tenacity'] = tenacity
+			petConf['block'] = block
+			petConf['wreck'] = wreck			
+			petConf['maxlevel'] = maxlevel
 			petConf['hp'] = hp
+			petConf['hpgrowth'] = hpgrowth			
 			petConf['attack'] = attack
-			petConf['recover'] = recover
-			petConf['agile'] = agile
-			petConf['skillId'] = skillid
-			petConf['evoPrice'] = evoPrice
+			petConf['attackgrowth'] = attackgrowth
+			petConf['pr'] = pr
+			petConf['prgrowth'] = prgrowth
+			petConf['mr'] = mr
+			petConf['mrgrowth'] = mrgrowth
+			petConf['pa'] = pa
+			petConf['pagrowth'] = pagrowth
+			petConf['ma'] = ma
+			petConf['magrowth'] = magrowth			
+			petConf['skillid'] = skillid
 			petConf['evoId'] = evoId
-			petConf['evoMaterial'] = evoObjectId
-			petConf['describe'] = desc
+			petConf['evoObjectId'] = evoObjectId
+			petConf['evoPrice'] = evoPrice
+			petConf['desc'] = desc
+			petConf['luck'] = luck
 			conf[str(petid)] = petConf
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('pet_import')
@@ -589,3 +649,71 @@ def read_wave(row, idx, dropConf):
 		return None
 	wave['more'] = int(row[idx + 13])
 	return wave
+	
+def equipment_import(request):
+	if request.method == 'POST':
+		equipment_file = request.FILES.get('equipment_file')
+		if equipment_file == None:
+			return HttpResponse('装备xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, equipment_file.read())
+		sheet = wb.sheet_by_index(0)
+	
+		conf = {}
+		for rownum in range(4,sheet.nrows):
+			row = sheet.row_values(rownum)
+			eqid = row[0]
+			name = row[1]
+			icon = row[2]
+			type = row[3]
+			stack = row[4]
+			nature = row[6]
+			quality = row[8]
+			levelreq = row[9]			
+			hp = row[10]
+			hpgrowth = row[11]
+			pa = row[12]
+			pagrowth = row[13]
+			ma = row[14]
+			magrowth = row[15]
+			pd = row[16]
+			pdgrowth = row[17]
+			md = row[18]
+			mdgrowth = row[19]
+			pt = row[20]
+			ptgrowth = row[21]
+			mt = row[22]
+			mtgrowth = row[23]			
+			price = row[27]
+			desc = row[28]
+			
+			
+			equipmentConf = {}
+			equipmentConf['eqid'] = eqid
+			equipmentConf['name'] = name
+			equipmentConf['icon'] = icon
+			equipmentConf['type'] = type
+			equipmentConf['stack'] = stack
+			equipmentConf['nature'] = nature
+			equipmentConf['quality'] = quality
+			equipmentConf['levelreq'] = int(levelreq)			
+			equipmentConf['hp'] = int(hp)
+			equipmentConf['hpgrowth'] = int(hpgrowth)
+			equipmentConf['pa'] = int(pa)
+			equipmentConf['pagrowth'] = int(pagrowth)
+			equipmentConf['ma'] = int(ma)
+			equipmentConf['magrowth'] = int(magrowth)
+			equipmentConf['pd'] = int(pd)
+			equipmentConf['pdgrowth'] = int(pdgrowth)
+			equipmentConf['md'] = int(md)
+			equipmentConf['mdgrowth'] = int(mdgrowth)
+			equipmentConf['pt'] = int(pt)
+			equipmentConf['ptgrowth'] = int(ptgrowth)
+			equipmentConf['mt'] = int(mt)
+			equipmentConf['mtgrowth'] = int(mtgrowth)			
+			equipmentConf['price'] = int(price)
+			equipmentConf['desc'] = desc			
+			
+			conf[eqid] = equipmentConf
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('equipment_import')

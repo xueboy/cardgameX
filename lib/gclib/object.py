@@ -20,7 +20,7 @@ class object():
 		self.extend_columns = []
 	
 	def install(self, roleid):
-		return DBPersistent.indstall(sefl.roleid)
+		return DBPersistent.install(self, roleid)
 		#conn = DBConnection.getConnection()
 		#conn.excute("INSERT INTO " + self.__class__.__name__ + "(roleid, object) VALUES (%s, %s)", [roleid, json.dumps(self.getData())])
 		#self.id = conn.insert_id()

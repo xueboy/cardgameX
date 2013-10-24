@@ -10,8 +10,7 @@ def add_card(request):
 	inv = usr.getInventory()
 	card = inv.addCard(card_id)
 	if card == None:
-		return {'msg':'fail_add_card'}
-	usr.save()
+		return {'msg':'fail_add_card'}	
 	inv.save()
 	
 	data = {}
@@ -19,14 +18,13 @@ def add_card(request):
 	return data
 
 def del_card(request):
-	cardid = int(request.GET['id'])
+	id = int(request.GET['id'])
 	usr = request.user
 	inv = usr.getInventory()	
-	if inv.delCard(cardid) == 0:
-		return {'msg':"fail_del_card"}
-	usr.save()	
+	if inv.delCard(id) == 0:
+		return {'msg':"fail_del_card"}	
 	inv.save()	
-	return {'card':inv.getClientData}
+	return {'del_card':id}
 		
 def add_money(request):
 	money = int(request.GET['money'])
@@ -73,4 +71,24 @@ def gain_exp_card(request):
 	return {'update_card':card}
 			
 		
+def add_equipment(request):
+	equipid = request.GET['equipid']
+	usr = request.user
+	inv = usr.getInventory()
+	equip = inv.addEquipment(equipid)
+	if equip == None:
+		return {'msg':'fail_add_equipment'}
+	inv.save()
+	data = {}
+	data['add_equipment'] = equip
+	return data
 	
+	
+def del_equipment(request):
+	id = request.GET['id']
+	usr = request.user
+	inv = usr.getInventory()
+	if inv.deleteEquipment(id) == 0:
+		return {'msg':'fail_del_equipment'}
+	inv.save()
+	return {'del_equipment':id}

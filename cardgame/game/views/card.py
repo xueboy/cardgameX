@@ -12,18 +12,12 @@ def set_team(request):
  	 cardid2 = request.GET['card_id2']
  	 cardid3 = request.GET['card_id3']
  	 cardid4 = request.GET['card_id4']
- 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4)
+ 	 cardid5 = request.GET['card_id5']
+ 	 cardid6 = request.GET['card_id6']
+ 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
  	 inv.save()
  	 return {'team':team}
 
-
-def set_leader(request):
-	usr = request.user
-	inv = usr.getInventory()
-	cardid = request.GET['card_id']	
-	team = inv.setLeader(cardid)
-	inv.save()
-	return {'team':team}
 	
 def level_up(request):
 	usr = request.user
@@ -77,3 +71,12 @@ def garcha(request):
 		garchaAmount = 10000	
 	res = garchaR.garcha_once(usr, garchaAmount)	
 	return res
+	
+def training(request):
+ 	usr = request.user
+ 	
+ 	id = request.GET['id']
+ 	traininglevel = request.GET['training_level']
+ 	
+ 	ret = pet.training(usr, id, traininglevel)
+ 	return ret

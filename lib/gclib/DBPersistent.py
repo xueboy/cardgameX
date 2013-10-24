@@ -7,10 +7,13 @@ class DBPersistent:
 	@staticmethod
 	def install(obj, roleid):
 		conn = DBConnection.getConnection()
-		conn.excute("INSERT INTO " + self.__class__.__name__ + "(roleid, object) VALUES (%s, %s)", [roleid, json.dumps(self.getData())])
-		self.id = conn.insert_id()
-		self.roleid = roleid
-		return self.id
+		conn.excute("INSERT INTO " + obj.__class__.__name__ + "(roleid, object) VALUES (%s, %s)", [roleid, json.dumps(obj.getData())])
+		obj.id = conn.insert_id()
+		obj.roleid = roleid
+		for column in obj.extend_columns:
+			setattr(obj, column['name'], column['value'])	
+		
+		return obj.id
 		
 	@staticmethod		
 	def get(tp, roleid):
@@ -23,7 +26,7 @@ class DBPersistent:
 			obj.load(roleid, json.loads(res[0][2]))
 			i = 0			
 			for column in obj.extend_columns:
-				setattr(obj, column, res[0][3 + i])
+				setattr(obj, column['name'], res[0][3 + i])
 				i = i + 1
 			return obj
 		return None
@@ -36,8 +39,8 @@ class DBPersistent:
 		update_columns = ['object = %s']
 		update_value = [dumpstr]
 		for column in obj.extend_columns:
-			update_columns.append(column + ' = %s')
-			update_value.append(getattr(obj, column))
+			update_columns.append(column['name'] + ' = %s')
+			update_value.append(getattr(obj, column['name']))
 		update_value.append(obj.id)		
 		sql = "UPDATE " + obj.__class__.__name__ + " SET " + ', '.join(update_columns) + " WHERE id = %s"			
 		conn.excute(sql, update_value)

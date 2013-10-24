@@ -31,7 +31,7 @@ class user(gcuser):
 		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 		self.notify = {}
 		self.gender = 'male'
-		self.extend_columns.append('avatar_id')
+		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		
 	
 	def init(self, acc):

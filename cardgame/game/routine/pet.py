@@ -1,6 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
+import random
 from game.utility.config import config
 
 class pet:
@@ -69,4 +70,61 @@ class pet:
 		return total
 		
 
+
+	@staticmethod
+	def training(usr, cardid, trainlevel):
+		inv = usr.getInventory()
+		
+		card = inv.getCard(cardid)
+		if not card:
+			return {'msg':'card_not_found'}
+			
+		cost = None	
+		gameConf = config.getConfig('game')
+		if trainlevel == '1':
+			cost = gameConf['training_price1']
+		elif trainlevel == '2':
+			cost = gameConf['training_price2']
+		elif trainlevel == '3':
+			cost = gameConf['training_price3']
+		else:
+			return {'msg':'training_over_level'}
+		
+		if cost['gold'] > usr.gold:
+			return {'msg':'gold_not_enough'}
+		if cost['gem'] > usr.gem:
+			return {'msg': 'gem_not_enough'}
+		
+		
+		strrev = 0
+		itlrev = 0
+		artrev = 0
+		if trainlevel == '1':
+			strrev = random.randint(-10, int(card['level']))
+			itlrev = random.randint(-10, int(card['level'] * 1.5 - strrev))
+			artrev = random.randint(-10, int(card['level'] * 1.5 - strrev - itlrev))
+		elif trainlevel == '2':
+			strrev = random.randint(-10, int(card['level']))
+			itlrev = random.randint(-10, int(card['level'] * 2 - strrev))
+			artrev = random.randint(-10, int(card['level'] * 2 - strrev - itlrev))
+		elif trainlevel == '3':
+			strrev = random.randint(-10, int(card['level']))
+			itlrev = random.randint(-10, int(card['level'] * 2.5 - strrev))
+			artrev = random.randint(-10, int(card['level'] * 2.5 - strrev - itlrev))
+		elif trainlevel == '4':
+			strrev = random.randint(-10, int(card['level']))
+			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
+			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
+		
+		card['strenghth'] = card['strenghth'] + strrev
+		card['intelligence'] = card['intelligence'] + itlrev
+		card['artifice'] = card['artifice'] + artrev
+		
+		usr.gold = usr.gold - cost['gold']
+		usr.gem = usr.gem - cost['gem']
+		
+		inv.save()
+		usr.save()
+		
+		return {'training_card':card, 'gold':usr.gold, 'gem':usr.gem}	
 		

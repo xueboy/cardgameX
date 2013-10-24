@@ -80,7 +80,7 @@ class garcha:
 		
 		r = random.randint(0, cataConf['totalProb'] - 1)
 		garchaCard = None
-		for card in cataConf['cards']:
+		for card in cataConf['card']:
 			if r >  card['prob']:
 				r = r - card['prob']
 			else:

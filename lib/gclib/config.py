@@ -4,7 +4,7 @@
 from gclib.json import json
 from DBConnection import DBConnection
 from gclib.cache import cache
-import md5
+import hashlib
 
 
 class config:
@@ -24,13 +24,13 @@ class config:
 		if conf == None:
 			conf = json.loads(config.getConfigStr(confname))
 			cache.loc_setValue('config:' + confname, conf)
-		#conf = gcjson.loads(gcconfig.getConfigStr(confname))
+		#conf = json.loads(config.getConfigStr(confname))
 		return conf
 				
 	@staticmethod 
 	def getMd5(confobj):		
-		confpurestr = gcjson.dumps(confobj).encode("utf-8")
-		m = md5.new()		
+		confpurestr = json.dumps(confobj).encode("utf-8")
+		m = hashlib.md5()		
 		m.update(confpurestr)
 		return m.hexdigest().decode('utf-8')
 			
