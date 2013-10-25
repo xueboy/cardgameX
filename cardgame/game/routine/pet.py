@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 import random
+import math
 from game.utility.config import config
 
 class pet:
@@ -77,7 +78,7 @@ class pet:
 		
 		card = inv.getCard(cardid)
 		if not card:
-			return {'msg':'card_not_found'}
+			return {'msg':'card_not_exist'}
 			
 		cost = None	
 		gameConf = config.getConfig('game')
@@ -88,7 +89,7 @@ class pet:
 		elif trainlevel == '3':
 			cost = gameConf['training_price3']
 		else:
-			return {'msg':'training_over_level'}
+			return {'msg':'level_out_of_expect'}
 		
 		if cost['gold'] > usr.gold:
 			return {'msg':'gold_not_enough'}
@@ -128,3 +129,47 @@ class pet:
 		
 		return {'training_card':card, 'gold':usr.gold, 'gem':usr.gem}	
 		
+		
+	@staticmethod
+	def sell(usr, id):
+			
+		inv = usr.getInventory()
+		card = inv.getCard(id)
+		if not card:
+			return {'msg':'card_not_exit'}
+			
+		petConf = config.getConfig('pet')
+		gameConf = config.getConfig('game')
+			
+		param1 = 0
+		param2 = 0
+			
+		cardid = card['cardid']			
+			
+		if petConf[cardid]['star'] == 1:
+			param1 = gameConf['pet_star_1_price_param1']
+			param2 = gameConf['pet_star_1_price_param2']
+		elif petConf[cardid]['star'] == 2:
+			param1 = gameConf['pet_star_2_price_param1']
+			param2 = gameConf['pet_star_2_price_param2']
+		elif petConf['cardid']['star'] == 3:
+			param1 = gameConf['pet_star_3_price_param1']
+			param2 = gameConf['pet_star_3_price_param2']
+		elif petConf['cardid']['star'] == 4:
+			param1 = gameConf['pet_star_4_price_param1']
+			param2 = gameConf['pet_star_4_price_param2']
+		elif petConf['cardid']['star'] == 5:
+			param1 = gameConf['pet_star_5_price_param1']
+			param2 = gameConf['pet_star_5_price_param2']
+		else: 
+			return {'msg':'star_outof_expect'}
+				
+		price = param1 + param2 * card['level']
+		price = int(price - math.fmod(price, 100))
+			
+		usr.gold = usr.gold + price
+			
+		inv.delCard(id);
+		usr.save()
+			
+		return {'gold': usr.gold, 'sell_card':id}

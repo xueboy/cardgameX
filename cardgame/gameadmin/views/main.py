@@ -319,13 +319,13 @@ def pet_import(request):
 			name = unicode(row[6])
 			type = unicode(row[8])
 			nature = unicode(row[11])
-			attacktype = unicode(row[12])
+			attacktype = int(row[12])
 			control = int(row[13])
 			controllevel = int(row[14])
 			immunity = int(row[15])
 			immunitylevel = int(row[16])
 			star = int(row[17])
-			strenghth = int(row[18])
+			strength = int(row[18])
 			intelligence = int(row[19])
 			artifice = int(row[20])
 			hit = int(row[21])
@@ -356,19 +356,24 @@ def pet_import(request):
 				skillid.append(unicode(row[43]))
 			evoId = unicode(row[44])
 			evoObjectId = []
-			evoObjectId.append(unicode(row[45]))
-			evoObjectId.append(unicode(row[46]))
-			evoObjectId.append(unicode(row[47]))			
-			evoPrice = int(row[48])
-			desc = unicode(row[49])
+			if row[45]:
+				evoObjectId.append(unicode(row[45]))
+			if row[46]:
+				evoObjectId.append(unicode(row[46]))
+			if row[47]:
+				evoObjectId.append(unicode(row[47]))
+			if row[48]:
+				evoObjectId.append(unicode(row[48]))
+			evoPrice = int(row[49])
+			desc = unicode(row[50])
 			luck = []
-			if unicode(row[50]):
-				luck.append(unicode(row[50]))
 			if unicode(row[51]):
 				luck.append(unicode(row[51]))
 			if unicode(row[52]):
 				luck.append(unicode(row[52]))
 			if unicode(row[53]):
+				luck.append(unicode(row[53]))
+			if unicode(row[54]):
 				luck.append(unicode(row[54]))
 			petConf = {}
 			petConf['model'] = model
@@ -382,7 +387,7 @@ def pet_import(request):
 			petConf['immunity'] = immunity			
 			petConf['immunitylevel'] = immunitylevel
 			petConf['star'] = star
-			petConf['strenghth'] = strenghth
+			petConf['strength'] = strength
 			petConf['intelligence'] = intelligence
 			petConf['artifice'] = artifice
 			petConf['hit'] = hit

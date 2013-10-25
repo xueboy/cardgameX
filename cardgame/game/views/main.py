@@ -63,10 +63,10 @@ def info(request):
 	return HttpResponse(json.dumps({'info':info}))
 	
 def config(request):
-	try:	
-		beginRequest(request,user)
-	except KeyError:
-		return info(request)
+#	try:	
+#		beginRequest(request,user)
+#	except KeyError:
+#		return info(request)
 	data = {}	
 	dungeon_config_md5 = request.GET['dungeon_config_md5']
 	level_config_md5 = request.GET['level_config_md5']
@@ -77,6 +77,16 @@ def config(request):
 	pet_level_config_md5 = request.GET['pet_level_config_md5']
 	prompt_config_md5 = request.GET['prompt_config_md5']
 	equipment_config_md5 = request.GET['equipment_config_md5']
+	
+	data['dungeon'] = ''
+	data['level'] = ''
+	data['game'] = ''
+	data['pet'] = ''
+	data['monster'] = ''
+	data['skill'] = ''
+	data['pet_level'] = ''
+	data['prompt'] = ''
+	data['equipment'] = ''
 	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):

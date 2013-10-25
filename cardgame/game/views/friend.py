@@ -79,13 +79,21 @@ def mail(request):
 		return {}
 	return {'msg':'friend_not_found'}
 
-def eamail_read(request):
+def email_read(request):
 	emailid = request.GET['email_id']
 	
 	usr = request.user
 	usrNw = usr.getNetwork()	
 	ret = usrNw.emailMarkReaded(emailid)
 	return {'update_email':ret}
+
+def email_delete(request):
+	emailid = request.GET['email_id']
+	
+	usr = request.user
+	usrNw = usr.getNetwork()
+	return usrNw.emailDelete(emailid)
+	
 		
 def ban(request):
 	banid = request.GET['ban_id']

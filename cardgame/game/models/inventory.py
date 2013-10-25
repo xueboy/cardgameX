@@ -48,7 +48,7 @@ class inventory(object):
 			data['id'] = self.generateCardName()
 			data['level'] = level
 			data['exp'] = 0	
-			data['strenghth'] = cardconf[card_id]['strenghth']
+			data['strength'] = cardconf[card_id]['strength']
 			data['intelligence'] = cardconf[card_id]['intelligence']
 			data['artifice'] = cardconf[card_id]['artifice']
 			self.card.append(data)			

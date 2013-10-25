@@ -13,7 +13,8 @@ class config(gcconfig):
 		if confname == 'game':
 			return conf
 		if confname == 'pet':
-			return config.petFileter(conf)
+			#return config.petFileter(conf)
+			return conf
 		if confname == 'monster':
 			return conf
 		if confname == 'skill':
@@ -23,6 +24,8 @@ class config(gcconfig):
 		if confname == 'level':
 			return conf
 		if confname == 'equipment':
+			return conf
+		if confname == 'prompt':
 			return conf
 		return None
 	

@@ -78,5 +78,12 @@ def training(request):
  	id = request.GET['id']
  	traininglevel = request.GET['training_level']
  	
- 	ret = pet.training(usr, id, traininglevel)
- 	return ret
+ 	return pet.training(usr, id, traininglevel) 	
+ 	
+def sell(request):
+	
+	usr = request.user
+	id = request.GET['id']
+	return pet.sell(usr, id)
+	
+	

@@ -181,12 +181,19 @@ class network(object):
 			return {'email_delete':mailid}
 		return {}
 	
-	def emailMarkReaded(self, mailid):
-		if self.mail.has_key(mailid):
-			self.mail[mailid]['readed'] = True
+	def emailMarkReaded(self, emailid):
+		if self.email.has_key(emailid):
+			self.email[emailid]['readed'] = True
 			self.save()
-			return mail[mailid]
+			return email[emailid]
 		return {}
+		
+	def emailDelete(self, emailid):
+		if self.email.has_key(emailid):
+			del self.email[emailid]
+			self.save()
+			return {'email_delete':emailid}
+		return {'email_not_found'}
 
 	def yell(self, name, msg):
 		ms = massyell.get(0)		
