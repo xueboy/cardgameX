@@ -86,4 +86,6 @@ def sell(request):
 	id = request.GET['id']
 	return pet.sell(usr, id)
 	
-	
+
+def strengthen(request):
+	pass

@@ -14,6 +14,7 @@ import game.views.gm
 import game.views.card
 import game.views.friend
 import game.views.profile
+import game.views.equipment
 import sys
 #from PIL import Image
 #import StringIO
@@ -24,7 +25,8 @@ viewsmap = {
 	'gm':sys.modules['game.views.gm'],
 	'card':sys.modules['game.views.card'],
 	'friend':sys.modules['game.views.friend'],
-	'profile': sys.modules['game.views.profile']
+	'profile': sys.modules['game.views.profile'],
+	'equipment': sys.modules['game.views.equipment'],
 }
 
 def index(request):
@@ -60,6 +62,19 @@ def info(request):
 	#info[u'dungeon_config_md5'] =  config.getMd5('dungeon')
 	info[u'status'] = u'OK'
 	#info['greet'] = u'ÄãºÃ'
+	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
+	info['level_md5'] = conf.getClientConfigMd5('level')
+	info['game_md5'] = conf.getClientConfigMd5('game')
+	info['pet_md5'] = conf.getClientConfigMd5('pet')
+	info['monster_md5'] = conf.getClientConfigMd5('monster')
+	info['skill_md5'] = conf.getClientConfigMd5('skill')
+	info['pet_level_md5'] = conf.getClientConfigMd5('pet_level')
+	info['prompt_md5'] = conf.getClientConfigMd5('prompt')
+	info['equipment_md5'] = conf.getClientConfigMd5('equipment')
+	info['strength_price_md5'] = conf.getClientConfigMd5('strength_price')
+	info['strength_probability_md5'] = conf.getClientConfigMd5('strength_probability')
+	
+	
 	return HttpResponse(json.dumps({'info':info}))
 	
 def config(request):
@@ -68,15 +83,17 @@ def config(request):
 #	except KeyError:
 #		return info(request)
 	data = {}	
-	dungeon_config_md5 = request.GET['dungeon_config_md5']
-	level_config_md5 = request.GET['level_config_md5']
-	game_config_md5 = request.GET['game_config_md5']
-	pet_config_md5 = request.GET['pet_config_md5']
-	monster_config_md5 = request.GET['monster_config_md5']
-	skill_config_md5 = request.GET['skill_config_md5']
-	pet_level_config_md5 = request.GET['pet_level_config_md5']
-	prompt_config_md5 = request.GET['prompt_config_md5']
-	equipment_config_md5 = request.GET['equipment_config_md5']
+	dungeon_config_md5 = request.GET['dungeon_md5']
+	level_config_md5 = request.GET['level_md5']
+	game_config_md5 = request.GET['game_md5']
+	pet_config_md5 = request.GET['pet_md5']
+	monster_config_md5 = request.GET['monster_md5']
+	skill_config_md5 = request.GET['skill_md5']
+	pet_level_config_md5 = request.GET['pet_level_md5']
+	prompt_config_md5 = request.GET['prompt_md5']
+	equipment_config_md5 = request.GET['equipment_md5']
+	strength_price_config_md5 = request.GET['strength_price_md5']
+	strength_probability_config_md5 = request.GET['strength_probability_md5']
 	
 	data['dungeon'] = ''
 	data['level'] = ''
@@ -87,6 +104,8 @@ def config(request):
 	data['pet_level'] = ''
 	data['prompt'] = ''
 	data['equipment'] = ''
+	data['strength_price'] = ''
+	data['strength_probability'] = ''
 	
 	
 	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
@@ -107,8 +126,24 @@ def config(request):
 		data['prompt'] = conf.getClientConfig('prompt')
 	if equipment_config_md5 != conf.getClientConfigMd5('equipment'):
 		data['equipment'] = conf.getClientConfig('equipment')
+	if strength_price_config_md5 != conf.getClientConfigMd5('strength_price'):
+		data['strength_price'] = conf.getClientConfig('strength_price')
+	if strength_probability_config_md5 != conf.getClientConfigMd5('strength_probability'):
+		data['strength_probability'] = conf.getClientConfig('strength_probability')
 	p = json.dumps(data)
 	return HttpResponse(p)
+	
+def get_config(request):
+	
+	
+	configkey = request.GET['config']
+	
+	data = conf.getClientConfig(configkey)
+	
+	return HttpResponse(json.dumps(data))
+		
+	
+
 	
 def api(request, m, f):
 	try:

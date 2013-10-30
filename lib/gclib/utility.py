@@ -31,6 +31,9 @@ def endRequest(request):
 def currentTime():
 	return int(time.time())
 	
+def dayTime():
+	return int(time.time()) % (60 * 60 * 24)
+	
 def hit(probs):
 	"""
 	give a weight list and randmon choose a element depend on weights as probablity.

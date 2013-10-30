@@ -203,5 +203,8 @@ class network(object):
 	@staticmethod
 	def yell_listen():
 		ms = massyell.get(0)
-		return {'yell':ms.listen()}
+		yells = ms.listen()
+		if yells:
+			return {'yell':ms.listen()}
+		return {}
 		

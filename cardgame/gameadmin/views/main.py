@@ -44,6 +44,11 @@ def garcha(request):
 def equipment(request):
 	return generalConfigRequestProcess(request, 'equipment')
 
+def strength_probability(request):
+	return generalConfigRequestProcess(request, 'strength_probability')
+
+def strength_price(request):
+	return generalConfigRequestProcess(request, 'strength_price')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -722,3 +727,36 @@ def equipment_import(request):
 			conf[eqid] = equipmentConf
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('equipment_import')
+	
+	
+def strength_price_import(request):
+	if request.method == 'POST':
+		strength_price_file = request.FILES.get('strength_price_file')
+		if strength_price_file == None:
+			return HttpResponse('强化价格xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, strength_price_file.read())
+		sheet = wb.sheet_by_index(1)
+	
+		conf = {}
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+		
+			quality = row[1]
+			level = int(row[2])
+			price = int(row[3])
+			probability = int(row[4])
+		
+			if level < 1:
+				return HttpResponse('level can not less 1')
+			if not conf.has_key(quality):
+				conf[quality] = []
+		
+			priceConf = conf[quality]
+			
+			while len(priceConf) < level:
+				priceConf.append({})			
+			priceConf[level - 1] = {'price':price}
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('strength_price_import')

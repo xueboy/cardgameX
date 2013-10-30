@@ -20,6 +20,7 @@ class user(gcuser):
 		self.gem = 0
 		self.gold = 0
 		self.exp = 0
+		self.vid = 0
 		self.vipLevel = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
@@ -31,6 +32,9 @@ class user(gcuser):
 		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 		self.notify = {}
 		self.gender = 'male'
+		self.equipment_strength_cooldown = 0
+		self.fatigue = 0
+		self.fatigue_last_time = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		
 	
@@ -41,7 +45,8 @@ class user(gcuser):
 		self.name = acc.nickname
 		self.level = 1
 		self.stamina = 100		
-		self.vipLevel = 1
+		self.vipLevel = 0
+		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0		
 	
@@ -53,6 +58,7 @@ class user(gcuser):
 		data['gem'] = self.gem
 		data['gold'] = self.gold
 		data['exp'] = self.exp
+		data['vip'] = self.vip
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
 		data['last_card_no'] = self.last_card_no
@@ -62,6 +68,9 @@ class user(gcuser):
 		data['last_login'] = self.last_login
 		data['garcha'] = self.garcha
 		data['notify'] = self.notify
+		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
+		data['fatigue'] = self.fatigue
+		data['fatigue_last_time'] = self.fatigue_last_time
 		return data
 		
 	def getClientData(self):
@@ -73,9 +82,12 @@ class user(gcuser):
 		data['gem'] = self.gem
 		data['gold'] = self.gold
 		data['exp'] = self.exp
+		data['vip'] = self.vip
 		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		data['avatar_id'] = self.avatar_id
+		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
+		data['fatigue_last_time'] = self.fatigue_last_time
 		return {'user': data}
 		
 		
@@ -98,12 +110,14 @@ class user(gcuser):
 		self.gem = data['gem']
 		self.gold = data['gold']
 		self.exp = data['exp']
-		self.vipLevel = data['vipLevel']		
+		self.vip = data['vip']		
 		self.stamina_last_recover = data['stamina_last_recover']		
 		self.last_card_no = data['last_card_no']		
 		self.last_login = data['last_login']		
-		self.leader = data['leader']		
+		self.leader = data['leader']		 
 		self.notify = data['notify']
+		self.equipment_strength_cooldown = data['equipment_strength_cooldown']
+		self.fatigue_last_time = data['fatigue_last_time']
 			 
 		
 	def getCardNo(self):
@@ -197,4 +211,9 @@ class user(gcuser):
 		
 	def onLevelup(self):
 		return
-		
+	
+	def updateFatigue(self):
+		gameConf = config.getConfig('game')
+		if gameConf['fatigue_reset_time'] > self.fatigue_last_time:
+			self.fatigue = 0
+			fatigue_last_time = currentTime()

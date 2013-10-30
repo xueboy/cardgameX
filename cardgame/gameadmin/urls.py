@@ -27,5 +27,9 @@ urlpatterns = patterns('',
     url(r'^garcha/$', gameadmin.views.main.garcha),
     url(r'^garcha_import/$', gameadmin.views.main.garcha_import),
     url(r'^equipment/$', gameadmin.views.main.equipment),
-    url(r'^equipment_import/$', gameadmin.views.main.equipment_import),    
+    url(r'^equipment_import/$', gameadmin.views.main.equipment_import),
+    url(r'^strength_probability/$', gameadmin.views.main.strength_probability),
+    url(r'^strength_price/$', gameadmin.views.main.strength_price),
+    url(r'^strength_price_import/$', gameadmin.views.main.strength_price_import),
+    
 )

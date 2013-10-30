@@ -6,6 +6,8 @@ import os
 from django.http import HttpResponse
 from cardgame.settings import STATIC_ROOT
 
+from game.models.user import user
+
 def set_avatar(request):
 	
 	gender = request.GET['gender']
@@ -57,3 +59,20 @@ def get_avatar_id(request):
 			
 def idle(request):
 	return {}
+	
+def show(request):
+	
+	roleid = request.GET['role_id']
+	
+	other = user.get(roleid)
+	if not other:
+		return {'msg':'user_not_exist'}
+		
+	
+	otNw = other.getNetwork()
+	data = {}
+	data['name'] = other.name
+	data['level'] = other.level
+	data['message'] = otNw.message
+	
+	return data

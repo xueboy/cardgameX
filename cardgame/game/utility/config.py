@@ -27,6 +27,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'prompt':
 			return conf
+		if confname == 'strength_price':
+			return conf
+		if confname == 'strength_probability':
+			return conf
 		return None
 	
 	

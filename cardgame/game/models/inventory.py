@@ -67,7 +67,7 @@ class inventory(object):
 			data = {}
 			data['equipmentid'] = id
 			data['id'] = self.generateEquipmentName()
-			data['level'] = 1
+			data['level'] = 0
 			self.equipment.append(data)
 			return data
 		return None
@@ -92,10 +92,16 @@ class inventory(object):
 		name = ''.join([perfix, str(serveridLen), str(serverid), str(roleidLen), str(self.roleid), ts, str(noLen), str(no)])
 		return name
 		
-	def getCard(self, cardid):
+	def getCard(self, id):
 		for card in self.card:			
-			if card['id'] == cardid:
+			if card['id'] == id:
 				return card
+		return None
+		
+	def getEquipment(self, id):
+		for equipment in self.equipment:
+			if equipment['id'] == id:
+				return equipment
 		return None
 	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
