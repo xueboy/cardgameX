@@ -5,7 +5,7 @@ from gclib.user import user as gcuser
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
-from gclib.utility import currentTime, retrieval_object
+from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 
 class user(gcuser):
@@ -20,8 +20,7 @@ class user(gcuser):
 		self.gem = 0
 		self.gold = 0
 		self.exp = 0
-		self.vid = 0
-		self.vipLevel = 0
+		self.vip = 0		
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
 		self.leader = ''		
@@ -35,6 +34,7 @@ class user(gcuser):
 		self.equipment_strength_cooldown = 0
 		self.fatigue = 0
 		self.fatigue_last_time = 0
+		self.equipment_strength_last_time = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		
 	
@@ -44,8 +44,7 @@ class user(gcuser):
 		self.roleid = acc.roleid
 		self.name = acc.nickname
 		self.level = 1
-		self.stamina = 100		
-		self.vipLevel = 0
+		self.stamina = 100				
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0		
@@ -59,7 +58,6 @@ class user(gcuser):
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vip'] = self.vip
-		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover'] = self.stamina_last_recover
 		data['last_card_no'] = self.last_card_no
 		data['last_login'] = self.last_login		
@@ -69,6 +67,7 @@ class user(gcuser):
 		data['garcha'] = self.garcha
 		data['notify'] = self.notify
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
+		data['equipment_strength_last_time'] = self.equipment_strength_last_time
 		data['fatigue'] = self.fatigue
 		data['fatigue_last_time'] = self.fatigue_last_time
 		return data
@@ -83,11 +82,11 @@ class user(gcuser):
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vip'] = self.vip
-		data['vipLevel'] = self.vipLevel
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		data['avatar_id'] = self.avatar_id
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		data['fatigue_last_time'] = self.fatigue_last_time
+		data['equipment_strength_last_time'] = self.equipment_strength_last_time
 		return {'user': data}
 		
 		
@@ -117,6 +116,8 @@ class user(gcuser):
 		self.leader = data['leader']		 
 		self.notify = data['notify']
 		self.equipment_strength_cooldown = data['equipment_strength_cooldown']
+		self.equipment_strength_last_time = data['equipment_strength_last_time']
+		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
 			 
 		
@@ -206,14 +207,21 @@ class user(gcuser):
 
 	
 	def onLogin(self):
-		return
+		pass
 		
 		
 	def onLevelup(self):
-		return
+		pass
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')
-		if gameConf['fatigue_reset_time'] > self.fatigue_last_time:
+		if is_expire(gameConf['fatigue_reset_time']):
 			self.fatigue = 0
 			fatigue_last_time = currentTime()
+
+	def updateEquipmentStrengthCooldown(self):
+		now = currentTime()
+		elapse = now - self.equipment_strength_last_time
+		self.equipment_strength_cooldown = self.equipment_strength_cooldown - elapse
+		if self.equipment_strength_cooldown < 0:
+			self.equipment_strength_cooldown = 0

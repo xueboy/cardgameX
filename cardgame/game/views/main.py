@@ -135,15 +135,9 @@ def config(request):
 	
 def get_config(request):
 	
-	
-	configkey = request.GET['config']
-	
-	data = conf.getClientConfig(configkey)
-	
+	configkey = request.GET['config']	
+	data = conf.getClientConfig(configkey)	
 	return HttpResponse(json.dumps(data))
-		
-	
-
 	
 def api(request, m, f):
 	try:

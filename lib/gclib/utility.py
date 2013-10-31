@@ -3,6 +3,7 @@
 
 from django.http import HttpResponse
 import time
+import calendar
 import random
 
 
@@ -66,6 +67,16 @@ def retrieval_object(func):
 	"""
 	mark this funtion return a object whitch need to save db.
 	"""
-	def retrieval_fun(obj):     
-		return func(obj)        
+	def retrieval_fun(obj):
+		res = func(obj)
+		if not hasattr(obj , 'retriveled_object'):
+			obj.retriveled_object = set()
+		obj.retriveled_object.add(res)
+		return res
 	return retrieval_fun
+	
+def is_expire(daytime):
+	now = currentTime()
+	tm = time.gmtime(now)	
+	exipre_time = calendar.timegm([tm.tm_year, tm.tm_mon, tm.tm_mday, daytime / 3600, (daytime % 3600) / 60, daytime % 60])
+	return exipre_time >= now

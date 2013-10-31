@@ -15,7 +15,7 @@ class equipment:
 			return {'msg':'equipment_not_found'}
 				
 		usr.updateFatigue()
-				
+		usr.updateEquipmentStrengthCooldown()
 		goldCost = 0
 		gemCost = 0
 		
@@ -51,6 +51,7 @@ class equipment:
 			return {'msg':'gem_not_enough'}
 				
 		usr.equipment_strength_cooldown = usr.equipment_strength_cooldown + (gameConf['equipment_strength_cooldown_base'] * (1 + usr.fatigue / 2))
+		usr.equipment_strength_last_time = currentTime()
 		usr.fatigue = usr.fatigue + 1
 		usr.fatigue_last_time = currentTime()
 		
@@ -85,4 +86,5 @@ class equipment:
 				break				
 		return (selItem[1][0] + selItem[1][2]) / 2
 		
+	
 	
