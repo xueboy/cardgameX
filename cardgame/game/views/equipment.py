@@ -12,3 +12,9 @@ def strengthen(request):
 	usr = request.user
 	isUseGem = isUseGem == 'yes'
 	return equipment.strengthen(usr, id, isUseGem)	
+
+def equip(request):
+	
+	id = request.GET['id']	
+	usr = request.user
+	return equipment.equip(usr, id)

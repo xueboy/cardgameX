@@ -28,6 +28,7 @@ class garcha:
 		elif garchaAmount == 10000:
 			garchaInfo = usr.garcha['garcha10000']
 		
+		
 		isFirstTime = (garchaInfo['last_time'] == 0)
 		isFree = False
 		if garchaAmount == 10:
@@ -84,12 +85,16 @@ class garcha:
 			if r >  card['prob']:
 				r = r - card['prob']
 			else:
-				garchaCard = inv.addCard(card['cardId'], card['level'])
-				break;
+				garchaCard = inv.addCard(card['cardId'], card['level'])				
+				break;			
+		
+		if not garchaCard:
+			return {'msg': 'card_invalid'}
 		
 		usr.gold = usr.gold - garchaCostGold
 		usr.gem = usr.gem - garchaCostGem
-		
+		usr.save()
+		inv.save()
 		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem }		
 	
 	@staticmethod	

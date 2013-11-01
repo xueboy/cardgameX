@@ -29,19 +29,20 @@ class cacheable:
 		obj.cacheid = cacheid		
 		obj.cache_key = key
 		if datastr:
-			obj.load(datastr)
+			data = json.loads(datastr)
+			obj.load(cacheid, data)
 		return obj
 		
 	def delete(self):
-		if obj.has_key('cache_key'):
-			cache.mc_delete(obj['cache_key'])
+		if self.has_key('cache_key'):
+			cache.mc_delete(self['cache_key'])
 		
 	def save(self):
 		if not self.cache_key:
 			self.cache_key = getMKey();
 		data = self.getData()
 		datastr = json.dumps(data)
-		cache.mc_save(self.cache_key, datastr)
+		cache.mc_setValue(self.cache_key, datastr)
 		
 	def getData(self):
 		return {}	

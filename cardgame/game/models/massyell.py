@@ -2,7 +2,7 @@
 from gclib.utility import currentTime
 from gclib.cacheable import cacheable
 from game.utility.config import config
-
+import copy
 
 class massyell(cacheable):
 	
@@ -22,7 +22,7 @@ class massyell(cacheable):
 		y['create_time'] = currentTime()
 		y['id'] = str(self.sequenceid)
 		self.record.append(y)
-		save()		
+		self.save()		
 		return y
 		
 	def getData(self):
@@ -43,5 +43,12 @@ class massyell(cacheable):
 		now = currentTime()
 		self.record = filter(lambda r: r['create_time'] + expire >= now, self.record)
 		
-	def listen(self):
-		return self.record
+	def listen(self, usr):
+		
+		record = copy.copy(self.record)
+		
+		for key in record:
+			if key < usr.yell_hear_id:
+				del record[key]
+		
+		return record

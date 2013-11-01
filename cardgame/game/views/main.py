@@ -141,7 +141,7 @@ def get_config(request):
 	
 def api(request, m, f):
 	try:
-		beginRequest(request,user)
+		usr = beginRequest(request,user)
 	except KeyError:
 		return info(request)
 	if viewsmap.has_key(m) :		
@@ -149,7 +149,7 @@ def api(request, m, f):
 		ret = fun(request)		
 		if not isinstance(ret, tuple):		
 			notify = endRequest(request)
-			yell = network.yell_listen()
+			yell = usr.yell_listen()
 			if yell:
 				notify.update(yell)
 			if notify:

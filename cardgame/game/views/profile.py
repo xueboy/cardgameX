@@ -73,6 +73,12 @@ def show(request):
 	data = {}
 	data['name'] = other.name
 	data['level'] = other.level
-	data['message'] = otNw.message
-	
+	data['message'] = otNw.message	
 	return data
+	
+def registry(request):
+	
+	userName = request.GET['username']
+	password = request.GET['password']
+	
+	sql = "INSERT INTO account "

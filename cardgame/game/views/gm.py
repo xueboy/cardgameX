@@ -18,7 +18,7 @@ def add_card(request):
 	return data
 
 def del_card(request):
-	id = int(request.GET['id'])
+	id = request.GET['id']
 	usr = request.user
 	inv = usr.getInventory()	
 	if inv.delCard(id) == 0:
@@ -50,7 +50,7 @@ def gain_exp_card(request):
 	petLevelConf = config.getConfig('pet_level')
 	petConf = config.getConfig('pet')
 	card = inv.getCard(cardid)
-	if card != None:
+	if card:
 		level = card['level']
 		id = card['cardid']		
 		star = petConf[id]['star']
@@ -67,6 +67,8 @@ def gain_exp_card(request):
 			card['exp'] = 0
 		else:
 			card['exp'] = exp
+	else:
+		return {'msg':'card_not_exist'}
 	inv.save()
 	return {'update_card':card}
 			
@@ -88,7 +90,7 @@ def del_equipment(request):
 	id = request.GET['id']
 	usr = request.user
 	inv = usr.getInventory()
-	if inv.deleteEquipment(id) == 0:
+	if inv.delEquipment(id) == 0:
 		return {'msg':'fail_del_equipment'}
 	inv.save()
 	return {'del_equipment':id}

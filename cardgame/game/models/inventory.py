@@ -13,6 +13,7 @@ class inventory(object):
 		object.__init__(self)
 		self.card = []
 		self.team = ['', '', '', '', '', '']
+		self.slot = [{}, {}, {}, {}, {}]
 		self.equipment = []
 		self.user = None
 		
@@ -25,6 +26,7 @@ class inventory(object):
 		data['card'] = self.card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
+		data['slot'] = self.slot
 		return data
 		
 	def getClientData(self):
@@ -32,6 +34,7 @@ class inventory(object):
 		data['card'] = self.card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
+		data['slot'] = self.slot
 		return data
 		
 	def load(self, roleid, data):
@@ -39,18 +42,22 @@ class inventory(object):
 		self.card = data['card']
 		self.team = data['team']
 		self.equipment = data['equipment']
+		self.slot = [{}, {}, {}, {}, {}]
+		if data.has_key('slot'):
+			self.slot = data['slot']
 		
-	def addCard(self, card_id, level = 1):
+		
+	def addCard(self, cardid, level = 1):
 		cardconf = config.getConfig('pet')				
-		if cardconf.has_key(card_id):
+		if cardconf.has_key(cardid):
 			data = {}
-			data['cardid'] = card_id
+			data['cardid'] = cardid
 			data['id'] = self.generateCardName()
 			data['level'] = level
 			data['exp'] = 0	
-			data['strength'] = cardconf[card_id]['strength']
-			data['intelligence'] = cardconf[card_id]['intelligence']
-			data['artifice'] = cardconf[card_id]['artifice']
+			data['strength'] = cardconf[cardid]['strength']
+			data['intelligence'] = cardconf[cardid]['intelligence']
+			data['artifice'] = cardconf[cardid]['artifice']
 			self.card.append(data)			
 			return data
 		return None
@@ -58,21 +65,34 @@ class inventory(object):
 	def delCard(self, id):
 		if self.team.count (id) > 0:
 			return 0
-		self.card = filter(lambda c : c['id'] == id, self.card)		
+		self.card = filter(lambda c : c['id'] != id, self.card)		
 		return 1	
 	
-	def addEquipment(self, id):
+	def addEquipment(self, equipmentid):
 		equipmentconf = config.getConfig('equipment')
-		if equipmentconf.has_key(id):
+		if equipmentconf.has_key(equipmentid):
 			data = {}
-			data['equipmentid'] = id
+			data['equipmentid'] = equipmentid
 			data['id'] = self.generateEquipmentName()
-			data['level'] = 0
+			data['strengthLevel'] = 0
 			self.equipment.append(data)
 			return data
 		return None
 		
-	def deleteEquipment(self, id):
+	def depositEquipment(self, equipment):
+		self.equipment.append(equipment)
+		return equipment
+		
+	def withdrawEquipment(self, id):
+		res = None
+		for equipment in self.equipment:
+			if equipment['id'] == id:
+				res = equipment
+				self.equipment.remove(equipment)
+		return res
+	
+		
+	def delEquipment(self, id):
 		self.equipment = filter(lambda e : e['id'] == id, self.equipment)		
 		return 1
 	

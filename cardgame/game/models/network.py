@@ -182,11 +182,12 @@ class network(object):
 		return {}
 	
 	def emailMarkReaded(self, emailid):
-		if self.email.has_key(emailid):
-			self.email[emailid]['readed'] = True
-			self.save()
-			return email[emailid]
-		return {}
+		if not self.email.has_key(emailid):
+			return {'msg':'email_not_exist'}
+		self.email[emailid]['readed'] = True
+		self.save()
+		return self.email[emailid]		
+		
 		
 	def emailDelete(self, emailid):
 		if self.email.has_key(emailid):
@@ -199,12 +200,4 @@ class network(object):
 		ms = massyell.get(0)		
 		return ms.yell(self.roleid, name, msg)
 		
-		
-	@staticmethod
-	def yell_listen():
-		ms = massyell.get(0)
-		yells = ms.listen()
-		if yells:
-			return {'yell':ms.listen()}
-		return {}
 		

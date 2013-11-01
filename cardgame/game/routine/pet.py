@@ -38,21 +38,24 @@ class pet:
 			card = inv.getCard(cardid)			
 			sourceCard.append(card)
 		
+		onePetConf = petConf[card['cardid']]	
+		
 		costMoney = len(sourceCard) * gameConf['pet_levelup_gold_cost']
 		
 		exp = 0
 		for card in sourceCard:
-			exp = pet.totalExp(card) + exp
+			exp = pet.totalExp(card['exp'], card['level'], onePetConf['star']) + exp
+			inv.delCard(card['id'])
 		
 		exp = int(exp * 0.5)
-		onePetConf = petConf[card['cardid']]	
+
 		star = onePetConf['star']	
 		levelLimit = gameConf['pet_level_limit'][star - 1]	
 		needExp = petLevelConf[str(destCard['level'])][star]
 		while exp > needExp:
 			exp = exp - needExp
 			destCard['level'] = destCard['level'] + 1
-			needExp = petLevelConf[str(destCard['level'])][stra]
+			needExp = petLevelConf[str(destCard['level'])][star]
 		destCard['exp'] = exp
 		if destCard['level'] >= levelLimit:
 			destCard['level'] = levelLimit
@@ -62,12 +65,12 @@ class pet:
 				
 
 	@staticmethod	
-	def totalExp(card):
+	def totalExp(exp, cardLevel, cardStar):
 		petLevelConf = config.getConfig('pet_level')		
-		total = 0	
-		for i in range(1, card['level'] - 1):		
-			total = petLevelConf[str(i)][star - 1] + total
-		total += card['exp']
+		total = 0			
+		for i in range(1, cardLevel - 1):		
+			total = petLevelConf[str(i)][cardStar - 1] + total
+		total += exp
 		return total
 		
 
@@ -117,7 +120,7 @@ class pet:
 			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
 		
-		card['strenghth'] = card['strenghth'] + strrev
+		card['strength'] = card['strength'] + strrev
 		card['intelligence'] = card['intelligence'] + itlrev
 		card['artifice'] = card['artifice'] + artrev
 		

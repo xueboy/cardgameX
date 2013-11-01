@@ -30,17 +30,17 @@ class equipment:
 		strengthenPriceConf = config.getConfig('strength_price')
 		
 		equipmentQuality = equipmentConf['quality']
-		equipmentLevel = equipment['level']
+		strengthLevel = equipment['strengthLevel']
 		strengthenProbability = 0
-		if equipmentLevel >= gameConf['equipment_max_level']:
+		if strengthLevel >= gameConf['equipment_max_level']:
 			return {'msg':'equipment_level_max'}
 			
-		if equipmentLevel > gameConf['equipment_strength_fix_probablity_level']:
+		if strengthLevel > gameConf['equipment_strength_fix_probablity_level']:
 			strengthenProbability = equipment.getStrengthCurrentProbability()
 		else:
 			strengthenProbability = gameConf['equipment_strength_fix_probablity']
 		
-		goldCost = strengthenPriceConf[equipmentQuality][equipmentLevel]['price']
+		goldCost = strengthenPriceConf[equipmentQuality][strengthLevel]['price']
 		
 		if isUseGem:
 			gemCost = gemCost + gameConf['equipment_strength_extra_gem_price']
@@ -55,7 +55,7 @@ class equipment:
 		usr.fatigue = usr.fatigue + 1
 		usr.fatigue_last_time = currentTime()
 		
-		equipment['level'] = equipmentLevel + 1
+		equipment['strengthLevel'] = strengthLevel + 1
 		
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost
@@ -72,7 +72,7 @@ class equipment:
 		return data
 		
 			
-			
+	@staticmethod		
 	def getStrengthCurrentProbability():
 		strengthProbabilityConf = config.getConfig('strength_probability')
 		now = currentTime()
@@ -86,5 +86,39 @@ class equipment:
 				break				
 		return (selItem[1][0] + selItem[1][2]) / 2
 		
-	
-	
+	@staticmethod
+	def equip(usr, id):
+		inv = usr.getInventory()
+		equipment = inv.getEquipment(id)
+		if not equipment:
+			{'msg':'equipment_not_exist'}
+		
+		equipmentConf = config.getConfig('equipment')
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		
+		
+		oldEquipment = inv.slot[equipmentInfo['position']]
+		
+		if oldEquipment:
+			inv.depositEquipment(oldEquipment)
+		inv.slot[equipmentInfo['position']] = equipment
+		inv.equipment.remove(equipment)
+		inv.save()
+		
+		return{'solt':inv.slot, 'equipment_delete':id}
+		
+		
+	def unequip(usr, id):
+		inv = usr.getInventory()
+		
+		slotEquipment = None
+		
+		for i in range(len(inv.slot)):
+			pass
+		
+		
+		if not slotEquipment:
+			return {'msg': 'equipment_not_exist'}
+		
+		inv.depositEquipment(slotEquipment)
+		

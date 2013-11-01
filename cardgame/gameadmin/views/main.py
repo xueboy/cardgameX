@@ -138,7 +138,7 @@ def garcha_import(request):
 		conf = []
 		for sheet in sheets:
 			garchaCataConf = {}
-			cardsConf = []
+			cardConf = []
 			total_prob = 0
 			for rownum in range(4, sheet.nrows):
 				row = sheet.row_values(rownum)
@@ -154,7 +154,7 @@ def garcha_import(request):
 				garchaConf['level'] = level
 				garchaConf['prob'] = prob
 				total_prob = total_prob + prob
-				cardsConf.append(garchaConf)				
+				cardConf.append(garchaConf)				
 			garchaCataConf['card'] = cardConf
 			garchaCataConf['totalProb'] = total_prob
 			conf.append(garchaCataConf)
@@ -676,26 +676,27 @@ def equipment_import(request):
 			name = row[1]
 			icon = row[2]
 			type = row[3]
-			stack = row[4]
-			nature = row[6]
-			quality = row[8]
-			levelreq = row[9]			
-			hp = row[10]
-			hpgrowth = row[11]
-			pa = row[12]
-			pagrowth = row[13]
-			ma = row[14]
-			magrowth = row[15]
-			pd = row[16]
-			pdgrowth = row[17]
-			md = row[18]
-			mdgrowth = row[19]
-			pt = row[20]
-			ptgrowth = row[21]
-			mt = row[22]
-			mtgrowth = row[23]			
-			price = row[27]
-			desc = row[28]
+			position = row[4]
+			stack = row[5]
+			nature = row[7]
+			quality = row[9]
+			levelreq = row[10]			
+			hp = row[11]
+			hpgrowth = row[12]
+			pa = row[13]
+			pagrowth = row[14]
+			ma = row[15]
+			magrowth = row[16]
+			pd = row[17]
+			pdgrowth = row[18]
+			md = row[19]
+			mdgrowth = row[20]
+			pt = row[21]
+			ptgrowth = row[22]
+			mt = row[23]
+			mtgrowth = row[24]
+			price = row[28]
+			desc = row[29]
 			
 			
 			equipmentConf = {}
@@ -703,6 +704,7 @@ def equipment_import(request):
 			equipmentConf['name'] = name
 			equipmentConf['icon'] = icon
 			equipmentConf['type'] = type
+			equipmentConf['position'] = int(position)
 			equipmentConf['stack'] = stack
 			equipmentConf['nature'] = nature
 			equipmentConf['quality'] = quality

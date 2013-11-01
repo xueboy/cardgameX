@@ -51,7 +51,7 @@ class cache:
 		c.delete(key, val)
 		
 	@staticmethod
-	def mc_has_key(key):
+	def mc_hasKey(key):
 		"""
 		check if key exist in defalut memcached
 		"""		

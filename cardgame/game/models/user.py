@@ -7,6 +7,8 @@ from game.models.inventory import inventory
 from game.models.network import network
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
+from game.models.massyell import massyell
+
 
 class user(gcuser):
 	
@@ -35,6 +37,7 @@ class user(gcuser):
 		self.fatigue = 0
 		self.fatigue_last_time = 0
 		self.equipment_strength_last_time = 0
+		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		
 	
@@ -70,6 +73,7 @@ class user(gcuser):
 		data['equipment_strength_last_time'] = self.equipment_strength_last_time
 		data['fatigue'] = self.fatigue
 		data['fatigue_last_time'] = self.fatigue_last_time
+		data['yell_hear_id'] = self.yell_hear_id
 		return data
 		
 	def getClientData(self):
@@ -87,6 +91,7 @@ class user(gcuser):
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['equipment_strength_last_time'] = self.equipment_strength_last_time
+		data['yell_hear_id'] = self.yell_hear_id
 		return {'user': data}
 		
 		
@@ -119,6 +124,7 @@ class user(gcuser):
 		self.equipment_strength_last_time = data['equipment_strength_last_time']
 		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
+		self.yell_hear_id = data['yell_hear_id']
 			 
 		
 	def getCardNo(self):
@@ -225,3 +231,13 @@ class user(gcuser):
 		self.equipment_strength_cooldown = self.equipment_strength_cooldown - elapse
 		if self.equipment_strength_cooldown < 0:
 			self.equipment_strength_cooldown = 0
+			
+
+	def yell_listen(self):		
+		ms = massyell.get(0)
+		yells = ms.listen(self.yell_hear_id)
+		self.yell_hear_id = ms.sequenceid
+		if yells:			
+			return {'yell':ms.listen()}
+		return {}
+		

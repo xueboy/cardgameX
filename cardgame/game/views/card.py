@@ -68,7 +68,9 @@ def garcha(request):
 	elif garchaAmount == '2':
 		garchaAmount = 100
 	elif garchaAmount == '3':
-		garchaAmount = 10000	
+		garchaAmount = 10000
+	else:
+		return {'msg':'parameter_bad'}
 	res = garchaR.garcha_once(usr, garchaAmount)	
 	return res
 	

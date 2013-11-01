@@ -20,7 +20,8 @@ def beginRequest(request,cls):
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	request.user = usr
-	usr.update()	
+	usr.update()
+	return usr
 
 def endRequest(request):
 	user = request.user
