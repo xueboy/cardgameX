@@ -59,7 +59,6 @@ def index(request):
 def info(request):
 	
 	info = {}	
-	#info[u'dungeon_config_md5'] =  config.getMd5('dungeon')
 	info[u'status'] = u'OK'
 	#info['greet'] = u'ÄãºÃ'
 	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')

@@ -8,6 +8,7 @@ from game.models.network import network
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
+from game.routine.luckycat import luckycat
 
 
 class user(gcuser):
@@ -39,6 +40,7 @@ class user(gcuser):
 		self.equipment_strength_last_time = 0
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
+		self.lucky_cat = None
 		
 	
 	def init(self, acc):
@@ -74,6 +76,8 @@ class user(gcuser):
 		data['fatigue'] = self.fatigue
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['yell_hear_id'] = self.yell_hear_id
+		if self.lucky_cat:
+			data['lucky_cat'] = self.lucky_cat
 		return data
 		
 	def getClientData(self):
@@ -91,7 +95,6 @@ class user(gcuser):
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['equipment_strength_last_time'] = self.equipment_strength_last_time
-		data['yell_hear_id'] = self.yell_hear_id
 		return {'user': data}
 		
 		
@@ -125,6 +128,8 @@ class user(gcuser):
 		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
+		if data.has_key('lucky_cat'):
+			self.lucky_cat = data['lucky_cat']
 			 
 		
 	def getCardNo(self):
@@ -217,7 +222,12 @@ class user(gcuser):
 		
 		
 	def onLevelup(self):
-		pass
+		gameConf = config.getConfig('game')
+		if not self.lucky_cat:
+			if gameConf['luckycat_open_level'] <= self.level:
+				self.lucky_cat = luckycat.make()
+		
+		
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')

@@ -28,7 +28,7 @@ class massyell(cacheable):
 	def getData(self):
 		data = {}
 		data['record'] = self.record
-		data['sequenceid'] = self.sequenceid
+		data['sequenceid'] = self.sequenceid		
 		return data
 	
 	def load(self, cacheid, data):
@@ -45,10 +45,8 @@ class massyell(cacheable):
 		
 	def listen(self, usr):
 		
-		record = copy.copy(self.record)
-		
+		record = copy.copy(self.record)		
 		for key in record:
 			if key < usr.yell_hear_id:
-				del record[key]
-		
+				del record[key]		
 		return record

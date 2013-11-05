@@ -6,14 +6,15 @@ from game.utility.config import config
 from game.game_def import serverid
 from gclib.utility import currentTime
 import time
+import copy
+from game.routine.equipment import equipment
 
 class inventory(object):
 	
 	def __init__(self):
 		object.__init__(self)
 		self.card = []
-		self.team = ['', '', '', '', '', '']
-		self.slot = [{}, {}, {}, {}, {}]
+		self.team = ['', '', '', '', '', '']	
 		self.equipment = []
 		self.user = None
 		
@@ -26,15 +27,22 @@ class inventory(object):
 		data['card'] = self.card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
-		data['slot'] = self.slot
 		return data
 		
 	def getClientData(self):
-		data = {}
-		data['card'] = self.card
+		data = {}		
+		card = []
+		
+		for c in self.card:
+			c1 = copy.copy(c)
+			if c1.has_key('slot'):
+				del c1['slot']
+			card.append(c1)		
+		
+		data['card'] = card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
-		data['slot'] = self.slot
+		data['slots'] = self.getSlots()
 		return data
 		
 	def load(self, roleid, data):
@@ -42,10 +50,6 @@ class inventory(object):
 		self.card = data['card']
 		self.team = data['team']
 		self.equipment = data['equipment']
-		self.slot = [{}, {}, {}, {}, {}]
-		if data.has_key('slot'):
-			self.slot = data['slot']
-		
 		
 	def addCard(self, cardid, level = 1):
 		cardconf = config.getConfig('pet')				
@@ -57,7 +61,7 @@ class inventory(object):
 			data['exp'] = 0	
 			data['strength'] = cardconf[cardid]['strength']
 			data['intelligence'] = cardconf[cardid]['intelligence']
-			data['artifice'] = cardconf[cardid]['artifice']
+			data['artifice'] = cardconf[cardid]['artifice']			
 			self.card.append(data)			
 			return data
 		return None
@@ -73,8 +77,7 @@ class inventory(object):
 		if equipmentconf.has_key(equipmentid):
 			data = {}
 			data['equipmentid'] = equipmentid
-			data['id'] = self.generateEquipmentName()
-			data['strengthLevel'] = 0
+			data['id'] = self.generateEquipmentName()			
 			self.equipment.append(data)
 			return data
 		return None
@@ -116,13 +119,26 @@ class inventory(object):
 		for card in self.card:			
 			if card['id'] == id:
 				return card
-		return None
+		return None	
+	
 		
 	def getEquipment(self, id):
 		for equipment in self.equipment:
 			if equipment['id'] == id:
 				return equipment
 		return None
+		
+	def getSlots(self):
+		slots = {}
+		i = 1
+		for t in self.team:
+			if t:
+				tc = self.getCard(t)
+				slots['t' + str(i)] = tc['slot']
+			else: 
+				slots['t' + str(i)] = [{}, {}, {}, {}, {}]
+			i = i + 1
+		return slots
 	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
 		
@@ -142,30 +158,52 @@ class inventory(object):
 			if cardid5 == cardid6:
 				return self.team
 		
+		usr = self.user
+		
 		if cardid1 == '':
+			equipment.takeoff(usr, self.team[0])
 			self.team[0] = ''
 		else:
-			self.team[0] = self.getCard(cardid1)['id']
+			card1 = self.getCard(cardid1)
+			equipment.give(usr, self.team[0], card1)
+			self.team[0] = card1['id']
 		if cardid2 == '':
+			equipment.takeoff(usr, self.team[1])
 			self.team[1] = ''
 		else:
-			self.team[1] = self.getCard(cardid2)['id']
+			card2 = self.getCard(cardid2)
+			equipment.give(usr, self.team[1], card2)
+			self.team[1] = card2['id']
 		if cardid3 == '':
+			equipment.takeoff(usr, self.team[2])
 			self.team[2] = ''
 		else:
-			self.team[2] = self.getCard(cardid3)['id']
+			card3 = self.getCard(cardid3)
+			equipment.give(usr, self.team[2], card3)
+			self.team[2] = card3['id']
 		if cardid4 == '':
+			equipment.takeoff(usr, self.team[3])
 			self.team[3] = ''
 		else:
-			self.team[3] = self.getCard(cardid4)['id']		
+			card4 =  self.getCard(cardid4)
+			equipment.give(usr, self.team[3], card4)
+			self.team[3] = card4['id']
 		if cardid5 =='':
+			equipment.takeoff(usr, self.team[4])
 			self.team[4] = ''
 		else:
-			self.team[4] = self.getCard(cardid5)['id']
+			card5 = self.getCard(cardid5)
+			equipment.give(usr, self.team[4], cardid5)
+			self.team[4] = card5['id']
 		if cardid6 == '':
+			equipment.takeoff(usr, self.team[5])
 			self.team[5] = ''
 		else: 
-			self.team[5] = self.getCard(cardid6)['id']
+			card6 = self.getCard(cardid6)
+			equipment.give(usr, self.team[5], cardid6)
+			self.team[5] = cardid6['id']
+			
+		self.save()
 		return self.team
 
 		

@@ -1,7 +1,6 @@
 ﻿from gclib.object import object
 from gclib.utility import currentTime
 from game.utility.config import config
-from game.models.massyell import massyell
 
 
 class network(object):
@@ -113,6 +112,11 @@ class network(object):
 		toUser.notify['notify_message'][requestid] = msgData
 		toUser.save()
 		toUserNw.save()
+	
+	def deleteMessage(self, messageid):
+		if self.message.has_key(messageid):
+			del self.message[messageid]
+			self.save()
 	
 	def updateMessage(self):
 		now = currentTime()

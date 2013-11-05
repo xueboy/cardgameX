@@ -4,6 +4,7 @@
 from gclib.json import json
 from game.routine.pet import pet
 from game.routine.garcha import garcha as garchaR
+from game.models.inventory import inventory
 
 def set_team(request):
  	 usr = request.user
@@ -14,9 +15,8 @@ def set_team(request):
  	 cardid4 = request.GET['card_id4']
  	 cardid5 = request.GET['card_id5']
  	 cardid6 = request.GET['card_id6']
- 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
- 	 inv.save()
- 	 return {'team':team}
+ 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6) 	 
+ 	 return {'team':team, 'slots': inv.getSlots()}
 
 	
 def level_up(request):

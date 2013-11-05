@@ -37,7 +37,7 @@ class config(gcconfig):
 	@staticmethod 
 	def getClientConfigMd5(confname):
 		confobj = config.getClientConfig(confname)
-		if confobj != None:
+		if confobj:
 			return config.getMd5(confobj)
 		return ''		
 			

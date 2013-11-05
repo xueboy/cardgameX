@@ -31,5 +31,10 @@ urlpatterns = patterns('',
     url(r'^strength_probability/$', gameadmin.views.main.strength_probability),
     url(r'^strength_price/$', gameadmin.views.main.strength_price),
     url(r'^strength_price_import/$', gameadmin.views.main.strength_price_import),
+    url(r'^strength_price_import/$', gameadmin.views.main.strength_price_import),
+    url(r'^luckycat_level/$', gameadmin.views.main.luckycat_level),
+    url(r'^luckycat_level_import/$', gameadmin.views.main.luckycat_level_import),
+    url(r'^luckycat_bless/$', gameadmin.views.main.luckycat_bless),
+    url(r'^luckycat_bless_import/$', gameadmin.views.main.luckycat_bless_import),
     
 )

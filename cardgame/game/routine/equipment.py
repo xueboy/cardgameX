@@ -30,8 +30,10 @@ class equipment:
 		strengthenPriceConf = config.getConfig('strength_price')
 		
 		equipmentQuality = equipmentConf['quality']
-		strengthLevel = equipment['strengthLevel']
 		strengthenProbability = 0
+		if equipment.has_key('strengthLevel'):
+			strengthLevel = equipment['strengthLevel']
+		
 		if strengthLevel >= gameConf['equipment_max_level']:
 			return {'msg':'equipment_level_max'}
 			
@@ -87,27 +89,43 @@ class equipment:
 		return (selItem[1][0] + selItem[1][2]) / 2
 		
 	@staticmethod
-	def equip(usr, id):
+	def equip(usr, teamPosition, equipmentid):
 		inv = usr.getInventory()
-		equipment = inv.getEquipment(id)
+		
+		cardid = inv.team[teamPosition]
+		
+		if not cardid:
+			return {'msg': 'team_position_not_have_member'}
+		
+		equipment = inv.getEquipment(equipmentid)
 		if not equipment:
-			{'msg':'equipment_not_exist'}
+			return {'msg':'equipment_not_exist'}
+				
+		
 		
 		equipmentConf = config.getConfig('equipment')
 		equipmentInfo = equipmentConf[equipment['equipmentid']]
 		
 		
-		oldEquipment = inv.slot[equipmentInfo['position']]
+		card = inv.getCard(cardid)
+		if not card:
+			return {'msg':'card_not_exist'}
+		
+		if not card.has_key('slot'):
+			card['slot'] = [{}, {}, {}, {}, {}]
+		
+		oldEquipment = card['slot'][equipmentInfo['position']]
 		
 		if oldEquipment:
 			inv.depositEquipment(oldEquipment)
-		inv.slot[equipmentInfo['position']] = equipment
+		card['slot'][equipmentInfo['position']] = equipment
 		inv.equipment.remove(equipment)
 		inv.save()
 		
-		return{'solt':inv.slot, 'equipment_delete':id}
+		return{'solts':inv.getSlots(), 'equipment_delete':equipmentid}
 		
 		
+	@staticmethod
 	def unequip(usr, id):
 		inv = usr.getInventory()
 		
@@ -122,3 +140,40 @@ class equipment:
 		
 		inv.depositEquipment(slotEquipment)
 		
+		
+	@staticmethod
+	def takeoff(usr, cardid):
+		
+		if not cardid:
+			return
+		
+		inv = usr.getInventory()
+		
+		card = inv.getCard(cardid)
+		
+		if card and card.has_key('slot'):
+			for equip in card['slot']:
+				if equip:
+					inv.depositEquipment(equip)
+		del card['slot']
+
+	@staticmethod
+	def give(usr, fromCardid, toCard):
+		inv = usr.getInventory()
+		
+		fromCard = inv.getCard(fromCardid)
+		
+		if not fromCard:
+			toCard['slot'] = [{}, {}, {}, {}, {}]
+			return
+		
+		toSlot = None
+		if toCard.has_key('slot'):
+			toSlot = toCard['slot']
+			
+		toCard['slot'] = fromCard['slot']
+		del fromCard['slot']
+		if toSlot:
+			fromCard['slot'] = toSlot
+		
+			

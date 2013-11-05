@@ -21,9 +21,10 @@ class config:
 	@staticmethod 
 	def getConfig(confname):
 		conf = cache.loc_getValue('config:' + confname)
-		if conf == None:
+		if not conf:
 			conf = json.loads(config.getConfigStr(confname))
 			cache.loc_setValue('config:' + confname, conf)
+			conf = cache.loc_getValue('config:' + confname)
 		#conf = json.loads(config.getConfigStr(confname))
 		return conf
 				

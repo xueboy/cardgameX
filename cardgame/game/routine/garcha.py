@@ -1,4 +1,7 @@
-﻿import random
+﻿#coding:utf-8
+#!/usr/bin/env python
+
+import random
 from gclib.utility import randint
 from game.utility.config import config
 

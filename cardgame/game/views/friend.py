@@ -58,9 +58,17 @@ def message(request):
 		if toUserNw.isBan(usr.roleid):
 			return {'msg':'user_is_in_ban'}
 		usrNw.sendMessage(toUser, msg)
-		return {}			
+		return {}		
 	return {'msg':'friend_not_found'}
 		
+def message_delete(request):
+	messageid = request.GET['message_id']
+	usr = request.user
+	usrNw = usr.getNetwork()
+	usrNw.deleteMessage(messageid)
+	return {'message_delete': messageid}
+	
+
 def mail(request):
 	friendid = request.GET['friend_id']
 	mail = request.GET['mail']

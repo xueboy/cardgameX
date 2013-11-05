@@ -49,6 +49,12 @@ def strength_probability(request):
 
 def strength_price(request):
 	return generalConfigRequestProcess(request, 'strength_price')
+
+def luckycat_level(request):
+	return generalConfigRequestProcess(request, 'luckycat_level')
+	
+def luckycat_bless(request):
+	return generalConfigRequestProcess(request, 'luckycat_bless')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -762,3 +768,68 @@ def strength_price_import(request):
 			
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('strength_price_import')
+	
+	
+def luckycat_level_import(request):
+	if request.method == 'POST':
+		luckycat_level_file = request.FILES.get('luckycat_level_file')
+		if luckycat_level_file == None:
+			return HttpResponse('招财猫等级xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_level_file.read())
+		sheet = wb.sheet_by_index(0)
+	
+		conf = []
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			level = int(row[0])
+			exp = int(row[1])
+			levelupgold = int(row[2])
+			luckygold = int(row[3])
+			
+			while(level >= len(conf)):
+				conf.append({})
+			
+			levelConf = {}
+			levelConf['level'] = level
+			levelConf['exp'] = exp
+			levelConf['levelupGold'] = levelupgold
+			levelConf['luckyGold'] = luckygold
+			
+			conf[level - 1] = levelConf
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('luckycat_level_import')
+			
+def luckycat_bless_import(request):
+	if request.method == 'POST':
+		luckycat_bless_file = request.FILES.get('luckycat_bless_file')
+		if luckycat_bless_file == None:
+			return HttpResponse('招财猫祝福xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_bless_file.read())
+		sheet = wb.sheet_by_index(2)
+	
+		conf = []
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			blessid = row[0]
+			blessName = row[1]
+			icon = row[2]
+			desc = row[3]
+			probability = row[4]
+			price = row[5]
+			
+			blessConf = {}
+			blessConf['blessid'] = blessid
+			blessConf['blessName'] = blessName
+			blessConf['icon'] = icon
+			blessConf['desc'] = desc
+			blessConf['probability'] = probability
+			blessConf['price'] = price
+			conf.append(blessConf)
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('luckycat_bless_import')
