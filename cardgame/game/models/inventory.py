@@ -201,7 +201,7 @@ class inventory(object):
 		else: 
 			card6 = self.getCard(cardid6)
 			equipment.give(usr, self.team[5], card6)
-			self.team[5] = cardid6['id']
+			self.team[5] = card6['id']
 			
 		self.save()
 		return self.team
