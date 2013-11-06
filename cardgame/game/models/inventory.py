@@ -193,14 +193,14 @@ class inventory(object):
 			self.team[4] = ''
 		else:
 			card5 = self.getCard(cardid5)
-			equipment.give(usr, self.team[4], cardid5)
+			equipment.give(usr, self.team[4], card5)
 			self.team[4] = card5['id']
 		if cardid6 == '':
 			equipment.takeoff(usr, self.team[5])
 			self.team[5] = ''
 		else: 
 			card6 = self.getCard(cardid6)
-			equipment.give(usr, self.team[5], cardid6)
+			equipment.give(usr, self.team[5], card6)
 			self.team[5] = cardid6['id']
 			
 		self.save()
