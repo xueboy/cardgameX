@@ -55,6 +55,12 @@ def luckycat_level(request):
 	
 def luckycat_bless(request):
 	return generalConfigRequestProcess(request, 'luckycat_bless')
+
+def luckycat_fortune(request):
+	return generalConfigRequestProcess(request, 'luckycat_fortune')
+	
+def luck(request):
+	return generalConfigRequestProcess(request, 'luck')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -811,7 +817,7 @@ def luckycat_bless_import(request):
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_bless_file.read())
 		sheet = wb.sheet_by_index(2)
 	
-		conf = []
+		conf = {}
 		for rownum in range(3,sheet.nrows):
 			row = sheet.row_values(rownum)
 			
@@ -823,13 +829,42 @@ def luckycat_bless_import(request):
 			price = row[5]
 			
 			blessConf = {}
-			blessConf['blessid'] = blessid
 			blessConf['blessName'] = blessName
 			blessConf['icon'] = icon
 			blessConf['desc'] = desc
 			blessConf['probability'] = probability
 			blessConf['price'] = price
-			conf.append(blessConf)
+			conf[blessid] = blessConf
 			
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('luckycat_bless_import')
+	
+def luck_import(request):
+	if request.method == 'POST':
+		luck_file = request.FILES.get('luck_file')
+		if luck_file == None:
+			return HttpResponse('缘xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luck_file.read())
+		sheet = wb.sheet_by_index(0)
+				
+		conf = {}
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			luckid = row[0]
+			name = row[1]			
+			typestr =  row[3]
+			type = row[4]
+			valuetype = row[5]
+			value = row[6]
+			
+			luckConf = {}			
+			luckConf['name'] = name
+			luckConf['typestr'] = typestr
+			luckConf['valuetype'] = valuetype
+			luckConf['type'] = type			
+			conf[luckid] = luckConf
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('luck_import')

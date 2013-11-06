@@ -35,9 +35,10 @@ class user(gcuser):
 		self.notify = {}
 		self.gender = 'male'
 		self.equipment_strength_cooldown = 0
-		self.fatigue = 0
-		self.fatigue_last_time = 0
 		self.equipment_strength_last_time = 0
+		self.train_prd = {}
+		self.fatigue = 0
+		self.fatigue_last_time = 0		
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.lucky_cat = None
@@ -71,6 +72,7 @@ class user(gcuser):
 		data['last_login'] = self.last_login
 		data['garcha'] = self.garcha
 		data['notify'] = self.notify
+		data['train_prd'] = self.train_prd
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		data['equipment_strength_last_time'] = self.equipment_strength_last_time
 		data['fatigue'] = self.fatigue
@@ -92,6 +94,8 @@ class user(gcuser):
 		data['vip'] = self.vip
 		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		data['avatar_id'] = self.avatar_id
+		if self.train_prd:
+			data['train_prd'] = self.train_prd
 		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['equipment_strength_last_time'] = self.equipment_strength_last_time
@@ -123,8 +127,9 @@ class user(gcuser):
 		self.last_login = data['last_login']		
 		self.leader = data['leader']		 
 		self.notify = data['notify']
+		self.train_prd = data['train_prd']
 		self.equipment_strength_cooldown = data['equipment_strength_cooldown']
-		self.equipment_strength_last_time = data['equipment_strength_last_time']
+		self.equipment_strength_last_time = data['equipment_strength_last_time']		
 		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
@@ -231,7 +236,7 @@ class user(gcuser):
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')
-		if is_expire(gameConf['fatigue_reset_time']):
+		if is_expire(gameConf['fatigue_reset_time'], self.fatigue):
 			self.fatigue = 0
 			fatigue_last_time = currentTime()
 

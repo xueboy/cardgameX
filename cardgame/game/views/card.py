@@ -88,6 +88,7 @@ def sell(request):
 	id = request.GET['id']
 	return pet.sell(usr, id)
 	
+def training_confirm(request):
+	usr = request.user	
+	return pet.trainConfirm(usr)
 
-def strengthen(request):
-	pass

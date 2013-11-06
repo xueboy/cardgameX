@@ -36,5 +36,8 @@ urlpatterns = patterns('',
     url(r'^luckycat_level_import/$', gameadmin.views.main.luckycat_level_import),
     url(r'^luckycat_bless/$', gameadmin.views.main.luckycat_bless),
     url(r'^luckycat_bless_import/$', gameadmin.views.main.luckycat_bless_import),
+    url(r'^luckycat_fortune/$', gameadmin.views.main.luckycat_fortune),
+    url(r'^luck/$', gameadmin.views.main.luck),
+    url(r'^luck_import/$', gameadmin.views.main.luck_import),
     
 )

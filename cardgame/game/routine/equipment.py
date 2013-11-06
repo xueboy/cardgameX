@@ -38,7 +38,7 @@ class equipment:
 			return {'msg':'equipment_level_max'}
 			
 		if strengthLevel > gameConf['equipment_strength_fix_probablity_level']:
-			strengthenProbability = equipment.getStrengthCurrentProbability()
+			strengthenProbability = equipment.currentStrengthCurrentProbability()
 		else:
 			strengthenProbability = gameConf['equipment_strength_fix_probablity']
 		
@@ -75,7 +75,7 @@ class equipment:
 		
 			
 	@staticmethod		
-	def getStrengthCurrentProbability():
+	def currentStrengthCurrentProbability():
 		strengthProbabilityConf = config.getConfig('strength_probability')
 		now = currentTime()
 		daysecond = dayTime()

@@ -76,8 +76,13 @@ def retrieval_object(func):
 		return res
 	return retrieval_fun
 	
-def is_expire(daytime):
+def is_expire(daytime, t):
 	now = currentTime()
 	tm = time.gmtime(now)	
 	exipre_time = calendar.timegm([tm.tm_year, tm.tm_mon, tm.tm_mday, daytime / 3600, (daytime % 3600) / 60, daytime % 60])
-	return exipre_time >= now
+	return exipre_time >= t
+	
+def is_same_day(t1, t2):
+	t1tm = time.gmtime(t1)
+	t2tm = time.gmtime(t2)
+	return (t1tm.tm_year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)

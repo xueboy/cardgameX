@@ -31,6 +31,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'strength_probability':
 			return conf
+		if confname == 'luck':
+			return conf
 		return None
 	
 	

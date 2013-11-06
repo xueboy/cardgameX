@@ -72,6 +72,7 @@ def info(request):
 	info['equipment_md5'] = conf.getClientConfigMd5('equipment')
 	info['strength_price_md5'] = conf.getClientConfigMd5('strength_price')
 	info['strength_probability_md5'] = conf.getClientConfigMd5('strength_probability')
+	info['luck_md5'] = conf.getClientConfigMd5('luck')
 	
 	
 	return HttpResponse(json.dumps({'info':info}))

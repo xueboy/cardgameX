@@ -93,10 +93,11 @@ class pet:
 			cost = gameConf['training_price3']
 		else:
 			return {'msg':'level_out_of_expect'}
+
 		
-		if cost['gold'] > usr.gold:
+		if usr.train_prd['cost']['gold'] > usr.gold:
 			return {'msg':'gold_not_enough'}
-		if cost['gem'] > usr.gem:
+		if usr.train_prd['cost']['gem'] > usr.gem:
 			return {'msg': 'gem_not_enough'}
 		
 		
@@ -120,17 +121,38 @@ class pet:
 			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
 		
-		card['strength'] = card['strength'] + strrev
-		card['intelligence'] = card['intelligence'] + itlrev
-		card['artifice'] = card['artifice'] + artrev
+		usr.train_prd['cardid'] = cardid
+		usr.train_prd['strength_revision'] = strrev
+		usr.train_prd['intelligence_revision'] = itlrev
+		usr.train_prd['artifice_revision'] = artrev
 		
 		usr.gold = usr.gold - cost['gold']
 		usr.gem = usr.gem - cost['gem']
 		
-		inv.save()
 		usr.save()
 		
-		return {'training_card':card, 'gold':usr.gold, 'gem':usr.gem}	
+		return {'train_prd': usr.train_prd, 'gold':usr.gold, 'gem':usr.gem}	
+		
+	@staticmethod
+	def trainConfirm(usr):
+		
+		if not usr.train_prd:
+			return {'msg':'training_should_before'}				
+				
+		inv = usr.getInventory()		
+		card = inv.getCard(usr.train_prd['cardid'])
+		if not card:
+			return {'msg':'card_not_exist'}
+				
+		card['strength'] = card['strength'] + usr.train_prd['strength_revision']
+		card['intelligence'] = card['intelligence'] + usr.train_prd['intelligence_revision']
+		card['artifice'] = card['artifice'] + usr.train_prd['artifice_revision']
+				
+		usr.train_prd = None
+		
+		inv.save()
+		usr.save()
+		return {'training_card':card}
 		
 		
 	@staticmethod
