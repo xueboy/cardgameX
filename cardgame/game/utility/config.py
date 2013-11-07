@@ -32,7 +32,7 @@ class config(gcconfig):
 		if confname == 'strength_probability':
 			return conf
 		if confname == 'luck':
-			return conf
+			return config.luckFilter(conf)
 		return None
 	
 	
@@ -96,3 +96,18 @@ class config(gcconfig):
 			return levelConf[levelKey]['sp']
 		return 0
 		
+
+	@staticmethod
+	def luckFilter(conf):
+		data = {}
+		for luckid in conf:
+			l = {}
+			l['name'] = conf[luckid]['name']
+			l['luckid'] = conf[luckid]['luckid']
+			l['value'] = conf[luckid]['value']
+			l['type'] = conf[luckid]['type']
+			l['valuetype'] = conf[luckid]['valuetype']
+			
+			data[luckid] = l
+		return data
+			

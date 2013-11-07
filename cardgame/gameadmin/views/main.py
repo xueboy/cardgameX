@@ -829,7 +829,8 @@ def luckycat_bless_import(request):
 			price = row[5]
 			
 			blessConf = {}
-			blessConf['blessName'] = blessName
+			blessConf['blessid'] = blessid
+			blessConf['name'] = blessName
 			blessConf['icon'] = icon
 			blessConf['desc'] = desc
 			blessConf['probability'] = probability
@@ -849,21 +850,21 @@ def luck_import(request):
 		sheet = wb.sheet_by_index(0)
 				
 		conf = {}
-		for rownum in range(3,sheet.nrows):
-			row = sheet.row_values(rownum)
-			
+		for rownum in range(4,sheet.nrows):
+			row = sheet.row_values(rownum)			
 			luckid = row[0]
 			name = row[1]			
 			typestr =  row[3]
 			type = row[4]
 			valuetype = row[5]
-			value = row[6]
-			
-			luckConf = {}			
+			value = row[6]			
+			luckConf = {}
+			luckConf['luckid'] = luckid
 			luckConf['name'] = name
 			luckConf['typestr'] = typestr
 			luckConf['valuetype'] = valuetype
-			luckConf['type'] = type			
+			luckConf['type'] = type	
+			luckConf['value'] = value
 			conf[luckid] = luckConf
 			
 		return HttpResponse(json.dumps(conf))

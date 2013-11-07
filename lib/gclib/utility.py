@@ -3,6 +3,7 @@
 
 from django.http import HttpResponse
 import time
+import datetime
 import calendar
 import random
 
@@ -19,6 +20,8 @@ def onUserLogin(request, usr):
 def beginRequest(request,cls):	
 	userid = request.session['user_id']
 	usr = cls.get(userid)
+	if not usr:
+		raise KeyError
 	request.user = usr
 	usr.update()
 	return usr
@@ -80,9 +83,14 @@ def is_expire(daytime, t):
 	now = currentTime()
 	tm = time.gmtime(now)	
 	exipre_time = calendar.timegm([tm.tm_year, tm.tm_mon, tm.tm_mday, daytime / 3600, (daytime % 3600) / 60, daytime % 60])
-	return exipre_time >= t
+	return exipre_time < t
 	
 def is_same_day(t1, t2):
 	t1tm = time.gmtime(t1)
 	t2tm = time.gmtime(t2)
 	return (t1tm.tm_year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)
+	
+def day_diff(t1, t2):
+	d1 = datetime.datetime(t1)
+	d2 = datetime.datetime(t2)
+	return (d1 - d2).days

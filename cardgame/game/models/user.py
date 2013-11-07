@@ -81,25 +81,27 @@ class user(gcuser):
 		return data
 		
 	def getClientData(self):
-		data = {}
-		data['roleid'] = self.roleid
-		data['name'] = self.name
-		data['level'] = self.level
-		data['stamina'] = self.stamina
-		data['gem'] = self.gem
-		data['gold'] = self.gold
-		data['exp'] = self.exp
-		data['vip'] = self.vip
-		data['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
-		data['avatar_id'] = self.avatar_id
+		usrData = {}
+		usrData['roleid'] = self.roleid
+		usrData['name'] = self.name
+		usrData['level'] = self.level
+		usrData['stamina'] = self.stamina
+		usrData['gem'] = self.gem
+		usrData['gold'] = self.gold
+		usrData['exp'] = self.exp
+		usrData['vip'] = self.vip
+		usrData['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
+		usrData['avatar_id'] = self.avatar_id
 		if self.train_prd:
-			data['train_prd'] = self.train_prd
+			usrData['train_prd'] = self.train_prd		
+		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
+		usrData['fatigue_last_time'] = self.fatigue_last_time
+		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
+		data = {}
+		data['user'] = usrData
 		if self.luckycat:
 			data['luckycat'] = self.luckycat
-		data['equipment_strength_cooldown'] = self.equipment_strength_cooldown
-		data['fatigue_last_time'] = self.fatigue_last_time
-		data['equipment_strength_last_time'] = self.equipment_strength_last_time
-		return {'user': data}
+		return data
 		
 		
 	def getFriendData(self):

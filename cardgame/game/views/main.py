@@ -15,6 +15,7 @@ import game.views.card
 import game.views.friend
 import game.views.profile
 import game.views.equipment
+import game.views.luckycat
 import sys
 #from PIL import Image
 #import StringIO
@@ -27,6 +28,7 @@ viewsmap = {
 	'friend':sys.modules['game.views.friend'],
 	'profile': sys.modules['game.views.profile'],
 	'equipment': sys.modules['game.views.equipment'],
+	'luckycat': sys.modules['game.views.luckycat'],
 }
 
 def index(request):

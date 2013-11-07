@@ -40,7 +40,16 @@ def add_gem(request):
 	usr.save()
 	return {'gem':usr.gem}
 		 
-def gain_exp_card(request):
+def gain_exp(request):
+	exp = request.GET['exp']
+	exp = int(exp)
+	usr = request.user
+	
+	usr.gainExp(exp)
+	usr.save()
+	return {'exp':usr.exp, 'level':usr.level}
+		 
+def gain_card_exp(request):
 	cardid = request.GET['card_id']
 	exp = request.GET['exp']
 	exp = int(exp)
