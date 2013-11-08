@@ -123,6 +123,28 @@ class equipment:
 		inv.save()
 		
 		return{'solts':inv.getSlots(), 'equipment_delete':equipmentid}
+			
+	@staticmethod
+	def sell(usr, equipmentid):
+		inv = usr.getInventory()
+		
+		equipment = inv.getEquipment(equipmentid)
+		
+		if not equipment:
+			return {'msg':'equipment_not_exist'}
+		
+		equipmentConf = config.getConfig('equipment')
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		
+		sellGold = equipmentInfo['price']
+		
+		usr.gold = usr.gold + sellGold
+		
+		inv.delEquipment(equipmentid)
+		inv.save()
+		usr.save()
+		
+		return {'gold':usr.gold, 'delete_equipment':equipmentid}
 		
 		
 	@staticmethod

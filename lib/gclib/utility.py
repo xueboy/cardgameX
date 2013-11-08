@@ -59,7 +59,7 @@ def drop(weight):
 	"""
 	give a weight and test if drop
 	"""
-	seed = random.randint(0, 1000)
+	seed = randint()
 	return seed < weight
 	
 	

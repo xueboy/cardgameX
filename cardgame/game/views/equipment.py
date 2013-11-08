@@ -19,3 +19,9 @@ def equip(request):
 	equipmentid = request.GET['equipment_id']	
 	usr = request.user
 	return equipment.equip(usr,  int(teamPosition), equipmentid)
+	
+def sell(request):
+	equipmentid = request.GET['equipment_id']
+	
+	usr = request.user
+	return equipment.sell(usr, equipmentid)

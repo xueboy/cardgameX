@@ -42,6 +42,8 @@ class user(gcuser):
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.luckycat = {}
+		self.trp = 0
+		self.svt = 0
 		
 	
 	def init(self, acc):
@@ -78,6 +80,8 @@ class user(gcuser):
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['yell_hear_id'] = self.yell_hear_id
 		data['luckycat'] = self.luckycat
+		data['trp'] = self.trp
+		data['svt'] = self.svt
 		return data
 		
 	def getClientData(self):
@@ -97,6 +101,8 @@ class user(gcuser):
 		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
+		usrData['trp'] = self.trp
+		usrData['svt'] = self.svt
 		data = {}
 		data['user'] = usrData
 		if self.luckycat:
@@ -136,6 +142,8 @@ class user(gcuser):
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
 		self.luckycat = data['luckycat']
+		self.trp = data['trp']
+		self.svt = data['svt']
 			 
 		
 	def getCardNo(self):

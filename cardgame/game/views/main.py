@@ -75,9 +75,14 @@ def info(request):
 	info['strength_price_md5'] = conf.getClientConfigMd5('strength_price')
 	info['strength_probability_md5'] = conf.getClientConfigMd5('strength_probability')
 	info['luck_md5'] = conf.getClientConfigMd5('luck')
-	
-	
+	info['language_md5'] = conf.getClientConfigMd5('language')	
+	info['stone_md5'] = conf.getClientConfigMd5('stone')
+	info['stone_probability_md5'] = conf.getClientConfigMd5('stone_probability')
+	info['stone_level_md5'] = conf.getClientConfigMd5('stone_level')
+	info['trp_price_md5'] = conf.getClientConfigMd5('trp_price')
+	info['trp_md5'] = conf.getClientConfigMd5('trp')
 	return HttpResponse(json.dumps({'info':info}))
+		
 	
 def config(request):
 #	try:	

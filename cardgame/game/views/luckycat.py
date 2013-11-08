@@ -23,3 +23,7 @@ def feed(request):
 def roll_bless(request):
 	usr = request.user
 	return luckycat.rollBless(usr)
+	
+def beckon_reset(request):
+	usr = request.user
+	return luckycat.beckon_reset(usr)

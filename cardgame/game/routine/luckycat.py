@@ -71,6 +71,30 @@ class luckycat:
 		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown']}	
 	
 	@staticmethod
+	def beckon_reset(usr):
+		if not usr.luckycat:
+			return {'msg':'luckycat_not_available'}
+		
+		gameConf = config.getConfig('game')
+		costGem = gameConf['luckycat_beckon_reset_price']['gem']
+		costGold = gameConf['luckycat_beckon_reset_price']['gold']
+		
+		if usr.gem < costGem:
+			return {'msg':'gem_not_enough'}
+		if usr.gold < costGold:
+			return {'msg':'gold_not_enough'}
+				
+		usr.gem = usr.gem - costGem
+		usr.gold = usr.gold - costGold
+		
+		usr.luckycat['beckon_cooldown'] = 0
+		usr.luckycat['beckon_last_update_time'] = currentTime()
+		
+		usr.save()
+		return {'gold':usr.gold, 'gem':usr.gem, 'luckycat_beckon_cooldown': usr.luckycat['beckon_cooldown'], 'luckycat_beckon_last_update_time':usr.luckycat['beckon_last_update_time']}	
+			
+	
+	@staticmethod
 	def beckonCooldownCleanup(usr):
 		gemCost = usr.luckycat['beckon_cooldown'] / 10
 		usr.gem = usr.gem - gemCost

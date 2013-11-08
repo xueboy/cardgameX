@@ -37,7 +37,7 @@ def pet_level(request):
 	
 def prompt(request):
 	return generalConfigRequestProcess(request, 'prompt')
-
+1
 def garcha(request):
 	return generalConfigRequestProcess(request, 'garcha')	
 	
@@ -61,6 +61,24 @@ def luckycat_fortune(request):
 	
 def luck(request):
 	return generalConfigRequestProcess(request, 'luck')
+	
+def language(request):
+	return generalConfigRequestProcess(request, 'language')
+	
+def stone(request):
+	return generalConfigRequestProcess(request, 'stone')
+	
+def stone_probability(request):
+	return generalConfigRequestProcess(request, 'stone_probability')
+	
+def stone_level(request):
+	return generalConfigRequestProcess(request, 'stone_level')
+	
+def trp_price(request):
+	return generalConfigRequestProcess(request, 'trp_price')
+
+def trp(request):
+	return generalConfigRequestProcess(request, 'trp')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -453,11 +471,8 @@ def pet_level_import(request):
 			star2Exp = int(row[2])
 			star3Exp = int(row[3])
 			star4Exp = int(row[4])
-			levelConf = []
-			levelConf.append(star1Exp)
-			levelConf.append(star2Exp)
-			levelConf.append(star3Exp)
-			levelConf.append(star4Exp)
+			star5Exp = int(row[5])
+			levelConf = [star1Exp, star2Exp, star3Exp, star4Exp, star5Exp]			
 			conf[str(level)] = levelConf
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('pet_level_import')
@@ -869,3 +884,200 @@ def luck_import(request):
 			
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('luck_import')
+	
+	
+def language_import(request):
+	if request.method == 'POST':
+		language_file = request.FILES.get('language_file')
+		if not language_file:
+			return HttpResponse('语言xlsx文件未上传')			
+	
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, language_file.read())
+		sheet = wb.sheet_by_index(0)
+				
+		conf = {}
+		for rownum in range(4,sheet.nrows):
+			row = sheet.row_values(rownum)
+						
+			strid = row[1]
+			chinese = row[2]
+			lanConf = {}
+			#lanConf['strid'] = strid
+			lanConf['chinese'] = chinese
+			conf[strid] = lanConf
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('language_import')
+	
+def stone_import(request):
+	if request.method == 'POST':
+		stone_file = request.FILES.get('stone_file')
+		if not stone_file:
+			return HttpResponse('宝石xlsx文件上传')
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_file.read())
+		sheet = wb.sheet_by_index(2)
+				
+		conf = {}
+		for rownum in range(5,sheet.nrows):
+			row = sheet.row_values(rownum)
+			stoneid = row[0]
+			quality = row[3]
+			name = row[4]
+			icon = row[5]			
+			typestr = row[6]
+			type = row[7]
+			value = row[8]
+			gravel = row[9]
+			
+			stoneConf = {}
+			stoneConf['stoneid'] = stoneid
+			stoneConf['quality'] = quality
+			stoneConf['name'] = name
+			stoneConf['icon'] = icon
+			stoneConf['typestr'] = typestr
+			stoneConf['type'] = type
+			stoneConf['value'] = value
+			stoneConf['gravel'] = gravel
+			
+			conf[stoneid] = stoneConf
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('stone_import')
+	
+	
+def stone_probability_import(request):
+	if request.method == 'POST':
+		stone_probability_file = request.FILES.get('stone_probability_file')
+		if not stone_probability_file:
+			return HttpResponse('宝石概率xlsx文件上传')
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_probability_file.read())
+		sheet = wb.sheet_by_index(1)
+				
+		conf = {}
+		
+		visitProbRow = sheet.row_values(2)
+		
+		visit1Prob = int(visitProbRow[1])
+		visit2Prob = int(visitProbRow[2])
+		visit3Prob = int(visitProbRow[3])
+		visit4Prob = int(visitProbRow[4])
+		visit5Prob = int(visitProbRow[5])
+		
+		conf['visitProb'] = [visit1Prob, visit2Prob, visit3Prob, visit4Prob, visit5Prob]
+		
+		visitPriceRow = sheet.row_values(3)
+		visit1Price = int(visitPriceRow[1])
+		visit2Price = int(visitPriceRow[2])
+		visit3Price = int(visitPriceRow[3])
+		visit4Price = int(visitPriceRow[4])
+		visit5Price = int(visitPriceRow[5])
+		
+		conf['visitPrice'] = [visit1Price, visit2Price, visit3Price, visit4Price, visit5Price]
+
+		stoneCol = sheet.col_values(0)
+		level1Col = sheet.col_values(1)
+		level2Col = sheet.col_values(2)
+		level3Col = sheet.col_values(3)
+		level4Col = sheet.col_values(4)
+		
+		conf['visit'] = []
+		
+		read_stone_level(stoneCol, level1Col, conf, 1)
+		read_stone_level(stoneCol, level2Col, conf, 2)
+		read_stone_level(stoneCol, level3Col, conf, 3)
+		read_stone_level(stoneCol, level4Col, conf, 4)			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('stone_probability_import')
+
+def read_stone_level(stoneCol, levelCol, conf, level):
+	
+	visitConf = {}	
+	visitConf['gold'] = []
+	visitConf['gem'] = []	
+	
+	for rownum in range(5, 10):
+		levelgoldInfo = {}
+		levelgoldInfo['probability'] = int(levelCol[rownum])
+		levelgoldInfo['stone'] = stoneCol[rownum].split(',')
+		visitConf['gold'].append(levelgoldInfo)
+			
+	for rownum in range(12, 18):
+		levelgoldInfo = {}
+		levelgoldInfo['probability'] = int(levelCol[rownum])
+		levelgoldInfo['stone'] = stoneCol[rownum].split(',')
+		visitConf['gem'].append(levelgoldInfo)
+	conf['visit'].append(visitConf)
+		
+		
+def stone_level_import(request):
+	if request.method == 'POST':
+		stone_level_file = request.FILES.get('stone_level_file')
+		if not stone_level_file:
+			return HttpResponse('宝石等级xlsx文件上传')
+		
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_level_file.read())
+		sheet = wb.sheet_by_index(0)
+				
+		conf = {}
+		
+		for rownum in range(2,sheet.nrows):
+			row = sheet.row_values(rownum)
+			conf[str(rownum - 1)] = row[1:5]
+				
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('stone_level_import')
+	
+def trp_price_import(request):
+	if request.method == 'POST':
+		trp_price_file = request.FILES.get('trp_price_file')
+		if not trp_price_file:
+			return HttpResponse('培养价格xlsx文件上传')
+		
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_price_file.read())
+		sheet = wb.sheet_by_index(0)
+				
+		conf = []
+		
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			level = int(row[0])
+			price = int(row[1])
+			
+			while len(conf) < level:
+				conf.append(0)
+				
+			conf[level -1] = price
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('trp_price_import')
+	
+
+	
+def trp_import(request):
+	if request.method == 'POST':
+		trp_file = request.FILES.get('trp_file')
+		if not trp_file:
+			return HttpResponse('培养点xlsx文件上传')
+		
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_file.read())
+		sheet = wb.sheet_by_index(1)
+				
+		conf = []
+		
+		for rownum in range(3,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			level = int(row[0])
+			card_trp = int(row[1])
+			skill_trp = int(row[2])
+			while len(conf) < level:
+				conf.append({})
+			
+			conf[level - 1] = {'card':card_trp, 'skill':skill_trp}
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('trp_import')

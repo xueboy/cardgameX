@@ -16,6 +16,7 @@ class inventory(object):
 		self.card = []
 		self.team = ['', '', '', '', '', '']	
 		self.equipment = []
+		self.stone = []		
 		self.user = None
 		
 	def init(self):
@@ -27,6 +28,7 @@ class inventory(object):
 		data['card'] = self.card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
+		data['stone'] = self.stone		
 		return data
 		
 	def getClientData(self):
@@ -43,6 +45,7 @@ class inventory(object):
 		data['team'] = self.team
 		data['equipment'] = self.equipment
 		data['slots'] = self.getSlots()
+		data['stone'] = self.stone		
 		return data
 		
 	def load(self, roleid, data):
@@ -50,6 +53,7 @@ class inventory(object):
 		self.card = data['card']
 		self.team = data['team']
 		self.equipment = data['equipment']
+		self.stone = data['stone']		
 		
 	def addCard(self, cardid, level = 1):
 		cardconf = config.getConfig('pet')				
@@ -105,14 +109,18 @@ class inventory(object):
 	def generateEquipmentName(self):
 		return self.generateName('E')
 	
+	def generateStoneName(self):
+		return self.generateName('S')
+	
 	def generateName(self, perfix):
 		serveridLen = len(str(serverid))
 		roleidLen = len(str(self.roleid))
 		tm = time.gmtime(currentTime())
 		ts = time.strftime('%Y%m%d%H%M%S', tm)
-		no = self.user.getCardNo()		
-		noLen = len(str(no))
-		name = ''.join([perfix, str(serveridLen), str(serverid), str(roleidLen), str(self.roleid), ts, str(noLen), str(no)])
+		no = str(self.user.getCardNo())
+		noLen = len(no)
+		name = ''.join([perfix, str(serveridLen), str(serverid), str(roleidLen), str(self.roleid), ts, str(noLen), no])
+		self.user.save()	#save card no
 		return name
 		
 	def getCard(self, id):
@@ -207,3 +215,18 @@ class inventory(object):
 		return self.team
 
 		
+	def addStone(stoneid):
+		stoneConf = config.getConfig('stone')
+		
+		stoneInfo = stoneConf[stoneid]		
+		stone = {}
+		stone['stoneid'] = stoneid
+		stone['id'] = self.generateStoneName()		
+		self.stone.append(stone)
+		return stone
+		
+	def getStone(self, id):
+		for stone in self.stone:
+			 if stone['id'] == id:
+			 	return stone
+		return None

@@ -86,7 +86,8 @@ class pet:
 		cost = None	
 		gameConf = config.getConfig('game')
 		if trainlevel == '1':
-			cost = gameConf['training_price1']
+			trpPriceConfig = config.getConfig('trp_price')
+			cost = {'trp':trpPriceConfig[usr.level - 1], 'gold':0, 'gem':0}
 		elif trainlevel == '2':
 			cost = gameConf['training_price2']
 		elif trainlevel == '3':
@@ -95,10 +96,13 @@ class pet:
 			return {'msg':'level_out_of_expect'}
 
 		
-		if usr.train_prd['cost']['gold'] > usr.gold:
+		if cost['gold'] > usr.gold:
 			return {'msg':'gold_not_enough'}
-		if usr.train_prd['cost']['gem'] > usr.gem:
+		if cost['gem'] > usr.gem:
 			return {'msg': 'gem_not_enough'}
+		if cost['trp'] > usr.trp:
+			return {'msg': 'trp_not_enough'}
+		
 		
 		
 		strrev = 0
@@ -128,10 +132,11 @@ class pet:
 		
 		usr.gold = usr.gold - cost['gold']
 		usr.gem = usr.gem - cost['gem']
+		usr.trp = usr.trp - cost['trp']
 		
 		usr.save()
 		
-		return {'train_prd': usr.train_prd, 'gold':usr.gold, 'gem':usr.gem}	
+		return {'train_prd': usr.train_prd, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}	
 		
 	@staticmethod
 	def trainConfirm(usr):
@@ -153,6 +158,30 @@ class pet:
 		inv.save()
 		usr.save()
 		return {'training_card':card}
+	
+	
+	@staticmethod		
+	def decompose(usr, cardids):
+		
+		cards = []
+		inv = usr.getInventory()
+		trpConfig = config.getConfig('trp')
+		
+		total_trp = 0		
+		for cardid in cardids:
+			card = inv.getCard(cardid)
+			if not card:
+				return {'msg':'card_not_exist'}
+			trp = trpConfig[card['level'] - 1]['card']
+			total_trp = total_trp + trp
+			inv.delCard(cardid)
+			
+		usr.trp = usr.trp + total_trp
+		
+		usr.save()
+		inv.save()
+		return {'trp':usr.trp, 'delete_card':cardids}
+			
 		
 		
 	@staticmethod

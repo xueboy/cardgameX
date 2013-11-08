@@ -83,7 +83,7 @@ def gain_card_exp(request):
 			
 		
 def add_equipment(request):
-	equipid = request.GET['equipid']
+	equipid = request.GET['equipment_id']
 	usr = request.user
 	inv = usr.getInventory()
 	equip = inv.addEquipment(equipid)
@@ -103,3 +103,11 @@ def del_equipment(request):
 		return {'msg':'fail_del_equipment'}
 	inv.save()
 	return {'del_equipment':id}
+		
+def add_trp(request):
+	trp = int(request.GET['trp'])
+	usr = request.user
+	
+	usr.trp = usr.trp + trp
+	usr.save()
+	return {'trp':usr.trp}

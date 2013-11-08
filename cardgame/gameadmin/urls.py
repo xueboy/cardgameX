@@ -39,5 +39,19 @@ urlpatterns = patterns('',
     url(r'^luckycat_fortune/$', gameadmin.views.main.luckycat_fortune),
     url(r'^luck/$', gameadmin.views.main.luck),
     url(r'^luck_import/$', gameadmin.views.main.luck_import),
+    url(r'^language/$', gameadmin.views.main.language),
+    url(r'^language_import/$', gameadmin.views.main.language_import),
+    url(r'^stone/$', gameadmin.views.main.stone),
+    url(r'^stone_import/$', gameadmin.views.main.stone_import),
+    url(r'^stone_probability/$', gameadmin.views.main.stone_probability),
+    url(r'^stone_probability_import/$', gameadmin.views.main.stone_probability_import),
+    url(r'^stone_level/$', gameadmin.views.main.stone_level),
+    url(r'^stone_level_import/$', gameadmin.views.main.stone_level_import),
+    url(r'^trp/$', gameadmin.views.main.trp),
+    url(r'^trp_import/$', gameadmin.views.main.trp_import),
+    url(r'^trp_price/$', gameadmin.views.main.trp_price),
+    url(r'^trp_price_import/$', gameadmin.views.main.trp_price_import),
+    
+    
     
 )

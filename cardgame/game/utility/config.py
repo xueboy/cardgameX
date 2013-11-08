@@ -32,7 +32,7 @@ class config(gcconfig):
 		if confname == 'strength_probability':
 			return conf
 		if confname == 'luck':
-			return config.luckFilter(conf)
+			return conf
 		return None
 	
 	
@@ -106,8 +106,7 @@ class config(gcconfig):
 			l['luckid'] = conf[luckid]['luckid']
 			l['value'] = conf[luckid]['value']
 			l['type'] = conf[luckid]['type']
-			l['valuetype'] = conf[luckid]['valuetype']
-			
+			l['valuetype'] = conf[luckid]['valuetype']			
 			data[luckid] = l
 		return data
 			

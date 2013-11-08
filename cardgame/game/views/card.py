@@ -91,4 +91,29 @@ def sell(request):
 def training_confirm(request):
 	usr = request.user	
 	return pet.trainConfirm(usr)
+	
+def decompose(request):
+	usr = request.user
+	cardids = []
+	
+	cardids.append(request.GET['card_id1'])
+	if request.GET.has_key('card_id2'):
+		cardids.append(request.GET['card_id2'])
+	if request.GET.has_key('card_id3'):
+		cardids.append(request.GET['card_id3'])
+	if request.GET.has_key('card_id4'):
+		cardids.append(request.GET['card_id4'])
+	if request.GET.has_key('card_id5'):
+		cardids.append(request.GET['card_id5'])
+	if request.GET.has_key('card_id6'):
+		cardids.append(request.GET['card_id6'])
+	if request.GET.has_key('card_id7'):
+		cardids.append(request.GET['card_id7'])
+	if request.GET.has_key('card_id8'):
+		cardids.append(request.GET['card_id8'])
+	if request.GET.has_key('card_id9'):
+		cardids.append(request.GET['card_id9'])
+	if request.GET.has_key('card_id10'):
+		cardids.append(request.GET['card_id10'])
 
+	return pet.decompose(usr, cardids)
