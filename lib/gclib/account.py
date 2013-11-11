@@ -16,7 +16,7 @@ class account(object):
 	@classmethod
 	def login(cls,usrname, password):
 		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM account WHERE email = %s AND passward = %s", [usrname, password])
+		res = conn.query("SELECT * FROM account WHERE email = %s AND password = %s", [usrname, password])
 		if len(res) == 1:
 			acc = cls.accountObject()
 			acc.id = res[0][0]
@@ -51,9 +51,23 @@ class account(object):
 		Must overwrite in subclass and return the subclass of gcuser object
 		"""
 		return None
+		
+	@classmethod
+	def new(cls, accountName, password):
+		sql = "INSERT INTO account (email, password) VALUES (%s, %s)"
+		conn = DBConnection.getConnection()
+		conn.excute(sql, [accountName, password])
+		
+		acc = cls.accountObject()
+		acc.id = conn.insert_id()
+		acc.username = accountName
+		acc.nickname = ''
+		acc.roleid = 0
+		acc.opendid = 0
+		acc.saveLogin()
 	
 	@classmethod 
-	def accountObject():
+	def accountObject(cls):
 		"""
 		Must implement in subclass and return the subclass of gcaccount object
 		"""

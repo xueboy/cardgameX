@@ -16,6 +16,7 @@ import game.views.friend
 import game.views.profile
 import game.views.equipment
 import game.views.luckycat
+import game.views.stone
 import sys
 #from PIL import Image
 #import StringIO
@@ -29,6 +30,7 @@ viewsmap = {
 	'profile': sys.modules['game.views.profile'],
 	'equipment': sys.modules['game.views.equipment'],
 	'luckycat': sys.modules['game.views.luckycat'],
+	'stone': sys.modules['game.views.stone'],
 }
 
 def index(request):
@@ -166,6 +168,16 @@ def api(request, m, f):
 			return ret[1]
 	return HttpResponse('api')
 
+
+def account_new(request):
+	
+	accountName = request.GET['account_name']
+	password = request.GET['password']
+	
+	account.new(accountName, password)
+	
+	
+	return {'account_name':email}
 
 def test(request):	
 	
