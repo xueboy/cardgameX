@@ -83,7 +83,7 @@ class pet:
 		if not card:
 			return {'msg':'card_not_exist'}
 			
-		cost = None	
+		cost = {}	
 		gameConf = config.getConfig('game')
 		if trainlevel == '1':
 			trpPriceConfig = config.getConfig('trp_price')
@@ -125,6 +125,7 @@ class pet:
 			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
 		
+		
 		usr.train_prd['cardid'] = cardid
 		usr.train_prd['strength_revision'] = strrev
 		usr.train_prd['intelligence_revision'] = itlrev
@@ -153,7 +154,7 @@ class pet:
 		card['intelligence'] = card['intelligence'] + usr.train_prd['intelligence_revision']
 		card['artifice'] = card['artifice'] + usr.train_prd['artifice_revision']
 				
-		usr.train_prd = None
+		usr.train_prd = {}
 		
 		inv.save()
 		usr.save()
@@ -180,7 +181,7 @@ class pet:
 		
 		usr.save()
 		inv.save()
-		return {'trp':usr.trp, 'delete_card':cardids}
+		return {'trp':usr.trp, 'delete_card_array':cardids}
 			
 		
 		

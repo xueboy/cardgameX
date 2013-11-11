@@ -13,7 +13,7 @@ class stone:
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')
 		
-		goldCost = stoneProbabilityConf['visitPrice'][inv.stv]
+		goldCost = stoneProbabilityConf['visitPrice'][usr.stv]
 		
 		if goldCost > usr.gold:
 			return {'msg':'gold_not_enough'}
@@ -21,9 +21,9 @@ class stone:
 		
 		probs = {}
 		if useGem:
-			probs = stoneProbabilityConf['visit'][inv.stv]['gem']
+			probs = stoneProbabilityConf['visit'][usr.stv]['gem']
 		else:
-			probs = stoneProbabilityConf['visit'][inv.stv]['gold']
+			probs = stoneProbabilityConf['visit'][usr.stv]['gold']
 			
 		seed = randint()		
 		cndStone = []
@@ -39,11 +39,15 @@ class stone:
 		stoneid = random.simple(cndStone, 1)		
 		stone = inv.addStone(stoneid)	
 		
-		if drop(stoneProbabilityConf['visitProb'][inv.stv]):
-			inv.stv = inv.stv + 1
+		if drop(stoneProbabilityConf['visitProb'][usr.stv]):
+			inv.stv = usr.stv + 1
 		else:
-			inv.stv = inv.stv - 1
+			inv.stv = usr.stv - 1
 			if inv.stv < 0:
 				inv.stv = 0
+				
+		usr.save()
+		inv.save()
+		return {'stv':usr.stv, 'gold':usr.gold, 'stone':stone}
 		
 		
