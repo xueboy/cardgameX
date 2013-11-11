@@ -14,10 +14,6 @@ def set_avatar(request):
 	avatar = request.body	
 	usr = request.user
 		
-	usr.gender = gender
-	if gender != "female":
-		usr.gender = 'male'
-	
 	m = hashlib.md5(avatar)
 	usr.avatar_id = m.hexdigest()
 	

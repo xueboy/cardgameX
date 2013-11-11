@@ -6,7 +6,7 @@ from gclib.json import *
 from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, beginRequest, onUserLogin, currentTime, endRequest
+from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest
 from game.models.user import user
 from game.models.network import network
 import game.views.dungeon
@@ -38,9 +38,9 @@ def index(request):
 	pwd = request.GET['password']
 	acc = account.login(username, pwd)
 	if acc != None:
+		onAccountLogin(request, acc)
 		if not acc.nickname:
 			return HttpResponse(json.dumps({'msg':'nickname_should_set_before'}))
-			return http
 		usr = acc.getUser()
 		if usr == None:
 			raise Http500("server error")
@@ -154,12 +154,14 @@ def get_config(request):
 def api(request, m, f):
 	try:
 		usr = beginRequest(request,user)
-	except KeyError:
+	except NotLogin:
 		return info(request)
+	except NotHaveNickname:
+		return HttpResponse({'msg':'nickname_should_set_before'})
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
 		ret = fun(request)		
-		if not isinstance(ret, tuple):		
+		if not isinstance(ret, tuple):
 			notify = endRequest(request)
 			yell = usr.yell_listen()
 			if yell:
@@ -172,12 +174,25 @@ def api(request, m, f):
 	return HttpResponse('api')
 
 
-def account_new(request):
+def new_account(request):
 	
 	accountName = request.GET['account_name']
 	password = request.GET['password']	
 	res = account.new(accountName, password)	
 	return HttpResponse(json.dumps(res))
+	
+def set_nickname(request):
+	
+	nickname = request.GET['nickname']
+	gender = request.GET['gender']
+	
+	acc = getAccount()
+	if acc.nickname:
+		return {'msg':'nickname_already_have'}
+	acc.nickname = nickname
+	
+	
+	
 
 def test(request):	
 	

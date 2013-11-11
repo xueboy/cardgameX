@@ -21,18 +21,15 @@ class account(object):
 			acc = cls.accountObject()
 			acc.id = res[0][0]
 			acc.username = res[0][1]
-			acc.nickname = res[0][3]		
-			acc.roleid = res[0][4]
-			acc.opendid = res[0][5]
+			acc.nickname = res[0][3]
+			acc.gender = res[0][4]
+			acc.roleid = res[0][5]
+			acc.opendid = res[0][6]
 			acc.saveLogin()
 			return acc
 		return None
 			
-	def getUser(self):
-		
-		if self.roleid == 0:
-			return self.makeUser()
-		print self.roleid
+	def getUser(self):		
 		return self.userObject().get(self.roleid)
 	
 	def makeUser(self):
@@ -51,7 +48,23 @@ class account(object):
 		Must overwrite in subclass and return the subclass of gcuser object
 		"""
 		return None
-		
+	
+	@classmethod	
+	def get(cls, accid):
+		conn = DBConnection.getConnection()
+		res = conn.query("SELECT * FROM account WHERE id = %s ", [accid])
+		if len(res) == 1:
+			acc = cls.accountObject()
+			acc.id = res[0][0]
+			acc.username = res[0][1]
+			acc.nickname = res[0][3]
+			acc.gender = res[0][4]		
+			acc.roleid = res[0][5]
+			acc.opendid = res[0][6]
+			acc.saveLogin()
+			return acc
+		return None
+	
 	@classmethod
 	def new(cls, accountName, password):
 		try:
@@ -95,3 +108,6 @@ class account(object):
 		if len(res) == 1:
 			return res[0][4]
 		return 0
+	
+	def onLogin(self):
+		pass

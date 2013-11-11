@@ -13,22 +13,38 @@ def HttpResponse500():
 	response.status_code = 500
 	return resonse
 
+
+def getAccount(request, cls):
+	accountid = request.session['account_id']
+	acc = cls.get(accountid)
+	return acc
+	
+
+def onAccountLogin(request, acc):
+	request.session['account_id'] = acc.id
+	acc.onLogin()
+	return acc
+
 def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
 	usr.onLogin()
 
-def beginRequest(request,cls):	
+def beginRequest(request,cls):
+	
+	if not request.session.has_key('account_id'):
+		raise NotLogin		
+	
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	if not usr:
-		raise KeyError
+		raise NotHaveNickname
 	request.user = usr
 	usr.update()
 	return usr
 
 def endRequest(request):
 	user = request.user
-	notify = user.notify		
+	notify = user.notify
 	user.notify = {}
 	user.save()
 	return notify
