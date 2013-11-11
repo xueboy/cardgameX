@@ -16,7 +16,7 @@ class account(object):
 	@classmethod
 	def login(cls,usrname, password):
 		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM account WHERE username = %s AND passward = %s", [usrname, password])
+		res = conn.query("SELECT * FROM account WHERE email = %s AND passward = %s", [usrname, password])
 		if len(res) == 1:
 			acc = cls.accountObject()
 			acc.id = res[0][0]
