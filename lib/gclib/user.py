@@ -20,7 +20,8 @@ class user(object):
 		conn = DBConnection.getConnection()		
 		self.roleid = self.id
 		conn.excute("UPDATE user SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
-		return None
+		
+	
 		
 	def onLogin(self):
 		pass

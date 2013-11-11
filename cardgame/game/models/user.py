@@ -9,6 +9,7 @@ from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
 from game.routine.luckycat import luckycat
+from game.routine.garcha import garcha
 
 
 class user(gcuser):
@@ -31,7 +32,7 @@ class user(gcuser):
 		self.dun = None
 		self.inv = None
 		self.network = None
-		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
+		self.garcha = garcha.make()
 		self.notify = {}
 		self.gender = 'male'
 		self.equipment_strength_cooldown = 0

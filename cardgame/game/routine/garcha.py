@@ -112,6 +112,9 @@ class garcha:
 		 return -1
 	
 	
+	@staticmethod
+	def make():
+		return {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 		
 			
 		

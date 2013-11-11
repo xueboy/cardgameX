@@ -8,3 +8,6 @@ class NotLogin(Exception):
 	
 class NotHaveNickname(Exception):
 	pass
+	
+class NotImplemented(Exception):
+	pass

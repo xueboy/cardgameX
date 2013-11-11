@@ -7,6 +7,7 @@ from gclib.object import object
 from gclib.DBConnection import DBConnection
 from gclib.user import user
 from gclib.utility import currentTime
+from gclib.exception import NotImplemented
 
 class account(object):
 	
@@ -32,14 +33,16 @@ class account(object):
 	def getUser(self):		
 		return self.userObject().get(self.roleid)
 	
-	def makeUser(self):
+	def makeUserAndBind(self, nickname, gender):
 		conn = DBConnection.getConnection()		
 		usr = self.userObject()
 		usr.init(self)
 		usr.last_login = self.last_login
+		usr.name = nickname
+		usr.gender = gender
 		usr.install(0)
 		self.roleid = usr.id
-		self.saveRoleId()	
+		self.bind(usr.id, nickname, gender)	
 		usr.saveRoleId()	
 		return usr
 		
@@ -64,7 +67,11 @@ class account(object):
 			acc.saveLogin()
 			return acc
 		return None
-	
+		
+	def save(self):
+		raise NotImplemented
+		
+		
 	@classmethod
 	def new(cls, accountName, password):
 		try:
@@ -92,9 +99,9 @@ class account(object):
 		return None
 		
 		
-	def saveRoleId(self):
-		conn = DBConnection.getConnection()				
-		conn.excute("UPDATE account SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
+	def bind(self, roleid, nickname, gender):
+		conn = DBConnection.getConnection()
+		conn.excute("UPDATE account SET roleid = %s, nickname = %s, gender = %s WHERE id = %s", [roleid, nickname, gender, self.id])
 		
 	def saveLogin(self):
 		self.last_login = currentTime()

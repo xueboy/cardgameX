@@ -18,8 +18,6 @@ import game.views.equipment
 import game.views.luckycat
 import game.views.stone
 import sys
-#from PIL import Image
-#import StringIO
 
 
 viewsmap = {
@@ -34,9 +32,9 @@ viewsmap = {
 }
 
 def index(request):
-	username = request.GET['username']
+	account_name = request.GET['account_name']
 	pwd = request.GET['password']
-	acc = account.login(username, pwd)
+	acc = account.login(account_name, pwd)
 	if acc != None:
 		onAccountLogin(request, acc)
 		if not acc.nickname:
@@ -186,21 +184,22 @@ def set_nickname(request):
 	nickname = request.GET['nickname']
 	gender = request.GET['gender']
 	
-	acc = getAccount()
+	if gender != 'male' and gender != 'female':
+		return {'msg':'gender_out_of_except'}	
+	acc = getAccount(request, account)
 	if acc.nickname:
 		return {'msg':'nickname_already_have'}
 	acc.nickname = nickname
-	
-	
-	
+	acc.gender = gender
+	usr = acc.makeUserAndBind(nickname, gender)	
+	return HttpResponse({'name':usr.nickname, 'gender':usr.gender})	
 
 def test(request):	
 	
 	#url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
 	#f = curl.url(url)
 	#print f	
-	#return HttpResponse(f, mimetype="text/plain")
-	
+	#return HttpResponse(f, mimetype="text/plain")	
 	data = {}
 	data['notify'] = {}
 	data['notify']['notify_email'] = {}

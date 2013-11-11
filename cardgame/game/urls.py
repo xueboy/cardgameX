@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^config$', game.views.main.config),
     url(r'^get_config$', game.views.main.get_config),
     url(r'^new_account$', game.views.main.new_account),
+    url(r'^set_nickname$', game.views.main.set_nickname),
     url(r'^test$', game.views.main.test),
     url(r'^api/(\w+)/(\w+)/$', game.views.main.api)
 )
