@@ -1,12 +1,12 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
+import time
+from django.db import IntegrityError
 from gclib.object import object
 from gclib.DBConnection import DBConnection
 from gclib.user import user
 from gclib.utility import currentTime
-import time
-
 
 class account(object):
 	
@@ -16,7 +16,7 @@ class account(object):
 	@classmethod
 	def login(cls,usrname, password):
 		conn = DBConnection.getConnection()
-		res = conn.query("SELECT * FROM account WHERE email = %s AND password = %s", [usrname, password])
+		res = conn.query("SELECT * FROM account WHERE accountname = %s AND password = %s", [usrname, password])
 		if len(res) == 1:
 			acc = cls.accountObject()
 			acc.id = res[0][0]
@@ -54,17 +54,22 @@ class account(object):
 		
 	@classmethod
 	def new(cls, accountName, password):
-		sql = "INSERT INTO account (email, password) VALUES (%s, %s)"
-		conn = DBConnection.getConnection()
-		conn.excute(sql, [accountName, password])
+		try:
+			sql = "INSERT INTO account (email, password) VALUES (%s, %s)"
+			conn = DBConnection.getConnection()
+			conn.excute(sql, [accountName, password])
 		
-		acc = cls.accountObject()
-		acc.id = conn.insert_id()
-		acc.username = accountName
-		acc.nickname = ''
-		acc.roleid = 0
-		acc.opendid = 0
-		acc.saveLogin()
+			acc = cls.accountObject()
+			acc.id = conn.insert_id()
+			acc.username = accountName
+			acc.nickname = ''
+			acc.roleid = 0
+			acc.opendid = 0
+			acc.saveLogin()
+		except IntegrityError:
+			return {'msg':'account_already_exist'}
+				
+		return {'account_name':accountName}
 	
 	@classmethod 
 	def accountObject(cls):
