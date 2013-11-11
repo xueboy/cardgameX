@@ -165,8 +165,25 @@ class inventory(object):
 		if cardid5 != '':
 			if cardid5 == cardid6:
 				return self.team
+				
+		gameConf = config.getConfig('game')
+		
+		teamLevelConf = gameConf['team_member_open_level']
 		
 		usr = self.user
+		
+		if cardid1 != self.team[0] and usr.level <  teamLevelConf[0]:
+			return {'msg':'level_required'}
+		if cardid2 != self.team[1] and usr.level <  teamLevelConf[1]:
+			return {'msg':'level_required'}
+		if cardid3 != self.team[2] and usr.level <  teamLevelConf[2]:
+			return {'msg':'level_required'}
+		if cardid4 != self.team[3] and usr.level <  teamLevelConf[3]:
+			return {'msg':'level_required'}
+		if cardid5 != self.team[4] and usr.level <  teamLevelConf[4]:
+			return {'msg':'level_required'}
+		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
+			return {'msg':'level_required'}	
 		
 		if cardid1 == '':
 			equipment.takeoff(usr, self.team[0])

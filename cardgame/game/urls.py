@@ -8,8 +8,7 @@ import game.views.main
 urlpatterns = patterns('',
     #url(r'^$', views.index, name='index')
     url(r'^index$', game.views.main.index),
-    url(r'^info$', game.views.main.info),
-    url(r'^config$', game.views.main.config),
+    url(r'^info$', game.views.main.info),    
     url(r'^get_config$', game.views.main.get_config),
     url(r'^new_account$', game.views.main.new_account),
     url(r'^set_nickname$', game.views.main.set_nickname),

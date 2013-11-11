@@ -85,64 +85,8 @@ def info(request):
 	info['trp_price_md5'] = conf.getClientConfigMd5('trp_price')
 	info['trp_md5'] = conf.getClientConfigMd5('trp')
 	return HttpResponse(json.dumps({'info':info}))
-		
-	
-def config(request):
-#	try:	
-#		beginRequest(request,user)
-#	except KeyError:
-#		return info(request)
-	data = {}	
-	dungeon_config_md5 = request.GET['dungeon_md5']
-	level_config_md5 = request.GET['level_md5']
-	game_config_md5 = request.GET['game_md5']
-	pet_config_md5 = request.GET['pet_md5']
-	monster_config_md5 = request.GET['monster_md5']
-	skill_config_md5 = request.GET['skill_md5']
-	pet_level_config_md5 = request.GET['pet_level_md5']
-	prompt_config_md5 = request.GET['prompt_md5']
-	equipment_config_md5 = request.GET['equipment_md5']
-	strength_price_config_md5 = request.GET['strength_price_md5']
-	strength_probability_config_md5 = request.GET['strength_probability_md5']
-	
-	data['dungeon'] = ''
-	data['level'] = ''
-	data['game'] = ''
-	data['pet'] = ''
-	data['monster'] = ''
-	data['skill'] = ''
-	data['pet_level'] = ''
-	data['prompt'] = ''
-	data['equipment'] = ''
-	data['strength_price'] = ''
-	data['strength_probability'] = ''
-	
-	
-	if dungeon_config_md5 != conf.getClientConfigMd5('dungeon'):
-		data['dungeon'] = conf.getClientConfig('dungeon')
-	if level_config_md5 != conf.getClientConfigMd5('level'):
-		data['level'] = conf.getClientConfig('level')
-	if game_config_md5 != conf.getClientConfigMd5('game'):
-		data['game'] = conf.getClientConfig('game')
-	if pet_config_md5 != conf.getClientConfigMd5('pet'):
-		data['pet'] = conf.getClientConfig('pet')
-	if monster_config_md5 != conf.getClientConfigMd5('monster'):
-		data['monster'] = conf.getClientConfig('monster')
-	if skill_config_md5 != conf.getClientConfigMd5('skill'):
-		data['skill'] = conf.getClientConfig('skill')
-	if pet_level_config_md5 != conf.getClientConfigMd5('pet_level'):
-		data['pet_level'] = conf.getClientConfig('pet_level')
-	if prompt_config_md5 != conf.getClientConfigMd5('prompt'):
-		data['prompt'] = conf.getClientConfig('prompt')
-	if equipment_config_md5 != conf.getClientConfigMd5('equipment'):
-		data['equipment'] = conf.getClientConfig('equipment')
-	if strength_price_config_md5 != conf.getClientConfigMd5('strength_price'):
-		data['strength_price'] = conf.getClientConfig('strength_price')
-	if strength_probability_config_md5 != conf.getClientConfigMd5('strength_probability'):
-		data['strength_probability'] = conf.getClientConfig('strength_probability')
-	p = json.dumps(data)
-	return HttpResponse(p)
-	
+
+
 def get_config(request):
 	
 	configkey = request.GET['config']	
@@ -185,14 +129,14 @@ def set_nickname(request):
 	gender = request.GET['gender']
 	
 	if gender != 'male' and gender != 'female':
-		return {'msg':'gender_out_of_except'}	
+		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
 	acc = getAccount(request, account)
 	if acc.nickname:
-		return {'msg':'nickname_already_have'}
+		return HttpResponse(json.dumps({'msg':'nickname_already_have'}))
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)	
-	return HttpResponse({'name':usr.nickname, 'gender':usr.gender})	
+	return HttpResponse(json.dumps({'name':usr.nickname, 'gender':usr.gender}))
 
 def test(request):	
 	
