@@ -76,9 +76,3 @@ def show(request):
 	data['message'] = otNw.message	
 	return data
 	
-def registry(request):
-	
-	userName = request.GET['username']
-	password = request.GET['password']
-	
-	sql = "INSERT INTO account "

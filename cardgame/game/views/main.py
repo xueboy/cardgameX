@@ -38,6 +38,9 @@ def index(request):
 	pwd = request.GET['password']
 	acc = account.login(username, pwd)
 	if acc != None:
+		if not acc.nickname:
+			return HttpResponse(json.dumps({'msg':'nickname_should_set_before'}))
+			return http
 		usr = acc.getUser()
 		if usr == None:
 			raise Http500("server error")
@@ -57,7 +60,7 @@ def index(request):
 		usr.notify = {}
 		usr.save()
 		return HttpResponse(json.dumps(data))
-	return HttpResponse("Hello, world. You're at the test page index.")
+	return HttpResponse(json.dumps({'msg':'account_name_not_exist'}))
 
 
 def info(request):
@@ -172,12 +175,9 @@ def api(request, m, f):
 def account_new(request):
 	
 	accountName = request.GET['account_name']
-	password = request.GET['password']
-	
-	account.new(accountName, password)
-	
-	
-	return {'account_name':email}
+	password = request.GET['password']	
+	res = account.new(accountName, password)	
+	return HttpResponse(json.dumps(res))
 
 def test(request):	
 	

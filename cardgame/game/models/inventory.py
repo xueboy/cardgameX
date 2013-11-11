@@ -215,13 +215,15 @@ class inventory(object):
 		return self.team
 
 		
-	def addStone(stoneid):
+	def addStone(self, stoneid):
 		stoneConf = config.getConfig('stone')
 		
 		stoneInfo = stoneConf[stoneid]		
 		stone = {}
 		stone['stoneid'] = stoneid
-		stone['id'] = self.generateStoneName()		
+		stone['id'] = self.generateStoneName()
+		stone['level'] = 1
+		stone['exp'] = 0
 		self.stone.append(stone)
 		return stone
 		

@@ -64,7 +64,7 @@ def drop(weight):
 	
 	
 def randint():
-	return random.randint(0, 1000)
+	return random.randint(0, 10000)
 	
 	
 def retrieval_object(func):

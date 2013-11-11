@@ -7,7 +7,7 @@ from game.models.user import user
 class account(gcaccount):		
 		
 	@classmethod 
-	def accountObject(self):
+	def accountObject(cls):
 		return account()
 		
 	def userObject(self):

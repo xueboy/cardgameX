@@ -918,7 +918,7 @@ def stone_import(request):
 		sheet = wb.sheet_by_index(2)
 				
 		conf = {}
-		for rownum in range(5,sheet.nrows):
+		for rownum in range(4,sheet.nrows):
 			row = sheet.row_values(rownum)
 			stoneid = row[0]
 			quality = row[3]
@@ -966,27 +966,39 @@ def stone_probability_import(request):
 		
 		conf['visitProb'] = [visit1Prob, visit2Prob, visit3Prob, visit4Prob, visit5Prob]
 		
-		visitPriceRow = sheet.row_values(3)
-		visit1Price = int(visitPriceRow[1])
-		visit2Price = int(visitPriceRow[2])
-		visit3Price = int(visitPriceRow[3])
-		visit4Price = int(visitPriceRow[4])
-		visit5Price = int(visitPriceRow[5])
+		visitGoldRow = sheet.row_values(3)
+		visit1Gold = int(visitGoldRow[1])
+		visit2Gold = int(visitGoldRow[2])
+		visit3Gold = int(visitGoldRow[3])
+		visit4Gold = int(visitGoldRow[4])
+		visit5Gold = int(visitGoldRow[5])
 		
-		conf['visitPrice'] = [visit1Price, visit2Price, visit3Price, visit4Price, visit5Price]
+		conf['visitGold'] = [visit1Gold, visit2Gold, visit3Gold, visit4Gold, visit5Gold]
+		
+		visitGemRow = sheet.row_values(4)
+		visit1Gem = int(visitGemRow[1])
+		visit2Gem = int(visitGemRow[2])
+		visit3Gem = int(visitGemRow[3])
+		visit4Gem = int(visitGemRow[4])
+		visit5Gem = int(visitGemRow[5])
+		
+		conf['visitGem'] = [visit1Gem, visit2Gem, visit3Gem, visit4Gem, visit5Gem]
+		
 
 		stoneCol = sheet.col_values(0)
 		level1Col = sheet.col_values(1)
 		level2Col = sheet.col_values(2)
 		level3Col = sheet.col_values(3)
 		level4Col = sheet.col_values(4)
+		level5Col = sheet.col_values(5)
 		
 		conf['visit'] = []
 		
 		read_stone_level(stoneCol, level1Col, conf, 1)
 		read_stone_level(stoneCol, level2Col, conf, 2)
 		read_stone_level(stoneCol, level3Col, conf, 3)
-		read_stone_level(stoneCol, level4Col, conf, 4)			
+		read_stone_level(stoneCol, level4Col, conf, 4)
+		read_stone_level(stoneCol, level5Col, conf, 5)
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('stone_probability_import')
 
@@ -996,13 +1008,13 @@ def read_stone_level(stoneCol, levelCol, conf, level):
 	visitConf['gold'] = []
 	visitConf['gem'] = []	
 	
-	for rownum in range(5, 10):
+	for rownum in range(6, 11):
 		levelgoldInfo = {}
 		levelgoldInfo['probability'] = int(levelCol[rownum])
 		levelgoldInfo['stone'] = stoneCol[rownum].split(',')
 		visitConf['gold'].append(levelgoldInfo)
 			
-	for rownum in range(12, 18):
+	for rownum in range(13, 19):
 		levelgoldInfo = {}
 		levelgoldInfo['probability'] = int(levelCol[rownum])
 		levelgoldInfo['stone'] = stoneCol[rownum].split(',')

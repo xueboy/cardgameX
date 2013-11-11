@@ -26,10 +26,10 @@ def del_card(request):
 	inv.save()	
 	return {'del_card':id}
 		
-def add_money(request):
-	money = int(request.GET['money'])
+def add_gold(request):
+	gold = int(request.GET['gold'])
 	usr = request.user	
-	usr.gold = usr.gold + money	
+	usr.gold = usr.gold + gold
 	usr.save()
 	return {'gold':usr.gold}
 		
