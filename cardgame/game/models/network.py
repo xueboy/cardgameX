@@ -198,7 +198,7 @@ class network(object):
 			del self.email[emailid]
 			self.save()
 			return {'email_delete':emailid}
-		return {'email_not_found'}
+		return {'msg':'email_not_exist'}
 
 	def yell(self, name, msg):
 		ms = massyell.get(0)		

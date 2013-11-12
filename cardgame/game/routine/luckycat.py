@@ -14,7 +14,7 @@ class luckycat:
 		data['critical_point_list'] = []
 		data['beckon_count'] = 0
 		data['beckon_gem_count'] = 0
-		data['beckon_last_update_time'] = 0
+		data['beckon_last_update_time'] = currentTime()
 		data['beckon_cooldown'] = 0
 		data['critical_point_list'] = []
 		data['feed_self_count'] = 0
@@ -46,9 +46,7 @@ class luckycat:
 		if useGem:
 			costGem = gameConf['luckycat_beckon_gem_base'] + gameConf['luckycat_beckon_gem_delta'] * usr.luckycat['beckon_gem_count']
 			if usr.gem < costGem:
-				return {'msg':'gem_not_enough'}
-				
-		
+				return {'msg':'gem_not_enough'}		
 		
 		beckonGold = luckycatLevelConf[usr.luckycat['level'] - 1]['luckyGold']		
 		beckonGold = beckonGold * luckycat.currentLuckycatFortune()		
@@ -62,6 +60,7 @@ class luckycat:
 			if usr.luckycat['fatigue'] > gameConf['luckycat_fatigue_max']:
 				usr.luckycat['fatigue'] = gameConfig['luckycat_fatigue_max']
 			usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] + (gameConf['luckycat_cooldown_base'] * (1 + usr.luckycat['fatigue'] / 2))
+			usr.luckycat['beckon_last_update_time'] = currentTime()
 		rcd = {}
 		rcd['type'] = 'beckon'
 		rcd['create_time'] = currentTime()
@@ -297,8 +296,7 @@ class luckycat:
 			return
 			
 	
-		elapse = now - usr.luckycat['beckon_last_update_time']
-		print usr.luckycat['beckon_cooldown']
+		elapse = now - usr.luckycat['beckon_last_update_time']		
 		usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] - elapse
 		if usr.luckycat['beckon_cooldown'] < 0:
 			usr.luckycat['beckon_cooldown'] = 0

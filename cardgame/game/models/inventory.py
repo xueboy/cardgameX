@@ -236,16 +236,22 @@ class inventory(object):
 		stoneConf = config.getConfig('stone')
 		
 		stoneInfo = stoneConf[stoneid]		
-		stone = {}
-		stone['stoneid'] = stoneid
-		stone['id'] = self.generateStoneName()
-		stone['level'] = 1
-		stone['exp'] = 0
-		self.stone.append(stone)
-		return stone
+		st = {}
+		st['stoneid'] = stoneid
+		st['id'] = self.generateStoneName()
+		st['level'] = 1
+		st['exp'] = 0
+		self.stone.append(st)
+		return st
 		
-	def getStone(self, id):
-		for stone in self.stone:
-			 if stone['id'] == id:
-			 	return stone
+	def getStone(self, id):					
+		for i in range(0, len(self.stone)):
+			print i
+			print id
+			print self.stone[i]['id']
+			if self.stone[i]['id'] == id:				
+				return self.stone[i]
 		return None
+		
+	def delStone(self, id):
+		self.stone = filter(lambda s : s['id'] != id, self.stone)		

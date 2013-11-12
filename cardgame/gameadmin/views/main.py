@@ -37,7 +37,7 @@ def pet_level(request):
 	
 def prompt(request):
 	return generalConfigRequestProcess(request, 'prompt')
-1
+
 def garcha(request):
 	return generalConfigRequestProcess(request, 'garcha')	
 	

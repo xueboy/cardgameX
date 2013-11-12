@@ -93,7 +93,7 @@ class pet:
 		elif trainlevel == '3':
 			cost = gameConf['training_price3']
 		else:
-			return {'msg':'level_out_of_expect'}
+			return {'msg':'parameter_bad'}
 
 		
 		if cost['gold'] > usr.gold:
@@ -225,6 +225,7 @@ class pet:
 		usr.gold = usr.gold + price
 			
 		inv.delCard(id);
+		inv.save()
 		usr.save()
-			
+		
 		return {'gold': usr.gold, 'sell_card':id}

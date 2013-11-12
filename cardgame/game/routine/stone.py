@@ -55,7 +55,7 @@ class stone:
 		usr.save()
 		inv.save()
 		
-		return {'stv':usr.stv, 'stone':stone, 'gold':usr.gold}
+		return {'stv':usr.stv, 'add_stone':stone, 'gold':usr.gold}
 		
 	@staticmethod
 	def visit_gem(usr, level):
@@ -101,14 +101,87 @@ class stone:
 		usr.save()
 		inv.save()
 		
-		return {'stv':usr.stv, 'stone':stone, 'gem':usr.gem}
+		return {'stv':usr.stv, 'add_stone':stone, 'gem':usr.gem}
 			
+			
+	@staticmethod
+	def levelup(usr, dest_stoneid, source_stoneid):
 		
-	def levelup(usr, dsid, mt):
+	
+		if not source_stoneid:
+			return {'msg':'stone_not_specified'}
 		
+		
+		stoneConf = config.getConfig('stone')
+				
+		inv = usr.getInventory()		
+		dest_stone = inv.getStone(dest_stoneid)	
+		if not dest_stone:
+			return {'msg':'stone_not_exist'}
+		exp = 0
+				
+		for srcid in source_stoneid:			
+			ss = inv.getStone(srcid)			
+			if not ss:
+				return {'msg':'stone_not_exist'}			
+			exp = exp + stone.get_exp(ss, stoneConf[ss['stoneid']])			
+			inv.delStone(srcid)				
+		
+		stone.add_exp(dest_stone, exp, stoneConf[dest_stone['stoneid']])
+		
+		return {'stone':dest_stone, 'stone_delete_array':source_stoneid}
+		
+	@staticmethod
+	def add_exp(st, exp, stoneInfo):
+		stoneLevelConf = config.getConfig('stone_level')
+		
+		
+		expdeff = stoneLevelConf[unicode(st['level'] + 1)][stoneInfo['quality'] - 1] - stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
+		exp = exp + st['exp']
+		st['exp'] = 0
+		while expdeff < exp:
+			st['level'] = st['level'] + 1
+			exp = exp - expdeff
+			expdeff = stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1] - stoneLevelConf[unicode(st['level'] - 1)][stoneInfo['quality'] - 1]
+			
+		st['exp'] = exp
+			
+	@staticmethod
+	def get_exp(st, stoneInfo):
+		stoneLevelConf = config.getConfig('stone_level')
+		exp = st['exp']
+		exp = exp + stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
+		exp = exp + stoneInfo['gravel']
+		return exp
+		
+	def set_stone(usr, cardid, soltpos, stoneid):
+		
+		gameConf = config.getConfig('game')
 		inv = usr.getInventory()
 		
-		dsstone = inv.getStone(dsid)
+		p = inv.getCard(cardid)
+		
+		if gameConf['stone_slot_level'][soltpos] > p['level']:
+			return {'msg':'card_level_required'}
+		
+		if not p.has_key('st_solt'):
+			p['st_solt'] = sonte.make_st_solt()
+		
+		oldst = p['st_solt'][soltpos]
+		
+		#if not stoneid:
+			
+		
+		st = inv.getStone(stoneid)
+		if not st:
+			return {'msg':'stone_not_exist'}
 		
 		
 		
+		
+		
+	@staticmethod
+	def make_st_solt():
+		return [{}, {}, {}, {}, {}, {}, {}, {}, {}, {},]
+		
+			

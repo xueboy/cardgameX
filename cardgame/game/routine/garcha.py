@@ -92,7 +92,7 @@ class garcha:
 				break;			
 		
 		if not garchaCard:
-			return {'msg': 'card_invalid'}
+			return {'msg': 'card_not_exist'}
 		
 		usr.gold = usr.gold - garchaCostGold
 		usr.gem = usr.gem - garchaCostGem

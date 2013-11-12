@@ -111,3 +111,13 @@ def add_trp(request):
 	usr.trp = usr.trp + trp
 	usr.save()
 	return {'trp':usr.trp}
+		
+def add_stone(request):
+	stoneid = request.GET['stone_id']
+	
+	usr = request.user
+	
+	inv = usr.getInventory()
+	stone = inv.addStone(stoneid)
+	inv.save()
+	return {'add_stone':stone}

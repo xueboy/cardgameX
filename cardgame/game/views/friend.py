@@ -112,7 +112,7 @@ def ban(request):
 		usrNw = usr.getNetwork()
 		usrNw.ban(banid, banUser.name)
 		return {}		
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 	
 def yell(request):	
 	message = request.GET['message']

@@ -12,7 +12,7 @@ class equipment:
 		
 		equipment = inv.getEquipment(id)
 		if not equipment:
-			return {'msg':'equipment_not_found'}
+			return {'msg':'equipment_not_exist'}
 				
 		usr.updateFatigue()
 		usr.updateEquipmentStrengthCooldown()
