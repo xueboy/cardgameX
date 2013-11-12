@@ -17,6 +17,6 @@ def visit_gem(request):
 	
 	
 def levelup(request):
-	
+	pass
 	
 	

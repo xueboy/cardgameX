@@ -18,11 +18,9 @@ class stone:
 			return {'msg':'svt_too_hight'}
 		
 		if not usr.stv[level - 1]:
-			return {'msg':'svt_not_available'}
-			
+			return {'msg':'svt_not_available'}			
 		
 		goldCost = stoneProbabilityConf['visitGold'][level - 1]		
-		
 		
 		if goldCost > usr.gold:
 			return {'msg':'gold_not_enough'}
@@ -106,9 +104,11 @@ class stone:
 		return {'stv':usr.stv, 'stone':stone, 'gem':usr.gem}
 			
 		
-	def levelup(usr, ds, mt):
+	def levelup(usr, dsid, mt):
 		
-		for mtid in mt:
-			
+		inv = usr.getInventory()
+		
+		dsstone = inv.getStone(dsid)
+		
 		
 		
