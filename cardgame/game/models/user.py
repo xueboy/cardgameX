@@ -44,8 +44,8 @@ class user(gcuser):
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.luckycat = {}
 		self.trp = 0
-		self.stv = 0
-		self.stv_gem_level = -1
+		self.stv = [1, 0, 0, 0, 0]
+		self.stv_gem = [0, 0, 0, 0, 0]
 		
 	
 	def init(self, acc):
@@ -84,7 +84,7 @@ class user(gcuser):
 		data['luckycat'] = self.luckycat
 		data['trp'] = self.trp
 		data['stv'] = self.stv
-		data['stv_gem_level'] = self.stv_gem_level
+		data['stv_gem'] = self.stv_gem
 		return data
 		
 	def getClientData(self):
@@ -147,7 +147,7 @@ class user(gcuser):
 		self.luckycat = data['luckycat']
 		self.trp = data['trp']
 		self.stv = data['stv']
-		self.stv_gem_level = data['stv_gem_level']
+		self.stv_gem = data['stv_gem']
 			 
 		
 	def getCardNo(self):
@@ -214,9 +214,9 @@ class user(gcuser):
 		"""
 		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
-		while levelConf.has_key(str(self.level)) and self.exp > levelConf[str(self.level)]['levelExp']:
-			self.level = self.level + 1
-			self.exp = self.exp - levelConf[str(self.level - 1)]['levelExp']			
+		while self.exp > levelConf[self.level - 1]['levelExp']:
+			self.exp = self.exp - levelConf[self.level - 1]['levelExp']			
+			self.level = self.level + 1			
 			self.onLevelup()
 			
 	def update(self):

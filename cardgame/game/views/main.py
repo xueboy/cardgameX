@@ -8,7 +8,7 @@ from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
 from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest
-from gclib.exception import NotLogin
+from gclib.exception import NotLogin, NotHaveNickname
 from game.models.user import user
 from game.models.network import network
 import game.views.dungeon
@@ -138,7 +138,7 @@ def set_nickname(request):
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)	
-	return HttpResponse(json.dumps({'name':usr.nickname, 'gender':usr.gender}))
+	return HttpResponse(json.dumps({'name':acc.nickname, 'gender':usr.gender}))
 
 def test(request):	
 	

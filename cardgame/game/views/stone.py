@@ -6,11 +6,17 @@ from game.routine.stone import stone
 def visit(request):
 	
 	usr = request.user
-	return stone.visit(usr)
+	level = int(request.GET['vlevel'])
+	return stone.visit(usr, level)
 	
-def visit_level(request):
+def visit_gem(request):
 	
 	usr = request.user
 	level = int(request.GET['vlevel'])
-	return stone.visit_level(usr, level)
+	return stone.visit_gem(usr, level)
+	
+	
+def levelup(request):
+	
+	
 	

@@ -9,20 +9,27 @@ from game.utility.config import config
 class stone:
 	
 	@staticmethod
-	def visit(usr):
+	def visit(usr, level):
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')
 		
-		goldCost = stoneProbabilityConf['visitGold'][usr.stv]		
+		if level > len(usr.stv):
+			return {'msg':'svt_too_hight'}
+		
+		if not usr.stv[level - 1]:
+			return {'msg':'svt_not_available'}
+			
+		
+		goldCost = stoneProbabilityConf['visitGold'][level - 1]		
 		
 		
 		if goldCost > usr.gold:
 			return {'msg':'gold_not_enough'}
-		if usr.stv_gem_level != -1:
-			probs = stoneProbabilityConf['visit'][usr.stv]['gem']			
+		if usr.stv_gem[level - 1]:
+			probs = stoneProbabilityConf['visit'][level - 1]['gem']			
 		else:
-			probs = stoneProbabilityConf['visit'][usr.stv]['gold']
+			probs = stoneProbabilityConf['visit'][level - 1]['gold']
 			
 		seed = randint()		
 		cndStone = []
@@ -35,38 +42,41 @@ class stone:
 			else:
 				seed = seed - p				
 				
-		stoneid = random.sample(cndStone, 1)		
-		stone = inv.addStone(stoneid[0])	
+		stoneid = random.sample(cndStone, 1)[0]
+		stone = inv.addStone(stoneid)	
 		
-		if drop(stoneProbabilityConf['visitProb'][usr.stv]):
-			usr.stv = usr.stv + 1
-		else:
-			usr.stv = usr.stv - 1
-			if usr.stv < 0:
-				usr.stv = 0
+		
+		if drop(stoneProbabilityConf['visitProb'][level - 1]):
+			usr.stv[level] = 1
+			usr.stv_gem[level - 1] = 0		
+		usr.stv[level - 1] = 0	
+		usr.stv[0] = 1
 		
 		usr.gold = usr.gold - goldCost		
-		usr.stv_gem_level = -1					
+		
 		usr.save()
 		inv.save()
 		
 		return {'stv':usr.stv, 'stone':stone, 'gold':usr.gold}
 		
 	@staticmethod
-	def visit_level(usr, level):
+	def visit_gem(usr, level):
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')
 				
-		gemCost = stoneProbabilityConf['visitGem'][level]		
+		if level > len(usr.stv):
+			return {'msg':'svt_too_hight'}
+				
+		gemCost = stoneProbabilityConf['visitGem'][level - 1]		
 		
 		if not gemCost:
 			return {'msg':'stone_visit_level_gem_not_allow'}
 		if gemCost > usr.gem:
 			return {'msg':'gem_not_enough'}
-		usr.stv_gem_level = usr.stv		
 		
-		probs = stoneProbabilityConf['visit'][usr.stv]['gem']
+		
+		probs = stoneProbabilityConf['visit'][level - 1]['gem']
 			
 		seed = randint()		
 		cndStone = []
@@ -79,13 +89,14 @@ class stone:
 			else:
 				seed = seed - p				
 				
-		stoneid = random.sample(cndStone, 1)		
-		stone = inv.addStone(stoneid[0])	
+		stoneid = random.sample(cndStone, 1)[0]
+		stone = inv.addStone(stoneid)	
 		
-		usr.stv_gem_level = usr.stv
-		usr.stv = level + 1
-		if usr.stv > len(probs):
-			usr.stv = len(probb)
+		usr.stv_gem[level - 1] = 0
+		if level < len(usr.stv):
+			usr.stv_gem[level] = 1
+			usr.stv[level] = 1
+		
 				
 		usr.gem = usr.gem - gemCost
 				
@@ -93,5 +104,11 @@ class stone:
 		inv.save()
 		
 		return {'stv':usr.stv, 'stone':stone, 'gem':usr.gem}
+			
+		
+	def levelup(usr, ds, mt):
+		
+		for mtid in mt:
+			
 		
 		
