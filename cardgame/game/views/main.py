@@ -1,12 +1,14 @@
 #coding:utf-8\
 #!/usr/bin/env python
 
+import sys
 from django.http import HttpResponse
 from gclib.json import *
 from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
 from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest
+from gclib.exception import NotLogin
 from game.models.user import user
 from game.models.network import network
 import game.views.dungeon
@@ -17,7 +19,7 @@ import game.views.profile
 import game.views.equipment
 import game.views.luckycat
 import game.views.stone
-import sys
+
 
 
 viewsmap = {

@@ -90,10 +90,8 @@ class config(gcconfig):
 		
 	@staticmethod
 	def getMaxStamina(level):
-		levelConf = config.getConfig('level')
-		levelKey = str(level)
-		if levelConf.has_key(levelKey):
-			return levelConf[levelKey]['sp']
+		levelConf = config.getConfig('level')		
+		return levelConf[level - 1]['sp']
 		return 0
 		
 

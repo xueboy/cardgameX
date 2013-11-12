@@ -220,21 +220,26 @@ def level_import(request):
 		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, level_file.read())
 		sheet = wb.sheet_by_index(0)
 	
-		conf = {}
-		for rownum in range(6,sheet.nrows):
+		conf = []
+		for rownum in range(5,sheet.nrows):
 			row = sheet.row_values(rownum)
-			level = row[0]
-			exp = row[1]
-			sp = row[2]
-			leadership = row[3]
-			friend = row[4]
+			level = int(row[0])
+			exp = int(row[1])
+			sp = int(row[2])
+			leadership = int(row[3])
+			friend = int(row[4])
 			
 			levelConf = {}
-			levelConf['levelExp'] = int(exp)
-			levelConf['sp'] = int(sp)
-			levelConf['leadership'] = int(leadership)
-			levelConf['friend'] = int(friend)
-			conf[str(int(level))] = levelConf
+			levelConf['levelExp'] = exp
+			levelConf['sp'] = sp
+			levelConf['leadership'] = leadership
+			levelConf['friend'] = friend
+			
+			while len(conf) < level:
+				conf.append({})
+				
+			conf[level - 1] = levelConf
+						
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('prompt_import')
 	
@@ -317,7 +322,7 @@ def skill_import(request):
 				funConf['levelup'] = fun1levelUp
 				funConf['buffid'] = fun1buffid
 				funConf['duration'] = fun1duration
-				skillConf['function'][str(fun1id)] = funConf
+				skillConf['function'][unicode(fun1id)] = funConf
 			
 			if fun2id != 0.0:
 				funConf = {}
@@ -329,8 +334,8 @@ def skill_import(request):
 				funConf['levelup'] = fun2levelUp
 				funConf['buffid'] = fun2buffid
 				funConf['duration'] = fun2duration
-				skillConf['function'][str(fun2id)] = funConf
-			conf[str(skillid)] = skillConf
+				skillConf['function'][unicode(fun2id)] = funConf
+			conf[unicode(skillid)] = skillConf
 		
 		return HttpResponse(json.dumps(conf))
 		
