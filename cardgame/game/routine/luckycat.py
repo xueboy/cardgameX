@@ -49,9 +49,11 @@ class luckycat:
 				return {'msg':'gem_not_enough'}		
 		
 		beckonGold = luckycatLevelConf[usr.luckycat['level'] - 1]['luckyGold']		
-		beckonGold = beckonGold * luckycat.currentLuckycatFortune()		
+		beckonGold = beckonGold * luckycat.currentLuckycatFortune()
+		beckonCritical = False
 		if luckycat.isCritical(usr):
 			beckonGold = beckonGold * 2		
+			beckonCritical = True
 		usr.gold = usr.gold + beckonGold
 		usr.gem = usr.gem - costGem
 		if not useGem:
@@ -67,7 +69,7 @@ class luckycat:
 		rcd['income'] = {'gold':beckonGold, 'gem':-costGem}
 		usr.luckycat['record'].append(rcd)
 		usr.save()
-		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown']}	
+		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown'], 'beckon_critical':beckonCritical}	
 	
 	@staticmethod
 	def beckon_reset(usr):
