@@ -128,6 +128,7 @@ class stone:
 			inv.delStone(srcid)				
 		
 		stone.add_exp(dest_stone, exp, stoneConf[dest_stone['stoneid']])
+		inv.save()
 		
 		return {'stone':dest_stone, 'stone_delete_array':source_stoneid}
 		
@@ -164,21 +165,37 @@ class stone:
 		if gameConf['stone_slot_level'][soltpos] > p['level']:
 			return {'msg':'card_level_required'}
 		
-		if not p.has_key('st_solt'):
+		if (not p.has_key('st_solt')) and (not stoneid):
 			p['st_solt'] = sonte.make_st_solt()
 		
 		oldst = p['st_solt'][soltpos]
+		st = None
+		if stoneid:		
+			st = inv.getStone(stoneid)
+			if not st:
+				return {'msg':'stone_not_exist'}
+			inv.delStone(st['id'])
+			p['st_solt'][soltpos] = st			
+		else:
+			emp = True
+			for s in p['st_solt']:
+				if s:
+					emp = False
+			if emp:
+				del p['st_solt']				
 		
-		#if not stoneid:
-			
-		
-		st = inv.getStone(stoneid)
-		if not st:
-			return {'msg':'stone_not_exist'}
-		
-		
-		
-		
+		if oldst:
+				inv.depositStone(oldst)
+				
+		inv.save()
+				
+		data = {}
+		data['card'] = p
+		if oldst:
+			data['add_stone'] = oldst
+		if st:
+			data['stone'] = st
+		return data	
 		
 	@staticmethod
 	def make_st_solt():

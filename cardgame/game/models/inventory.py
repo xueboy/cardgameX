@@ -255,3 +255,6 @@ class inventory(object):
 		
 	def delStone(self, id):
 		self.stone = filter(lambda s : s['id'] != id, self.stone)		
+			
+	def depositStone(self, st):
+		self.stone.append(st)

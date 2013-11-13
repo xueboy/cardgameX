@@ -90,8 +90,28 @@ class luckycat:
 		usr.luckycat['beckon_last_update_time'] = currentTime()
 		
 		usr.save()
-		return {'gold':usr.gold, 'gem':usr.gem, 'luckycat_beckon_cooldown': usr.luckycat['beckon_cooldown'], 'luckycat_beckon_last_update_time':usr.luckycat['beckon_last_update_time']}	
+		return {'gold':usr.gold, 'gem':usr.gem, 'luckycat_beckon_cooldown': luckycat.beckon_cooldown(usr)}	
 			
+	@staticmethod
+	def beckon_cooldown(usr):
+		now = currentTime()
+		if usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] > now:			
+			return usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] - currentTime()		
+		return 0
+		
+	@staticmethod
+	def feed_self_cooldown(usr, gameConf):
+		now = currentTime()
+		if usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] > now:
+			return  usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] - currentTime()
+		return 0
+		
+	@staticmethod
+	def feed_other_cooldown(usr, gameConf):		
+		now = currentTime()
+		if usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] > now:
+			return usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] - now
+		return 0
 	
 	@staticmethod
 	def beckonCooldownCleanup(usr):
@@ -213,6 +233,7 @@ class luckycat:
 			data['gem'] = usr.gem
 		if spreadBlessid:
 			data['spread_bless'] = spreadBlessid
+	
 		
 		return data
 			
@@ -274,10 +295,26 @@ class luckycat:
 					
 	@staticmethod
 	def getClientData(usr):
+		gameConf = config.getConfig('game')
 		data = {}
 		data['level'] = usr.luckycat['level']
 		data['exp'] = usr.luckycat['exp']
+		data['critical_point_list'] = usr.luckycat['critical_point_list']
+		data['beckon_count'] = usr.luckycat['beckon_count']
+		data['beckon_gem_count'] = usr.luckycat['beckon_gem_count']		
+		data['beckon_cooldown'] = luckycat.beckon_cooldown(usr)
+		data['critical_point_list'] = usr.luckycat['critical_point_list']
+		data['feed_self_count'] = usr.luckycat['feed_self_count']
+		data['feed_self_cooldown'] = luckycat.feed_self_cooldown(usr, gameConf)
+		data['feed_other_count'] = usr.luckycat['feed_other_count']
+		data['feed_other_cooldown'] = luckycat.feed_other_cooldown(usr, gameConf)
+		data['bless_roll_last_time'] = usr.luckycat['bless_roll_last_time']
+		data['bless_cycle_begin_time'] = usr.luckycat['bless_cycle_begin_time']
+		data['bless'] = usr.luckycat['bless']
+		data['record'] = usr.luckycat['record']		
 		return data
+		
+		
 		
 	@staticmethod
 	def isCritical(usr):

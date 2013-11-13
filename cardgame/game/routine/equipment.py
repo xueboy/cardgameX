@@ -148,22 +148,6 @@ class equipment:
 		
 		
 	@staticmethod
-	def unequip(usr, id):
-		inv = usr.getInventory()
-		
-		slotEquipment = None
-		
-		for i in range(len(inv.slot)):
-			pass
-		
-		
-		if not slotEquipment:
-			return {'msg': 'equipment_not_exist'}
-		
-		inv.depositEquipment(slotEquipment)
-		
-		
-	@staticmethod
 	def takeoff(usr, cardid):
 		
 		if not cardid:

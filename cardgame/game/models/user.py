@@ -109,7 +109,7 @@ class user(gcuser):
 		data = {}
 		data['user'] = usrData
 		if self.luckycat:
-			data['luckycat'] = self.luckycat
+			data['luckycat'] = luckycat.getClientData(self)
 		return data
 		
 		
