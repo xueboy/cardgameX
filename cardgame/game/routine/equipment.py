@@ -112,7 +112,7 @@ class equipment:
 			return {'msg':'card_not_exist'}
 		
 		if not card.has_key('slot'):
-			card['slot'] = [{}, {}, {}, {}, {}]
+			card['slot'] = equipment.make_slot()
 		
 		oldEquipment = card['slot'][equipmentInfo['position']]
 		
@@ -123,6 +123,10 @@ class equipment:
 		inv.save()
 		
 		return{'solts':inv.getSlots(), 'equipment_delete':equipmentid}
+			
+	@staticmethod
+	def make_slot():
+		return [{}, {}, {}, {}, {}]
 			
 	@staticmethod
 	def sell(usr, equipmentid):
@@ -148,38 +152,26 @@ class equipment:
 		
 		
 	@staticmethod
-	def takeoff(usr, cardid):
-		
-		if not cardid:
-			return
-		
-		inv = usr.getInventory()
-		
-		card = inv.getCard(cardid)
-		
+	def takeoff(inv, card):
+		deq = []
 		if card and card.has_key('slot'):
 			for equip in card['slot']:
 				if equip:
+					deq.append(equip)
 					inv.depositEquipment(equip)
 		del card['slot']
+		return deq
 
 	@staticmethod
-	def give(usr, fromCardid, toCard):
-		inv = usr.getInventory()
-		
-		fromCard = inv.getCard(fromCardid)
-		
-		if not fromCard:
-			toCard['slot'] = [{}, {}, {}, {}, {}]
-			return
+	def exchage(fromCard, toCard):		
 		
 		toSlot = None
 		if toCard.has_key('slot'):
-			toSlot = toCard['slot']
-			
+			toSlot = toCard['slot']			
 		toCard['slot'] = fromCard['slot']
 		del fromCard['slot']
 		if toSlot:
 			fromCard['slot'] = toSlot
+		return []
 		
 			

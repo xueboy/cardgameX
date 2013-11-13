@@ -8,6 +8,7 @@ from gclib.utility import currentTime
 import time
 import copy
 from game.routine.equipment import equipment
+from game.routine.stone import stone
 
 class inventory(object):
 	
@@ -39,13 +40,16 @@ class inventory(object):
 			c1 = copy.copy(c)
 			if c1.has_key('slot'):
 				del c1['slot']
+			if c1.has_key('st_slot'):
+				del c1['st_slot']
 			card.append(c1)		
 		
 		data['card'] = card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
 		data['slots'] = self.getSlots()
-		data['stone'] = self.stone		
+		data['st_slots'] = self.getStSlots()
+		data['stone'] = self.stone	
 		return data
 		
 	def load(self, roleid, data):
@@ -137,16 +141,29 @@ class inventory(object):
 		return None
 		
 	def getSlots(self):
-		slots = {}
-		i = 1
-		for t in self.team:
+		slots = {}		
+		for i, t in enumerate(self.team):
 			if t:
 				tc = self.getCard(t)
 				slots['t' + str(i)] = tc['slot']
 			else: 
-				slots['t' + str(i)] = [{}, {}, {}, {}, {}]
+				slots['t' + str(i)] = equipment.make_slot()
 			i = i + 1
 		return slots
+		
+	def getStSlots(self):
+		st_slots = {}
+		
+		for i, t in enumerate(self.team):
+			if t:
+				tc = self.getCard(t)
+				if tc.has_key('st_slot'):
+					st_slots['t' + str(i)] = tc['st_slot']
+				else:
+					st_slots['t' + str(i)] = stone.make_st_solt()
+			else:
+				st_slots['t' + str(i)] = stone.make_st_solt()
+		return st_slots
 	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
 		
@@ -184,53 +201,52 @@ class inventory(object):
 			return {'msg':'level_required'}
 		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
 			return {'msg':'level_required'}	
-		
-		if cardid1 == '':
-			equipment.takeoff(usr, self.team[0])
-			self.team[0] = ''
-		else:
-			card1 = self.getCard(cardid1)
-			equipment.give(usr, self.team[0], card1)
-			self.team[0] = card1['id']
-		if cardid2 == '':
-			equipment.takeoff(usr, self.team[1])
-			self.team[1] = ''
-		else:
-			card2 = self.getCard(cardid2)
-			equipment.give(usr, self.team[1], card2)
-			self.team[1] = card2['id']
-		if cardid3 == '':
-			equipment.takeoff(usr, self.team[2])
-			self.team[2] = ''
-		else:
-			card3 = self.getCard(cardid3)
-			equipment.give(usr, self.team[2], card3)
-			self.team[2] = card3['id']
-		if cardid4 == '':
-			equipment.takeoff(usr, self.team[3])
-			self.team[3] = ''
-		else:
-			card4 =  self.getCard(cardid4)
-			equipment.give(usr, self.team[3], card4)
-			self.team[3] = card4['id']
-		if cardid5 =='':
-			equipment.takeoff(usr, self.team[4])
-			self.team[4] = ''
-		else:
-			card5 = self.getCard(cardid5)
-			equipment.give(usr, self.team[4], card5)
-			self.team[4] = card5['id']
-		if cardid6 == '':
-			equipment.takeoff(usr, self.team[5])
-			self.team[5] = ''
-		else: 
-			card6 = self.getCard(cardid6)
-			equipment.give(usr, self.team[5], card6)
-			self.team[5] = card6['id']
 			
-		self.save()
-		return self.team
+		deq = []
+		dst = []
+		
+		deq1, dst1 = self.setTeamEquipmentStone(cardid1, 0, gameConf)
+		deq2, dst2 = self.setTeamEquipmentStone(cardid2, 1, gameConf)
+		deq3, dst3 = self.setTeamEquipmentStone(cardid3, 2, gameConf)
+		deq4, dst4 = self.setTeamEquipmentStone(cardid4, 3, gameConf)
+		deq5, dst5 = self.setTeamEquipmentStone(cardid5, 4, gameConf)		
+		
+		deq.extend(deq1)
+		deq.extend(deq2)
+		deq.extend(deq3)
+		deq.extend(deq4)
+		deq.extend(deq5)
+		
+		dst.extend(dst1)
+		dst.extend(dst2)
+		dst.extend(dst3)
+		dst.extend(dst4)
+		dst.extend(dst5)		
 
+		self.save()
+		return self.team, deq, dst
+	
+	
+	def setTeamEquipmentStone(self, cardid, teamPos, gameConf):
+		dst = []
+		deq = []
+		if cardid:
+			card = self.getCard(cardid)
+			card['slot'] = equipment.make_slot()
+			card['st_slot'] = stone.make_st_solt()
+			if self.team[teamPos]:
+				teamCard = self.getCard(self.team[teamPos])
+				deq.extend(equipment.exchage(card, teamCard))
+				dst.extend(stone.exchage(self, card, teamCard, gameConf))
+			self.team[teamPos] = cardid
+		elif self.team[teamPos]:
+			teamCard = self.getCard(self.team[teamPos])
+			deq.extend(equipment.takeoff(self, teamCard))
+			dst.extend(stone.takeoff(self, teamCard))
+			del teamCard['slot']
+			del teamCard['st_slot']
+			self.team[teamPos] = ''
+		return deq, dst
 		
 	def addStone(self, stoneid):
 		stoneConf = config.getConfig('stone')
@@ -258,3 +274,14 @@ class inventory(object):
 			
 	def depositStone(self, st):
 		self.stone.append(st)
+		
+	def withdrawStone(self, id):
+		res = None
+		for i, st in enumerate(self.stone):
+			print st
+			if st['id'] == id:
+				res = st
+				break
+		self.stone.remove(res)
+		return res
+		

@@ -15,8 +15,8 @@ def set_team(request):
  	 cardid4 = request.GET['card_id4']
  	 cardid5 = request.GET['card_id5']
  	 cardid6 = request.GET['card_id6']
- 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6) 	 
- 	 return {'team':team, 'slots': inv.getSlots()}
+ 	 team, deq, dst = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6) 	 
+ 	 return {'team':team, 'slots': inv.getSlots(), 'st_slots':inv.getStSlots(), 'add_equipment_array':deq, 'add_stone_array':dst}
 
 	
 def level_up(request):

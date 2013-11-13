@@ -59,7 +59,7 @@ def message(request):
 			return {'msg':'user_is_in_ban'}
 		usrNw.sendMessage(toUser, msg)
 		return {}		
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 		
 def message_delete(request):
 	messageid = request.GET['message_id']
@@ -85,7 +85,7 @@ def mail(request):
 		usrNw = usr.getNetwork()
 		usrNw.sendMail(toUser, mail)
 		return {}
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 
 def email_read(request):
 	emailid = request.GET['email_id']

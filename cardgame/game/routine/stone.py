@@ -42,14 +42,12 @@ class stone:
 				
 		stoneid = random.sample(cndStone, 1)[0]
 		stone = inv.addStone(stoneid)	
-		
-		
+				
 		if drop(stoneProbabilityConf['visitProb'][level - 1]):
 			usr.stv[level] = 1
 			usr.stv_gem[level - 1] = 0		
 		usr.stv[level - 1] = 0	
-		usr.stv[0] = 1
-		
+		usr.stv[0] = 1		
 		usr.gold = usr.gold - goldCost		
 		
 		usr.save()
@@ -72,8 +70,7 @@ class stone:
 			return {'msg':'stone_visit_level_gem_not_allow'}
 		if gemCost > usr.gem:
 			return {'msg':'gem_not_enough'}
-		
-		
+				
 		probs = stoneProbabilityConf['visit'][level - 1]['gem']
 			
 		seed = randint()		
@@ -93,8 +90,7 @@ class stone:
 		usr.stv_gem[level - 1] = 0
 		if level < len(usr.stv):
 			usr.stv_gem[level] = 1
-			usr.stv[level] = 1
-		
+			usr.stv[level] = 1		
 				
 		usr.gem = usr.gem - gemCost
 				
@@ -106,12 +102,10 @@ class stone:
 			
 	@staticmethod
 	def levelup(usr, dest_stoneid, source_stoneid):
-		
-	
+			
 		if not source_stoneid:
 			return {'msg':'stone_not_specified'}
-		
-		
+				
 		stoneConf = config.getConfig('stone')
 				
 		inv = usr.getInventory()		
@@ -128,8 +122,7 @@ class stone:
 			inv.delStone(srcid)				
 		
 		stone.add_exp(dest_stone, exp, stoneConf[dest_stone['stoneid']])
-		inv.save()
-		
+		inv.save()		
 		return {'stone':dest_stone, 'stone_delete_array':source_stoneid}
 		
 	@staticmethod
@@ -154,51 +147,95 @@ class stone:
 		exp = exp + stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
 		exp = exp + stoneInfo['gravel']
 		return exp
+	
+	@staticmethod
+	def install(usr, teamPosition, slotpos, stoneid):
 		
-	def set_stone(usr, cardid, soltpos, stoneid):
-		
-		gameConf = config.getConfig('game')
 		inv = usr.getInventory()
 		
-		p = inv.getCard(cardid)
+		if not inv.team[teamPosition]:
+			return {'msg':'team_position_not_have_member'}
+				
+		card = inv.getCard(inv.team[teamPosition])
+		if not card:
+			return {'msg': 'card_not_exist'}
 		
-		if gameConf['stone_slot_level'][soltpos] > p['level']:
-			return {'msg':'card_level_required'}
+		gameConf = config.getConfig('game')
 		
-		if (not p.has_key('st_solt')) and (not stoneid):
-			p['st_solt'] = sonte.make_st_solt()
+		if gameConf['stone_slot_level'][slotpos] > card['level']:
+			return {'msg': 'card_level_required'}
 		
-		oldst = p['st_solt'][soltpos]
-		st = None
-		if stoneid:		
-			st = inv.getStone(stoneid)
-			if not st:
-				return {'msg':'stone_not_exist'}
-			inv.delStone(st['id'])
-			p['st_solt'][soltpos] = st			
-		else:
-			emp = True
-			for s in p['st_solt']:
-				if s:
-					emp = False
-			if emp:
-				del p['st_solt']				
+		if not card.has_key('st_slot'):
+			card['st_slot'] = stone.make_st_solt()
+		
+		oldst = card['st_slot'][slotpos]
+
+		st = {}
+		if stoneid:
+			st = inv.withdrawStone(stoneid)
+		if (not oldst) and (not stoneid):
+			return {'msg':'stone_not_exist'}
+		
+		card['st_slot'][slotpos] = st
 		
 		if oldst:
-				inv.depositStone(oldst)
-				
-		inv.save()
-				
+			inv.depositStone(oldst)		
+		inv.save()	
+		
 		data = {}
-		data['card'] = p
+		
+		data['st_slot'] = inv.getStSlots()
 		if oldst:
-			data['add_stone'] = oldst
+			data['add_stone'] = oldst			
 		if st:
-			data['stone'] = st
-		return data	
+			data['delete_stone'] = st
+			
+		return data
+		
 		
 	@staticmethod
 	def make_st_solt():
 		return [{}, {}, {}, {}, {}, {}, {}, {}, {}, {},]
+		
+	@staticmethod
+	def takeoff(inv, card):
+		dst = []
+		if card and card.has_key('st_slot'):
+			for st in card['st_slot']:
+				if st:
+					inv.depositStone(st)
+					dst.append(st)
+			del card['st_slot']
+
+	@staticmethod
+	def exchage(inv, fromCard, toCard, gameConf):				
+				
+		toSlot = None		
+		if toCard.has_key('st_slot'):
+			toSlot = toCard['st_slot']			
+		toCard['st_slot'] = fromCard['st_slot']
+		del fromCard['st_slot']
+		dst = []
+		if toSlot:
+			fromCard['st_slot'] = toSlot
+			
+			for i, ts in enumerate(fromCard['st_slot']):
+				if ts and gameConf['stone_slot_level'][i] > fromCard['level']:
+					inv.depositStone(ts)
+					dst.append(ts)
+					fromCard['st_slot'][i] = {}
+		
+		for i, ts in enumerate(toCard['st_slot']):
+			
+			if ts and gameConf['stone_slot_level'][i] > toCard['level']:
+					inv.depositStone(ts)
+					dst.append(ts)
+					toCard['st_slot'][i] = {}
+		
+		return dst
+				
+		
+		
+		
 		
 			
