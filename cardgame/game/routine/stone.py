@@ -147,7 +147,7 @@ class stone:
 		exp = exp + stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
 		exp = exp + stoneInfo['gravel']
 		return exp
-	
+
 	@staticmethod
 	def install(usr, teamPosition, slotpos, stoneid):
 		
@@ -167,14 +167,22 @@ class stone:
 		
 		if not card.has_key('st_slot'):
 			card['st_slot'] = stone.make_st_solt()
-		
-		oldst = card['st_slot'][slotpos]
-
+	
+		stoneConf = config.getConfig('stone')	
+	
 		st = {}
 		if stoneid:
 			st = inv.withdrawStone(stoneid)
+			
+		oldst = card['st_slot'][slotpos]
 		if (not oldst) and (not stoneid):
 			return {'msg':'stone_not_exist'}
+			
+		sttype = stoneConf[st['stoneid']][type]
+			
+		for st1 in card['st_slot']:
+			if st1 and stoneConf[st1['stoneid']]['type'] == sttype:
+				return {'msg':'stone_same_type_installed'}				
 		
 		card['st_slot'][slotpos] = st
 		
