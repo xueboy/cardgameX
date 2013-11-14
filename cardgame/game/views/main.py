@@ -138,7 +138,20 @@ def set_nickname(request):
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)	
-	return HttpResponse(json.dumps({'name':acc.nickname, 'gender':usr.gender}))
+		
+	data = {}
+	usr.updateStamina()
+	data.update(usr.getClientData())
+	dun = usr.getDungeon()
+	data['dungeon'] = dun.getClientData()
+	inv = usr.getInventory()
+	data.update(inv.getClientData())		
+	nw = usr.getNetwork()
+	data.update(nw.getClientData())		
+	usr.notify = {}
+	usr.save()
+	return HttpResponse(json.dumps(data))
+	
 
 def test(request):	
 	

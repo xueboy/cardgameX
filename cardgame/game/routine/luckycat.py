@@ -190,13 +190,18 @@ class luckycat:
 	
 		awardGold = 0
 		awardGem = 0	
+		
+		isLevelup = False
 			
 		while target.luckycat['level'] < gameConf['luckycat_max_level'] and luckycatLevelConf[target.luckycat['level'] - 1]['exp'] <= target.luckycat['exp']:
 			target.luckycat['exp'] = target.luckycat['exp'] - luckycatLevelConf[target.luckycat['level'] - 1]['level']
 			target.luckycat['level'] = target.luckycat['level'] + 1
-			gold, gem = luckycat.onLeveup(usr)
+			gold, gem = luckycat.onEveryLeveup(usr)
 			awardGold = awardGold + gold
 			awardGem = awardGem + gem
+			isLevelup = True
+		if isLevelup:
+			luckycat.onLeveup()
 			
 
 		if luckycat.isCritical(usr):
@@ -353,14 +358,19 @@ class luckycat:
 				
 	@staticmethod
 	def onLeveup(usr):
+		nw = usr.getNetwork()
+		nw.updateFriendData()
+		
+		
+	@staticmethod
+	def onEveryLeveup(usr):
 		gameConf = config.getConfig('game')
 		luckycatLevelConf = config.getConfig('luckycat_level')
 		if gameConf['luckycat_level_critical_itme'].count(usr.luckycat['level']):
 			usr.luckycat['critical_point_list'].append(hit(gameConf['luckycat_critical_point_probability']))		
 		awardGold = luckycatLevelConf[usr.luckycat['level']]['levelupGold']		
 		awardGem = 0
-		return awardGold, awardGem
-			
+		return awardGold, awardGem	
 			
 	@staticmethod
 	def freshCritical(usr, itemIndex):

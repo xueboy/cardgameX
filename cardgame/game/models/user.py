@@ -122,6 +122,7 @@ class user(gcuser):
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
+		data['luckycat_level'] = self.luckycat['level']
 		return data
 		
 	def load(self, roleid, data):
@@ -214,9 +215,12 @@ class user(gcuser):
 		"""
 		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
+		isLevelup = False
 		while self.exp > levelConf[self.level - 1]['levelExp']:
 			self.exp = self.exp - levelConf[self.level - 1]['levelExp']			
-			self.level = self.level + 1			
+			self.level = self.level + 1
+			isLevelup = True
+		if isLevelup:
 			self.onLevelup()
 			
 	def update(self):
@@ -244,7 +248,9 @@ class user(gcuser):
 		if not self.luckycat:
 			if gameConf['luckycat_open_level'] <= self.level:
 				self.luckycat = luckycat.make()
-				self.notify['luckycat_notify'] = self.luckycat
+				self.notify['luckycat_notify'] = self.luckycat				
+		nw = self.getNetwork()
+		nw.updateFriendData()
 		
 		
 	

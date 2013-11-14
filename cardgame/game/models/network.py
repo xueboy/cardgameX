@@ -163,6 +163,14 @@ class network(object):
 		if email['type'] == 'firend_request':
 			return self.emailAnswerFriendRequest(email, option)
 			
+	def updateFriendData(self):
+		for friendid in self.friend:
+			fNw = network.get(friendid)
+			strRoleid = str(self.roleid)
+			if fNw.friend.has_key(strRoleid):
+				fNw.friend[strRoleid] = self.user.getFriendData()
+				fNw.save()
+			
 		
 	def emailAnswerFriendRequest(self, mail, option):
 		if option == 'yes':
