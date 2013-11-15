@@ -13,6 +13,10 @@ class user(object):
 		self.id = 0
 		return
 		
+	def onInit(self):
+		pass
+		
+		
 	def update(self):
 		return
 		

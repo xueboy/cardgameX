@@ -60,7 +60,7 @@ class user(gcuser):
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
-		self.onLevelup()
+
 	
 	def getData(self):	
 		data = {}
@@ -245,6 +245,9 @@ class user(gcuser):
 	def update(self):
 		return
 		
+	def onInit(self):
+		self.onLevelup()		
+
 	def costStamina(self, point):
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:
@@ -260,7 +263,7 @@ class user(gcuser):
 	
 	def onLogin(self):
 		gameConf = config.getConfig('game')
-		educate.update_exp(self, gameConf)
+		educate.update_exp(self, gameConf)		
 		
 		
 	def onLevelup(self):

@@ -15,4 +15,6 @@ def start(request):
 	return educate.start(usr, edu_slot_pos, cardid)
 	
 def stop(request):
-	pass
+	usr = request.user
+	edu_slot_pos = int(request.GET['edu_slot'])
+	return educate.stop(usr, edu_slot_pos)

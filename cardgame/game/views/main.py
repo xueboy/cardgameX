@@ -133,11 +133,8 @@ def set_nickname(request):
 		return HttpResponse(json.dumps({'msg':'nickname_already_have'}))
 	acc.nickname = nickname
 	acc.gender = gender
-	usr = acc.makeUserAndBind(nickname, gender)	
-		
+	usr = acc.makeUserAndBind(nickname, gender)		
 	data = usr.getLoginData()	
-	usr.notify = {}
-	usr.save()
 	return HttpResponse(json.dumps(data))
 	
 

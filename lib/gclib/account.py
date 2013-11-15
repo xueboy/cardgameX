@@ -43,7 +43,8 @@ class account(object):
 		usr.install(0)
 		self.roleid = usr.id
 		self.bind(usr.id, nickname, gender)	
-		usr.saveRoleId()	
+		usr.saveRoleId()
+		usr.onInit()
 		return usr
 		
 	def userObject(self):
