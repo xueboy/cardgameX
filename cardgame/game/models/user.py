@@ -271,7 +271,7 @@ class user(gcuser):
 				self.notify['luckycat_notify'] = self.luckycat				
 		nw = self.getNetwork()
 		nw.updateFriendData()
-		educate.levelup_update(selfg, gameConf)
+		educate.levelup_update(self, gameConf)
 		
 		
 	
