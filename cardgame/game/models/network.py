@@ -32,19 +32,16 @@ class network(object):
 		data['sequenceid'] = self.sequenceid
 		return data		
 	
-	def getClientData(self):
+	def getClientData(self):	
 		
-		
-		avatarmap = {}	
-		
+		avatarmap = {}		
 		for key in self.message:
 			otherid = self.message[key]['roleid']
 			if not avatarmap.has_key(otherid):
 				usr = self.user.__class__.get(otherid)
 				if usr:
 					avatarmap[otherid] = usr.avatar_id
-			self.message[key]['avatar_id'] = avatarmap[otherid]			
-				
+			self.message[key]['avatar_id'] = avatarmap[otherid]				
 		data = {}
 		data['friend'] = self.friend	
 		data['message'] = self.message

@@ -10,6 +10,7 @@ from game.utility.config import config
 from game.models.massyell import massyell
 from game.routine.luckycat import luckycat
 from game.routine.garcha import garcha
+from game.routine.educate import educate
 
 
 class user(gcuser):
@@ -43,6 +44,7 @@ class user(gcuser):
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.luckycat = {}
+		self.educate = educate.make()
 		self.trp = 0
 		self.stv = [1, 0, 0, 0, 0]
 		self.stv_gem = [0, 0, 0, 0, 0]
@@ -57,7 +59,8 @@ class user(gcuser):
 		self.stamina = 100				
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
-		self.last_card_no = 0		
+		self.last_card_no = 0
+		self.onLevelup()
 	
 	def getData(self):	
 		data = {}
@@ -82,6 +85,7 @@ class user(gcuser):
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['yell_hear_id'] = self.yell_hear_id
 		data['luckycat'] = self.luckycat
+		data['educate'] = self.educate
 		data['trp'] = self.trp
 		data['stv'] = self.stv
 		data['stv_gem'] = self.stv_gem
@@ -108,8 +112,10 @@ class user(gcuser):
 		usrData['stv'] = self.stv
 		data = {}
 		data['user'] = usrData
+		gameConf = config.getConfig('game')
 		if self.luckycat:
-			data['luckycat'] = luckycat.getClientData(self)
+			data['luckycat'] = luckycat.getClientData(self, gameConf)
+		data['educate'] = educate.getClientData(self, gameConf)
 		return data
 		
 		
@@ -123,6 +129,18 @@ class user(gcuser):
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
 		data['luckycat_level'] = self.luckycat['level']
+		return data
+		
+	def getLoginData(self):
+		data = {}
+		self.updateStamina()
+		data.update(self.getClientData())
+		dun = self.getDungeon()
+		data['dungeon'] = dun.getClientData()
+		inv = self.getInventory()
+		data.update(inv.getClientData())		
+		nw = self.getNetwork()
+		data.update(nw.getClientData())
 		return data
 		
 	def load(self, roleid, data):
@@ -149,6 +167,7 @@ class user(gcuser):
 		self.trp = data['trp']
 		self.stv = data['stv']
 		self.stv_gem = data['stv_gem']
+		self.educate = data['educate']
 			 
 		
 	def getCardNo(self):
@@ -240,7 +259,8 @@ class user(gcuser):
 
 	
 	def onLogin(self):
-		pass
+		gameConf = config.getConfig('game')
+		educate.update_exp(self, gameConf)
 		
 		
 	def onLevelup(self):
@@ -251,6 +271,7 @@ class user(gcuser):
 				self.notify['luckycat_notify'] = self.luckycat				
 		nw = self.getNetwork()
 		nw.updateFriendData()
+		educate.levelup_update(selfg, gameConf)
 		
 		
 	

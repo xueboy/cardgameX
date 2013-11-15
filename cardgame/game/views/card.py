@@ -56,8 +56,8 @@ def level_up(request):
 	if sourceCard6 != '':
 		sourceCardId.append(sourceCard6)		
 		
-	dest, source = pet.levelup(usr, destCard, sourceCardId)
-	return {'update_card':dest, 'delete_card':source}
+	return pet.levelup(usr, destCard, sourceCardId)
+	
 		
 def garcha(request):
 	usr = request.user

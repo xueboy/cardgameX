@@ -25,3 +25,6 @@ class user(object):
 		
 	def onLogin(self):
 		pass
+		
+	def getClientData(self):
+		pass

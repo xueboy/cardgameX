@@ -51,6 +51,10 @@ urlpatterns = patterns('',
     url(r'^trp_import/$', gameadmin.views.main.trp_import),
     url(r'^trp_price/$', gameadmin.views.main.trp_price),
     url(r'^trp_price_import/$', gameadmin.views.main.trp_price_import),
+    url(r'^educate/$', gameadmin.views.main.educate),
+    url(r'^educate_import/$', gameadmin.views.main.educate_import),
+    url(r'^educate_grade/$', gameadmin.views.main.educate_grade),
+    url(r'^educate_grade_import/$', gameadmin.views.main.educate_grade_import),
     
     
     

@@ -33,6 +33,16 @@ class config(gcconfig):
 			return conf
 		if confname == 'luck':
 			return conf
+		if confname == 'stone':
+			return conf
+		if confname == 'stone_probability':
+			return config.stoneProbabilityFilter(conf)
+		if confname == 'stone_level':
+			return conf
+		if confname == 'educate':
+			return conf
+		if confname == 'educate_grade':
+			return conf
 		return None
 	
 	
@@ -108,3 +118,9 @@ class config(gcconfig):
 			data[luckid] = l
 		return data
 			
+	@staticmethod
+	def stoneProbabilityFilter(conf):
+		data = {}
+		data['visitGold'] = conf['visitGold']
+		data['visitGem'] = conf['visitGem']		
+		return data

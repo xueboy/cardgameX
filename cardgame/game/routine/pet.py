@@ -25,6 +25,8 @@ class pet:
 	
 	@staticmethod
 	def levelup(usr, destCardid, sourceCardid):
+		if not sourceCardid:
+			return {'msg':'card_not_exist'}
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		petLevelConf = config.getConfig('pet_level')
@@ -34,46 +36,46 @@ class pet:
 		
 		for cardid in sourceCardid:
 			if not pet.isCardAvailable(usr, cardid):
-				return destCard,[]
+				return {'msg':'card_not_available'}
 			card = inv.getCard(cardid)			
-			sourceCard.append(card)
+			sourceCard.append(card)		
 		
-		onePetConf = petConf[card['cardid']]	
-		
-		costMoney = len(sourceCard) * gameConf['pet_levelup_gold_cost']
-		
+		costMoney = len(sourceCard) * gameConf['pet_levelup_gold_cost']		
 		exp = 0
 		for card in sourceCard:
-			exp = pet.totalExp(card['exp'], card['level'], onePetConf['star']) + exp
+			exp = pet.totalExp(card, petConf, petLevelConf, gameConf) + exp
 			inv.delCard(card['id'])
 		
 		exp = int(exp * 0.5)
-
-		star = onePetConf['star']	
-		levelLimit = gameConf['pet_level_limit'][star - 1]	
-		needExp = petLevelConf[str(destCard['level'])][star]
-		while exp > needExp:
-			exp = exp - needExp
-			destCard['level'] = destCard['level'] + 1
-			needExp = petLevelConf[str(destCard['level'])][star]
-		destCard['exp'] = exp
-		if destCard['level'] >= levelLimit:
-			destCard['level'] = levelLimit
-			destCard['exp'] = 0
+		pet.gainExp(destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
-		return destCard, sourceCardid
-				
+		return {'update_card':destCard, 'delete_card':sourceCardid}
+
+
+	@staticmethod
+	def gainExp(card, exp, petConf, petLevelConf, gameConf):
+		level = card['level']
+		id = card['cardid']
+		star = petConf[id]['star']
+		needExp = petLevelConf[str(level + 1)][star - 1] - petLevelConf[str(level)][star - 1]
+		levelLimit = gameConf['pet_level_limit'][star - 1]
+		exp = exp + card['exp']
+		card['exp'] = 0
+		while exp > needExp and levelLimit > level:			
+			exp = exp - needExp
+			needExp = petLevelConf[str(level + 1)][star - 1] - petLevelConf[str(level)][star - 1]
+			level = level + 1
+			card['level'] = level
+		card['exp'] = exp	
+	
 
 	@staticmethod	
-	def totalExp(exp, cardLevel, cardStar):
-		petLevelConf = config.getConfig('pet_level')		
-		total = 0			
-		for i in range(1, cardLevel - 1):		
-			total = petLevelConf[str(i)][cardStar - 1] + total
-		total += exp
-		return total
+	def totalExp(card, petConf, petLevelConf, gameConf):	
+		total = 0
+		petInfo = petConf[card['cardid']]
+		star = petInfo['star']
+		return petLevelConf[str(card['level'])][star - 1] + card['exp'] + gameConf['pet_star_base_exp'][star - 1]
 		
-
 
 	@staticmethod
 	def training(usr, cardid, trainlevel):

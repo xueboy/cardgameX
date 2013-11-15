@@ -79,6 +79,12 @@ def trp_price(request):
 
 def trp(request):
 	return generalConfigRequestProcess(request, 'trp')
+	
+def educate(request):
+	return generalConfigRequestProcess(request, 'educate')
+	
+def educate_grade(request):
+	return generalConfigRequestProcess(request, 'educate_grade')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -1098,3 +1104,74 @@ def trp_import(request):
 			
 		return HttpResponse(json.dumps(conf))
 	return HttpResponse('trp_import')
+
+
+def educate_import(request):
+	if request.method == 'POST':
+		educate_file = request.FILES.get('educate_file')
+		if not educate_file:
+			return HttpResponse('训练xlsx文件上传')
+		
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, educate_file.read())
+		sheet = wb.sheet_by_index(0)
+				
+		conf = []
+		
+		for rownum in range(4,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			level = int(row[0])
+			gold = int(row[1])
+			expptm = int(row[2])
+			
+			while len(conf) < level:
+				conf.append({})
+			
+			educateConf = {}
+			educateConf['gold'] = gold
+			educateConf['expptm'] = expptm
+				
+			conf[level - 1] = educateConf
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('educate_import')
+	
+def educate_grade_import(request):
+	if request.method == 'POST':
+		educate_grade_file = request.FILES.get('educate_grade_file')
+		if not educate_grade_file:
+			return HttpResponse('训练档次xlsx文件上传')
+		
+		
+		wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, educate_grade_file.read())
+		sheet = wb.sheet_by_index(1)
+				
+		conf = []
+		
+		for rownum in range(2,sheet.nrows):
+			row = sheet.row_values(rownum)
+			
+			trainer = row[0]
+			grade = int(row[1])
+			goldPrice = 0
+			gemPrice = int(row[2])
+			probability = int(row[3])
+			rate = float(row[4])
+			vip = int(row[5])
+			
+			gradeConf = {}
+			gradeConf['trainer'] = trainer
+			gradeConf['price'] = {}
+			gradeConf['price']['gem'] = gemPrice
+			gradeConf['price']['gold'] = goldPrice
+			gradeConf['probability'] = probability
+			gradeConf['rate'] = rate
+			gradeConf['vip'] = vip
+			
+			while len(conf) < grade:
+				conf.append({})			
+			
+			conf[grade - 1] = gradeConf
+			
+		return HttpResponse(json.dumps(conf))
+	return HttpResponse('educate_grade_import')

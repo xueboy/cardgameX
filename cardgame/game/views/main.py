@@ -19,6 +19,7 @@ import game.views.profile
 import game.views.equipment
 import game.views.luckycat
 import game.views.stone
+import game.views.educate
 
 
 
@@ -31,6 +32,7 @@ viewsmap = {
 	'equipment': sys.modules['game.views.equipment'],
 	'luckycat': sys.modules['game.views.luckycat'],
 	'stone': sys.modules['game.views.stone'],
+	'educate': sys.modules['game.views.educate']
 }
 
 def index(request):
@@ -48,15 +50,7 @@ def index(request):
 		onUserLogin(request, usr)
 		usr.last_login = currentTime()
 		
-		data = {}
-		usr.updateStamina()
-		data.update(usr.getClientData())
-		dun = usr.getDungeon()
-		data['dungeon'] = dun.getClientData()
-		inv = usr.getInventory()
-		data.update(inv.getClientData())		
-		nw = usr.getNetwork()
-		data.update(nw.getClientData())		
+		data = usr.getLoginData()			
 		usr.notify = {}
 		usr.save()
 		return HttpResponse(json.dumps(data))
@@ -86,6 +80,8 @@ def info(request):
 	info['stone_level_md5'] = conf.getClientConfigMd5('stone_level')
 	info['trp_price_md5'] = conf.getClientConfigMd5('trp_price')
 	info['trp_md5'] = conf.getClientConfigMd5('trp')
+	info['educate'] = conf.getClientConfigMd5('educate')
+	info['educate_grade'] = conf.getClientConfigMd5('educate_grade')
 	return HttpResponse(json.dumps({'info':info}))
 
 
@@ -139,15 +135,7 @@ def set_nickname(request):
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)	
 		
-	data = {}
-	usr.updateStamina()
-	data.update(usr.getClientData())
-	dun = usr.getDungeon()
-	data['dungeon'] = dun.getClientData()
-	inv = usr.getInventory()
-	data.update(inv.getClientData())		
-	nw = usr.getNetwork()
-	data.update(nw.getClientData())		
+	data = usr.getLoginData()	
 	usr.notify = {}
 	usr.save()
 	return HttpResponse(json.dumps(data))

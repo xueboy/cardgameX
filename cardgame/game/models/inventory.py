@@ -37,7 +37,7 @@ class inventory(object):
 		card = []
 		
 		for c in self.card:
-			c1 = copy.copy(c)
+			c1 = c.copy()
 			if c1.has_key('slot'):
 				del c1['slot']
 			if c1.has_key('st_slot'):

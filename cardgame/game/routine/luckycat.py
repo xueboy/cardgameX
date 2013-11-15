@@ -301,8 +301,7 @@ class luckycat:
 		return is_same_day(usr.luckycat['bless_cycle_begin_time'], currentTime()) or (usr.luckycat['bless_cycle_begin_time'] == 0)
 					
 	@staticmethod
-	def getClientData(usr):
-		gameConf = config.getConfig('game')
+	def getClientData(usr, gameConf):		
 		data = {}
 		data['level'] = usr.luckycat['level']
 		data['exp'] = usr.luckycat['exp']

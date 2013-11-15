@@ -7,6 +7,8 @@ import datetime
 import calendar
 import random
 
+from gclib.exception import NotHaveNickname
+
 
 def HttpResponse500():
 	response = HttpResponse()
