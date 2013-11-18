@@ -308,7 +308,7 @@ class inventory(object):
 		return None
 	
 	def delSkill(self, id):
-		self.stone = filter(lambda s : s['id'] != id, self.stone)
+		self.skill = filter(lambda s : s['id'] != id, self.skill)
 			
 	def depositSkill(self, sk):
 		self.skill.append(sk)

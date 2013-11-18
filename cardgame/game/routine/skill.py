@@ -26,17 +26,20 @@ class skill:
 			inv.delSkill(sk['id'])
 			
 		skill.gain_exp(destSkill, exp, skillConf, skillLevelConf)
+		inv.save()
 		return {'update_skill': destSkill, 'delete_skill_array': sourceSkill_id}
 
 	@staticmethod
 	def get_exp(sk, skillLevelConf):
 		return skillLevelConf[sk['level'] - 1] + sk['exp']
 		
+	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
 		
 		skillInfo = skillConf[sk['skillid']]
 		exp = sk['exp'] + exp
 		sk['exp'] = 0
+		print exp
 		while skillInfo['maxLevel'] >= sk['level'] and skillLevelConf[sk['level']] < exp:
 			exp = exp - skillLevelConf[sk['level']]
 			sk['level'] = sk['level'] + 1
