@@ -1,4 +1,4 @@
 cardgameX
 =========
 
-a card game like against war
+a card game
