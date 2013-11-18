@@ -11,6 +11,7 @@ from game.models.massyell import massyell
 from game.routine.luckycat import luckycat
 from game.routine.garcha import garcha
 from game.routine.educate import educate
+from game.routine.stone import stone
 
 
 class user(gcuser):
@@ -46,8 +47,8 @@ class user(gcuser):
 		self.luckycat = {}
 		self.educate = educate.make()
 		self.trp = 0
-		self.stv = [1, 0, 0, 0, 0]
-		self.stv_gem = [0, 0, 0, 0, 0]
+		self.stv = stone.make_stv()
+		self.stv_gem = stone.make_stv()
 		
 	
 	def init(self, acc):

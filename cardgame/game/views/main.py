@@ -20,6 +20,7 @@ import game.views.equipment
 import game.views.luckycat
 import game.views.stone
 import game.views.educate
+import game.views.skill
 
 
 
@@ -32,7 +33,8 @@ viewsmap = {
 	'equipment': sys.modules['game.views.equipment'],
 	'luckycat': sys.modules['game.views.luckycat'],
 	'stone': sys.modules['game.views.stone'],
-	'educate': sys.modules['game.views.educate']
+	'educate': sys.modules['game.views.educate'],
+	'skill': sys.modules['game.views.skill']
 }
 
 def index(request):

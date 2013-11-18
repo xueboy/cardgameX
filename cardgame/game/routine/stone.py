@@ -19,41 +19,17 @@ class stone:
 		
 		if not usr.stv[level - 1]:
 			return {'msg':'svt_not_available'}			
-		
-		goldCost = stoneProbabilityConf['visitGold'][level - 1]		
-		
-		if goldCost > usr.gold:
-			return {'msg':'gold_not_enough'}
-		if usr.stv_gem[level - 1]:
-			probs = stoneProbabilityConf['visit'][level - 1]['gem']			
-		else:
-			probs = stoneProbabilityConf['visit'][level - 1]['gold']
-			
-		seed = randint()		
-		cndStone = []
-						
-		for prob in probs:
-			p = prob['probability'] 
-			if p > seed:
-				cndStone = prob['stone']
-				break
-			else:
-				seed = seed - p				
-				
-		stoneid = random.sample(cndStone, 1)[0]
-		stone = inv.addStone(stoneid)	
-				
-		if drop(stoneProbabilityConf['visitProb'][level - 1]):
-			usr.stv[level] = 1
-			usr.stv_gem[level - 1] = 0		
-		usr.stv[level - 1] = 0	
-		usr.stv[0] = 1		
-		usr.gold = usr.gold - goldCost		
-		
+	
+		result = []	
+		msg = stone.do_visit(usr, level, result, gameConf,stoneProbabilityConf)		
 		usr.save()
 		inv.save()
 		
-		return {'stv':usr.stv, 'add_stone':stone, 'gold':usr.gold}
+		if msg:
+			return msg		
+		data = result[0]
+		data['gold'] = usr.gold		
+		return data
 		
 	@staticmethod
 	def visit_gem(usr, level):
@@ -99,6 +75,76 @@ class stone:
 		
 		return {'stv':usr.stv, 'add_stone':stone, 'gem':usr.gem}
 			
+	@staticmethod
+	def visit_clickonce(usr, count):	
+		
+		inv = usr.getInventory()
+		gameConf = config.getConfig('game')
+		stoneProbabilityConf = config.getConfig('stone_probability')		
+		level = stone.max_available_stv(usr)
+		
+		result = []		
+		for i in range(count):
+			msg = stone.do_visit(usr, level, result, gameConf, stoneProbabilityConf)
+			if msg:
+				break
+			level = stone.max_available_stv(usr)		
+		usr.save()
+		inv.save()
+		if result:
+			return {'result':result, 'gold':usr.gold}
+		return msg			
+		
+	@staticmethod
+	def max_available_stv(usr):
+		if usr.stv[4]:
+			return 5
+		if usr.stv[3]:
+			return 4
+		if usr.stv[2]:
+			return 3
+		if usr.stv[1]:
+			return 2
+		if usr.stv[0]:
+			return 1
+		
+	@staticmethod
+	def do_visit(usr, level, result, gameConf,stoneProbabilityConf):
+		inv = usr.getInventory()			
+		
+		goldCost = stoneProbabilityConf['visitGold'][level - 1]		
+		
+		if goldCost > usr.gold:
+			return {'msg':'gold_not_enough'}
+		if usr.stv_gem[level - 1]:
+			probs = stoneProbabilityConf['visit'][level - 1]['gem']			
+		else:
+			probs = stoneProbabilityConf['visit'][level - 1]['gold']
+			
+		seed = randint()		
+		cndStone = []
+						
+		for prob in probs:
+			p = prob['probability'] 
+			if p > seed:
+				cndStone = prob['stone']
+				break
+			else:
+				seed = seed - p				
+				
+		stoneid = random.sample(cndStone, 1)[0]
+		stone = inv.addStone(stoneid)	
+				
+		if drop(stoneProbabilityConf['visitProb'][level - 1]):
+			usr.stv[level] = 1
+			usr.stv_gem[level - 1] = 0		
+		usr.stv[level - 1] = 0	
+		usr.stv[0] = 1		
+		print usr.stv
+		usr.gold = usr.gold - goldCost		
+		result.append({'stv':usr.stv[:], 'add_stone':stone})
+		return {}
+		
 			
 	@staticmethod
 	def levelup(usr, dest_stoneid, source_stoneid):
@@ -127,8 +173,7 @@ class stone:
 		
 	@staticmethod
 	def add_exp(st, exp, stoneInfo):
-		stoneLevelConf = config.getConfig('stone_level')
-		
+		stoneLevelConf = config.getConfig('stone_level')		
 		
 		expdeff = stoneLevelConf[unicode(st['level'] + 1)][stoneInfo['quality'] - 1] - stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
 		exp = exp + st['exp']
@@ -147,6 +192,10 @@ class stone:
 		exp = exp + stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
 		exp = exp + stoneInfo['gravel']
 		return exp
+		
+	@staticmethod
+	def make_stv():
+		return [1, 0, 0, 0, 0]
 
 	@staticmethod
 	def install(usr, teamPosition, slotpos, stoneid):
@@ -154,56 +203,46 @@ class stone:
 		inv = usr.getInventory()
 		
 		if not inv.team[teamPosition]:
-			return {'msg':'team_position_not_have_member'}
-				
+			return {'msg':'team_position_not_have_member'}				
 		card = inv.getCard(inv.team[teamPosition])
 		if not card:
-			return {'msg': 'card_not_exist'}
-		
-		gameConf = config.getConfig('game')
-		
+			return {'msg': 'card_not_exist'}		
+		gameConf = config.getConfig('game')		
 		if gameConf['stone_slot_level'][slotpos] > card['level']:
 			return {'msg': 'card_level_required'}
 		
 		if not card.has_key('st_slot'):
 			card['st_slot'] = stone.make_st_solt()
 	
-		stoneConf = config.getConfig('stone')	
-	
+		stoneConf = config.getConfig('stone')		
 		st = {}
 		if stoneid:
-			st = inv.withdrawStone(stoneid)
-			
+			st = inv.withdrawStone(stoneid)			
 		oldst = card['st_slot'][slotpos]
 		if (not oldst) and (not stoneid):
 			return {'msg':'stone_not_exist'}
 			
-		sttype = stoneConf[st['stoneid']][type]
-			
+		sttype = stoneConf[st['stoneid']][type]			
 		for st1 in card['st_slot']:
 			if st1 and stoneConf[st1['stoneid']]['type'] == sttype:
 				return {'msg':'stone_same_type_installed'}				
 		
-		card['st_slot'][slotpos] = st
-		
+		card['st_slot'][slotpos] = st		
 		if oldst:
 			inv.depositStone(oldst)		
-		inv.save()	
-		
-		data = {}
-		
+		inv.save()			
+		data = {}		
 		data['st_slot'] = inv.getStSlots()
 		if oldst:
 			data['add_stone'] = oldst			
 		if st:
 			data['delete_stone'] = st
 			
-		return data
-		
+		return data		
 		
 	@staticmethod
 	def make_st_solt():
-		return [{}, {}, {}, {}, {}, {}, {}, {}, {}, {},]
+		return [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
 		
 	@staticmethod
 	def takeoff(inv, card):
@@ -238,8 +277,7 @@ class stone:
 			if ts and gameConf['stone_slot_level'][i] > toCard['level']:
 					inv.depositStone(ts)
 					dst.append(ts)
-					toCard['st_slot'][i] = {}
-		
+					toCard['st_slot'][i] = {}		
 		return dst
 				
 		

@@ -19,6 +19,7 @@ class inventory(object):
 		self.equipment = []
 		self.stone = []		
 		self.user = None
+		self.skill = []
 		
 	def init(self):
 		return
@@ -29,7 +30,8 @@ class inventory(object):
 		data['card'] = self.card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
-		data['stone'] = self.stone		
+		data['stone'] = self.stone
+		data['skill'] = self.skill
 		return data
 		
 	def getClientData(self):
@@ -49,7 +51,8 @@ class inventory(object):
 		data['equipment'] = self.equipment
 		data['slots'] = self.getSlots()
 		data['st_slots'] = self.getStSlots()
-		data['stone'] = self.stone	
+		data['stone'] = self.stone
+		data['skill'] = self.skill
 		return data
 		
 	def load(self, roleid, data):
@@ -57,7 +60,8 @@ class inventory(object):
 		self.card = data['card']
 		self.team = data['team']
 		self.equipment = data['equipment']
-		self.stone = data['stone']		
+		self.stone = data['stone']
+		self.skill = data['skill']		
 		
 	def addCard(self, cardid, level = 1):
 		cardconf = config.getConfig('pet')				
@@ -115,6 +119,9 @@ class inventory(object):
 	
 	def generateStoneName(self):
 		return self.generateName('S')
+		
+	def generateSkillName(self):
+		return self.generateName('K')
 	
 	def generateName(self, perfix):
 		serveridLen = len(str(serverid))
@@ -261,12 +268,9 @@ class inventory(object):
 		return st
 		
 	def getStone(self, id):					
-		for i in range(0, len(self.stone)):
-			print i
-			print id
-			print self.stone[i]['id']
-			if self.stone[i]['id'] == id:				
-				return self.stone[i]
+		for st in self.stone:
+			if st['id'] == id:				
+				return st
 		return None
 		
 	def delStone(self, id):
@@ -277,8 +281,41 @@ class inventory(object):
 		
 	def withdrawStone(self, id):
 		res = None
-		for i, st in enumerate(self.stone):
-			print st
+		for i, st in enumerate(self.stone):			
+			if st['id'] == id:
+				res = st
+				break
+		self.stone.remove(res)
+		return res
+		
+	def addSkill(self, skillid):
+		skillConf = config.getConfig('skill')
+		
+		skillInfo = skillConf[skillid]
+		
+		sk = {}
+		sk['skillid'] = skillid
+		sk['id'] = self.generateSkillName()
+		sk['level'] = 1
+		sk['exp'] = 0
+		self.skill.append(sk)
+		return sk
+		
+	def getSkill(self, id):
+		for sk in self.skill:
+			if sk['id'] == id:
+				return sk
+		return None
+	
+	def delSkill(self, id):
+		self.stone = filter(lambda s : s['id'] != id, self.stone)
+			
+	def depositSkill(self, sk):
+		self.skill.append(sk)
+		
+	def withdrawSkill(self, id):
+		res = None
+		for i, sk in enumerate(self.skill):
 			if st['id'] == id:
 				res = st
 				break

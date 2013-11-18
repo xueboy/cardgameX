@@ -112,3 +112,4 @@ def day_diff(t1, t2):
 	d1 = datetime.datetime(t1)
 	d2 = datetime.datetime(t2)
 	return (d1 - d2).days
+

@@ -16,6 +16,11 @@ def visit_gem(request):
 	return stone.visit_gem(usr, level)
 	
 	
+def visit_clickonece(request):
+	usr = request.user
+	return stone.visit_clickonce(usr, 10)
+	
+	
 def levelup(request):
 	
 	usr = request.user

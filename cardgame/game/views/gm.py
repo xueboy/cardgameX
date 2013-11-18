@@ -97,7 +97,7 @@ def add_trp(request):
 	return {'trp':usr.trp}
 		
 def add_stone(request):
-	stoneid = request.GET['stone_id']
+	stoneid = request.GET['stone']
 	
 	usr = request.user
 	
@@ -105,3 +105,13 @@ def add_stone(request):
 	stone = inv.addStone(stoneid)
 	inv.save()
 	return {'add_stone':stone}
+		
+def add_skill(request):
+	skillid = request.GET['skill']
+	
+	usr = request.user
+	
+	inv = usr.getInventory()
+	skill = inv.addSkill(skillid)
+	inv.save()
+	return {'add_skill':skill}

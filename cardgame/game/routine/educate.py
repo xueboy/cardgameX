@@ -1,14 +1,12 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-
 import copy
 from gclib.utility import currentTime, drop
 from game.utility.config import config
 from game.routine.pet import pet
 
 class educate:
-	
 	
 	@staticmethod
 	def start(usr, edupos, cardid):
@@ -22,14 +20,12 @@ class educate:
 				
 		if educate.card_already_educate(usr, cardid):
 			return {'msg':'educate_card_already_educate'}
-		
-				
+						
 		gameConf = config.getConfig('game')
 		educateGradeConf = config.getConfig('educate_grade')		
 		educateConf = config.getConfig('educate')
 		
-		educateInfo = educateConf[usr.level - 1]
-		
+		educateInfo = educateConf[usr.level - 1]		
 		goldCost = educateInfo['gold']
 		if goldCost > usr.gold:
 			return {'msg':'gold_not_enough'}
@@ -46,7 +42,6 @@ class educate:
 		slot['edt'] = usr.educate['edt']
 		
 		usr.gold = usr.gold - goldCost
-		
 		usr.educate['edt'] = 0
 		usr.save()		
 		return educate.getClientData(usr, gameConf)		
@@ -145,7 +140,8 @@ class educate:
 					educateDuration = gameConf['educate_duration']
 					del edu_slot['start_time']
 					del edu_slot['last_update_time']
-				exp = edu_slot['expptm'] * (now - edu_slot['last_update_time']) / 600 * edu_slot['rate'] + edu_slot['fraction']
+				else: 
+					exp = edu_slot['expptm'] * (now - edu_slot['last_update_time']) / 600 * edu_slot['rate'] + edu_slot['fraction']
 				edu_slot['fraction'] = exp - int(exp)
 				exp = int(exp)
 				if exp:
@@ -154,19 +150,21 @@ class educate:
 					edu_slot['last_update_time'] = now
 					eduCard.append(card)		
 		inv.save()		
-		
 				
 	@staticmethod
 	def getEduSlots(usr, gameConf):
-		now = currentTime()
-		#data = copy.deepcopy(usr.educate['edu_slot'])
+		now = currentTime()		
 		edu_slot = usr.educate['edu_slot']
 		data = {}
 		data = []
 		for slot in edu_slot:
 			if slot.has_key('start_time'):
 				s = educate.make_open_edu_slot(slot['edt'])
-				s['finish_countdown'] = gameConf['educate_duration'] - (now - slot['start_time'])
+				countdown = gameConf['educate_duration'] - (now - slot['start_time'])
+				if countdown < 0:
+					countdown = 0
+				s['finish_countdown'] = countdown
+				s['card_id'] = slot['card_id']
 				data.append(s)
 			else:
 				data.append(slot)
