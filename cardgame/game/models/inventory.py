@@ -9,6 +9,7 @@ import time
 import copy
 from game.routine.equipment import equipment
 from game.routine.stone import stone
+from game.routine.skill import skill
 
 class inventory(object):
 	
@@ -51,6 +52,7 @@ class inventory(object):
 		data['equipment'] = self.equipment
 		data['slots'] = self.getSlots()
 		data['st_slots'] = self.getStSlots()
+		data['sk_slots'] = self.getSkSlots()
 		data['stone'] = self.stone
 		data['skill'] = self.skill
 		return data
@@ -148,29 +150,43 @@ class inventory(object):
 		return None
 		
 	def getSlots(self):
-		slots = {}		
+		slots = {}
 		for i, t in enumerate(self.team):
 			if t:
 				tc = self.getCard(t)
 				slots['t' + str(i)] = tc['slot']
-			else: 
+			else:
 				slots['t' + str(i)] = equipment.make_slot()
 			i = i + 1
 		return slots
 		
 	def getStSlots(self):
-		st_slots = {}
+		st_slot = {}
 		
 		for i, t in enumerate(self.team):
 			if t:
 				tc = self.getCard(t)
 				if tc.has_key('st_slot'):
-					st_slots['t' + str(i)] = tc['st_slot']
+					st_slot['t' + str(i)] = tc['st_slot']
 				else:
-					st_slots['t' + str(i)] = stone.make_st_solt()
+					st_slot['t' + str(i)] = stone.make_st_solt()
 			else:
-				st_slots['t' + str(i)] = stone.make_st_solt()
-		return st_slots
+				st_slot['t' + str(i)] = stone.make_st_solt()
+		return st_slot
+		
+	def getSkSlots(self):
+		sk_slot = {}
+		
+		for i, t in enumerate(self.team):
+			if t:
+				tc = self.getCard(t)
+				if tc.has_key('sk_slot'):
+					sk_slot['t'+ str(i)] = tc['sk_slot']
+				else:
+					sk_slot['t' + str(i)] = skill.make_sk_slot()
+			else:
+				sk_slot['t' + str(i)] = skill.make_sk_slot()
+		return sk_slot
 	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
 		
@@ -211,12 +227,13 @@ class inventory(object):
 			
 		deq = []
 		dst = []
+		dsk = []
 		
-		deq1, dst1 = self.setTeamEquipmentStone(cardid1, 0, gameConf)
-		deq2, dst2 = self.setTeamEquipmentStone(cardid2, 1, gameConf)
-		deq3, dst3 = self.setTeamEquipmentStone(cardid3, 2, gameConf)
-		deq4, dst4 = self.setTeamEquipmentStone(cardid4, 3, gameConf)
-		deq5, dst5 = self.setTeamEquipmentStone(cardid5, 4, gameConf)		
+		deq1, dst1, dsk1 = self.setTeamEquipmentStoneSkill(cardid1, 0, gameConf)
+		deq2, dst2, dsk2 = self.setTeamEquipmentStoneSkill(cardid2, 1, gameConf)
+		deq3, dst3, dsk3 = self.setTeamEquipmentStoneSkill(cardid3, 2, gameConf)
+		deq4, dst4, dsk4 = self.setTeamEquipmentStoneSkill(cardid4, 3, gameConf)
+		deq5, dst5, dsk5 = self.setTeamEquipmentStoneSkill(cardid5, 4, gameConf)		
 		
 		deq.extend(deq1)
 		deq.extend(deq2)
@@ -228,32 +245,43 @@ class inventory(object):
 		dst.extend(dst2)
 		dst.extend(dst3)
 		dst.extend(dst4)
-		dst.extend(dst5)		
+		dst.extend(dst5)
+		
+		dsk.extend(dsk1)
+		dsk.extend(dsk2)
+		dsk.extend(dsk3)
+		dsk.extend(dsk4)
+		dsk.extend(dsk5)
 
 		self.save()
-		return self.team, deq, dst
+		return self.team, deq, dst, dsk
 	
 	
-	def setTeamEquipmentStone(self, cardid, teamPos, gameConf):
+	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
 		dst = []
 		deq = []
+		dsk = []
 		if cardid:
 			card = self.getCard(cardid)
 			card['slot'] = equipment.make_slot()
 			card['st_slot'] = stone.make_st_solt()
+			card['sk_slot'] = skill.make_sk_slot()
 			if self.team[teamPos]:
 				teamCard = self.getCard(self.team[teamPos])
-				deq.extend(equipment.exchage(card, teamCard))
+				deq.extend(equipment.exchage(self, card, teamCard, gameConf))
 				dst.extend(stone.exchage(self, card, teamCard, gameConf))
+				dsk.extend(skill.exchage(self, card, teamCard, gameConf))
 			self.team[teamPos] = cardid
 		elif self.team[teamPos]:
 			teamCard = self.getCard(self.team[teamPos])
 			deq.extend(equipment.takeoff(self, teamCard))
 			dst.extend(stone.takeoff(self, teamCard))
+			dsk.extend(skill.takeoff(self, teamCard))
 			del teamCard['slot']
 			del teamCard['st_slot']
+			del teamCard['sk_slot']
 			self.team[teamPos] = ''
-		return deq, dst
+		return deq, dst, dsk
 		
 	def addStone(self, stoneid):
 		stoneConf = config.getConfig('stone')
@@ -316,9 +344,10 @@ class inventory(object):
 	def withdrawSkill(self, id):
 		res = None
 		for i, sk in enumerate(self.skill):
-			if st['id'] == id:
-				res = st
+			if sk['id'] == id:
+				res = sk
 				break
-		self.stone.remove(res)
+		if res:
+			self.skill.remove(res)
 		return res
 		

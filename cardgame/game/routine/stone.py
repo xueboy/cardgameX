@@ -279,9 +279,3 @@ class stone:
 					dst.append(ts)
 					toCard['st_slot'][i] = {}		
 		return dst
-				
-		
-		
-		
-		
-			

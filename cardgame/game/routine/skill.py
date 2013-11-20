@@ -3,6 +3,7 @@
 
 from game.utility.config import config
 
+
 class skill:
 	
 	@staticmethod
@@ -28,6 +29,39 @@ class skill:
 		skill.gain_exp(destSkill, exp, skillConf, skillLevelConf)
 		inv.save()
 		return {'update_skill': destSkill, 'delete_skill_array': sourceSkill_id}
+			
+	@staticmethod
+	def install(usr, teamPosition, slotpos, skill_id):
+		inv = usr.getInventory()
+		
+		if not inv.team[teamPosition]:
+			return {'msg':'team_position_not_have_member'}				
+		card = inv.getCard(inv.team[teamPosition])
+		if not card:
+			return {'msg': 'card_not_exist'}
+		if not card.has_key('sk_slot'):
+			card['sk_slot'] = skill.make_sk_slot()
+			
+		oldsk = card['sk_slot'][slotpos]
+		sk = inv.withdrawSkill(skill_id)
+		
+		if not sk:
+			return {'msg':'skill_not_exist'}
+				
+		card['sk_slot'][slotpos] = sk
+		
+		if oldsk:
+			inv.depositSkill(oldsk)
+		
+		inv.save()
+		
+		data = {}
+		data['sk_slot'] = inv.getSkSlots()
+		if oldsk:
+			data['add_skill'] = oldsk
+	
+		return data
+	
 
 	@staticmethod
 	def get_exp(sk, skillLevelConf):
@@ -48,5 +82,35 @@ class skill:
 			sk['exp'] = 0
 		else:
 			sk['exp'] = exp
-			
+	
+	@staticmethod
+	def make_sk_slot():
+		return [{}, {}, {}]		
+	
+	@staticmethod
+	def getClientData():
+		pass
 		
+	@staticmethod
+	def takeoff(inv, card):
+		dst = []
+		if card and card.has_key('sk_slot'):
+			for st in card['sk_slot']:
+				if st:
+					inv.depositStone(st)
+					dst.append(st)
+			del card['sk_slot']
+		return dst
+
+	@staticmethod
+	def exchage(inv, fromCard, toCard, gameConf):				
+				
+		toSlot = None		
+		if toCard.has_key('sk_slot'):
+			toSlot = toCard['sk_slot']			
+		toCard['sk_slot'] = fromCard['sk_slot']
+		del fromCard['sk_slot']
+		dst = []
+		if toSlot:
+			fromCard['sk_slot'] = toSlot		
+		return dst	

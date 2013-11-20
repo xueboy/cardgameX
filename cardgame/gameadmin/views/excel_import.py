@@ -275,7 +275,7 @@ class excel_import:
 				hp = int(row[28])
 				hpgrowth = int(row[29])
 				attack = int(row[30])
-				attackgrowth = int(row[31])
+				attackgrowth = float(row[31])
 				pr = int(row[32])	#Physical Resistance
 				prgrowth = int(row[33])
 				mr = int(row[34])
@@ -312,6 +312,7 @@ class excel_import:
 					luck.append(unicode(row[53]))
 				if unicode(row[54]):
 					luck.append(unicode(row[54]))
+				srgrowth = int(row[55])
 				petConf = {}
 				petConf['model'] = model
 				petConf['icon'] = icon
@@ -352,6 +353,7 @@ class excel_import:
 				petConf['evoPrice'] = evoPrice
 				petConf['desc'] = desc
 				petConf['luck'] = luck
+				petConf['srgrowth'] = srgrowth
 				conf[str(petid)] = petConf
 			return HttpResponse(json.dumps(conf))
 		return HttpResponse('pet_import')

@@ -225,8 +225,7 @@ class luckycat:
 			rcd['target'] = target.roleid
 			rcd['create_time'] = now
 			usr.luckycat['record'].append(rcd)			
-			target.luckycat['record'].append(rcd)
-			
+			target.luckycat['record'].append(rcd)			
 	
 		usr.save()
 		if not feedSelf:
@@ -239,8 +238,7 @@ class luckycat:
 		if awardGem:
 			data['gem'] = usr.gem
 		if spreadBlessid:
-			data['spread_bless'] = spreadBlessid
-	
+			data['spread_bless'] = spreadBlessid	
 		
 		return data
 			
@@ -286,8 +284,7 @@ class luckycat:
 			usr.luckycat['bless'][blessid] = {}
 			usr.luckycat['bless'][blessid]['blessid'] = blessid			
 		usr.luckycat['bless'][blessid]['spread'] = True
-		return {'luckycat_roll_bless':blessid, 'luckycat_roll_bless_spread':True}
-		
+		return {'luckycat_roll_bless':blessid, 'luckycat_roll_bless_spread':True}		
 	
 	@staticmethod	
 	def updateBless(usr):
@@ -319,9 +316,7 @@ class luckycat:
 		data['bless'] = usr.luckycat['bless']
 		data['record'] = usr.luckycat['record']		
 		return data
-		
-		
-		
+				
 	@staticmethod
 	def isCritical(usr):
 		criticalPoint = sum(usr.luckycat['critical_point_list'])
@@ -337,8 +332,7 @@ class luckycat:
 			usr.luckycat['beckon_cooldown'] = 0
 			usr.luckycat['beckon_last_update_time'] = now
 			return
-			
-	
+		
 		elapse = now - usr.luckycat['beckon_last_update_time']		
 		usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] - elapse
 		if usr.luckycat['beckon_cooldown'] < 0:
@@ -358,8 +352,7 @@ class luckycat:
 	@staticmethod
 	def onLeveup(usr):
 		nw = usr.getNetwork()
-		nw.updateFriendData()
-		
+		nw.updateFriendData()		
 		
 	@staticmethod
 	def onEveryLeveup(usr):
@@ -384,14 +377,12 @@ class luckycat:
 				
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost		
-		usr.luckycat['critical_point_list'][itemIndex] = hit(gameConf['luckycat_critical_point_probability'])
-		
+		usr.luckycat['critical_point_list'][itemIndex] = hit(gameConf['luckycat_critical_point_probability'])		
 			
 	@staticmethod
 	def beckonMaxCount(usr):
 		gameConf = config.getConfig('game')
-		return gameConf['luckycat_beckon_count_base']
-		
+		return gameConf['luckycat_beckon_count_base']		
 		
 	@staticmethod		
 	def currentLuckycatFortune():

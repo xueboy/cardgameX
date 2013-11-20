@@ -21,3 +21,13 @@ def levelup(request):
 		source_skillid.append(request.GET['source_skill6'])
 		
 	return skill.levelup(usr, dest_skillid, source_skillid)
+	
+def install(request):
+	
+	usr = request.user
+	
+	teamPosition = int(request.GET['team_position'])
+	slotpos = int(request.GET['sk_slot_pos'])
+	stoneid = request.GET['skill']
+	
+	return skill.install(usr, teamPosition, slotpos, stoneid)

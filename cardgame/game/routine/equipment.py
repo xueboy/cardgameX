@@ -163,7 +163,7 @@ class equipment:
 		return deq
 
 	@staticmethod
-	def exchage(fromCard, toCard):		
+	def exchage(inv, fromCard, toCard, gameConf):
 		
 		toSlot = None
 		if toCard.has_key('slot'):
