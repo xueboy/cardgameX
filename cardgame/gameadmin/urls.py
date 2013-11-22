@@ -57,6 +57,8 @@ urlpatterns = patterns('',
     url(r'^educate_import/$', gameadmin.views.main.educate_import),
     url(r'^educate_grade/$', gameadmin.views.main.educate_grade),
     url(r'^educate_grade_import/$', gameadmin.views.main.educate_grade_import),
+    url(r'^almanac_combination/$', gameadmin.views.main.almanac_combination),
+    url(r'^almanac_combination_import/$', gameadmin.views.main.almanac_combination_import),
     
     
     

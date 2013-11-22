@@ -1064,3 +1064,68 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf))
 		return HttpResponse('educate_grade_import')
+		
+	@staticmethod
+	def almanac_combination_import(request):
+		if request.method == 'POST':
+			almanac_combination_file = request.FILES.get('almanac_combination_file')
+			if not almanac_combination_file:
+				return HttpResponse('图鉴组合xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, almanac_combination_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {}
+			
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				almanacCombinationid = row[0]
+				combinCardid = row[1].split(',')
+				itemid = row[2]
+				cardid = row[3]
+				skillid = row[4]
+				equipmentid = row[5]
+				gem = int(row[6])
+				gold = int(row[7])
+				strength = int(row[8])
+				intelligence = int(row[9])
+				artifice = int(row[10])
+				hit = int(row[11])
+				dodge = int(row[12])
+				critical = int(row[13])
+				tenacity = int(row[14])
+				wreck = int(row[15])
+				block = int(row[16])
+				pt = int(row[17])
+				mt = int(row[18])
+				pd = int(row[19])
+				md = int(row[20])
+				speed = int(row[21])
+				
+				almanacConf = {}
+				almanacConf['combin_cardid'] = combinCardid
+				almanacConf['itemid'] = itemid
+				almanacConf['cardid'] = cardid
+				almanacConf['skillid'] = skillid
+				almanacConf['gem'] = gem
+				almanacConf['gold'] = gold
+				almanacConf['strength'] = strength
+				almanacConf['intelligence'] = intelligence
+				almanacConf['artifice'] = artifice
+				almanacConf['hit'] = hit
+				almanacConf['dodge'] = dodge
+				almanacConf['critical'] = critical
+				almanacConf['tenacity'] = tenacity
+				almanacConf['wreck'] = wreck
+				almanacConf['block'] = block
+				almanacConf['pt'] = pt
+				almanacConf['mt'] = mt
+				almanacConf['pd'] = pd
+				almanacConf['md']=  md
+				almanacConf['speed'] = speed
+				
+				conf[almanacCombinationid] = almanacConf
+				
+			return HttpResponse(json.dumps(conf))
+		return HttpResponse('almanac_import')			
+				

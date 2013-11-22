@@ -23,8 +23,7 @@ class inventory(object):
 		self.skill = []
 		
 	def init(self):
-		return
-		
+		return		
 		
 	def getData(self):
 		data = {}
@@ -76,13 +75,28 @@ class inventory(object):
 			data['strength'] = cardconf[cardid]['strength']
 			data['intelligence'] = cardconf[cardid]['intelligence']
 			data['artifice'] = cardconf[cardid]['artifice']			
-			self.card.append(data)			
+			self.card.append(data)
+			usr = self.user
+			al = usr.getAlmanac()
+			al.insert(cardid)
 			return data
 		return None
+	
+	def addAllCard(self, cardid):
+		newCard = []
+		for cid in cardid:
+			if cid:
+				card = self.addCard(cid)
+				if card:
+					newCard.append(card)
+		return newCard
 		
 	def delCard(self, id):
 		if self.team.count (id) > 0:
 			return 0
+		for edu_slot in self.user.educate:
+			if edu_slot and edu_slot['cardid'] == id:
+				return 0			
 		self.card = filter(lambda c : c['id'] != id, self.card)		
 		return 1	
 	
@@ -107,8 +121,7 @@ class inventory(object):
 				res = equipment
 				self.equipment.remove(equipment)
 		return res
-	
-		
+			
 	def delEquipment(self, id):
 		self.equipment = filter(lambda e : e['id'] == id, self.equipment)		
 		return 1
@@ -140,8 +153,13 @@ class inventory(object):
 		for card in self.card:			
 			if card['id'] == id:
 				return card
-		return None	
-	
+		return None
+		
+	def getFirstCardType(self, cardid):
+		for card in self.card:
+			if card['cardid'] == cardid:
+				return card
+		return None
 		
 	def getEquipment(self, id):
 		for equipment in self.equipment:
@@ -328,6 +346,15 @@ class inventory(object):
 		sk['exp'] = 0
 		self.skill.append(sk)
 		return sk
+	
+	def addAllSkill(self, skillid):
+		newSkill = []
+		for sid in skillid:
+			if sid:
+				skill = self.addSkill(sid)
+				if skill:
+					newSkill.append(skill)
+		return newSkill
 		
 	def getSkill(self, id):
 		for sk in self.skill:

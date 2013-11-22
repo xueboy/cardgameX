@@ -5,6 +5,7 @@ from gclib.user import user as gcuser
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
+from game.models.almanac import almanac
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
@@ -34,6 +35,7 @@ class user(gcuser):
 		self.dun = None
 		self.inv = None
 		self.network = None
+		self.almanac = None
 		self.garcha = garcha.make()
 		self.notify = {}
 		self.gender = 'male'
@@ -215,6 +217,19 @@ class user(gcuser):
 		self.network = nt
 		return self.network
 	
+	@retrieval_object
+	def getAlmanac(self):
+		if self.almanac != None:
+			return self.almanac
+		al = almanac.get(self.id)
+		if al == None:
+			al = almanac()
+			al.init()
+			al.install(self.id)
+		al.user = self
+		self.almanac = al
+		return self.almanac
+	
 	def updateStamina(self):
 		"""
 		ckeck and do if stamina recover.
@@ -260,12 +275,10 @@ class user(gcuser):
 			friend = user.get(key)
 			friend.addFreind(self)
 			friend.save()
-
 	
 	def onLogin(self):
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)		
-		
 		
 	def onLevelup(self):
 		gameConf = config.getConfig('game')
@@ -275,9 +288,7 @@ class user(gcuser):
 				self.notify['luckycat_notify'] = self.luckycat				
 		nw = self.getNetwork()
 		nw.updateFriendData()
-		educate.levelup_update(self, gameConf)
-		
-		
+		educate.levelup_update(self, gameConf)		
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')
@@ -290,8 +301,7 @@ class user(gcuser):
 		elapse = now - self.equipment_strength_last_time
 		self.equipment_strength_cooldown = self.equipment_strength_cooldown - elapse
 		if self.equipment_strength_cooldown < 0:
-			self.equipment_strength_cooldown = 0
-			
+			self.equipment_strength_cooldown = 0			
 
 	def yell_listen(self):		
 		ms = massyell.get(0)
