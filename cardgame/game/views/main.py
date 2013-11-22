@@ -82,8 +82,9 @@ def info(request):
 	info['stone_level_md5'] = conf.getClientConfigMd5('stone_level')
 	info['trp_price_md5'] = conf.getClientConfigMd5('trp_price')
 	info['trp_md5'] = conf.getClientConfigMd5('trp')
-	info['educate'] = conf.getClientConfigMd5('educate')
-	info['educate_grade'] = conf.getClientConfigMd5('educate_grade')
+	info['educate_md5'] = conf.getClientConfigMd5('educate')
+	info['educate_grade_md5'] = conf.getClientConfigMd5('educate_grade')
+	info['almanac_combination_md5'] = conf.getClientConfigMd5('almanac_combination')
 	return HttpResponse(json.dumps({'info':info}))
 
 

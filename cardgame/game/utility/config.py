@@ -43,6 +43,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'educate_grade':
 			return conf
+		if confname == 'almanac_combination':
+			return conf
 		return None
 	
 	

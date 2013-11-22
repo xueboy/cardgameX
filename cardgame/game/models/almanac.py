@@ -28,6 +28,10 @@ class almanac(object):
 		data['combinaion'] = self.combinaion
 		return data
 		
+	def getClientData(self):
+		data = {}
+		data['almanac_card'] = self.card
+		data['almanac_combinaion'] = self.combinaion
 	
 	def insert(self, cardid):
 		if self.card.has_key(cardid):

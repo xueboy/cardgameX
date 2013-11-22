@@ -144,6 +144,8 @@ class user(gcuser):
 		data.update(inv.getClientData())		
 		nw = self.getNetwork()
 		data.update(nw.getClientData())
+		al = self.getAlmanac()
+		data.update(al.getClientData())
 		return data
 		
 	def load(self, roleid, data):
