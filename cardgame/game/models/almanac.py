@@ -10,8 +10,7 @@ class almanac(object):
 	def __init__(self):
 		object.__init__(self)
 		self.card = {}
-		self.combinaion = []		
-
+		self.combinaion = []
 		return
 	
 	def init(self):
@@ -32,13 +31,14 @@ class almanac(object):
 		data = {}
 		data['almanac_card'] = self.card
 		data['almanac_combinaion'] = self.combinaion
+		return data
 	
 	def insert(self, cardid):
 		if self.card.has_key(cardid):
 			return					
 		usr = self.user
 		inv = usr.getInventory()
-		self.card[cardid] = None
+		self.card[cardid] = {}
 		newCom, aw  = self.update(cardid)		
 		data = {}
 		if newCom:
@@ -74,18 +74,15 @@ class almanac(object):
 		inv = usr.getInventory()
 		
 		newComb = []
-		aw = {'gold':0, 'gem':0, 'item':[], 'card':[], 'skill':[], 'item':[]}
-		
+		aw = {'gold':0, 'gem':0, 'item':[], 'card':[], 'skill':[], 'item':[]}		
 		
 		for confKey in almanacCombinationConf:
 			if confKey not in self.combinaion:
 				isAbsence = False
 				for cid in almanacCombinationConf[confKey]['combin_cardid']:
 					if not inv.getFirstCardType(cid):
-						isAbsence = True
-						print 'absenece', cid
-						break
-				
+						isAbsence = True						
+						break				
 				if not isAbsence:
 					newComb.append(confKey)
 					almanac.award(confKey, aw, almanacCombinationConf)		
@@ -93,8 +90,7 @@ class almanac(object):
 		
 	@staticmethod
 	def award(acid, aw, almanacCombinationConf):
-		almanacCombinationInfo = almanacCombinationConf[acid]
-		
+		almanacCombinationInfo = almanacCombinationConf[acid]		
 		aw['gold'] = aw['gold'] + almanacCombinationInfo['gold']
 		aw['gem'] = aw['gem'] + almanacCombinationInfo['gem']
 		if almanacCombinationInfo['itemid']:
@@ -103,6 +99,4 @@ class almanac(object):
 			aw['card'].append(almanacCombinationInfo['cardid'])
 		if almanacCombinationInfo['skillid']:
 			aw['skill'].append(almanacCombinationInfo['skillid'])
-		
-		
-		
+	
