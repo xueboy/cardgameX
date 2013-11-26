@@ -111,7 +111,7 @@ class user(gcuser):
 		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
-		usrData['trp'] = self.trp
+		#usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
 		data = {}
 		data['user'] = usrData
