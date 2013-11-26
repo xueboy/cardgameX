@@ -2,8 +2,7 @@
 #!/usr/bin/env python
 
 from django.http import HttpResponse
-from gclib.
-
+from gclib.cache import cache
 
 def show_ladder(request):
 	return HttpResponse('show_ladder')
