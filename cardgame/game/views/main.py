@@ -7,7 +7,7 @@ from gclib.json import *
 from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest
+from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest, logout
 from gclib.exception import NotLogin, NotHaveNickname
 from game.models.user import user
 from game.models.network import network
@@ -21,7 +21,7 @@ import game.views.luckycat
 import game.views.stone
 import game.views.educate
 import game.views.skill
-
+import game.views.arena
 
 
 viewsmap = {
@@ -34,7 +34,8 @@ viewsmap = {
 	'luckycat': sys.modules['game.views.luckycat'],
 	'stone': sys.modules['game.views.stone'],
 	'educate': sys.modules['game.views.educate'],
-	'skill': sys.modules['game.views.skill']
+	'skill': sys.modules['game.views.skill'],
+	'arena' : sys.modules['game.views.arena'],
 }
 
 def index(request):
@@ -95,12 +96,13 @@ def get_config(request):
 	return HttpResponse(json.dumps(data))
 	
 def api(request, m, f):
-	try:
-		usr = beginRequest(request,user)
-	except NotLogin:
+	try:		
+		usr = beginRequest(request,user)		
+	except NotLogin:		
 		return info(request)
-	except NotHaveNickname:
-		return HttpResponse({'msg':'nickname_should_set_before'})
+	except NotHaveNickname:		
+		return HttpResponse(json.dumps({'msg':'nickname_should_set_before'}))
+		
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
 		ret = fun(request)		
@@ -110,9 +112,9 @@ def api(request, m, f):
 			if yell:
 				notify.update(yell)
 			if notify:
-				ret.update({'notify':notify})		
+				ret.update({'notify':notify})			
 			return HttpResponse(json.dumps(ret))
-		else:
+		else:			
 			return ret[1]
 	return HttpResponse('api')
 
@@ -131,7 +133,10 @@ def set_nickname(request):
 	
 	if gender != 'male' and gender != 'female':
 		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
-	acc = getAccount(request, account)
+	try:
+		acc = getAccount(request, account)
+	except NotLogin:
+		return info(request)
 	if acc.nickname:
 		return HttpResponse(json.dumps({'msg':'nickname_already_have'}))
 	acc.nickname = nickname
@@ -141,22 +146,36 @@ def set_nickname(request):
 	return HttpResponse(json.dumps(data))
 	
 
+def exit(request):
+	logout(request)
+	return HttpResponse('exist')
+
+
 def test(request):	
-	
+	from gclib.cache import cache	
 	#url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
 	#f = curl.url(url)
 	#print f	
 	#return HttpResponse(f, mimetype="text/plain")	
-	data = {}
-	data['notify'] = {}
-	data['notify']['notify_email'] = {}
-	data['notify']['notify_email']['1'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
-	data['notify']['notify_email']['2'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
-	data['notify']['notify_mail'] = {}
-	data['notify']['notify_mail']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
-	data['notify']['notify_mail']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
-	data['notify']['notify_message'] = {}
-	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
-	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
+#	data = {}
+#	data['notify'] = {}
+#	data['notify']['notify_email'] = {}
+#	data['notify']['notify_email']['1'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
+#	data['notify']['notify_email']['2'] = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "leader": ""}
+#	data['notify']['notify_mail'] = {}
+#	data['notify']['notify_mail']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
+#	data['notify']['notify_mail']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'mail': 'testmail', 'send_time':1381734253}
+#	data['notify']['notify_message'] = {}
+#	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
+#	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 
-	return HttpResponse(json.dumps(data))
+	data = []
+	for i in range(1000000):
+		#rd = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "member": ['pet10052_2', 'pet10052_2', 'pet10052_2', 'pet10052_2', 'pet10052_2']}
+		data.append(i)
+
+	cache.loc_setValue('test_rank', data)
+	dt = cache.loc_getValue('test_rank')
+	#print dt
+	#json.loads(dt)
+	return HttpResponse(dt)

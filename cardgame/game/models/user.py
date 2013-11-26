@@ -124,14 +124,28 @@ class user(gcuser):
 		
 	def getFriendData(self):
 		data = {}
+		inv = self.getInventory()
 		data['roleid'] = self.roleid
 		data['name'] = self.name
-		data['level'] = self.level
-		data['leader'] = self.leader
+		data['level'] = self.level		
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
 		data['luckycat_level'] = self.luckycat['level']
+		teamCardid = []
+		if self.team[0]:
+			teamCardid.append(inv.getCard(self.team[0])['cardid'])
+		if self.team[1]:
+			teamCardid.append(inv.getCard(self.team[1])['cardid'])
+		if self.team[2]:
+			teamCardid.append(inv.getCard(self.team[2])['cardid'])
+		if self.team[3]:
+			teamCardid.append(inv.getCard(self.team[3])['cardid'])
+		if self.team[4]:
+			teamCardid.append(inv.getCard(self.team[4])['cardid'])
+		if self.team[5]:
+			teamCardid.append(inv.getCard(self.team[5])['cardid'])		
+		data['member'] = teamCardid
 		return data
 		
 	def getLoginData(self):

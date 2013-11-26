@@ -9,9 +9,6 @@ from gclib.json import json
 
 
 class object():
-	"""
-	encapsulate data access mothed.
-	"""
 	
 	def __init__(self):
 		self.id = 0
@@ -20,15 +17,15 @@ class object():
 		self.extend_columns = []
 	
 	def install(self, roleid):
-		return DBPersistent.install(self, roleid)
+		return DBPersistent.installObject(self, roleid)
 		
 	@classmethod	
 	def get(cls, roleid):
-		return DBPersistent.get(cls, roleid)
+		return DBPersistent.getObject(cls, roleid)
 		
 		
 	def delete(self):
-		return DBPersistent.delete(self)
+		return DBPersistent.deleteObject(self)
 		
 	def getData(self):
 		return {}	

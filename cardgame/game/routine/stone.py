@@ -263,16 +263,14 @@ class stone:
 		del fromCard['st_slot']
 		dst = []
 		if toSlot:
-			fromCard['st_slot'] = toSlot
-			
+			fromCard['st_slot'] = toSlot			
 			for i, ts in enumerate(fromCard['st_slot']):
 				if ts and gameConf['stone_slot_level'][i] > fromCard['level']:
 					inv.depositStone(ts)
 					dst.append(ts)
 					fromCard['st_slot'][i] = {}
 		
-		for i, ts in enumerate(toCard['st_slot']):
-			
+		for i, ts in enumerate(toCard['st_slot']):			
 			if ts and gameConf['stone_slot_level'][i] > toCard['level']:
 					inv.depositStone(ts)
 					dst.append(ts)

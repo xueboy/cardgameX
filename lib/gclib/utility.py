@@ -7,7 +7,7 @@ import datetime
 import calendar
 import random
 
-from gclib.exception import NotHaveNickname
+from gclib.exception import NotHaveNickname, NotLogin
 
 
 def HttpResponse500():
@@ -17,6 +17,8 @@ def HttpResponse500():
 
 
 def getAccount(request, cls):
+	if not request.session.has_key('account_id'):
+		raise NotLogin		
 	accountid = request.session['account_id']
 	acc = cls.get(accountid)
 	return acc
@@ -39,7 +41,7 @@ def beginRequest(request,cls):
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	if not usr:
-		raise NotHaveNickname
+		raise NotHaveNickname	
 	request.user = usr
 	usr.update()
 	return usr
@@ -56,6 +58,11 @@ def currentTime():
 	
 def dayTime():
 	return int(time.time()) % (60 * 60 * 24)
+
+def logout(request):
+	del request.session['user_id']
+	del request.session['account_id']
+	
 	
 def hit(probs):
 	"""
