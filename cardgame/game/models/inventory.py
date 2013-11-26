@@ -94,7 +94,7 @@ class inventory(object):
 	def delCard(self, id):
 		if self.team.count (id) > 0:
 			return 0
-		for edu_slot in self.user.educate:
+		for edu_slot in self.user.educate['edu_slot']:
 			if edu_slot and edu_slot['cardid'] == id:
 				return 0			
 		self.card = filter(lambda c : c['id'] != id, self.card)		
