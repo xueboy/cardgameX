@@ -87,9 +87,11 @@ class pet:
 			
 		cost = {}	
 		gameConf = config.getConfig('game')
-		if trainlevel == '1':
+		if trainlevel == '0':
 			trpPriceConfig = config.getConfig('trp_price')
 			cost = {'trp':trpPriceConfig[usr.level - 1], 'gold':0, 'gem':0}
+		elif trainlevel == '1':
+			cost = gameConf['training_price1']
 		elif trainlevel == '2':
 			cost = gameConf['training_price2']
 		elif trainlevel == '3':
@@ -110,19 +112,19 @@ class pet:
 		strrev = 0
 		itlrev = 0
 		artrev = 0
-		if trainlevel == '1':
+		if trainlevel == '0':
 			strrev = random.randint(-10, int(card['level']))
 			itlrev = random.randint(-10, int(card['level'] * 1.5 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 1.5 - strrev - itlrev))
-		elif trainlevel == '2':
+		elif trainlevel == '1':
 			strrev = random.randint(-10, int(card['level']))
 			itlrev = random.randint(-10, int(card['level'] * 2 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 2 - strrev - itlrev))
-		elif trainlevel == '3':
+		elif trainlevel == '2':
 			strrev = random.randint(-10, int(card['level']))
 			itlrev = random.randint(-10, int(card['level'] * 2.5 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 2.5 - strrev - itlrev))
-		elif trainlevel == '4':
+		elif trainlevel == '3':
 			strrev = random.randint(-10, int(card['level']))
 			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))

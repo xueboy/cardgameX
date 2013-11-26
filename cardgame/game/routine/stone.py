@@ -139,8 +139,7 @@ class stone:
 			usr.stv[level] = 1
 			usr.stv_gem[level - 1] = 0		
 		usr.stv[level - 1] = 0	
-		usr.stv[0] = 1		
-		print usr.stv
+		usr.stv[0] = 1				
 		usr.gold = usr.gold - goldCost		
 		result.append({'stv':usr.stv[:], 'add_stone':stone})
 		return {}

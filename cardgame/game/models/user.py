@@ -280,7 +280,7 @@ class user(gcuser):
 	
 	def onLogin(self):
 		gameConf = config.getConfig('game')
-		educate.update_exp(self, gameConf)		
+		educate.update_exp(self, gameConf)
 		
 	def onLevelup(self):
 		gameConf = config.getConfig('game')
