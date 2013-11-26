@@ -106,12 +106,12 @@ class user(gcuser):
 		usrData['vip'] = self.vip
 		usrData['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		usrData['avatar_id'] = self.avatar_id
-		if self.train_prd:
-			usrData['train_prd'] = self.train_prd		
+		#if self.train_prd:
+			#usrData['train_prd'] = self.train_prd		
 		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
-		#usrData['trp'] = self.trp
+		usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
 		data = {}
 		data['user'] = usrData
