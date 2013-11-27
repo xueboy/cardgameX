@@ -56,14 +56,14 @@ class pet:
 	def gainExp(card, exp, petConf, petLevelConf, gameConf):
 		level = card['level']
 		id = card['cardid']
-		star = petConf[id]['star']
-		needExp = petLevelConf[str(level + 1)][star - 1] - petLevelConf[str(level)][star - 1]
-		levelLimit = gameConf['pet_level_limit'][star - 1]
+		quality = petConf[id]['quality']
+		needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]
+		levelLimit = gameConf['pet_level_limit'][quality - 1]
 		exp = exp + card['exp']
 		card['exp'] = 0
 		while exp > needExp and levelLimit > level:			
 			exp = exp - needExp
-			needExp = petLevelConf[str(level + 1)][star - 1] - petLevelConf[str(level)][star - 1]
+			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]
 			level = level + 1
 			card['level'] = level
 		card['exp'] = exp	
@@ -73,8 +73,8 @@ class pet:
 	def totalExp(card, petConf, petLevelConf, gameConf):	
 		total = 0
 		petInfo = petConf[card['cardid']]
-		star = petInfo['star']
-		return petLevelConf[str(card['level'])][star - 1] + card['exp'] + gameConf['pet_star_base_exp'][star - 1]
+		quality = petInfo['quality']
+		return petLevelConf[str(card['level'])][quality - 1] + card['exp'] + gameConf['pet_star_base_exp'][quality - 1]
 		
 
 	@staticmethod
@@ -205,19 +205,19 @@ class pet:
 			
 		cardid = card['cardid']			
 			
-		if petConf[cardid]['star'] == 1:
+		if petConf[cardid]['quality'] == 1:
 			param1 = gameConf['pet_star_1_price_param1']
 			param2 = gameConf['pet_star_1_price_param2']
-		elif petConf[cardid]['star'] == 2:
+		elif petConf[cardid]['quality'] == 2:
 			param1 = gameConf['pet_star_2_price_param1']
 			param2 = gameConf['pet_star_2_price_param2']
-		elif petConf['cardid']['star'] == 3:
+		elif petConf['cardid']['quality'] == 3:
 			param1 = gameConf['pet_star_3_price_param1']
 			param2 = gameConf['pet_star_3_price_param2']
-		elif petConf['cardid']['star'] == 4:
+		elif petConf['cardid']['quality'] == 4:
 			param1 = gameConf['pet_star_4_price_param1']
 			param2 = gameConf['pet_star_4_price_param2']
-		elif petConf['cardid']['star'] == 5:
+		elif petConf['cardid']['quality'] == 5:
 			param1 = gameConf['pet_star_5_price_param1']
 			param2 = gameConf['pet_star_5_price_param2']
 		else: 

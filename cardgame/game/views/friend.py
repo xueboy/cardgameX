@@ -12,7 +12,6 @@ def request(request):
 	if friend != None:		
 		usrNw = usr.getNetwork()
 		data = usrNw.addFriendRequest(friend)		
-		print usr.notify
 		return {'friend':data}
 	return {'msg':'friend_not_exist'}
 		

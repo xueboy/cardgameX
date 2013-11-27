@@ -74,7 +74,8 @@ class inventory(object):
 			data['exp'] = 0	
 			data['strength'] = cardconf[cardid]['strength']
 			data['intelligence'] = cardconf[cardid]['intelligence']
-			data['artifice'] = cardconf[cardid]['artifice']			
+			data['artifice'] = cardconf[cardid]['artifice']
+			data['star'] = 1
 			self.card.append(data)
 			usr = self.user
 			al = usr.getAlmanac()

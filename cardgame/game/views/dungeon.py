@@ -61,9 +61,9 @@ def enter(request):
 					usr.stamina = usr.stamina - staminaCost												
 		#			goldCast = 0
 		#			if leader != None:
-		#				start = conf[leader['id']]['star']
+		#				start = conf[leader['id']]['quality']
 		#				level = leader['leader']
-		#				goldCost = reinforce_price[star - 1][0] + reinforce_price[star - 1][1] * level
+		#				goldCost = reinforce_price[quality - 1][0] + reinforce_price[quality - 1][1] * level
 		#				if usr.gold < goldCost:
 		#					return HttpResponse(gcjson.dumps({'msg':'not_enught_gold'}))
 		#				usr.gold = usr.gold - goldCost

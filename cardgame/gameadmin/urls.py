@@ -9,6 +9,7 @@ import gameadmin.views.main
 urlpatterns = patterns('',
     #url(r'^$', views.index, name='index')    
     url(r'^login/$', gameadmin.views.admin.login),
+    url(r'^tool/$', gameadmin.views.admin.tool),
     url(r'^dungeon/$', gameadmin.views.main.dungeon),
     url(r'^index/$', gameadmin.views.main.index),
     url(r'^level/$', gameadmin.views.main.level),

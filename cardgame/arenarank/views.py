@@ -6,3 +6,6 @@ from gclib.cache import cache
 
 def show_ladder(request):
 	return HttpResponse('show_ladder')
+	
+def stand_ladder(request):
+	pass

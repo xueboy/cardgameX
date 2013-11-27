@@ -152,7 +152,7 @@ class network(object):
 				return True
 		return False
 		
-	def emailAnswer(self, id, option):		
+	def emailAnswer(self, id, option):
 		if not self.email.has_key(id):
 			return {'msg':'email_not_exist'}
 		email = self.email[id]

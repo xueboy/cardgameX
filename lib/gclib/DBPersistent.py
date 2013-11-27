@@ -28,7 +28,6 @@ class DBPersistent:
 	def getObject(tp, roleid):
 		conn = DBConnection.getConnection()		
 		res = conn.query('SELECT * FROM ' + tp.__name__ + ' WHERE roleid = %s', [roleid])
-		print res, roleid
 		if len(res) == 1:
 			obj = tp()
 			obj.id = res[0][0]

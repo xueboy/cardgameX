@@ -73,7 +73,6 @@ class skill:
 		skillInfo = skillConf[sk['skillid']]
 		exp = sk['exp'] + exp
 		sk['exp'] = 0
-		print exp
 		while skillInfo['maxLevel'] >= sk['level'] and skillLevelConf[sk['level']] < exp:
 			exp = exp - skillLevelConf[sk['level']]
 			sk['level'] = sk['level'] + 1

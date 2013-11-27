@@ -60,7 +60,7 @@ class excel_import:
 				monsterConf['probability'] = prob
 				monsterConf['skillId'] = skillId
 				conf[monsterId] = monsterConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('monster_import')
 				
 	@staticmethod
@@ -100,7 +100,7 @@ class excel_import:
 				garchaCataConf['card'] = cardConf
 				garchaCataConf['totalProb'] = total_prob
 				conf.append(garchaCataConf)
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('garcha_import')
 	
 	@staticmethod
@@ -120,7 +120,7 @@ class excel_import:
 				prompt = row[1]
 				conf[promptid] = prompt
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('prompt_import')
 	
 	@staticmethod
@@ -153,7 +153,7 @@ class excel_import:
 					
 				conf[level - 1] = levelConf
 							
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('prompt_import')
 		
 	@staticmethod
@@ -213,7 +213,7 @@ class excel_import:
 				
 				conf[unicode(skillid)] = skillConf
 			
-			return HttpResponse(json.dumps(conf))			
+			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('skill_import')
 		
 	@staticmethod
@@ -234,7 +234,7 @@ class excel_import:
 				while len(conf) < level:
 					conf.append({})				
 				conf[level - 1] = exp			
-			return HttpResponse(json.dumps(conf, sort_keys=True, indent=2), ' <meta http-equiv="Content-Type" content="application/json; charset=utf-8" />')
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('skill_level_import')	
 				
 	@staticmethod
@@ -261,7 +261,7 @@ class excel_import:
 				controllevel = int(row[14])
 				immunity = int(row[15])
 				immunitylevel = int(row[16])
-				star = int(row[17])
+				quality = int(row[17])
 				strength = int(row[18])
 				intelligence = int(row[19])
 				artifice = int(row[20])
@@ -324,7 +324,7 @@ class excel_import:
 				petConf['controllevel'] = controllevel
 				petConf['immunity'] = immunity			
 				petConf['immunitylevel'] = immunitylevel
-				petConf['star'] = star
+				petConf['quality'] = quality
 				petConf['strength'] = strength
 				petConf['intelligence'] = intelligence
 				petConf['artifice'] = artifice
@@ -355,7 +355,7 @@ class excel_import:
 				petConf['luck'] = luck
 				petConf['srgrowth'] = srgrowth
 				conf[str(petid)] = petConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('pet_import')
 								
 	@staticmethod		
@@ -379,7 +379,7 @@ class excel_import:
 				star5Exp = int(row[5])
 				levelConf = [star1Exp, star2Exp, star3Exp, star4Exp, star5Exp]			
 				conf[str(level)] = levelConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('pet_level_import')
 					
 	@staticmethod
@@ -465,7 +465,7 @@ class excel_import:
 				fieldConf['wave'] = excel_import.read_waves(row, dropConf)
 				dunConf['field'].append(fieldConf)
 			Conf.append(dunConf)			
-			return HttpResponse(json.dumps(Conf))
+			return HttpResponse(json.dumps(Conf, sort_keys=True))
 		return HttpResponse('dungeon_import')
 		
 	@staticmethod
@@ -662,7 +662,7 @@ class excel_import:
 				equipmentConf['desc'] = desc			
 				
 				conf[eqid] = equipmentConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('equipment_import')		
 		
 	@staticmethod
@@ -692,7 +692,7 @@ class excel_import:
 					priceConf.append({})			
 				priceConf[level - 1] = {'price':price}
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('strength_price_import')
 		
 	@staticmethod
@@ -723,7 +723,7 @@ class excel_import:
 				
 				conf[level - 1] = levelConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('luckycat_level_import')
 				
 	@staticmethod
@@ -755,7 +755,7 @@ class excel_import:
 				blessConf['price'] = price
 				conf[blessid] = blessConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('luckycat_bless_import')
 		
 	@staticmethod
@@ -786,7 +786,7 @@ class excel_import:
 				luckConf['value'] = value
 				conf[luckid] = luckConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('luck_import')
 				
 	@staticmethod
@@ -809,7 +809,7 @@ class excel_import:
 				#lanConf['strid'] = strid
 				lanConf['chinese'] = chinese
 				conf[strid] = lanConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('language_import')
 	
 	@staticmethod
@@ -846,7 +846,7 @@ class excel_import:
 				
 				conf[stoneid] = stoneConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_import')
 		
 	@staticmethod
@@ -904,7 +904,7 @@ class excel_import:
 			excel_import.read_stone_level(stoneCol, level3Col, conf, 3)
 			excel_import.read_stone_level(stoneCol, level4Col, conf, 4)
 			excel_import.read_stone_level(stoneCol, level5Col, conf, 5)
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_probability_import')
 	
 	@staticmethod
@@ -943,7 +943,7 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				conf[str(rownum - 1)] = row[1:5]
 					
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_level_import')
 		
 	@staticmethod
@@ -968,7 +968,7 @@ class excel_import:
 					
 				conf[level -1] = price
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('trp_price_import')
 		
 	@staticmethod	
@@ -993,7 +993,7 @@ class excel_import:
 				
 				conf[level - 1] = {'card':card_trp, 'skill':skill_trp}
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('trp_import')
 	
 	@staticmethod
@@ -1023,7 +1023,7 @@ class excel_import:
 				educateConf['expptm'] = expptm
 					
 				conf[level - 1] = educateConf
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('educate_import')
 		
 	@staticmethod
@@ -1062,7 +1062,7 @@ class excel_import:
 				
 				conf[grade - 1] = gradeConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('educate_grade_import')
 		
 	@staticmethod
@@ -1126,6 +1126,6 @@ class excel_import:
 				
 				conf[almanacCombinationid] = almanacConf
 				
-			return HttpResponse(json.dumps(conf))
+			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('almanac_import')			
 				
