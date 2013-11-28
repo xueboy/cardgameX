@@ -38,6 +38,8 @@ def beginRequest(request,cls):
 	if not request.session.has_key('account_id'):
 		raise NotLogin		
 	
+	if not request.session.has_key('user_id'):
+		raise NotHaveNickname
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	if not usr:

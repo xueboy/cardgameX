@@ -10,6 +10,7 @@ import copy
 from game.routine.equipment import equipment
 from game.routine.stone import stone
 from game.routine.skill import skill
+from game.routine.pet import pet
 
 class inventory(object):
 	
@@ -65,22 +66,14 @@ class inventory(object):
 		self.skill = data['skill']		
 		
 	def addCard(self, cardid, level = 1):
-		cardconf = config.getConfig('pet')				
-		if cardconf.has_key(cardid):
-			data = {}
-			data['cardid'] = cardid
-			data['id'] = self.generateCardName()
-			data['level'] = level
-			data['exp'] = 0	
-			data['strength'] = cardconf[cardid]['strength']
-			data['intelligence'] = cardconf[cardid]['intelligence']
-			data['artifice'] = cardconf[cardid]['artifice']
-			data['star'] = 1
-			self.card.append(data)
+		cardConf = config.getConfig('pet')				
+		if cardConf.has_key(cardid):
+			card = pet.make_pet(self, cardid, level, cardConf)
+			self.card.append(card)
 			usr = self.user
 			al = usr.getAlmanac()
 			al.insert(cardid)
-			return data
+			return card
 		return None
 	
 	def addAllCard(self, cardid):

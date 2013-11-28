@@ -90,6 +90,9 @@ def educate_grade(request):
 	
 def almanac_combination(request):
 	return generalConfigRequestProcess(request, 'almanac_combination')
+	
+def reborn(request):
+	return generalConfigRequestProcess(request, 'reborn')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -173,4 +176,5 @@ def educate_grade_import(request):
 def almanac_combination_import(request):
 	return excel_import.almanac_combination_import(request)
 
-	
+def reborn_import(request):
+	return excel_import.reborn_import(request)
