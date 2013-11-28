@@ -12,7 +12,6 @@ def request(request):
 	if friend != None:		
 		usrNw = usr.getNetwork()
 		data = usrNw.addFriendRequest(friend)		
-		print usr.notify
 		return {'friend':data}
 	return {'msg':'friend_not_exist'}
 		
@@ -59,7 +58,7 @@ def message(request):
 			return {'msg':'user_is_in_ban'}
 		usrNw.sendMessage(toUser, msg)
 		return {}		
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 		
 def message_delete(request):
 	messageid = request.GET['message_id']
@@ -85,7 +84,7 @@ def mail(request):
 		usrNw = usr.getNetwork()
 		usrNw.sendMail(toUser, mail)
 		return {}
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 
 def email_read(request):
 	emailid = request.GET['email_id']
@@ -112,7 +111,7 @@ def ban(request):
 		usrNw = usr.getNetwork()
 		usrNw.ban(banid, banUser.name)
 		return {}		
-	return {'msg':'friend_not_found'}
+	return {'msg':'friend_not_exist'}
 	
 def yell(request):	
 	message = request.GET['message']

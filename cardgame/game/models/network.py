@@ -32,19 +32,16 @@ class network(object):
 		data['sequenceid'] = self.sequenceid
 		return data		
 	
-	def getClientData(self):
+	def getClientData(self):	
 		
-		
-		avatarmap = {}	
-		
+		avatarmap = {}		
 		for key in self.message:
 			otherid = self.message[key]['roleid']
 			if not avatarmap.has_key(otherid):
 				usr = self.user.__class__.get(otherid)
 				if usr:
 					avatarmap[otherid] = usr.avatar_id
-			self.message[key]['avatar_id'] = avatarmap[otherid]			
-				
+			self.message[key]['avatar_id'] = avatarmap[otherid]				
 		data = {}
 		data['friend'] = self.friend	
 		data['message'] = self.message
@@ -156,12 +153,19 @@ class network(object):
 		return False
 		
 	def emailAnswer(self, id, option):
-		
 		if not self.email.has_key(id):
 			return {'msg':'email_not_exist'}
 		email = self.email[id]
 		if email['type'] == 'firend_request':
 			return self.emailAnswerFriendRequest(email, option)
+			
+	def updateFriendData(self):
+		for friendid in self.friend:
+			fNw = network.get(friendid)
+			strRoleid = str(self.roleid)
+			if fNw.friend.has_key(strRoleid):
+				fNw.friend[strRoleid] = self.user.getFriendData()
+				fNw.save()
 			
 		
 	def emailAnswerFriendRequest(self, mail, option):
@@ -198,7 +202,7 @@ class network(object):
 			del self.email[emailid]
 			self.save()
 			return {'email_delete':emailid}
-		return {'email_not_found'}
+		return {'msg':'email_not_exist'}
 
 	def yell(self, name, msg):
 		ms = massyell.get(0)		

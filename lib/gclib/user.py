@@ -13,6 +13,10 @@ class user(object):
 		self.id = 0
 		return
 		
+	def onInit(self):
+		pass
+		
+		
 	def update(self):
 		return
 		
@@ -20,4 +24,11 @@ class user(object):
 		conn = DBConnection.getConnection()		
 		self.roleid = self.id
 		conn.excute("UPDATE user SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
-		return None
+		
+	
+		
+	def onLogin(self):
+		pass
+		
+	def getClientData(self):
+		pass

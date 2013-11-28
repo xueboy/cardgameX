@@ -14,7 +14,6 @@ garcha_prob_table = {
 	'garcha_10000':[0, 6500, 4000, 1500, 0]
 }
 
-
 class garcha:
 	
 	@staticmethod
@@ -30,8 +29,7 @@ class garcha:
 			garchaInfo = usr.garcha['garcha100']
 		elif garchaAmount == 10000:
 			garchaInfo = usr.garcha['garcha10000']
-		
-		
+				
 		isFirstTime = (garchaInfo['last_time'] == 0)
 		isFree = False
 		if garchaAmount == 10:
@@ -68,8 +66,7 @@ class garcha:
 		if usr.gold < garchaCostGold:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < garchaCostGem:
-			return {'msg':'gem_not_enough'}
-			
+			return {'msg':'gem_not_enough'}			
 		
 		cataConf = None
 		if (not isFirstTime) or garchaAmount == 10:
@@ -88,17 +85,17 @@ class garcha:
 			if r >  card['prob']:
 				r = r - card['prob']
 			else:
-				garchaCard = inv.addCard(card['cardId'], card['level'])				
-				break;			
+				garchaCard = inv.addCard(card['cardId'], card['level'])
+				break;
 		
 		if not garchaCard:
-			return {'msg': 'card_invalid'}
+			return {'msg': 'card_not_exist'}
 		
 		usr.gold = usr.gold - garchaCostGold
 		usr.gem = usr.gem - garchaCostGem
 		usr.save()
 		inv.save()
-		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem }		
+		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem }
 	
 	@staticmethod	
 	def garcha_cata(prob):
@@ -107,11 +104,9 @@ class garcha:
 		 	if prob[i] > r:
 		 		return i
 		 	else: 
-		 		r = r - prob[i]
-		 		
-		 return -1
+		 		r = r - prob[i]		 		
+		 return -1	
 	
-	
-		
-			
-		
+	@staticmethod
+	def make():
+		return {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}

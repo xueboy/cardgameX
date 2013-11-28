@@ -5,10 +5,14 @@ from gclib.user import user as gcuser
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
+from game.models.almanac import almanac
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
 from game.routine.luckycat import luckycat
+from game.routine.garcha import garcha
+from game.routine.educate import educate
+from game.routine.stone import stone
 
 
 class user(gcuser):
@@ -31,7 +35,8 @@ class user(gcuser):
 		self.dun = None
 		self.inv = None
 		self.network = None
-		self.garcha = {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
+		self.almanac = None
+		self.garcha = garcha.make()
 		self.notify = {}
 		self.gender = 'male'
 		self.equipment_strength_cooldown = 0
@@ -42,6 +47,10 @@ class user(gcuser):
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.luckycat = {}
+		self.educate = educate.make()
+		self.trp = 0
+		self.stv = stone.make_stv()
+		self.stv_gem = stone.make_stv()
 		
 	
 	def init(self, acc):
@@ -53,7 +62,8 @@ class user(gcuser):
 		self.stamina = 100				
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
-		self.last_card_no = 0		
+		self.last_card_no = 0
+
 	
 	def getData(self):	
 		data = {}
@@ -78,6 +88,10 @@ class user(gcuser):
 		data['fatigue_last_time'] = self.fatigue_last_time
 		data['yell_hear_id'] = self.yell_hear_id
 		data['luckycat'] = self.luckycat
+		data['educate'] = self.educate
+		data['trp'] = self.trp
+		data['stv'] = self.stv
+		data['stv_gem'] = self.stv_gem
 		return data
 		
 	def getClientData(self):
@@ -92,27 +106,60 @@ class user(gcuser):
 		usrData['vip'] = self.vip
 		usrData['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		usrData['avatar_id'] = self.avatar_id
-		if self.train_prd:
-			usrData['train_prd'] = self.train_prd		
+		#if self.train_prd:
+			#usrData['train_prd'] = self.train_prd		
 		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
+		usrData['trp'] = self.trp
+		usrData['stv'] = self.stv
 		data = {}
 		data['user'] = usrData
+		gameConf = config.getConfig('game')
 		if self.luckycat:
-			data['luckycat'] = self.luckycat
+			data['luckycat'] = luckycat.getClientData(self, gameConf)
+		data['educate'] = educate.getClientData(self, gameConf)
 		return data
 		
 		
 	def getFriendData(self):
 		data = {}
+		inv = self.getInventory()
 		data['roleid'] = self.roleid
 		data['name'] = self.name
-		data['level'] = self.level
-		data['leader'] = self.leader
+		data['level'] = self.level		
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
+		data['luckycat_level'] = self.luckycat['level']
+		teamCardid = []
+		if self.team[0]:
+			teamCardid.append(inv.getCard(self.team[0])['cardid'])
+		if self.team[1]:
+			teamCardid.append(inv.getCard(self.team[1])['cardid'])
+		if self.team[2]:
+			teamCardid.append(inv.getCard(self.team[2])['cardid'])
+		if self.team[3]:
+			teamCardid.append(inv.getCard(self.team[3])['cardid'])
+		if self.team[4]:
+			teamCardid.append(inv.getCard(self.team[4])['cardid'])
+		if self.team[5]:
+			teamCardid.append(inv.getCard(self.team[5])['cardid'])		
+		data['member'] = teamCardid
+		return data
+		
+	def getLoginData(self):
+		data = {}
+		self.updateStamina()
+		data.update(self.getClientData())
+		dun = self.getDungeon()
+		data['dungeon'] = dun.getClientData()
+		inv = self.getInventory()
+		data.update(inv.getClientData())		
+		nw = self.getNetwork()
+		data.update(nw.getClientData())
+		al = self.getAlmanac()
+		data.update(al.getClientData())
 		return data
 		
 	def load(self, roleid, data):
@@ -136,6 +183,10 @@ class user(gcuser):
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
 		self.luckycat = data['luckycat']
+		self.trp = data['trp']
+		self.stv = data['stv']
+		self.stv_gem = data['stv_gem']
+		self.educate = data['educate']
 			 
 		
 	def getCardNo(self):
@@ -182,6 +233,19 @@ class user(gcuser):
 		self.network = nt
 		return self.network
 	
+	@retrieval_object
+	def getAlmanac(self):
+		if self.almanac != None:
+			return self.almanac
+		al = almanac.get(self.id)
+		if al == None:
+			al = almanac()
+			al.init()
+			al.install(self.id)
+		al.user = self
+		self.almanac = al
+		return self.almanac
+	
 	def updateStamina(self):
 		"""
 		ckeck and do if stamina recover.
@@ -202,14 +266,20 @@ class user(gcuser):
 		"""
 		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
-		while levelConf.has_key(str(self.level)) and self.exp > levelConf[str(self.level)]['levelExp']:
+		isLevelup = False
+		while self.exp > levelConf[self.level - 1]['levelExp']:
+			self.exp = self.exp - levelConf[self.level - 1]['levelExp']			
 			self.level = self.level + 1
-			self.exp = self.exp - levelConf[str(self.level - 1)]['levelExp']			
+			isLevelup = True
+		if isLevelup:
 			self.onLevelup()
 			
 	def update(self):
 		return
 		
+	def onInit(self):
+		self.onLevelup()		
+
 	def costStamina(self, point):
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:
@@ -221,20 +291,20 @@ class user(gcuser):
 			friend = user.get(key)
 			friend.addFreind(self)
 			friend.save()
-
 	
 	def onLogin(self):
-		pass
-		
+		gameConf = config.getConfig('game')
+		educate.update_exp(self, gameConf)
 		
 	def onLevelup(self):
 		gameConf = config.getConfig('game')
 		if not self.luckycat:
 			if gameConf['luckycat_open_level'] <= self.level:
 				self.luckycat = luckycat.make()
-				self.notify['luckycat_notify'] = self.luckycat
-		
-		
+				self.notify['luckycat_notify'] = self.luckycat				
+		nw = self.getNetwork()
+		nw.updateFriendData()
+		educate.levelup_update(self, gameConf)		
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')
@@ -247,8 +317,7 @@ class user(gcuser):
 		elapse = now - self.equipment_strength_last_time
 		self.equipment_strength_cooldown = self.equipment_strength_cooldown - elapse
 		if self.equipment_strength_cooldown < 0:
-			self.equipment_strength_cooldown = 0
-			
+			self.equipment_strength_cooldown = 0			
 
 	def yell_listen(self):		
 		ms = massyell.get(0)

@@ -4,6 +4,7 @@
 from django.conf.urls import patterns, include, url
 import game.urls
 import gameadmin.urls
+import arenarank.urls
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -19,6 +20,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+    url(r'^arena/', include('arenarank.urls')),
     url(r'^game/', include('game.urls')),
     url(r'^admin/', include('gameadmin.urls')),
+    
 )

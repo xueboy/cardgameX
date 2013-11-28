@@ -12,7 +12,7 @@ class equipment:
 		
 		equipment = inv.getEquipment(id)
 		if not equipment:
-			return {'msg':'equipment_not_found'}
+			return {'msg':'equipment_not_exist'}
 				
 		usr.updateFatigue()
 		usr.updateEquipmentStrengthCooldown()
@@ -112,7 +112,7 @@ class equipment:
 			return {'msg':'card_not_exist'}
 		
 		if not card.has_key('slot'):
-			card['slot'] = [{}, {}, {}, {}, {}]
+			card['slot'] = equipment.make_slot()
 		
 		oldEquipment = card['slot'][equipmentInfo['position']]
 		
@@ -123,57 +123,55 @@ class equipment:
 		inv.save()
 		
 		return{'solts':inv.getSlots(), 'equipment_delete':equipmentid}
+			
+	@staticmethod
+	def make_slot():
+		return [{}, {}, {}, {}, {}]
+			
+	@staticmethod
+	def sell(usr, equipmentid):
+		inv = usr.getInventory()
+		
+		equipment = inv.getEquipment(equipmentid)
+		
+		if not equipment:
+			return {'msg':'equipment_not_exist'}
+		
+		equipmentConf = config.getConfig('equipment')
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		
+		sellGold = equipmentInfo['price']
+		
+		usr.gold = usr.gold + sellGold
+		
+		inv.delEquipment(equipmentid)
+		inv.save()
+		usr.save()
+		
+		return {'gold':usr.gold, 'delete_equipment':equipmentid}
 		
 		
 	@staticmethod
-	def unequip(usr, id):
-		inv = usr.getInventory()
-		
-		slotEquipment = None
-		
-		for i in range(len(inv.slot)):
-			pass
-		
-		
-		if not slotEquipment:
-			return {'msg': 'equipment_not_exist'}
-		
-		inv.depositEquipment(slotEquipment)
-		
-		
-	@staticmethod
-	def takeoff(usr, cardid):
-		
-		if not cardid:
-			return
-		
-		inv = usr.getInventory()
-		
-		card = inv.getCard(cardid)
-		
+	def takeoff(inv, card):
+		deq = []
 		if card and card.has_key('slot'):
 			for equip in card['slot']:
 				if equip:
+					deq.append(equip)
 					inv.depositEquipment(equip)
 		del card['slot']
+		return deq
 
 	@staticmethod
-	def give(usr, fromCardid, toCard):
-		inv = usr.getInventory()
-		
-		fromCard = inv.getCard(fromCardid)
-		
-		if not fromCard:
-			toCard['slot'] = [{}, {}, {}, {}, {}]
-			return
+	def exchage(inv, fromCard, toCard, gameConf):
 		
 		toSlot = None
 		if toCard.has_key('slot'):
-			toSlot = toCard['slot']
-			
+			toSlot = toCard['slot']			
 		toCard['slot'] = fromCard['slot']
 		del fromCard['slot']
 		if toSlot:
 			fromCard['slot'] = toSlot
+		return []
 		
 			

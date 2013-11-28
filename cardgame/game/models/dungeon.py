@@ -31,8 +31,6 @@ class dungeon(object):
 		self.last_dungeon['battleid'] = conf[0]['battleId']
 		self.last_dungeon['fieldid'] = conf[0]['field'][0]['fieldId']
 	
-
-	
 	def getData(self):
 		data = {}
 		data['normal_recored'] = self.normal_recored
@@ -57,8 +55,6 @@ class dungeon(object):
 		else:
 			self.curren_field_waves = []
 		
-			
-		
 	def getClientData(self):
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
@@ -72,8 +68,6 @@ class dungeon(object):
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
 			self.reinforced_list = []
 			last_reinforce_time = currentTime()
-		
-	
 		
 	def canEnterNormal(self, conf, battleid, fieldid):
 		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
@@ -106,7 +100,6 @@ class dungeon(object):
 			vol.load(record[0], gcjson.loads(record[2]))
 			data.append(vol.getFriendData())
 		return data
-				
 	
 	def getReinforcement(self):
 		usr = self.user
@@ -127,7 +120,6 @@ class dungeon(object):
 		
 	def setCurrentField(self, battleid, fieldid):
 		self.curren_field = {'battleid':battleid, 'fieldid':fieldid}	
-	
 		
 	def setReinforce(self, ls):
 		self.reinforeces = ls
@@ -139,7 +131,6 @@ class dungeon(object):
 			if reinforce['roleid'] == int(reinforceid):
 				return True
 		return False
-			
 		
 	def arrangeWaves(self, field):
 		waves = []		
@@ -226,6 +217,3 @@ class dungeon(object):
 							if len(dunConf) > (i + 1):
 								self.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
 								self.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
-						
-						
-					

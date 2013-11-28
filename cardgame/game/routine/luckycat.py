@@ -14,7 +14,7 @@ class luckycat:
 		data['critical_point_list'] = []
 		data['beckon_count'] = 0
 		data['beckon_gem_count'] = 0
-		data['beckon_last_update_time'] = 0
+		data['beckon_last_update_time'] = currentTime()
 		data['beckon_cooldown'] = 0
 		data['critical_point_list'] = []
 		data['feed_self_count'] = 0
@@ -46,14 +46,14 @@ class luckycat:
 		if useGem:
 			costGem = gameConf['luckycat_beckon_gem_base'] + gameConf['luckycat_beckon_gem_delta'] * usr.luckycat['beckon_gem_count']
 			if usr.gem < costGem:
-				return {'msg':'gem_not_enough'}
-				
-		
+				return {'msg':'gem_not_enough'}		
 		
 		beckonGold = luckycatLevelConf[usr.luckycat['level'] - 1]['luckyGold']		
-		beckonGold = beckonGold * luckycat.currentLuckycatFortune()		
+		beckonGold = beckonGold * luckycat.currentLuckycatFortune()
+		beckonCritical = False
 		if luckycat.isCritical(usr):
 			beckonGold = beckonGold * 2		
+			beckonCritical = True
 		usr.gold = usr.gold + beckonGold
 		usr.gem = usr.gem - costGem
 		if not useGem:
@@ -62,13 +62,58 @@ class luckycat:
 			if usr.luckycat['fatigue'] > gameConf['luckycat_fatigue_max']:
 				usr.luckycat['fatigue'] = gameConfig['luckycat_fatigue_max']
 			usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] + (gameConf['luckycat_cooldown_base'] * (1 + usr.luckycat['fatigue'] / 2))
+			usr.luckycat['beckon_last_update_time'] = currentTime()
 		rcd = {}
 		rcd['type'] = 'beckon'
 		rcd['create_time'] = currentTime()
 		rcd['income'] = {'gold':beckonGold, 'gem':-costGem}
 		usr.luckycat['record'].append(rcd)
 		usr.save()
-		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown']}	
+		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown'], 'beckon_critical':beckonCritical}	
+	
+	@staticmethod
+	def beckon_reset(usr):
+		if not usr.luckycat:
+			return {'msg':'luckycat_not_available'}
+		
+		gameConf = config.getConfig('game')
+		costGem = gameConf['luckycat_beckon_reset_price']['gem']
+		costGold = gameConf['luckycat_beckon_reset_price']['gold']
+		
+		if usr.gem < costGem:
+			return {'msg':'gem_not_enough'}
+		if usr.gold < costGold:
+			return {'msg':'gold_not_enough'}
+				
+		usr.gem = usr.gem - costGem
+		usr.gold = usr.gold - costGold
+		
+		usr.luckycat['beckon_cooldown'] = 0
+		usr.luckycat['beckon_last_update_time'] = currentTime()
+		
+		usr.save()
+		return {'gold':usr.gold, 'gem':usr.gem, 'luckycat_beckon_cooldown': luckycat.beckon_cooldown(usr)}	
+			
+	@staticmethod
+	def beckon_cooldown(usr):
+		now = currentTime()
+		if usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] > now:			
+			return usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] - currentTime()		
+		return 0
+		
+	@staticmethod
+	def feed_self_cooldown(usr, gameConf):
+		now = currentTime()
+		if usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] > now:
+			return  usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] - currentTime()
+		return 0
+		
+	@staticmethod
+	def feed_other_cooldown(usr, gameConf):		
+		now = currentTime()
+		if usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] > now:
+			return usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] - now
+		return 0
 	
 	@staticmethod
 	def beckonCooldownCleanup(usr):
@@ -145,13 +190,18 @@ class luckycat:
 	
 		awardGold = 0
 		awardGem = 0	
+		
+		isLevelup = False
 			
 		while target.luckycat['level'] < gameConf['luckycat_max_level'] and luckycatLevelConf[target.luckycat['level'] - 1]['exp'] <= target.luckycat['exp']:
 			target.luckycat['exp'] = target.luckycat['exp'] - luckycatLevelConf[target.luckycat['level'] - 1]['level']
 			target.luckycat['level'] = target.luckycat['level'] + 1
-			gold, gem = luckycat.onLeveup(usr)
+			gold, gem = luckycat.onEveryLeveup(usr)
 			awardGold = awardGold + gold
 			awardGem = awardGem + gem
+			isLevelup = True
+		if isLevelup:
+			luckycat.onLeveup()
 			
 
 		if luckycat.isCritical(usr):
@@ -175,8 +225,7 @@ class luckycat:
 			rcd['target'] = target.roleid
 			rcd['create_time'] = now
 			usr.luckycat['record'].append(rcd)			
-			target.luckycat['record'].append(rcd)
-			
+			target.luckycat['record'].append(rcd)			
 	
 		usr.save()
 		if not feedSelf:
@@ -189,7 +238,7 @@ class luckycat:
 		if awardGem:
 			data['gem'] = usr.gem
 		if spreadBlessid:
-			data['spread_bless'] = spreadBlessid
+			data['spread_bless'] = spreadBlessid	
 		
 		return data
 			
@@ -235,8 +284,7 @@ class luckycat:
 			usr.luckycat['bless'][blessid] = {}
 			usr.luckycat['bless'][blessid]['blessid'] = blessid			
 		usr.luckycat['bless'][blessid]['spread'] = True
-		return {'luckycat_roll_bless':blessid, 'luckycat_roll_bless_spread':True}
-		
+		return {'luckycat_roll_bless':blessid, 'luckycat_roll_bless_spread':True}		
 	
 	@staticmethod	
 	def updateBless(usr):
@@ -250,12 +298,25 @@ class luckycat:
 		return is_same_day(usr.luckycat['bless_cycle_begin_time'], currentTime()) or (usr.luckycat['bless_cycle_begin_time'] == 0)
 					
 	@staticmethod
-	def getClientData(usr):
+	def getClientData(usr, gameConf):		
 		data = {}
 		data['level'] = usr.luckycat['level']
 		data['exp'] = usr.luckycat['exp']
+		data['critical_point_list'] = usr.luckycat['critical_point_list']
+		data['beckon_count'] = usr.luckycat['beckon_count']
+		data['beckon_gem_count'] = usr.luckycat['beckon_gem_count']		
+		data['beckon_cooldown'] = luckycat.beckon_cooldown(usr)
+		data['critical_point_list'] = usr.luckycat['critical_point_list']
+		data['feed_self_count'] = usr.luckycat['feed_self_count']
+		data['feed_self_cooldown'] = luckycat.feed_self_cooldown(usr, gameConf)
+		data['feed_other_count'] = usr.luckycat['feed_other_count']
+		data['feed_other_cooldown'] = luckycat.feed_other_cooldown(usr, gameConf)
+		data['bless_roll_last_time'] = usr.luckycat['bless_roll_last_time']
+		data['bless_cycle_begin_time'] = usr.luckycat['bless_cycle_begin_time']
+		data['bless'] = usr.luckycat['bless']
+		data['record'] = usr.luckycat['record']		
 		return data
-		
+				
 	@staticmethod
 	def isCritical(usr):
 		criticalPoint = sum(usr.luckycat['critical_point_list'])
@@ -271,10 +332,8 @@ class luckycat:
 			usr.luckycat['beckon_cooldown'] = 0
 			usr.luckycat['beckon_last_update_time'] = now
 			return
-			
-	
-		elapse = now - usr.luckycat['beckon_last_update_time']
-		print usr.luckycat['beckon_cooldown']
+		
+		elapse = now - usr.luckycat['beckon_last_update_time']		
 		usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] - elapse
 		if usr.luckycat['beckon_cooldown'] < 0:
 			usr.luckycat['beckon_cooldown'] = 0
@@ -292,14 +351,18 @@ class luckycat:
 				
 	@staticmethod
 	def onLeveup(usr):
+		nw = usr.getNetwork()
+		nw.updateFriendData()		
+		
+	@staticmethod
+	def onEveryLeveup(usr):
 		gameConf = config.getConfig('game')
 		luckycatLevelConf = config.getConfig('luckycat_level')
 		if gameConf['luckycat_level_critical_itme'].count(usr.luckycat['level']):
 			usr.luckycat['critical_point_list'].append(hit(gameConf['luckycat_critical_point_probability']))		
 		awardGold = luckycatLevelConf[usr.luckycat['level']]['levelupGold']		
 		awardGem = 0
-		return awardGold, awardGem
-			
+		return awardGold, awardGem	
 			
 	@staticmethod
 	def freshCritical(usr, itemIndex):
@@ -314,14 +377,12 @@ class luckycat:
 				
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost		
-		usr.luckycat['critical_point_list'][itemIndex] = hit(gameConf['luckycat_critical_point_probability'])
-		
+		usr.luckycat['critical_point_list'][itemIndex] = hit(gameConf['luckycat_critical_point_probability'])		
 			
 	@staticmethod
 	def beckonMaxCount(usr):
 		gameConf = config.getConfig('game')
-		return gameConf['luckycat_beckon_count_base']
-		
+		return gameConf['luckycat_beckon_count_base']		
 		
 	@staticmethod		
 	def currentLuckycatFortune():

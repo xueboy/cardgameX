@@ -7,28 +7,48 @@ import datetime
 import calendar
 import random
 
+from gclib.exception import NotHaveNickname, NotLogin
+
 
 def HttpResponse500():
 	response = HttpResponse()
 	response.status_code = 500
 	return resonse
 
+
+def getAccount(request, cls):
+	if not request.session.has_key('account_id'):
+		raise NotLogin		
+	accountid = request.session['account_id']
+	acc = cls.get(accountid)
+	return acc
+	
+
+def onAccountLogin(request, acc):
+	request.session['account_id'] = acc.id
+	acc.onLogin()
+	return acc
+
 def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
 	usr.onLogin()
 
-def beginRequest(request,cls):	
+def beginRequest(request,cls):
+	
+	if not request.session.has_key('account_id'):
+		raise NotLogin		
+	
 	userid = request.session['user_id']
 	usr = cls.get(userid)
 	if not usr:
-		raise KeyError
+		raise NotHaveNickname	
 	request.user = usr
 	usr.update()
 	return usr
 
 def endRequest(request):
 	user = request.user
-	notify = user.notify		
+	notify = user.notify
 	user.notify = {}
 	user.save()
 	return notify
@@ -38,6 +58,11 @@ def currentTime():
 	
 def dayTime():
 	return int(time.time()) % (60 * 60 * 24)
+
+def logout(request):
+	del request.session['user_id']
+	del request.session['account_id']
+	
 	
 def hit(probs):
 	"""
@@ -59,12 +84,12 @@ def drop(weight):
 	"""
 	give a weight and test if drop
 	"""
-	seed = random.randint(0, 1000)
+	seed = randint()
 	return seed < weight
 	
 	
 def randint():
-	return random.randint(0, 1000)
+	return random.randint(0, 10000)
 	
 	
 def retrieval_object(func):
@@ -94,3 +119,4 @@ def day_diff(t1, t2):
 	d1 = datetime.datetime(t1)
 	d2 = datetime.datetime(t2)
 	return (d1 - d2).days
+

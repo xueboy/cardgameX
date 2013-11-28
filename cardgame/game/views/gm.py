@@ -3,6 +3,7 @@
 
 from gclib.json import json
 from game.utility.config import config
+from game.routine.pet import pet
 
 def add_card(request):
 	card_id = request.GET['card_id']	
@@ -26,10 +27,10 @@ def del_card(request):
 	inv.save()	
 	return {'del_card':id}
 		
-def add_money(request):
-	money = int(request.GET['money'])
+def add_gold(request):
+	gold = int(request.GET['gold'])
 	usr = request.user	
-	usr.gold = usr.gold + money	
+	usr.gold = usr.gold + gold
 	usr.save()
 	return {'gold':usr.gold}
 		
@@ -50,40 +51,23 @@ def gain_exp(request):
 	return {'exp':usr.exp, 'level':usr.level}
 		 
 def gain_card_exp(request):
-	cardid = request.GET['card_id']
-	exp = request.GET['exp']
-	exp = int(exp)
+	cardid = request.GET['card']
+	exp = int(request.GET['exp'])	
 	usr = request.user
 	inv = usr.getInventory()
 	gameConf = config.getConfig('game')
 	petLevelConf = config.getConfig('pet_level')
 	petConf = config.getConfig('pet')
 	card = inv.getCard(cardid)
-	if card:
-		level = card['level']
-		id = card['cardid']		
-		star = petConf[id]['star']
-		needExp = petLevelConf[str(level)][star - 1]
-		levelLimit = gameConf['pet_level_limit'][star - 1]	
-		while exp > needExp and levelLimit > level:
-			level = level + 1
-			card['level'] = level
-			needExp = petLevelConf[str(level)][star - 1]
-			exp = exp - needExp
-			
-		if card['level'] >= levelLimit:
-			card['level'] = levelLimit
-			card['exp'] = 0
-		else:
-			card['exp'] = exp
-	else:
+	if not card:
 		return {'msg':'card_not_exist'}
+	pet.gainExp(card, exp, petConf, petLevelConf, gameConf)				
 	inv.save()
 	return {'update_card':card}
 			
 		
 def add_equipment(request):
-	equipid = request.GET['equipid']
+	equipid = request.GET['equipment_id']
 	usr = request.user
 	inv = usr.getInventory()
 	equip = inv.addEquipment(equipid)
@@ -103,3 +87,31 @@ def del_equipment(request):
 		return {'msg':'fail_del_equipment'}
 	inv.save()
 	return {'del_equipment':id}
+		
+def add_trp(request):
+	trp = int(request.GET['trp'])
+	usr = request.user
+	
+	usr.trp = usr.trp + trp
+	usr.save()
+	return {'trp':usr.trp}
+		
+def add_stone(request):
+	stoneid = request.GET['stone']
+	
+	usr = request.user
+	
+	inv = usr.getInventory()
+	stone = inv.addStone(stoneid)
+	inv.save()
+	return {'add_stone':stone}
+		
+def add_skill(request):
+	skillid = request.GET['skill']
+	
+	usr = request.user
+	
+	inv = usr.getInventory()
+	skill = inv.addSkill(skillid)
+	inv.save()
+	return {'add_skill':skill}

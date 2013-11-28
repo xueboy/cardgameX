@@ -7,16 +7,27 @@ from game.routine.garcha import garcha as garchaR
 from game.models.inventory import inventory
 
 def set_team(request):
- 	 usr = request.user
- 	 inv = usr.getInventory()
- 	 cardid1 = request.GET['card_id1']
- 	 cardid2 = request.GET['card_id2']
- 	 cardid3 = request.GET['card_id3']
- 	 cardid4 = request.GET['card_id4']
- 	 cardid5 = request.GET['card_id5']
- 	 cardid6 = request.GET['card_id6']
- 	 team = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6) 	 
- 	 return {'team':team, 'slots': inv.getSlots()}
+	usr = request.user
+	inv = usr.getInventory()
+	cardid1 = request.GET['card_id1']
+	cardid2 = request.GET['card_id2']
+	cardid3 = request.GET['card_id3']
+	cardid4 = request.GET['card_id4']
+	cardid5 = request.GET['card_id5']
+	cardid6 = request.GET['card_id6']
+	team, deq, dst, dsk = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
+	data = {}
+	data['team'] = team
+	data['slots'] = inv.getSlots()
+	data['st_slots'] = inv.getStSlots()
+	data['sk_slots'] = inv.getSkSlots()
+	if deq:
+		data['add_equipment_array'] = deq
+	if dst:
+		data['add_stone_array'] = dst
+	if dsk:
+		data['add_skill_array'] = dsk
+	return data
 
 	
 def level_up(request):
@@ -56,8 +67,8 @@ def level_up(request):
 	if sourceCard6 != '':
 		sourceCardId.append(sourceCard6)		
 		
-	dest, source = pet.levelup(usr, destCard, sourceCardId)
-	return {'update_card':dest, 'delete_card':source}
+	return pet.levelup(usr, destCard, sourceCardId)
+	
 		
 def garcha(request):
 	usr = request.user
@@ -91,4 +102,29 @@ def sell(request):
 def training_confirm(request):
 	usr = request.user	
 	return pet.trainConfirm(usr)
+	
+def decompose(request):
+	usr = request.user
+	cardids = []
+	
+	cardids.append(request.GET['card_id1'])
+	if request.GET.has_key('card_id2'):
+		cardids.append(request.GET['card_id2'])
+	if request.GET.has_key('card_id3'):
+		cardids.append(request.GET['card_id3'])
+	if request.GET.has_key('card_id4'):
+		cardids.append(request.GET['card_id4'])
+	if request.GET.has_key('card_id5'):
+		cardids.append(request.GET['card_id5'])
+	if request.GET.has_key('card_id6'):
+		cardids.append(request.GET['card_id6'])
+	if request.GET.has_key('card_id7'):
+		cardids.append(request.GET['card_id7'])
+	if request.GET.has_key('card_id8'):
+		cardids.append(request.GET['card_id8'])
+	if request.GET.has_key('card_id9'):
+		cardids.append(request.GET['card_id9'])
+	if request.GET.has_key('card_id10'):
+		cardids.append(request.GET['card_id10'])
 
+	return pet.decompose(usr, cardids)

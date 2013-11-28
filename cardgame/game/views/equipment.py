@@ -15,7 +15,12 @@ def strengthen(request):
 
 def equip(request):
 	
-	teamPosition = request.GET['team_position']
+	teamPosition = int(request.GET['team_position'])
 	equipmentid = request.GET['equipment_id']	
 	usr = request.user
-	return equipment.equip(usr,  int(teamPosition), equipmentid)
+	return equipment.equip(usr, teamPosition, equipmentid)
+	
+def sell(request):
+	equipmentid = request.GET['equipment_id']	
+	usr = request.user
+	return equipment.sell(usr, equipmentid)

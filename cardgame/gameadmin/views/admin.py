@@ -22,3 +22,6 @@ def login(request):
 			
 	else:
 		return render(request, 'login.html', {})
+		
+def tool(request):
+	return render(request, 'tool.html', {})

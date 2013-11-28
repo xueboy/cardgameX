@@ -32,7 +32,19 @@ class config(gcconfig):
 		if confname == 'strength_probability':
 			return conf
 		if confname == 'luck':
-			return config.luckFilter(conf)
+			return conf
+		if confname == 'stone':
+			return conf
+		if confname == 'stone_probability':
+			return config.stoneProbabilityFilter(conf)
+		if confname == 'stone_level':
+			return conf
+		if confname == 'educate':
+			return conf
+		if confname == 'educate_grade':
+			return conf
+		if confname == 'almanac_combination':
+			return conf
 		return None
 	
 	
@@ -90,10 +102,8 @@ class config(gcconfig):
 		
 	@staticmethod
 	def getMaxStamina(level):
-		levelConf = config.getConfig('level')
-		levelKey = str(level)
-		if levelConf.has_key(levelKey):
-			return levelConf[levelKey]['sp']
+		levelConf = config.getConfig('level')		
+		return levelConf[level - 1]['sp']
 		return 0
 		
 
@@ -106,8 +116,13 @@ class config(gcconfig):
 			l['luckid'] = conf[luckid]['luckid']
 			l['value'] = conf[luckid]['value']
 			l['type'] = conf[luckid]['type']
-			l['valuetype'] = conf[luckid]['valuetype']
-			
+			l['valuetype'] = conf[luckid]['valuetype']			
 			data[luckid] = l
 		return data
 			
+	@staticmethod
+	def stoneProbabilityFilter(conf):
+		data = {}
+		data['visitGold'] = conf['visitGold']
+		data['visitGem'] = conf['visitGem']		
+		return data
