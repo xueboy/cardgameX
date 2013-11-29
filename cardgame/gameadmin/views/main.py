@@ -93,6 +93,9 @@ def almanac_combination(request):
 	
 def reborn(request):
 	return generalConfigRequestProcess(request, 'reborn')
+	
+def ladder_score(request):
+	return generalConfigRequestProcess(request, 'ladder_score')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -178,3 +181,6 @@ def almanac_combination_import(request):
 
 def reborn_import(request):
 	return excel_import.reborn_import(request)
+	
+def ladder_score_import(request):
+	return excel_import.ladder_score_import(request)

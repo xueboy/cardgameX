@@ -128,3 +128,11 @@ def decompose(request):
 		cardids.append(request.GET['card_id10'])
 
 	return pet.decompose(usr, cardids)
+
+
+def reborn(request):
+	usr = request.user
+	
+	card_id = request.GET['card']
+	
+	return pet.reborn(usr, card_id)

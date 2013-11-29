@@ -71,8 +71,12 @@ class account(object):
 		
 	def save(self):
 		raise NotImplemented
-		
-		
+	
+	@staticmethod
+	def load(self, roleid, data):
+		object.laod(self, roleid, data)
+	
+	
 	@classmethod
 	def new(cls, accountName, password):
 		try:

@@ -18,7 +18,8 @@ class pet:
 		data['exp'] = 0	
 		data['strength'] = cardConf[cardid]['strength']
 		data['intelligence'] = cardConf[cardid]['intelligence']
-		data['artifice'] = cardConf[cardid]['artifice']			
+		data['artifice'] = cardConf[cardid]['artifice']
+		data['reborn_level'] = 0
 		data['init_start'] = 1
 		return data
 	
@@ -244,6 +245,7 @@ class pet:
 		return {'gold': usr.gold, 'sell_card':id}
 			
 			
+	@staticmethod
 	def reborn(usr, id):
 		
 		gameConf = config.getConfig('game')
@@ -256,22 +258,41 @@ class pet:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < costGem:
 			return {'msg':'gem_not_enough'}
+				
 		
 		inv = usr.getInventory()
 		card = inv.getCard(id)
 		
+		rebornInfo = None
+		for r in rebornConf:
+			if r['star_max'] > card['init_start']:
+				rebornInfo = r
+				break			
+			if r['level'] > card['reborn_level']:
+				rebornInfo = r
+				break
+		
+		if not rebornInfo:
+			return {'msg':'reborn_can_not'}
+				
+		if rebornInfo['level'] > card['level']:
+			return {'msg':'reborn_level_required'}
+				
+		card['init_start'] = card['init_start'] = pet.reborn_inc_star(rebornInfo)
+		card['reborn_level'] = rebornInfo['level']
+		usr.gold = usr.gold - costGold
+		inv.save()
+		usr.save()
+		
+		return {'update_card': card, 'gold':usr.gold}		
+				
+	@staticmethod
+	def reborn_inc_star(rebornInfo):
 		rn = randint()
-		incStar = 0
-		for pb in gameConf['pet_reborn_init_star_increase_probability']:
-			if rn > pb['probablity']:
-				rn = rn - pb['probablity']
-			else:
-				incStar = pb['star']		
 		
-		card['init_star'] = card['init_star'] + incStar
-		
-		
-		
-		
-		
-		
+		for pb in rebornInfo['star']:
+			if rn > pb['probability']:
+				rn = rn - pb['probability']
+			else: 
+				return pb['star']
+		return 0

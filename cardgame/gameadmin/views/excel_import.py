@@ -1135,7 +1135,7 @@ class excel_import:
 		if request.method == 'POST':
 			reborn_file = request.FILES.get('reborn_file')
 			if not reborn_file:
-				return HttpResponse('转身xlsx文件上传')
+				return HttpResponse('转生xlsx文件上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1145,29 +1145,45 @@ class excel_import:
 			for rownum in range(1,sheet.nrows):
 				row = sheet.row_values(rownum)
 				level = int(row[0])
-				star_max = int(row[1])
-				reborn_count = int(row[2])
+				star_max = int(row[1])				
 				star = []
-				star.append({'star':row[3], 'probability': row[4]})
-				star.append({'star':row[5], 'probability': row[6]})
-				star.append({'star':row[7], 'probability': row[8]})
-				star.append({'star':row[9], 'probability': row[10]})
-				star.append({'star':row[11], 'probability': row[12]})
+				star.append({'star':row[2], 'probability': row[3]})
+				star.append({'star':row[4], 'probability': row[5]})
+				star.append({'star':row[6], 'probability': row[7]})
+				star.append({'star':row[8], 'probability': row[9]})
+				star.append({'star':row[10], 'probability': row[11]})
 				
 				rebornConf = {}
 				rebornConf['level'] = level
-				rebornConf['star_max'] = star_max
-				rebornConf['reborn_count'] = reborn_count
+				rebornConf['star_max'] = star_max				
 				rebornConf['star'] = star
 				conf.append(rebornConf)
-			
+				sorted(conf, key = lambda s:s['level'])			
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('reborn_import')
-				
-			
+	
+	@staticmethod
+	def ladder_score_import(request):
+		if request.method == 'POST':
+			reborn_file = request.FILES.get('ladder_score_file')
+			if not reborn_file:
+				return HttpResponse('天梯分数xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
+			sheet = wb.sheet_by_index(0)
 					
+			conf = []
+			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				no = int(row[0])
+				score = int(row[1])
 				
-							
+				while len(conf) < no:
+					conf.append(0)
+					
+				conf[no - 1] = score
 				
-				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('ladder_score_import')			
 				

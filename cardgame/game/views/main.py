@@ -86,6 +86,7 @@ def info(request):
 	info['educate_md5'] = conf.getClientConfigMd5('educate')
 	info['educate_grade_md5'] = conf.getClientConfigMd5('educate_grade')
 	info['almanac_combination_md5'] = conf.getClientConfigMd5('almanac_combination')
+	info['reborn_md5'] = conf.getClientConfigMd5('reborn')
 	return HttpResponse(json.dumps({'info':info}))
 
 

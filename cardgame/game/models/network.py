@@ -50,7 +50,7 @@ class network(object):
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid		
+		object.load(self, roleid, data)
 		self.friend = data['friend']
 		self.message = data['message']
 		self.mail = data['mail']

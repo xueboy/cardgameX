@@ -3,6 +3,7 @@
 
 from django.db import models
 from gclib.facility import facility
+from gclib.utility import currentTime()
 
 class ladder(facility):
 	def __init__(self):
@@ -17,7 +18,7 @@ class ladder(facility):
 			rd['name'] = name
 			rd['level'] = level
 			rd['last_update'] = currentTime()
-			rd['point'] = 0
+			rd['score'] = 0
 			self.item[roleid] = rd
 			self.rank.append(roleid)
 			return len(self.rank) -1
@@ -29,6 +30,7 @@ class ladder(facility):
 		
 		if self.item.has_key(roleid):
 			position = self.rank.index(roleid)
+			self.update(roleid, currentTime())
 			if position < 26:
 				#top 25				
 				cnt = len(self.rank) - 1
@@ -75,6 +77,31 @@ class ladder(facility):
 		return lastPosition - int(position / 101) - 1
 		
 	def update(self, roleid, now):
+		
+		ladderScoreConf = config.getConfig('ladder_score')
+		
 		duration = now - self.item['last_update']
 		
+		if duration < 60:
+			return
 		
+		position = self.rank.index(roleid)
+		score = 0
+		if position < len(ladderScoreConf) - 1:
+			score = ladderScoreConf[position - 1]			
+		elif position < 1001:
+			score = int(0.007 * position * position - 15.37 * position + 8553) / 6
+		else:
+			score = 16
+		
+		score = score * duration / 600
+		self.item[roleid]['point'] = self.item[roleid]['point'] + score
+		
+	def defeat(self, offenceRoleid, defenceRoleid):
+		offencePosition = self.rank.index(offenceRoleid)
+		defencePosition = self.rank.index(defenceRoleid)
+		
+		self.rank.remove(offencePosition)
+		self.insert(defencePosition, offenceRoleid)
+		for i in range(defencePosition, offencePosition):
+			self.update(i, self.rank[i], currentTime())

@@ -17,6 +17,7 @@ class almanac(object):
 		pass
 	
 	def load(self, roleid, data):
+		object.load(self, roleid, data)
 		self.roleid = roleid
 		self.card = data['card']
 		self.combinaion = data['combinaion']

@@ -62,4 +62,6 @@ urlpatterns = patterns('',
     url(r'^almanac_combination_import/$', gameadmin.views.main.almanac_combination_import),
     url(r'^reborn/$', gameadmin.views.main.reborn),
     url(r'^reborn_import/$', gameadmin.views.main.reborn_import),   
+    url(r'^ladder_score/$', gameadmin.views.main.ladder_score),   
+    url(r'^ladder_score_import/$', gameadmin.views.main.ladder_score_import),   
 )

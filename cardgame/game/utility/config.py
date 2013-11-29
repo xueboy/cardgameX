@@ -45,6 +45,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'almanac_combination':
 			return conf
+		if confname == 'reborn':
+			return conf
 		return None
 	
 	

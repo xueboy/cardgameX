@@ -58,7 +58,7 @@ class inventory(object):
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
+		object.load(self, roleid, data)
 		self.card = data['card']
 		self.team = data['team']
 		self.equipment = data['equipment']

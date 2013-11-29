@@ -1,7 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-
+from gclib.cache import cache
 
 
 class facility():

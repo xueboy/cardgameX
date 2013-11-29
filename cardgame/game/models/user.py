@@ -163,7 +163,7 @@ class user(gcuser):
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
+		gcuser.load(self, roleid, data)
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
