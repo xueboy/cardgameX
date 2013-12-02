@@ -96,6 +96,9 @@ def reborn(request):
 	
 def ladder_score(request):
 	return generalConfigRequestProcess(request, 'ladder_score')
+	
+def name(request):
+	return generalConfigRequestProcess(request, 'name')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -184,3 +187,6 @@ def reborn_import(request):
 	
 def ladder_score_import(request):
 	return excel_import.ladder_score_import(request)
+	
+def name_import(request):
+	return excel_import.name_import(request)

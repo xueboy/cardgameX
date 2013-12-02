@@ -106,8 +106,7 @@ def api(request, m, f):
 		
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
-		ret = fun(request)
-		saveUser(request)	
+		ret = fun(request)		
 		if not isinstance(ret, tuple):
 			notify = endRequest(request)
 			yell = usr.yell_listen()

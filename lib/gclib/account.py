@@ -25,7 +25,7 @@ class account(object):
 			acc.nickname = res[0][3]
 			acc.gender = res[0][4]
 			acc.roleid = res[0][5]
-			acc.opendid = res[0][6]
+			acc.opendid = res[0][6]			
 			acc.saveLogin()
 			return acc
 		return None
@@ -33,8 +33,7 @@ class account(object):
 	def getUser(self):		
 		return self.userObject().get(self.roleid)
 	
-	def makeUserAndBind(self, nickname, gender):
-		conn = DBConnection.getConnection()		
+	def makeUserAndBind(self, nickname, gender):		
 		usr = self.userObject()
 		usr.init(self)
 		usr.last_login = self.last_login
@@ -64,7 +63,7 @@ class account(object):
 			acc.nickname = res[0][3]
 			acc.gender = res[0][4]		
 			acc.roleid = res[0][5]
-			acc.opendid = res[0][6]
+			acc.opendid = res[0][6]			
 			acc.saveLogin()
 			return acc
 		return None
@@ -110,7 +109,7 @@ class account(object):
 		
 	def saveLogin(self):
 		self.last_login = currentTime()
-		conn = DBConnection.getConnection()				
+		conn = DBConnection.getConnection()
 		conn.excute("UPDATE account SET lastlogin = %s WHERE id = %s", [time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(self.last_login)), self.id])
 		
 	@staticmethod

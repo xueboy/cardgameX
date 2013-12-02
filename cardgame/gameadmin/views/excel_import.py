@@ -1186,4 +1186,37 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('ladder_score_import')			
+	
+	@staticmethod
+	def name_import(request):
+		if request.method == 'POST':
+			name_file = request.FILES.get('name_file')
+			if not name_file:
+				return HttpResponse('姓名xlsx文件上传')
+
+					
+			conf = {}
+			conf['surname'] = []
+			conf['male_name'] = []
+			conf['female_name'] = []
+									
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, name_file.read())
+			sheet = wb.sheet_by_index(0)
+
+			
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['surname'].append(row[0])
+			
+			sheet = wb.sheet_by_index(1)		
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['male_name'].append(row[0])
+			
+			sheet = wb.sheet_by_index(2)		
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['female_name'].append(row[0])	
 				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('name_import')			

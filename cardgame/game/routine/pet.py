@@ -261,6 +261,8 @@ class pet:
 		
 		inv = usr.getInventory()		
 		card = inv.getCard(id)
+		if not card:
+			return {'msg':'card_not_exist'}
 		
 		rebornInfo = None
 		for r in rebornConf:
