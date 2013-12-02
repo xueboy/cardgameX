@@ -43,7 +43,7 @@ class config:
 		
 	@staticmethod
 	def setConfig(confname, confstr):
-		confjson = json.loads(confstr)		
+		confjson = json.loads(confstr)
 		conn = DBConnection.getConnection();
 		conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])
 		cache.loc_delete('config:' + confname)

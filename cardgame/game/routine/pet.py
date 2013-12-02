@@ -257,10 +257,9 @@ class pet:
 		if usr.gold < costGold:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < costGem:
-			return {'msg':'gem_not_enough'}
-				
+			return {'msg':'gem_not_enough'}			
 		
-		inv = usr.getInventory()
+		inv = usr.getInventory()		
 		card = inv.getCard(id)
 		
 		rebornInfo = None

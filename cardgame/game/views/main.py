@@ -7,7 +7,7 @@ from gclib.json import *
 from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest, logout
+from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest, logout, saveUser
 from gclib.exception import NotLogin, NotHaveNickname
 from game.models.user import user
 from game.models.network import network
@@ -106,7 +106,8 @@ def api(request, m, f):
 		
 	if viewsmap.has_key(m) :		
 		fun = getattr(viewsmap[m], f)		
-		ret = fun(request)		
+		ret = fun(request)
+		saveUser(request)	
 		if not isinstance(ret, tuple):
 			notify = endRequest(request)
 			yell = usr.yell_listen()

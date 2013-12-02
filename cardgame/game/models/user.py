@@ -187,8 +187,7 @@ class user(gcuser):
 		self.stv = data['stv']
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
-			 
-		
+			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no		

@@ -55,6 +55,14 @@ def endRequest(request):
 	user.save()
 	return notify
 		
+def saveUser(request):
+	usr = request.user
+	if hasattr(usr, 'retriveled_object'):
+		for obj in usr.retriveled_object:
+			obj.do_save()
+	usr.do_save()
+	
+		
 def currentTime():
 	return int(time.time())
 	
@@ -99,10 +107,12 @@ def retrieval_object(func):
 	mark this funtion return a object whitch need to save db.
 	"""
 	def retrieval_fun(obj):
+		print obj
 		res = func(obj)
 		if not hasattr(obj , 'retriveled_object'):
 			obj.retriveled_object = set()
 		obj.retriveled_object.add(res)
+		
 		return res
 	return retrieval_fun
 	

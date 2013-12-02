@@ -14,7 +14,7 @@ class facility():
 		return DBPersistent.installFacility(self, name)
 		
 	@classmethod	
-	def get(cls, name):
+	def get(cls, name):		
 		return DBPersistent.getFacility(cls, name)
 		
 		

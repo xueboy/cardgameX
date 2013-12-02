@@ -35,13 +35,12 @@ class object():
 		return 0
 		
 	def save(self):
-		return DBPersistent.save(self)
+		#return DBPersistent.save(self)
+		self.__needSave = True
 	
 	def do_save(self):
-		conn = DBConnection.getConnection()
-		data = self.getData()
-		dumpstr = json.dumps(data)	
-		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
+		if self.__needSave:
+			return DBPersistent.save(self)
 		
 		
 	@classmethod
