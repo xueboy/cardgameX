@@ -37,7 +37,8 @@ class object():
 	def save(self):
 		#return DBPersistent.save(self)
 		self.__needSave = True
-	
+		self.do_save()
+		
 	def do_save(self):
 		if self.__needSave:
 			return DBPersistent.save(self)

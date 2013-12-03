@@ -18,3 +18,9 @@ def stop(request):
 	usr = request.user
 	edu_slot_pos = int(request.GET['edu_slot'])
 	return educate.stop(usr, edu_slot_pos)
+
+def open_slot(request):
+	usr = request.user
+	
+	return educate.open_edu_solt(usr)
+	

@@ -84,7 +84,21 @@ class educate:
 		usr.educate['edt'] = edt			
 		
 		return {'gold':usr.gold, 'gem':usr.gem, 'edu_edt':edt}				
+	
+	@staticmethod
+	def open_edu_solt(usr):
 		
+		gameConf = config.getConfig('game')
+		gemCost = 0
+		for i, solt in enumerate(usr.educate['edu_slot']):
+			if not solt:
+				gemCost = gameConf['educate_open_gem'][i]
+				if usr.gem < gemCost:
+					return {'msg':'gem_not_enough'}
+				usr.educate['edu_slot'][i] = educate.make_open_edu_slot(0)
+				return educate.getClientData(usr, gameConf)				
+		return {'msg':'educate_all_edu_slot_open'}	
+	
 	@staticmethod
 	def make():
 		data = {}

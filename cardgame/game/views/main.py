@@ -7,7 +7,7 @@ from gclib.json import *
 from gclib.curl import curl
 from game.utility.config import config as conf
 from game.models.account import account
-from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest, logout, saveUser
+from gclib.utility import HttpResponse500, getAccount, beginRequest, onAccountLogin, onUserLogin, currentTime, endRequest, logout
 from gclib.exception import NotLogin, NotHaveNickname
 from game.models.user import user
 from game.models.network import network
