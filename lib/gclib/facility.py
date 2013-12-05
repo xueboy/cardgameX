@@ -31,6 +31,13 @@ class facility():
 		
 	def save(self):
 		return DBPersistent.save(self)
+		
+	def instance(self, name):
+		obj = self.get(name)
+		if not obj:
+			obj = self.__class__()
+			obj.install(name)
+		return obj
 	
 
 		

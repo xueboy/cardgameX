@@ -3,7 +3,7 @@
 
 from django.db import models
 from gclib.facility import facility
-from gclib.utility import currentTime()
+from gclib.utility import currentTime
 
 class ladder(facility):
 	def __init__(self):
