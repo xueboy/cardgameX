@@ -47,6 +47,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'reborn':
 			return conf
+		if confname == 'trp':
+			return conf
+		if confname == 'trp_price':
+			return conf
 		return None
 	
 	
