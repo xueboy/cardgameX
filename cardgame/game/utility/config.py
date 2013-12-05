@@ -51,6 +51,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'trp_price':
 			return conf
+		if confname == 'language':
+			return conf
 		return None
 	
 	
