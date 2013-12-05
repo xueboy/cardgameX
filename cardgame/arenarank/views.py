@@ -7,7 +7,10 @@ from arenarank.models import ladder
 
 def show_ladder(request):
 	
+	roleid = request.GET['roleid']
+	
 	ld = ladder.instace('ladder')
+	ld.show(roleid)
 	
 	return HttpResponse('show_ladder')
 	

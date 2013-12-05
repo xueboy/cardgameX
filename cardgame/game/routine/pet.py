@@ -18,8 +18,7 @@ class pet:
 		data['exp'] = 0	
 		data['strength'] = cardConf[cardid]['strength']
 		data['intelligence'] = cardConf[cardid]['intelligence']
-		data['artifice'] = cardConf[cardid]['artifice']
-		data['reborn_level'] = 0
+		data['artifice'] = cardConf[cardid]['artifice']		
 		data['init_start'] = 1
 		return data
 	
@@ -278,9 +277,15 @@ class pet:
 				
 		if rebornInfo['level'] > card['level']:
 			return {'msg':'reborn_level_required'}
+			
+		if not card.has_key('reborn_level'):
+			card['reborn_level'] = 0
+		if not card.has_key('reborn_count'):
+			card['reborn_count'] = 0
 				
 		card['init_start'] = card['init_start'] = pet.reborn_inc_star(rebornInfo)
 		card['reborn_level'] = rebornInfo['level']
+		card['reborn_count'] = card['reborn_count'] + 1
 		usr.gold = usr.gold - costGold
 		inv.save()
 		usr.save()
