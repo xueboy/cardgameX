@@ -232,7 +232,7 @@ class luckycat:
 			target.save()
 		
 		data = {}
-		data['luckycat'] = luckycat.getClientData(target)
+		data['luckycat'] = luckycat.getClientData(target, gameConf)
 		if awardGold:
 			data['gold'] = usr.gold
 		if awardGem:
