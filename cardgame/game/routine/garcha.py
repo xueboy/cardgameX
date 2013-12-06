@@ -19,7 +19,6 @@ class garcha:
 	
 	@staticmethod
 	def garcha_once(usr, garchaAmount):		
-		print usr.garcha
 		inv = usr.getInventory()
 		garchaConf = config.getConfig('garcha')
 		gameConf = config.getConfig('game')
@@ -38,22 +37,24 @@ class garcha:
 		isFirstTime = (garchaInfo['last_time'] == 0)
 		isFree = False
 		duration = now - garchaInfo['last_time']
+		cooldownConf = 0
 		cooldown = 0
 		isCooldown = False
-		
 		if garchaAmount == 10:
-			cooldown = gameConf['garcha_10_cooldown'] - duration
-		elif garchaAmount == 100:
-			cooldown = gameConf['garcha_100_cooldown'] - duration
-		elif garchaAmount == 10000:
-			cooldown = gameConf['garcha_10000_cooldown'] - duration 
-			
+			cooldownConf = gameConf['garcha_10_cooldown']
+		if garchaAmount == 100:
+			cooldownConf = gameConf['garcha_100_cooldown']
+		if garchaAmount == 10000:
+			cooldownConf = gameConf['garcha_10000_cooldown']
+		
+		cooldown = cooldownConf - duration
+		
 		if cooldown > 0:
 			isCooldown = True
 		else:
 			isCooldown = False
 			cooldown = 0
-
+		
 		if garchaAmount == 10:
 			isFree = ((gameConf['garcha_10_times'] - garchaInfo['count']) > 0) and not isCooldown
 		elif garchaAmount == 100:
@@ -115,8 +116,12 @@ class garcha:
 		
 		usr.gold = usr.gold - garchaCostGold
 		usr.gem = usr.gem - garchaCostGem
-		garchaInfo['last_time'] = now
-		
+		if isFree:
+			garchaInfo['last_time'] = now
+			garchaInfo['count'] = garchaInfo['count'] + 1
+			
+		duration = now - garchaInfo['last_time']		
+		cooldown = cooldownConf - duration
 		data = {}
 		data['garcha_card'] = garchaCard
 		data['gold'] = usr.gold
