@@ -97,12 +97,9 @@ class ladder(facility):
 		
 	def update(self, roleid, now):
 		
-		ladderScoreConf = config.getConfig('ladder_score')
-		
-		item = self.item[roleid]
-		
-		duration = now - item['last_update']
-		
+		ladderScoreConf = config.getConfig('ladder_score')		
+		item = self.item[roleid]		
+		duration = now - item['last_update']		
 		if duration < 60:
 			return
 		

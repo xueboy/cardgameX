@@ -95,7 +95,7 @@ class garcha:
 		usr.gem = usr.gem - garchaCostGem
 		usr.save()
 		inv.save()
-		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem }
+		return {'garcha_card':garchaCard, 'gold':usr.gold, 'gem':usr.gem , 'garcha' + str(amount) : garchaInfo}
 	
 	@staticmethod	
 	def garcha_cata(prob):

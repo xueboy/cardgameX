@@ -51,6 +51,7 @@ class user(gcuser):
 		self.trp = 0
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
+		self.arena = {}
 		
 	
 	def init(self, acc):
@@ -92,6 +93,7 @@ class user(gcuser):
 		data['trp'] = self.trp
 		data['stv'] = self.stv
 		data['stv_gem'] = self.stv_gem
+		data['arena'] = self.arena
 		return data
 		
 	def getClientData(self):
@@ -113,6 +115,7 @@ class user(gcuser):
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
 		usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
+		usrData['garcha'] = self.garcha
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
@@ -153,6 +156,7 @@ class user(gcuser):
 		inv = self.getInventory()
 		data['roleid'] = self.roleid
 		data['level'] = self.level
+		data['name'] = self.name
 		data['team'] = inv.team
 		data['team_card'] = []
 		for cid in inv.team:
@@ -162,6 +166,7 @@ class user(gcuser):
 				data['team_card'].append({})
 		data['slot'] = inv.getSlots()
 		data['st_slot'] = inv.getStSlots()
+		data['sk_slot'] = inv.getSkSlots()
 		return data
 		
 	def getLoginData(self):
@@ -203,6 +208,7 @@ class user(gcuser):
 		self.stv = data['stv']
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
+		self.arena = data['arena']
 			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1

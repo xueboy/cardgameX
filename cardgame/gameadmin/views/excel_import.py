@@ -1219,4 +1219,44 @@ class excel_import:
 				conf['female_name'].append(row[0])	
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('name_import')			
+		return HttpResponse('name_import')
+		
+	@staticmethod
+	def arena_loot_import(request):
+		if request.method == 'POST':
+			arena_loot_file = request.FILES.get('arena_loot_file')
+			if not arena_loot_file:
+				return HttpResponse('竞技场战利品xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, arena_loot_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = []			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				level = int(row[0])
+				gold = int(row[1])
+				exp = int(row[2])
+				skillid = row[3]
+				skilllevel = int(row[4])
+				petid = row[5]
+				petlevel = int(row[6])				
+				
+				while len(conf) < level:
+					conf.append({})
+					
+				arenaLootConf = {}
+				arenaLootConf['gold'] = gold
+				arenaLootConf['exp'] = exp
+				arenaLootConf['skillid'] = skillid
+				arenaLootConf['skilllevel'] = skilllevel
+				arenaLootConf['petid'] = petid
+				arenaLootConf['petlevel'] = petlevel				
+				conf[level - 1] = arenaLootConf
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))			
+		return HttpResponse('arena_loot_import')
+				
+				
+				

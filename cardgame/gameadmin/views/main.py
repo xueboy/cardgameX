@@ -97,8 +97,13 @@ def reborn(request):
 def ladder_score(request):
 	return generalConfigRequestProcess(request, 'ladder_score')
 	
+def arena_loot(request):
+	return generalConfigRequestProcess(request, 'arena_loot')
+	
 def name(request):
 	return generalConfigRequestProcess(request, 'name')
+	
+
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -190,3 +195,6 @@ def ladder_score_import(request):
 	
 def name_import(request):
 	return excel_import.name_import(request)
+	
+def arena_loot_import(request):
+	return excel_import.arena_loot_import(request)

@@ -64,6 +64,8 @@ urlpatterns = patterns('',
     url(r'^reborn_import/$', gameadmin.views.main.reborn_import),
     url(r'^ladder_score/$', gameadmin.views.main.ladder_score),
     url(r'^ladder_score_import/$', gameadmin.views.main.ladder_score_import),
+    url(r'^arena_loot/$', gameadmin.views.main.arena_loot),
+    url(r'^arena_loot_import/$', gameadmin.views.main.arena_loot_import),    
     url(r'^name/$', gameadmin.views.main.name),
     url(r'^name_import/$', gameadmin.views.main.name_import),
 )
