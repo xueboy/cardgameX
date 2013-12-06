@@ -206,6 +206,7 @@ class user(gcuser):
 		self.luckycat = data['luckycat']
 		self.trp = data['trp']
 		self.stv = data['stv']
+		self.garcha = data['garcha']
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
 		self.arena = data['arena']
