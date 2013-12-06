@@ -39,11 +39,11 @@ class facility(persistable):
 		return DBPersistent.saveFacility(self)
 		
 	@classmethod
-	def instance(cls, name):
-		obj = cls.get(name)
+	def instance(cls):
+		obj = cls.get(cls.__name__)
 		if not obj:
 			obj = cls()
-			obj.install(name)
+			obj.install(cls.__name__)
 		return obj
 	
 

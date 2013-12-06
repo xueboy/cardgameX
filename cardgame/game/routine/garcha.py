@@ -127,18 +127,10 @@ class garcha:
 		data['gold'] = usr.gold
 		data['gem'] = usr.gem		
 	
-		if garchaAmount == 10:
-			data['garcha10'] = {}
-			data['garcha10']['count'] = garchaInfo['count']
-			data['garcha10']['cooldown'] = cooldown			
-		elif garchaAmount == 100:
-			data['garcha100'] = {}
-			data['garcha100']['count'] = garchaInfo['count']
-			data['garcha100']['cooldown'] = cooldown			
-		elif garchaAmount == 10000:
-			data['garcha10000'] = {}
-			data['garcha10000']['count'] = garchaInfo['count']
-			data['garcha10000']['cooldown'] = cooldown
+		
+		data['garcha'] = {}
+		data['garcha']['count'] = garchaInfo['count']
+		data['garcha']['cooldown'] = cooldown
 		
 		usr.save()
 		inv.save()

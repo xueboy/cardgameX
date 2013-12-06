@@ -124,3 +124,4 @@ class ladder(facility):
 		self.insert(defencePosition, offenceRoleid)
 		for i in range(defencePosition, offencePosition):
 			self.update(i, self.rank[i], currentTime())
+		return self.show(offenceRoleid)
