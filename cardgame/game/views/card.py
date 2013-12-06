@@ -18,9 +18,9 @@ def set_team(request):
 	team, deq, dst, dsk = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
 	data = {}
 	data['team'] = team
-	data['slots'] = inv.getSlots()
-	data['st_slots'] = inv.getStSlots()
-	data['sk_slots'] = inv.getSkSlots()
+	data['slot'] = inv.getSlots()
+	data['st_slot'] = inv.getStSlots()
+	data['sk_slot'] = inv.getSkSlots()
 	if deq:
 		data['add_equipment_array'] = deq
 	if dst:

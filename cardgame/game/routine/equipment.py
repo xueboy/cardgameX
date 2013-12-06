@@ -122,7 +122,7 @@ class equipment:
 		inv.equipment.remove(equipment)
 		inv.save()
 		
-		return{'solts':inv.getSlots(), 'equipment_delete':equipmentid}
+		return{'solt':inv.getSlots(), 'equipment_delete':equipmentid}
 			
 	@staticmethod
 	def make_slot():

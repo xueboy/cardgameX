@@ -148,6 +148,22 @@ class user(gcuser):
 		data['member'] = teamCardid
 		return data
 		
+	def getBattleData(self):
+		data = {}
+		inv = self.getInventory()
+		data['roleid'] = self.roleid
+		data['level'] = self.level
+		data['team'] = inv.team
+		data['team_card'] = []
+		for cid in inv.team:
+			if cid:
+				data['team_card'].append(inventory.getClientCard(inv.getCard(cid)))																											
+			else:
+				data['team_card'].append({})
+		data['slot'] = inv.getSlots()
+		data['st_slot'] = inv.getStSlots()
+		return data
+		
 	def getLoginData(self):
 		data = {}
 		self.updateStamina()

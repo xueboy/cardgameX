@@ -7,5 +7,6 @@ import arenarank.views
 
 urlpatterns = patterns('',
  url(r'^show_ladder/', 'arenarank.views.show_ladder'),
+ url(r'^stand_ladder/', 'arenarank.views.stand_ladder'),
    
 )

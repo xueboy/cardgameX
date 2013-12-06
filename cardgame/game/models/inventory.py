@@ -35,24 +35,29 @@ class inventory(object):
 		data['skill'] = self.skill
 		return data
 		
+		
+	@staticmethod
+	def getClientCard(card):
+		data = card.copy()
+		if data.has_key('slot'):
+			del data['slot']
+		if data.has_key('st_slot'):
+			del data['st_slot']
+		return data
+		
 	def getClientData(self):
 		data = {}		
 		card = []
 		
-		for c in self.card:
-			c1 = c.copy()
-			if c1.has_key('slot'):
-				del c1['slot']
-			if c1.has_key('st_slot'):
-				del c1['st_slot']
-			card.append(c1)		
+		for c in self.card:			
+			card.append(inventory.getClientCard(c))
 		
 		data['card'] = card
 		data['team'] = self.team
 		data['equipment'] = self.equipment
-		data['slots'] = self.getSlots()
-		data['st_slots'] = self.getStSlots()
-		data['sk_slots'] = self.getSkSlots()
+		data['slot'] = self.getSlots()
+		data['st_slot'] = self.getStSlots()
+		data['sk_slot'] = self.getSkSlots()
 		data['stone'] = self.stone
 		data['skill'] = self.skill
 		return data

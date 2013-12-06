@@ -17,7 +17,7 @@ class DBPersistent:
 	@staticmethod
 	def installFacility(obj, name):
 		conn = DBConnection.getConnection()
-		conn.excute('INSERT INTO ' + obj.__class__.__name__ + '(name, object) VALUES (%s, %s)', [name, json.dumps(obj.getData())])
+		conn.excute('INSERT INTO facility (name, object) VALUES (%s, %s)', [name, json.dumps(obj.getData())])
 		obj.id = conn.insert_id()
 		obj.name = name
 		for column in obj.extend_columns:
@@ -43,7 +43,7 @@ class DBPersistent:
 	@staticmethod
 	def getFacility(tp, name):
 		conn = DBConnection.getConnection()		
-		res = conn.query('SELECT * FROM ' + tp.__name__ + ' WHERE name = %s', [name])
+		res = conn.query('SELECT * FROM facility WHERE name = %s', [name])
 		if len(res) == 1:
 			obj = tp()
 			obj.id = res[0][0]
@@ -57,7 +57,7 @@ class DBPersistent:
 		return None
 		
 	@staticmethod		
-	def save(obj):
+	def saveObject(obj):
 		conn = DBConnection.getConnection()
 		data = obj.getData()
 		dumpstr = json.dumps(data)
@@ -67,6 +67,20 @@ class DBPersistent:
 			update_columns.append(column['name'] + ' = %s')
 			update_value.append(getattr(obj, column['name']))		
 		sql = 'UPDATE ' + obj.__class__.__name__ + ' SET ' + ', '.join(update_columns) + ' WHERE id = %s'
+		update_value.append(obj.id)
+		conn.excute(sql, update_value)		
+	
+	@staticmethod		
+	def saveFacility(obj):
+		conn = DBConnection.getConnection()
+		data = obj.getData()
+		dumpstr = json.dumps(data)
+		update_columns = ['object = %s']
+		update_value = [dumpstr]
+		for column in obj.extend_columns:
+			update_columns.append(column['name'] + ' = %s')
+			update_value.append(getattr(obj, column['name']))		
+		sql = 'UPDATE facility SET ' + ', '.join(update_columns) + ' WHERE id = %s'
 		update_value.append(obj.id)
 		conn.excute(sql, update_value)		
 		

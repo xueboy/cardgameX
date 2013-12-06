@@ -4,17 +4,19 @@
 from django.conf import settings
 from gclib.DBPersistent import DBPersistent
 from gclib.json import json
+from gclib.persistable import persistable
 
 
 
 
-class object():
+class object(persistable):
 	
 	def __init__(self):
+		persistable.__init__(self)
 		self.id = 0
 		self.roleid = 0
 		self.__needSave = False
-		self.extend_columns = []
+		
 	
 	def install(self, roleid):
 		return DBPersistent.installObject(self, roleid)
@@ -41,7 +43,7 @@ class object():
 		
 	def do_save(self):
 		if self.__needSave:
-			return DBPersistent.save(self)
+			return DBPersistent.saveObject(self)
 		
 		
 	@classmethod

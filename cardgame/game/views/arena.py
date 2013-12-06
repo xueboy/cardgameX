@@ -2,9 +2,13 @@
 #!/usr/bin/env python
 
 from gclib.curl import curl
+from cardgame.settings import ARENE_SERVER
 
-def show_ladder(request):
-	
-	
-	
-	return curl.url('http://192.168.0.119:8000/arena/show_ladder/')
+def show_ladder(request):	
+	usr = request.user	
+	return curl.url(ARENE_SERVER +  '/arena/show_ladder/', None, {'roleid':str(usr.roleid)})
+		
+def stand_ladder(request):
+	usr = request.user
+	return curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)})
+		

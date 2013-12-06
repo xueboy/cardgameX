@@ -4,6 +4,8 @@
 from django.db import models
 from gclib.facility import facility
 from gclib.utility import currentTime
+from game.models.user import user
+from game.utility.config import config
 
 class ladder(facility):
 	def __init__(self):
@@ -11,21 +13,37 @@ class ladder(facility):
 		self.rank = []
 		self.item = {}
 		
-	def stand(self, roleid, name, level):
+	def getData(self):
+		data = {}
+		data['rank'] = self.rank
+		data['item'] = self.item
+		return data
+		
+	def load(self, name, data):
+		facility.load(self, name, data)
+		self.rank = data['rank']
+		self.item = data['item']
+		
+	def stand(self, roleid):		
+		usr = user.get(roleid)
+		
+		if not usr:
+			return {'msg':'user_not_exist'}	
+		
 		if not self.item.has_key(roleid):
 			rd = {}
 			rd['roleid'] = roleid
-			rd['name'] = name
-			rd['level'] = level
+			rd['name'] = usr.name
+			rd['level'] = usr.level
 			rd['last_update'] = currentTime()
 			rd['score'] = 0
 			self.item[roleid] = rd
 			self.rank.append(roleid)
+			self.save()
 			return len(self.rank) -1
 		return -1
 
-	def show(self, roleid):
-		
+	def show(self, roleid):		
 		ls = []
 		
 		if self.item.has_key(roleid):
@@ -33,7 +51,7 @@ class ladder(facility):
 			self.update(roleid, currentTime())
 			if position < 26:
 				#top 25				
-				cnt = len(self.rank) - 1
+				cnt = len(self.rank)
 				if cnt > 25:
 					cnt = 25
 				for i in range(cnt):
@@ -65,12 +83,13 @@ class ladder(facility):
 				#self and below 7
 				for i in range(position, position + 7):
 					ls.append(self.show_floor(lastPosition))					
+			self.save()
 			return ls			
 		return None
 						
 	def show_floor(self, position):
 		rd = self.item[self.rank[position]]
-		return {'position': position, 'roleid':rd['roleid'], 'point':rd['point'], 'name':rd['name'], 'level':rd['level']}
+		return {'position': position, 'roleid':rd['roleid'], 'score':rd['score'], 'name':rd['name'], 'level':rd['level']}
 			
 	@staticmethod
 	def up_floor(position, lastPosition):
@@ -80,7 +99,9 @@ class ladder(facility):
 		
 		ladderScoreConf = config.getConfig('ladder_score')
 		
-		duration = now - self.item['last_update']
+		item = self.item[roleid]
+		
+		duration = now - item['last_update']
 		
 		if duration < 60:
 			return
@@ -95,7 +116,8 @@ class ladder(facility):
 			score = 16
 		
 		score = score * duration / 600
-		self.item[roleid]['point'] = self.item[roleid]['point'] + score
+		item['last_update'] = now
+		item['score'] = item['score'] + score
 		
 	def defeat(self, offenceRoleid, defenceRoleid):
 		offencePosition = self.rank.index(offenceRoleid)
