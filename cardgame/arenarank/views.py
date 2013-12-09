@@ -24,3 +24,4 @@ def defeat(request):
 	defenceRoleid = request.REQUEST['defence_roleid']
 	
 	ld = ladder.instance()
+	

@@ -158,6 +158,31 @@ class garcha:
 		if not is_same_day(now, usr.garcha['garcha100']['last_time']):
 			usr.garcha['garcha100']['count'] = 0
 		if not is_same_day(now, usr.garcha['garcha10000']['last_time']):
-			usr.garcha['garcha10000']['count'] = 0
-			
+			usr.garcha['garcha10000']['count'] = 0			
 		usr.save()
+		
+	@staticmethod
+	def getClientData(usr, gameConf):
+		data = {}
+		data['garcha'] = {}
+		cooldown = 0
+		now = currentTime()
+		data['garcha']['10'] = {}
+		data['garcha']['10']['count'] = usr.garcha['garcha10']['count']
+		cooldown = gameConf['garcha_10_times'] - (now - usr.garcha['garcha10']['last_time'])
+		data['garcha']['10']['cooldown'] = cooldown
+		if cooldown < 0:
+			data['garcha']['10']['cooldown'] = 0
+		data['garcha']['100'] = {}
+		data['garcha']['100']['count'] = usr.garcha['garcha100']['count']
+		cooldown = gameConf['garcha_100_times'] - (now - usr.garcha['garcha100']['last_time'])
+		data['garcha']['100']['cooldown'] = cooldown
+		if cooldown < 0:
+			data['garcha']['100']['cooldown'] = 0
+		data['garcha']['10000'] = {}
+		data['garcha']['10000']['count'] = usr.garcha['garcha10000']['count']
+		cooldown = gameConf['garcha_10000_times'] - (now - usr.garcha['garcha10000']['last_time'])
+		data['garcha']['10000']['cooldown'] = cooldown
+		if cooldown < 0:
+			data['garcha']['10000']['cooldown'] = 0
+		return data

@@ -52,8 +52,8 @@ def index(request):
 			return HttpResponse500()
 		onUserLogin(request, usr)
 		usr.last_login = currentTime()
-		
-		data = usr.getLoginData()			
+		gameConf = conf.getConfig('game')
+		data = usr.getLoginData(gameConf)			
 		usr.notify = {}
 		usr.save()
 		return HttpResponse(json.dumps(data))

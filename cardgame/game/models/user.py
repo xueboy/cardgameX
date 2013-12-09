@@ -114,8 +114,7 @@ class user(gcuser):
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
 		usrData['trp'] = self.trp
-		usrData['stv'] = self.stv
-		usrData['garcha'] = self.garcha
+		usrData['stv'] = self.stv	
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
@@ -169,8 +168,8 @@ class user(gcuser):
 		data['sk_slot'] = inv.getSkSlots()
 		return data
 		
-	def getLoginData(self):
-		data = {}
+	def getLoginData(self, gameConf):
+		data = {}		
 		self.updateStamina()
 		data.update(self.getClientData())
 		dun = self.getDungeon()
@@ -181,6 +180,7 @@ class user(gcuser):
 		data.update(nw.getClientData())
 		al = self.getAlmanac()
 		data.update(al.getClientData())
+		data.update(garcha.getClientData(self, gameConf))
 		return data
 		
 	def load(self, roleid, data):

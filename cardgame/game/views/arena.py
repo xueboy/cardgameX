@@ -27,7 +27,10 @@ def challenge(request):
 def defeate(request):
 	usr = request.user
 	
+	res = None
 	if usr.arena.has_key('challenge_roleid'):
-		curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)})
-	
+		res = curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)})
+		res = json.dumps(res)
+		if not res.has_key('msg'):
+			pass
 		
