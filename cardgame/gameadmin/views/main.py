@@ -103,7 +103,17 @@ def arena_loot(request):
 def name(request):
 	return generalConfigRequestProcess(request, 'name')
 	
-
+def drop(request):
+	return generalConfigRequestProcess(request, 'drop')
+	
+def dialog(request):
+	return generalConfigRequestProcess(request, 'dialog')
+	
+def drama(request):
+	return generalConfigRequestProcess(request, 'drama')
+	
+def quest(request):
+	return generalConfigRequestProcess(request, 'quest')
 				
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -198,3 +208,12 @@ def name_import(request):
 	
 def arena_loot_import(request):
 	return excel_import.arena_loot_import(request)
+	
+def dialog_import(request):
+	return excel_import.dialog_import(request)
+	
+def drama_import(request):
+	return excel_import.drama_import(request)
+	
+def quest_import(request):
+	return excel_import.quest_import(request)

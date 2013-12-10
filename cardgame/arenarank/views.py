@@ -21,7 +21,7 @@ def stand_ladder(request):
 def defeat(request):
 	
 	offenceRoleid = request.REQUEST['offence_roleid']
-	defenceRoleid = request.REQUEST['defence_roleid']
-	
+	defenceRoleid = request.REQUEST['defence_roleid']	
 	ld = ladder.instance()
 	
+	return HttpResponse(json.dumps(ld.defeat(offenceRoleid, defenceRoleid)))

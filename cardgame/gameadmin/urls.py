@@ -68,4 +68,11 @@ urlpatterns = patterns('',
     url(r'^arena_loot_import/$', gameadmin.views.main.arena_loot_import),    
     url(r'^name/$', gameadmin.views.main.name),
     url(r'^name_import/$', gameadmin.views.main.name_import),
+    url(r'^dialog/$', gameadmin.views.main.dialog),
+    url(r'^dialog_import/$', gameadmin.views.main.dialog_import),
+    url(r'^drama/$', gameadmin.views.main.drama),
+    url(r'^drama_import/$', gameadmin.views.main.drama_import),
+    url(r'^quest/$', gameadmin.views.main.quest),
+    url(r'^quest_import/$', gameadmin.views.main.quest_import),
+    
 )

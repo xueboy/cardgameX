@@ -1240,8 +1240,8 @@ class excel_import:
 				exp = int(row[2])
 				skillid = row[3]
 				skilllevel = int(row[4])
-				petid = row[5]
-				petlevel = int(row[6])				
+				cardid = row[5]
+				cardlevel = int(row[6])				
 				
 				while len(conf) < level:
 					conf.append({})
@@ -1251,12 +1251,109 @@ class excel_import:
 				arenaLootConf['exp'] = exp
 				arenaLootConf['skillid'] = skillid
 				arenaLootConf['skilllevel'] = skilllevel
-				arenaLootConf['petid'] = petid
-				arenaLootConf['petlevel'] = petlevel				
+				arenaLootConf['cardid'] = cardid
+				arenaLootConf['cardlevel'] = cardlevel				
 				conf[level - 1] = arenaLootConf
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('arena_loot_import')
 				
+	
+	@staticmethod
+	def dialog_import(request):
+		if request.method == 'POST':
+			dialog_file = request.FILES.get('dialog_file')
+			if not dialog_file:
+				return HttpResponse('对话xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dialog_file.read())
+			sheet = wb.sheet_by_index(2)
+					
+			conf = {}
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				dialogid = row[0]
+				npcid = row[1]
+				text = row[2]
 				
+				dialog = {}
+				dialog['npcid'] = npcid
+				dialog['info'] = text
 				
+				if not conf.has_key(dialogid):
+					conf[dialogid] = []
+				conf[dialogid].append(dialog)
+					
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('dialog_import')
+				
+	
+	@staticmethod
+	def drama_import(request):	
+		if request.method == 'POST':
+			drama_file = request.FILES.get('drama_file')
+			if not drama_file:
+				return HttpResponse('剧情xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drama_file.read())
+			sheet = wb.sheet_by_index(1)
+					
+			conf = {}
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				type = row[0]
+				dramaid = row[1]
+				repeat = row[2]
+				dialogid = row[3]
+				drama = {}
+				drama['repeat'] = repeat
+				drama['talkId'] = dialogid
+				
+				if not conf.has_key(type):
+					conf[type] = {}
+				conf[type][dramaid] = drama
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('drama_import')
+	
+	@staticmethod
+	def quest_import(request):
+		if request.method == 'POST':
+			quest_file = request.FILES.get('quest_file')
+			if not quest_file:
+				return HttpResponse('任务xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, quest_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {}
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				questid = row[0]
+				name = row[1]
+				mainType = row[2]
+				type = row[3]
+				level = row[4]
+				preId = row[5]
+				repeatCount = row[6]
+				talkId = row[7]
+				getType = row[8]
+				getValue = row[9]
+				newType = row[10]
+				newValue = row[11]
+				
+				questConf = {}
+				questConf['name'] = name
+				questConf['mainType'] = mainType
+				questConf['type'] = type
+				questConf['level'] = level
+				questConf['preId'] = preId
+				questConf['repeatCount'] = repeatCount
+				questConf['talkId'] = talkId
+				questConf['getType'] = getType
+				questConf['getValue'] = getValue
+				questConf['newType'] = newType
+				questConf['newValue'] = newValue
+				conf[questid] = questConf
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('quest_import')

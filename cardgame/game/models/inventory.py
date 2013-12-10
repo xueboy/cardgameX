@@ -333,7 +333,7 @@ class inventory(object):
 		self.stone.remove(res)
 		return res
 		
-	def addSkill(self, skillid):
+	def addSkill(self, skillid, level = 1):
 		skillConf = config.getConfig('skill')
 		
 		skillInfo = skillConf[skillid]

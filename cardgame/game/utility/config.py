@@ -53,6 +53,12 @@ class config(gcconfig):
 			return conf
 		if confname == 'language':
 			return conf
+		if confname == 'dialog':
+			return conf
+		if confname == 'drama':
+			return conf
+		if confname == 'quest':
+			return conf
 		return None
 	
 	
