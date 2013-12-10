@@ -71,7 +71,7 @@ def convert(request):
 	
 	pointConsume = mediumCount * gameConf['arena_medium_price']
 	
-	res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'point_count':pointConsume})
+	res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
 	res = json.dumps(res)
 	
 	if res.has_key('msg'):

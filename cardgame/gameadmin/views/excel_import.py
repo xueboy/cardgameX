@@ -1270,7 +1270,7 @@ class excel_import:
 			sheet = wb.sheet_by_index(2)
 					
 			conf = {}
-			for rownum in range(1,sheet.nrows):
+			for rownum in range(3,sheet.nrows):
 				row = sheet.row_values(rownum)
 				dialogid = row[0]
 				npcid = row[1]
@@ -1299,10 +1299,10 @@ class excel_import:
 			sheet = wb.sheet_by_index(1)
 					
 			conf = {}
-			for rownum in range(1,sheet.nrows):
+			for rownum in range(3,sheet.nrows):
 				row = sheet.row_values(rownum)
 				
-				type = row[0]
+				type = int(row[0])
 				dramaid = row[1]
 				repeat = row[2]
 				dialogid = row[3]
@@ -1327,20 +1327,21 @@ class excel_import:
 			sheet = wb.sheet_by_index(0)
 					
 			conf = {}
-			for rownum in range(1,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 				questid = row[0]
 				name = row[1]
 				mainType = row[2]
 				type = row[3]
-				level = row[4]
+				level = int(row[4])
 				preId = row[5]
-				repeatCount = row[6]
-				talkId = row[7]
-				getType = row[8]
-				getValue = row[9]
-				newType = row[10]
-				newValue = row[11]
+				image = row[6]
+				repeatCount = int(row[7])
+				talkId = row[8]
+				getType = int(row[9])
+				getValue = row[10]
+				newType = int(row[19])
+				newValue = row[20]
 				
 				questConf = {}
 				questConf['name'] = name

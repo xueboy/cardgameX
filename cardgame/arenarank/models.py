@@ -41,7 +41,7 @@ class ladder(facility):
 			self.rank.append(roleid)
 			self.save()
 			return len(self.rank) -1
-		return -1
+		return {'msg':'arena_ladder_already_stand'}
 
 	def show(self, roleid):		
 		ls = []
@@ -125,3 +125,15 @@ class ladder(facility):
 		for i in range(defencePosition, offencePosition):
 			self.update(i, self.rank[i], currentTime())
 		return self.show(offenceRoleid)
+		
+	def convert(self, roleid, score):
+		position = self.rank.find(roleid)
+		if position != -1:
+			item = self.item[position]
+			if item['score'] < socre:
+				return {'msg':'arena_score_not_enoughk'}
+			item['score'] = item['score'] - score
+			self.save()
+			return item
+		return {'msg':'arena_ladder_not_stand'}
+		
