@@ -391,6 +391,7 @@ class inventory(object):
 		it = {}
 		it['itemid'] = itemid
 		it['id'] = self.generateItemName()
+		it['count'] = 1
 		self.item.append(it)
 		return it
 	
