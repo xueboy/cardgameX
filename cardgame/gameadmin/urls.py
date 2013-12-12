@@ -4,6 +4,7 @@
 from django.conf.urls import patterns, url
 import gameadmin.views.admin 
 import gameadmin.views.main
+import gameadmin.views.tool
 
 
 urlpatterns = patterns('',
@@ -66,6 +67,8 @@ urlpatterns = patterns('',
     url(r'^ladder_score_import/$', gameadmin.views.main.ladder_score_import),
     url(r'^arena_loot/$', gameadmin.views.main.arena_loot),
     url(r'^arena_loot_import/$', gameadmin.views.main.arena_loot_import),    
+    url(r'^drop/$', gameadmin.views.main.drop),
+    url(r'^drop_import/$', gameadmin.views.main.drop_import),
     url(r'^name/$', gameadmin.views.main.name),
     url(r'^name_import/$', gameadmin.views.main.name_import),
     url(r'^dialog/$', gameadmin.views.main.dialog),
@@ -74,5 +77,8 @@ urlpatterns = patterns('',
     url(r'^drama_import/$', gameadmin.views.main.drama_import),
     url(r'^quest/$', gameadmin.views.main.quest),
     url(r'^quest_import/$', gameadmin.views.main.quest_import),
+    url(r'^item/$', gameadmin.views.main.item),
+    url(r'^item_import/$', gameadmin.views.main.item_import),
+    url(r'^tool_create_player/$', gameadmin.views.tool.tool_create_player)
     
 )

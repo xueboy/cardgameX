@@ -1258,6 +1258,26 @@ class excel_import:
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('arena_loot_import')
 				
+				
+	@staticmethod
+	def drop_import(request):
+		if request.method == 'POST':
+			drop_file = request.FILES.get('drop_files')
+			if not dialog_file:
+				return HttpResponse('掉落xlsx文件上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dialog_file.read())
+			sheet = wb.sheet_by_index(2)
+			conf = {}
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				dropid = row[0]
+				dropstr = row[1]
+				
+	@staticmethod
+	def make_drop_dic(s):
+		pass
+		
 	
 	@staticmethod
 	def dialog_import(request):
@@ -1334,7 +1354,7 @@ class excel_import:
 				mainType = row[2]
 				type = row[3]
 				level = int(row[4])
-				preId = row[5]
+				nextId = row[5]
 				image = row[6]
 				repeatCount = int(row[7])
 				talkId = row[8]
@@ -1348,7 +1368,7 @@ class excel_import:
 				questConf['mainType'] = mainType
 				questConf['type'] = type
 				questConf['level'] = level
-				questConf['preId'] = preId
+				questConf['nextId'] = nextId
 				questConf['repeatCount'] = repeatCount
 				questConf['talkId'] = talkId
 				questConf['getType'] = getType
@@ -1356,5 +1376,51 @@ class excel_import:
 				questConf['newType'] = newType
 				questConf['newValue'] = newValue
 				conf[questid] = questConf
-			return HttpResponse(json.dumps(conf, sort_keys=True))
+			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('quest_import')
+	
+	@staticmethod
+	def item_import(request):
+		if request.method == 'POST':
+			item_file = request.FILES.get('item_file')
+			if not item_file:
+				return HttpResponse('道具xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, item_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {}
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				itemid = row[0]
+				name = row[1]
+				level_required_min = row[2]
+				level_required_max = row[3]
+				icon = row[4]
+				model = row[5]
+				fun_str = row[6]
+				desc = row[7]
+				
+				itemConf = {}
+				itemConf['name'] = name				
+				itemConf['level_required_min'] = level_required_min
+				itemConf['level_required_max'] = level_required_max
+				itemConf['icon'] = icon
+				itemConf['model'] = model
+				itemConf['fun'] = excel_import.make_fun_dic(fun_str)
+				itemConf['desc'] = desc
+				conf[itemid] = itemConf			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('item_import')
+				
+	@staticmethod
+	def make_fun_dic(s):
+		dic = {}
+		item = s.split(',')
+		for i in item:
+			c = i.split(':')
+			dic[c[0]] = c[1:]
+		return dic
+			
+		
+	

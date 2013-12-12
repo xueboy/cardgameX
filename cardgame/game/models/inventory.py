@@ -17,6 +17,7 @@ class inventory(object):
 	def __init__(self):
 		object.__init__(self)
 		self.card = []
+		self.item = []
 		self.team = ['', '', '', '', '', '']	
 		self.equipment = []
 		self.stone = []		
@@ -29,6 +30,7 @@ class inventory(object):
 	def getData(self):
 		data = {}
 		data['card'] = self.card
+		data['item'] = self.item
 		data['team'] = self.team
 		data['equipment'] = self.equipment
 		data['stone'] = self.stone
@@ -54,6 +56,7 @@ class inventory(object):
 		
 		data['card'] = card
 		data['team'] = self.team
+		data['item'] = self.item
 		data['equipment'] = self.equipment
 		data['slot'] = self.getSlots()
 		data['st_slot'] = self.getStSlots()
@@ -65,6 +68,7 @@ class inventory(object):
 	def load(self, roleid, data):
 		object.load(self, roleid, data)
 		self.card = data['card']
+		self.item = data['item']
 		self.team = data['team']
 		self.equipment = data['equipment']
 		self.stone = data['stone']
@@ -136,6 +140,9 @@ class inventory(object):
 		
 	def generateSkillName(self):
 		return self.generateName('K')
+	
+	def generateItemName(self):
+		return self.generateName('I')
 	
 	def generateName(self, perfix):
 		serveridLen = len(str(serverid))
@@ -376,4 +383,30 @@ class inventory(object):
 		if res:
 			self.skill.remove(res)
 		return res
+		
+	def addItem(self, itemid):
+		itemConf = config.getConfig('item')
+		itemInfo = itemConf[itemid]
+		
+		it = {}
+		it['itemid'] = itemid
+		it['id'] = self.generateItemName()
+		self.item.append(it)
+		return it
+	
+	def addCountItem(self, itemid, cnt):
+		itemConf = config.getConfig('item')
+		itemInfo = itemConf[itemid]
+		
+		item = []
+		for i in range(cnt):
+			it = {}
+			it['itemid'] = itemid
+			it['id'] = self.generateItemName()
+			item.append(it)
+			self.item.append(it)
+		return item
+		
+	def delItem(self, id):
+		self.item = filter(lambda i : i['id'] != id, self.item)
 		

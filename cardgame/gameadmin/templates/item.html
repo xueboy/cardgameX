@@ -6,9 +6,9 @@
 </head>
 
 <body>
-<form id="/admin/drop/" name="form1" method="post" action="">{% csrf_token %}
+<form id="/admin/item/" name="form1" method="post" action="">{% csrf_token %}
 <p align="center"><a href="/admin/index">主页</a></p>
-<p>掉落设定</p>
+<p>道具设定</p>
   <label>
   <textarea name="config" rows=45 cols="180">{{ config }}</textarea>
   </label>
@@ -20,10 +20,10 @@
     </label>
   </p>
 </form>
-<form id = "" name="form1" action="/admin/drop_import/" method="post" enctype="multipart/form-data">{% csrf_token %}
- <p><input name="drop_file" type="file" /></p>
+<form id = "" name="form1" action="/admin/item_import/" method="post" enctype="multipart/form-data">{% csrf_token %}
+ <p><input name="item_file" type="file" /></p>
   <input name="Submit" type="submit" value="上传" />
-  </form>-->
+  </form>
 </body>
 </body>
 </html>

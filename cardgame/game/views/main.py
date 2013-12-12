@@ -87,6 +87,7 @@ def info(request):
 	info['educate_grade_md5'] = conf.getClientConfigMd5('educate_grade')
 	info['almanac_combination_md5'] = conf.getClientConfigMd5('almanac_combination')
 	info['reborn_md5'] = conf.getClientConfigMd5('reborn')
+	info['drop_md5'] = conf.getClientConfigMd5('drop')
 	info['dialog_md5'] = conf.getClientConfigMd5('dialog')
 	info['drama_md5'] = conf.getClientConfigMd5('drama')
 	info['quest_md5'] = conf.getClientConfigMd5('quest')
@@ -135,6 +136,7 @@ def set_nickname(request):
 	
 	nickname = request.GET['nickname']
 	gender = request.GET['gender']
+	gameConf = conf.getConfig('game')
 	
 	if gender != 'male' and gender != 'female':
 		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
@@ -147,7 +149,7 @@ def set_nickname(request):
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)		
-	data = usr.getLoginData()	
+	data = usr.getLoginData(gameConf)	
 	return HttpResponse(json.dumps(data))
 	
 

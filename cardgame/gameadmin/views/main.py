@@ -6,7 +6,6 @@ from gclib.DBConnection import DBConnection
 from django.http import HttpResponse
 from gclib.json import json
 from gclib.config import config
-
 from excel_import import excel_import
 
 def index(request):
@@ -114,7 +113,11 @@ def drama(request):
 	
 def quest(request):
 	return generalConfigRequestProcess(request, 'quest')
-				
+	
+def item(request):
+	return generalConfigRequestProcess(request, 'item')
+	
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -209,6 +212,9 @@ def name_import(request):
 def arena_loot_import(request):
 	return excel_import.arena_loot_import(request)
 	
+def drop_import(request):
+	return excel_import.drop_import(request)
+	
 def dialog_import(request):
 	return excel_import.dialog_import(request)
 	
@@ -217,3 +223,6 @@ def drama_import(request):
 	
 def quest_import(request):
 	return excel_import.quest_import(request)
+	
+def item_import(request):
+	return excel_import.item_import(request)

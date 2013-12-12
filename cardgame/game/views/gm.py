@@ -110,3 +110,13 @@ def add_skill(request):
 	skill = inv.addSkill(skillid)
 	inv.save()
 	return {'add_skill':skill}
+		
+def add_item(request):
+	itemid = request.GET['itemid']
+	usr = request.user
+	inv = usr.getInventory()
+	item = inv.addItem(itemid)
+	if not item:
+		return {'msg':'fail_add_item'}
+	inv.save()
+	return {'add_item':item}

@@ -77,5 +77,11 @@ def convert(request):
 	if res.has_key('msg'):
 		return res
 		
-		
+	mediumId = gameConf['arena_dedium_id']
+	inv = usr.getInventory()
+	item = inf.addCountItem(mediumId, mediumCount)
+	inv.save()
+	if not item:
+		return {'msg':'fail_add_item'}
+	return {'add_item_array':item}
 	
