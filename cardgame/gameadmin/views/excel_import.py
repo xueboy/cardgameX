@@ -1262,22 +1262,88 @@ class excel_import:
 	@staticmethod
 	def drop_import(request):
 		if request.method == 'POST':
-			drop_file = request.FILES.get('drop_files')
-			if not dialog_file:
+			drop_file = request.FILES.get('drop_file')
+			if not drop_file:
 				return HttpResponse('掉落xlsx文件上传')
 				
-			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dialog_file.read())
-			sheet = wb.sheet_by_index(2)
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drop_file.read())
+			sheet = wb.sheet_by_index(0)
 			conf = {}
 			for rownum in range(3, sheet.nrows):
 				row = sheet.row_values(rownum)
 				dropid = row[0]
 				dropstr = row[1]
 				
+				conf[dropid] = excel_import.make_drop_dic(dropstr)
+			
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('drop_import')
+				
 	@staticmethod
 	def make_drop_dic(s):
-		pass
+		dic = []
+		item = s.split(',')
+		for i in item:
+			f = i.split(':')
+			if f[0] == 'card':
+				dic.append(excel_import.drop_card(f))
+			elif f[0] == 'sk':
+				dic.append(excel_import.drop_skill(f))
+			elif f[0] == 'eq':
+				dic.append(excel_import.drop_equipment(f))
+			elif f[0] == 'item':
+				dic.append(excel_import.drop_item(f))
+			elif f[0] == 'stone':
+				dic.append(excel_import.drop_stone(f))
+			elif f[0] == 'gem':
+				dic.append(excel_import.drop_gem(f))
+			elif f[0] == 'st':
+				dic.append(excel_import.drop_stamina(f))
+			elif f[0] == 'sp':
+				dic.append(excel_import.drop_sp(f))
+			elif f[0] == 'exp':
+				dic.append(excel_import.drop_exp(f))
+			else:
+				dic.append({'unknow':i})			
+			
+		return dic
 		
+	@staticmethod
+	def drop_card(arr):
+		return {'type':'card', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod		
+	def drop_skill(arr):	
+		return {'type':'sk', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_equipment(arr):
+		return {'type':'eq', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_item(arr):
+		return {'type':'item', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_stone(arr):
+		return {'type':'stone', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_gem(arr):
+		return {'type':'gem','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod
+	def drop_stamina(arr):
+		return {'type':'st','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod		
+	def drop_sp(arr):
+		return {'type':'sp','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod		
+	def drop_exp(arr):
+		return {'type':'exp','probability':arr[2],'count':arr[3]}
+	
 	
 	@staticmethod
 	def dialog_import(request):
@@ -1354,27 +1420,38 @@ class excel_import:
 				mainType = row[2]
 				type = row[3]
 				level = int(row[4])
-				nextId = row[5]
-				image = row[6]
-				repeatCount = int(row[7])
-				talkId = row[8]
-				getType = int(row[9])
-				getValue = row[10]
-				newType = int(row[19])
-				newValue = row[20]
+				isFirst = int(row[5])
+				nextId = row[6]
+				image = row[7]
+				repeatCount = int(row[8])
+				talkId = row[9]
+				getType = int(row[10])
+				getValue = row[11]
+				trigerIcon = row[20]
+				dropid = row[21]
+				desc = row[30]
+				isOpen = row[31]
+				beginTime = row[32]
+				endTime = row[33]
+				
 				
 				questConf = {}
 				questConf['name'] = name
 				questConf['mainType'] = mainType
 				questConf['type'] = type
 				questConf['level'] = level
+				questConf['isFirst'] = isFirst
 				questConf['nextId'] = nextId
 				questConf['repeatCount'] = repeatCount
 				questConf['talkId'] = talkId
 				questConf['getType'] = getType
 				questConf['getValue'] = getValue
-				questConf['newType'] = newType
-				questConf['newValue'] = newValue
+				questConf['trigerIcon'] = trigerIcon
+				questConf['dropid'] = dropid
+				questConf['desc'] = desc
+				questConf['isOpen'] = isOpen
+				questConf['beginTime'] = beginTime
+				questConf['endTime'] = endTime
 				conf[questid] = questConf
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('quest_import')

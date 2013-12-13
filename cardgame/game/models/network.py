@@ -6,7 +6,7 @@ from game.utility.config import config
 class network(object):
 	
 	def init(self):
-		return
+		pass
 		
 	
 	def __init__(self):

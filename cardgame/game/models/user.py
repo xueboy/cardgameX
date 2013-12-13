@@ -6,6 +6,7 @@ from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
 from game.models.almanac import almanac
+from game.models.quest import quest
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
@@ -36,6 +37,7 @@ class user(gcuser):
 		self.inv = None
 		self.network = None
 		self.almanac = None
+		self.quest = None
 		self.garcha = garcha.make()
 		self.notify = {}
 		self.gender = 'male'
@@ -181,6 +183,8 @@ class user(gcuser):
 		al = self.getAlmanac()
 		data.update(al.getClientData())
 		data.update(garcha.getClientData(self, gameConf))
+		qt = self.getQuest()
+		data.update(qt.getClientData())
 		return data
 		
 	def load(self, roleid, data):
@@ -217,11 +221,10 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getDungeon(self):
-		if self.dun != None:
-			return self.dun
-			
+		if self.dun:
+			return self.dun			
 		dun = dungeon.get(self.id)
-		if dun == None:	
+		if not dun:	
 			dun = dungeon()
 			dun.init()
 			dun.install(self.id)
@@ -231,10 +234,10 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getInventory(self):
-		if self.inv != None:
+		if self.inv:
 			return self.inv		
 		inv = inventory.get(self.id)
-		if inv == None:
+		if not inv:
 			inv = inventory()
 			inv.init()
 			inv.install(self.id)
@@ -244,10 +247,10 @@ class user(gcuser):
 		
 	@retrieval_object
 	def getNetwork(self):
-		if self.network != None:
+		if self.network:
 			return self.network
 		nt = network.get(self.id)
-		if nt == None:
+		if not nt:
 			nt = network()
 			nt.init()
 			nt.install(self.id)
@@ -257,16 +260,29 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getAlmanac(self):
-		if self.almanac != None:
+		if self.almanac:
 			return self.almanac
 		al = almanac.get(self.id)
-		if al == None:
+		if not al:
 			al = almanac()
 			al.init()
 			al.install(self.id)
 		al.user = self
 		self.almanac = al
 		return self.almanac
+		
+	@retrieval_object
+	def getQuest(self):
+		if self.quest:
+			return self.quest
+		qt = quest.get(self.id)
+		if not qt:
+			qt = quest()
+			qt.init()
+			qt.install(self.id)
+		qt.user = self
+		self.quest = qt
+		return self.quest
 	
 	def updateStamina(self):
 		"""
