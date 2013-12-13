@@ -116,3 +116,10 @@ def day_diff(t1, t2):
 	d1 = datetime.datetime(t1)
 	d2 = datetime.datetime(t2)
 	return (d1 - d2).days
+
+def str_to_time(s):
+	return datetime.strptime('%Y-%m-%d %H:%M:%S').now()
+	
+def time_to_str(t):
+	return datetime.strftime(t, '%Y-%m-%d %H:%M:%S')
+	
