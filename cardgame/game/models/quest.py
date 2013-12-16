@@ -74,7 +74,7 @@ class quest(object):
 				if self.finish[questid]['count'] >= questInfo['repeatCount']:
 					return False
 				break
-			if q['nextId'] == questid:
+			if questInfo['nextId'] == questid:
 				alreadyFinishPre = True
 		
 		for questid in self.current:
@@ -249,9 +249,8 @@ class quest(object):
 			if questInfo['finishType'] == 'friend_count':
 				usrNt = usr.getNetwork()
 				if len(usrNt.friend) >= questInfo['finishValue']:
-					self.current[questid]['finish'] = 1
-		
-						notify_finish_quest(usr, questid)
+					self.current[questid]['finish'] = 1		
+					notify_finish_quest(usr, questid)
 					self.finish.append(questid)
 					del self.current[questid]
 		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
