@@ -6,6 +6,7 @@ import xlrd
 from xlrd import USE_MMAP
 from django.http import HttpResponse
 from gclib.json import json
+from gclib.utility import str_to_time
 
 class excel_import:
 	@staticmethod
@@ -1425,8 +1426,8 @@ class excel_import:
 				image = row[7]
 				repeatCount = int(row[8])
 				talkId = row[9]
-				getType = int(row[10])
-				getValue = row[11]
+				finishType = int(row[10])
+				finishValue = row[11]
 				trigerIcon = row[20]
 				dropid = row[21]
 				desc = row[30]
@@ -1444,17 +1445,63 @@ class excel_import:
 				questConf['nextId'] = nextId
 				questConf['repeatCount'] = repeatCount
 				questConf['talkId'] = talkId
-				questConf['getType'] = getType
-				questConf['getValue'] = getValue
+				questConf['finishType'] = excel_import.quest_get_cond_str(finishType)
+				questConf['finishValue'] = excel_import.quest_get_conf_value(questConf['finishType'], finishValue)
 				questConf['trigerIcon'] = trigerIcon
 				questConf['dropid'] = dropid
 				questConf['desc'] = desc
 				questConf['isOpen'] = isOpen
-				questConf['beginTime'] = beginTime
-				questConf['endTime'] = endTime
+				questConf['beginTime'] = ''
+				if beginTime:
+					questConf['beginTime'] = str_to_time(beginTime)
+				questConf['endTime'] = ''
+				if endTime:
+					questConf['endTime'] = str_to_time(endTime)
 				conf[questid] = questConf
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('quest_import')
+		
+	@staticmethod
+	def quest_get_cond_str(v):
+		if v == 1:
+			return 'dungeon_id'
+		if v == 2:
+			return 'talk_npc_id'
+		if v == 3:
+			return 'charge_cumulate'
+		if v == 4:
+			return 'world_talk_count'
+		if v == 5:
+			return 'friend_count'
+		if v == 6:
+			return 'vip_item_buy_count'
+		if v == 7:
+			return 'arena_win_count'
+		if v == 8:
+			return 'dungeon_win_count'
+		return ''
+	
+	@staticmethod
+	def quest_get_conf_value(v, value):
+		if v == 'dungeon_id':
+			return value
+		if v == 'talk_npc_id':
+			return value
+		if v == 'charge_cumulate':
+			return int(value)
+		if v == 'world_talk_count':
+			return int(value)
+		if v == 'friend_count':
+			return int(value)
+		if v == 'vip_item_buy_count':
+			s = v.split(',')
+			return [s[0], int(s[1])]
+		if v == 'arena_win_count':
+			return int(value)
+		if v == 'dungeon_win_count':
+			return int(value)
+		
+		
 	
 	@staticmethod
 	def item_import(request):

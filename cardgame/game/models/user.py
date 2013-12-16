@@ -342,7 +342,9 @@ class user(gcuser):
 				self.notify['luckycat_notify'] = self.luckycat				
 		nw = self.getNetwork()
 		nw.updateFriendData()
-		educate.levelup_update(self, gameConf)		
+		educate.levelup_update(self, gameConf)
+		qt = self.getQuest()
+		qt.updateQuest(True)
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')

@@ -22,6 +22,7 @@ import game.views.stone
 import game.views.educate
 import game.views.skill
 import game.views.arena
+import game.views.quest
 
 
 viewsmap = {
@@ -36,6 +37,7 @@ viewsmap = {
 	'educate': sys.modules['game.views.educate'],
 	'skill': sys.modules['game.views.skill'],
 	'arena' : sys.modules['game.views.arena'],
+	'quest' : sys.modules['game.views.quest'],
 }
 
 def index(request):

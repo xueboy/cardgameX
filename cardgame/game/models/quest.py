@@ -36,10 +36,10 @@ class quest(object):
 	def makeQuest(questid):
 		return {'count':0, 'create_time':currentTime()}
 			
-	def updateQuest(self):
+	def updateQuest(self, isNotify=False):
 		newQuest = self.getAvailableQuest()
 		for quest_id in newQuest:
-			self.accept(quest_id, False)
+			self.accept(quest_id, isNotify)
 		self.save()
 			
 				
@@ -65,6 +65,9 @@ class quest(object):
 		if questInfo['level'] > usr.level:
 			return False
 			
+		if not quest.isActive(questInfo):
+			return False
+			
 		for questid in self.finish:
 			if qid == questid:
 				alreadyFinish = True
@@ -84,6 +87,9 @@ class quest(object):
 	def dayIsAvailable(self, usr, qid, questInfo):				
 		if questInfo['level'] > usr.level:
 			return False
+		
+		if not quest.isActive(questInfo):
+			return False
 		alreadyFinishPre = questInfo['isFirst']			
 			
 		if not alreadyFinishPre:
@@ -93,32 +99,163 @@ class quest(object):
 						return True
 		return False 
 			
-	def accept(self, questid, isNotify=True):
+	def acceptQuest(self, questid, isNotify=True):
+		
+		questConf = config.getConfig('quest')
+		questInfo = questConf[questid]
+		if not self.canAccept(questInfo):
+			return {'msg':'quest_can_not_accept'}
+		
 		q = quest.makeQuest(questid)
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
-			if not usr.notify['quest_notify']:
-				usr.notify['quest_notify'] = {}			
-			if not usr.notify['quest_notify']['add_quest']:
-				usr.notify['quest_notify']['add_quest'] = []
-			usr.notify['quest_notify']['add_quest'][questid] = q
-			usr.save()
+			quest.notify_add_quest(q)			
 		self.save()
-		
-	def addQuest(self, questid):		
-		if self.canAccept(questid):
-			self.accept(questid)
+		return q		
 	
 	@staticmethod
-	def isOpen(questInfo):
+	def notify_add_quest(usr, q):
+		if not usr.notify.has_key('quest_notify'):
+			usr.notify['quest_notify'] = {}			
+			if not usr.notify['quest_notify']['add_quest']:
+				usr.notify['quest_notify']['add_quest'] = {}
+			usr.notify['quest_notify']['add_quest'][questid] = q
+			usr.save()
+			
+	@staticmethod
+	def notify_finish_quest(usr, questid):
+		if not usr.notify.has_key('quest_notify'):			
+			usr.notify['quest_notify'] = {}			
+			if not usr.notify['quest_notify'].has_key('finish_quest'):
+				usr.notify['quest_notify']['finish_quest'] = []
+			usr.notify['quest_notify']['finish_quest'].append(questid)
+			usr.save()
+	
+	@staticmethod
+	def isActive(questInfo):
+		"""
+		is in active duration
+		"""
 		if not questInfo['isOpen']:
-			return false
+			return False
+		
+		now = currentTime()
+		if now < questInfo['beginTime']:
+			return False
+		if now > questInfo['endTime']:
+			return False
+		return True
+			
+		
+	def canAccept(self, questInfo):		
+		usr = self.user
+		
+		if usr.level < questInfo['level']:
+			return False		
+		if not self.isActive(questInfo):
+			return False
+
+		if not questInfo['isFirst']:
+			alreadyFinishPre = False
+			for q in self.finish:
+				if self.finish[q]['nextId'] == questInfo['questid']:
+					alreadyFinishPre = True
+					break
+			if not alreadyFinishPre:
+				return False		
+		return True
+		
+	@staticmethod
+	def isFinish(questid,q):
+		questConf = config.getConfig('quest')
+		questInfo = questConf[questid]
+		if questInfo['finishType'] == 'talk_npc_id':
+			return True
+		elif q.	has_key('finish') and q['finish'] == 1:
+			return True
 		
 		
-	def canAccept(self, questid):
-		return true
+	def finishQuest(self, questid):
+		if not self.current.has_key(questid):
+			return {'msg':'quest_not_exist'}
+		q = self.current[questid]
+		usr = self.user
+		if not quest.isFinish(questid, q):
+			return {'msg':'quest_not_finish'}
+		self.finish[questid] = q
+	#	quest.notify_finish_quest(usr, questid)
+		del self.current[questid]
+		self.save()	
+		return {'finish_quest':questid}
+	
+	def updateFinishDungeonQuest(self, dungeonId):		
+		questConf = config.getConfig('quest')
+		usr = self.user		
+		for questid in self.current:
+			questInfo = questConf[questid]
+			if questInfo['finishType'] == 'dungeon_id':
+				if dungeonId == questInfo['finishValue']:
+					self.current[questid]['dungeon_id'] = dungeonId
+					self.current[questid]['finish'] = 1
+					notify_finish_quest(usr, questid)
+					self.finish.append(q)
+					del self.current[questid]
+		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
+		self.save()
 		
+	def updateFinishNpcQuest(self):
+		pass
+	
+	def udpateFinishChardgeQuest(self, amount):
+		questConf = config.getConfig('quest')
+		usr = self.user		
+		for questid in self.current:
+			questInfo = questConf[questid]
+			if questInfo['finishType'] == 'charge_cumulate':
+				if not self.current[questid].has_key('charge_count'):
+					self.current[questid]['charge_count'] = 0
+				self.current[questid]['charge_count'] = self.current[questid]['charge_count'] + amount
+				if self.current[questid]['charge_count'] >= questInfo['finishValue']:
+					self.current[questid]['finish'] = 1
+					notify_finish_quest(usr, questid)
+					self.finish.append(questid)		
+					del self.current[questid]
+		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
+		self.save()
+		
+	def updateFinishWorldTalkQuest(self):
+		questConf = config.getConfig('quest')
+		usr = self.user		
+		for questid in self.current:
+			questInfo = questConf[questid]
+			if questInfo['finishType'] == 'world_talk_count':
+				if not self.current[questid].has_key('world_talk_count'):
+					self.current[questid]['world_talk_count'] = 0
+				self.current[questid]['world_talk_count'] = self.current[questid]['world_talk_count'] + 1
+				if self.current[questid]['world_talk_count'] >= questInfo['finishValue']:
+					self.current[questid]['finish'] = 1
+					notify_finish_quest(usr, questid)
+					self.finish.append(questid)
+					del self.current[questid]
+		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
+		self.save()
+		
+	def udpateFinishFriendQuest(self):
+		questConf = config.getConfig('quest')
+		usr = self.user
+		for questid in self.current:
+			questInfo = questConf[questid]
+			if questInfo['finishType'] == 'friend_count':
+				usrNt = usr.getNetwork()
+				if len(usrNt.friend) >= questInfo['finishValue']:
+					self.current[questid]['finish'] = 1
+		
+						notify_finish_quest(usr, questid)
+					self.finish.append(questid)
+					del self.current[questid]
+		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
+		self.save()
 	
 		
-			
+	
