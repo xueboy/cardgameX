@@ -30,7 +30,27 @@ class quest(object):
 	
 	def getClientData(self):
 		self.updateQuest()
-		return {'quest_current':self.current}	
+		current = {}
+		for q in self.current:
+			t = self.current[q].copy()
+			
+			if t.has_key('charge_count'):
+				t['count'] = t['charge_count']
+				del t['charge_count']
+			if t.has_key('world_talk_count'):
+				t['count'] = t['world_talk_count']
+				del t['world_talk_count']
+			if t.has_key('vip_item_buy_count'):
+				t['count'] = t['vip_item_buy_count']
+				del t['vip_item_buy_count']
+			if t.has_key('arena_win_count'):
+				t['count'] = t['arena_win_count']
+				del t['arena_win_count']
+			if t.has_key('dungeon_count'):
+				t['count'] = t['dungeon_count']
+				del t['dungeon_count']
+			current[q] = t
+		return {'quest_current':current}	
 	
 	@staticmethod
 	def makeQuest(questid):
@@ -198,10 +218,9 @@ class quest(object):
 				if dungeonId == questInfo['finishValue']:
 					self.current[questid]['dungeon_id'] = dungeonId
 					self.current[questid]['finish'] = 1
-					notify_finish_quest(usr, questid)
-					self.finish.append(q)
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
 		self.save()
 		
 	def updateFinishNpcQuest(self):
@@ -218,10 +237,9 @@ class quest(object):
 				self.current[questid]['charge_count'] = self.current[questid]['charge_count'] + amount
 				if self.current[questid]['charge_count'] >= questInfo['finishValue']:
 					self.current[questid]['finish'] = 1
-					notify_finish_quest(usr, questid)
-					self.finish.append(questid)		
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
 		self.save()
 		
 	def updateFinishWorldTalkQuest(self):
@@ -235,10 +253,9 @@ class quest(object):
 				self.current[questid]['world_talk_count'] = self.current[questid]['world_talk_count'] + 1
 				if self.current[questid]['world_talk_count'] >= questInfo['finishValue']:
 					self.current[questid]['finish'] = 1
-					notify_finish_quest(usr, questid)
-					self.finish.append(questid)
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
 		self.save()
 		
 	def udpateFinishFriendQuest(self):
@@ -250,11 +267,55 @@ class quest(object):
 				usrNt = usr.getNetwork()
 				if len(usrNt.friend) >= questInfo['finishValue']:
 					self.current[questid]['finish'] = 1		
-					notify_finish_quest(usr, questid)
-					self.finish.append(questid)
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.current = filter(lambda q: q.has_key('finish') and q['finish'], self.current)
 		self.save()
 	
+	def updateVipItemBuyQuest(self, item_id, item_count):
+		questConf = config.getConfig('quest')
+		usr = self.user
+		for questid in self.current:
+			questInfo = questConf[questid]
+			q = self.current[questid]
+			if questInfo['finishType'] == 'vip_item_buy_count':				
+				if not q.has_key('vip_item_count'):
+					self.q['vip_item_buy_count'] = 0
+				q['vip_item_buy_count'] = q['vip_item_buy_count'] + 1
+				if q['vip_item_buy_count'] >= questInfo['finishValue']:
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]			
+		self.save()
 		
-	
+	def updateArenaWinQuest(self):
+		questConf = config.getConfig('quest')
+		usr = self.user
+		for questid in self.current:
+			questInfo = questConf[questid]
+			q = self.current[questid]
+			if questInfo['finishType'] == 'arena_win_count':				
+				if not q.has_key('vip_item_count'):
+					self.q['arena_win_count'] = 0
+				q['arena_win_count'] = q['arena_win_count'] + 1
+				if q['arena_win_count'] >= questInfo['finishValue']:
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]			
+		self.save()
+		
+	def updateDungeonCountQuest(self):
+		questConf = config.getConfig('quest')
+		usr = self.user
+		for questid in self.current:
+			questInfo = questConf[questid]
+			q = self.current[questid]
+			if questInfo['finishType'] == 'dungeon_win_count':				
+				if not q.has_key('dungeon_count'):
+					q['dungeon_count'] = 0
+				q['dungeon_count'] = q['dungeon_count'] + 1
+				if q['dungeon_count'] >= questInfo['finishValue']:
+					quest.notify_finish_quest(usr, questid)
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]					
+		self.save()

@@ -105,6 +105,8 @@ def end(request):
 						dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}
 					data['last_dungeon'] = dun.last_dungeon
+					qt = usr.getQuest()
+					qt.updateDungeonCountQuest()
 					dun.save()
 					return data
 					
