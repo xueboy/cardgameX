@@ -132,7 +132,21 @@ class quest(object):
 		if isNotify:
 			quest.notify_add_quest(q)			
 		self.save()
-		return q		
+		return {'accept_quest':q}
+		
+	def acceptNextQuest(self, questInfo):
+		questConf = config.getConfig('quest')
+		questInfo = questConf[questid]
+		if not self.canAccept(questInfo):
+			return None
+		
+		q = quest.makeQuest(questid)
+		usr = self.user
+		self.current[questid] = q
+		if isNotify:
+			quest.notify_add_quest(q)			
+		self.save()
+		return q
 	
 	@staticmethod
 	def notify_add_quest(usr, q):
@@ -206,8 +220,15 @@ class quest(object):
 		self.finish[questid] = q
 	#	quest.notify_finish_quest(usr, questid)
 		del self.current[questid]
+		questConf = config.getConfig('quest')
+		questInfo = questConf[questid]		
+		newQuest = self.acceptNextQuest(questInfo)
 		self.save()	
-		return {'finish_quest':questid}
+		data = {}
+		data['finish_quest'] = questid
+		if newQuest:
+			data['accept_quest'] = newQuest		
+		return data
 	
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
 		questConf = config.getConfig('quest')
