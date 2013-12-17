@@ -60,7 +60,7 @@ class config(gcconfig):
 		if confname == 'drama':
 			return conf
 		if confname == 'quest':
-			return conf
+			return config.questFilter(conf)
 		return None
 	
 	
@@ -141,4 +141,21 @@ class config(gcconfig):
 		data = {}
 		data['visitGold'] = conf['visitGold']
 		data['visitGem'] = conf['visitGem']		
+		return data
+		
+		
+	@staticmethod
+	def questFilter(conf):
+		data = {}
+		for questid in conf:
+			q = conf[questid].copy()
+			
+			if isinstance(q['finishValue'], list):
+				q['finishValue'] = []			
+				for e in conf[questid]['finishValue']:
+					q['finishValue'].append(str(e))
+			else: 
+				q['finishValue'] = [str(conf[questid]['finishValue'])]
+					
+			data[questid] = q
 		return data

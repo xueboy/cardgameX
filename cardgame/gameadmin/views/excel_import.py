@@ -1451,10 +1451,10 @@ class excel_import:
 				questConf['dropid'] = dropid
 				questConf['desc'] = desc
 				questConf['isOpen'] = isOpen
-				questConf['beginTime'] = ''
+				questConf['beginTime'] = 0
 				if beginTime:
 					questConf['beginTime'] = str_to_time(beginTime)
-				questConf['endTime'] = ''
+				questConf['endTime'] = 0
 				if endTime:
 					questConf['endTime'] = str_to_time(endTime)
 				conf[questid] = questConf
@@ -1484,7 +1484,7 @@ class excel_import:
 	@staticmethod
 	def quest_get_conf_value(v, value):
 		if v == 'dungeon_id':
-			return value
+			return value.split(',')[0:1]
 		if v == 'talk_npc_id':
 			return value
 		if v == 'charge_cumulate':

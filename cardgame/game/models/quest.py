@@ -209,14 +209,15 @@ class quest(object):
 		self.save()	
 		return {'finish_quest':questid}
 	
-	def updateFinishDungeonQuest(self, dungeonId):		
+	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
 		questConf = config.getConfig('quest')
 		usr = self.user		
 		for questid in self.current:
 			questInfo = questConf[questid]
-			if questInfo['finishType'] == 'dungeon_id':
+			if questInfo['finishType'][0] == 'dungeon_id' and questInfo['finishType'][1] == 'fieldId':
 				if dungeonId == questInfo['finishValue']:
 					self.current[questid]['dungeon_id'] = dungeonId
+					self.current[questid]['field+id'] = fieldId
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]

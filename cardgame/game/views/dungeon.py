@@ -107,6 +107,7 @@ def end(request):
 					data['last_dungeon'] = dun.last_dungeon
 					qt = usr.getQuest()
 					qt.updateDungeonCountQuest()
+					qt.updateFinishDungeonQuest(battleId, fieldId)
 					dun.save()
 					return data
 					
