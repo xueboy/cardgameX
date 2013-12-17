@@ -226,13 +226,14 @@ class quest(object):
 		del self.current[questid]
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
-		newQuest = self.acceptNextQuest(questInfo)
-		self.save()
-		#award here
+		newQuest = self.acceptNextQuest(questInfo)	
+		
 		data = {}
 		data['finish_quest'] = questid
 		if newQuest:
 			data['accept_quest'] = newQuest		
+		data = drop.open(usr, questInfo['dropid'], data)		
+		self.save()
 		return data
 	
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		

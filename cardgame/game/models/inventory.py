@@ -112,6 +112,17 @@ class inventory(object):
 			self.equipment.append(data)
 			return data
 		return None
+	def addEquipmentCount(self, equipmentid, cnt):
+		equipmentConf = config.getConfig('equipment')
+		equipment = []
+		for i in range(cnt):
+			if equipmentConf.has_key(equipmentid):
+				data = {}
+				data['equipmentid'] = equipmentid
+				data['id'] = self.generateEquipmentName()			
+				self.equipment.append(data)
+				equipment.append(data)			
+		return equipment
 		
 	def depositEquipment(self, equipment):
 		self.equipment.append(equipment)
@@ -406,7 +417,7 @@ class inventory(object):
 		self.item.append(it)
 		return it
 	
-	def addCountItem(self, itemid, cnt):
+	def addItemCount(self, itemid, cnt):
 		itemConf = config.getConfig('item')
 		itemInfo = itemConf[itemid]
 		
