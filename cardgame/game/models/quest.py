@@ -259,13 +259,12 @@ class quest(object):
 					del self.current[questid]
 		self.save()
 		
-	def udpateFinishFriendQuest(self):
+	def udpateFinishFriendQuest(self, usrNt):
 		questConf = config.getConfig('quest')
 		usr = self.user
 		for questid in self.current:
 			questInfo = questConf[questid]
-			if questInfo['finishType'] == 'friend_count':
-				usrNt = usr.getNetwork()
+			if questInfo['finishType'] == 'friend_count':				
 				if len(usrNt.friend) >= questInfo['finishValue']:
 					self.current[questid]['finish'] = 1		
 					quest.notify_finish_quest(usr, questid)

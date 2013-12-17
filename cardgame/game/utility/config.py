@@ -148,8 +148,7 @@ class config(gcconfig):
 	def questFilter(conf):
 		data = {}
 		for questid in conf:
-			q = conf[questid].copy()
-			
+			q = conf[questid].copy()			
 			if isinstance(q['finishValue'], list):
 				q['finishValue'] = []			
 				for e in conf[questid]['finishValue']:
