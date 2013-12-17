@@ -30,7 +30,7 @@ class quest(object):
 	
 	def getClientData(self):
 		self.updateQuest()
-		current = {}
+		current = {}		
 		for q in self.current:
 			t = self.current[q].copy()
 			
@@ -59,7 +59,7 @@ class quest(object):
 	def updateQuest(self, isNotify=False):
 		newQuest = self.getAvailableQuest()
 		for quest_id in newQuest:
-			self.accept(quest_id, isNotify)
+			self.acceptQuest(quest_id, isNotify)
 		self.save()
 			
 				
@@ -81,13 +81,14 @@ class quest(object):
 		newQuest = []		
 		alreadyAccept = False
 		alreadyFinishPre = False
-		alreadyFinish = False		
+		alreadyFinish = False			
 		if questInfo['level'] > usr.level:
 			return False
-			
+    
+	
 		if not quest.isActive(questInfo):
 			return False
-			
+		
 		for questid in self.finish:
 			if qid == questid:
 				alreadyFinish = True
@@ -174,11 +175,14 @@ class quest(object):
 		if not questInfo['isOpen']:
 			return False
 		
+		
 		now = currentTime()
-		if now < questInfo['beginTime']:
-			return False
-		if now > questInfo['endTime']:
-			return False
+		if questInfo['beginTime']:
+			if now < questInfo['beginTime']:
+				return False
+		if questInfo['endTime']:
+			if now > questInfo['endTime']:
+				return False
 		return True
 			
 		
