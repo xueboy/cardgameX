@@ -212,7 +212,7 @@ class inventory(object):
 				sk_slot['t' + str(i)] = skill.make_sk_slot()
 		return sk_slot
 	
-	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
+	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk):
 		
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
@@ -249,10 +249,6 @@ class inventory(object):
 		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
 			return {'msg':'level_required'}	
 			
-		deq = []
-		dst = []
-		dsk = []
-		
 		deq1, dst1, dsk1 = self.setTeamEquipmentStoneSkill(cardid1, 0, gameConf)
 		deq2, dst2, dsk2 = self.setTeamEquipmentStoneSkill(cardid2, 1, gameConf)
 		deq3, dst3, dsk3 = self.setTeamEquipmentStoneSkill(cardid3, 2, gameConf)
@@ -278,7 +274,7 @@ class inventory(object):
 		dsk.extend(dsk5)
 
 		self.save()
-		return self.team, deq, dst, dsk
+		return None
 	
 	
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
@@ -318,6 +314,21 @@ class inventory(object):
 		st['exp'] = 0
 		self.stone.append(st)
 		return st
+		
+	def addStoneCount(self, stoneid, cnt):
+		stoneConf = config.getConfig('stone')
+		
+		stone = []
+		stoneInfo = stoneConf[stoneid]		
+		for i in range(cnt):
+			st = {}
+			st['stoneid'] = stoneid
+			st['id'] = self.generateStoneName()
+			st['level'] = 1
+			st['exp'] = 0
+			self.stone.append(st)
+			stone.append(st)
+		return stone
 		
 	def getStone(self, id):					
 		for st in self.stone:

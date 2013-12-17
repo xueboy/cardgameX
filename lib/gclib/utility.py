@@ -89,6 +89,9 @@ def drop(weight):
 def randint():
 	return random.randint(0, 10000)
 
+def randbigint():
+	return random.randint(0, 1000000)
+
 def retrieval_object(func):
 	"""
 	mark this funtion return a object whitch need to save db.

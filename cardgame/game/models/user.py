@@ -318,6 +318,9 @@ class user(gcuser):
 	def onInit(self):
 		self.onLevelup()		
 
+	def chargeStamina(self, point):
+		self.stamina = self.stamina + point
+	
 	def costStamina(self, point):
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:

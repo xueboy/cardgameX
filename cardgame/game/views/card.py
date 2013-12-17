@@ -15,9 +15,16 @@ def set_team(request):
 	cardid4 = request.GET['card_id4']
 	cardid5 = request.GET['card_id5']
 	cardid6 = request.GET['card_id6']
-	team, deq, dst, dsk = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
+	
+	dep = []
+	dst = []
+	dsk = []
+	
+	msg = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk)
+	if msg:
+		return msg
 	data = {}
-	data['team'] = team
+	data['team'] = inv.team
 	data['slot'] = inv.getSlots()
 	data['st_slot'] = inv.getStSlots()
 	data['sk_slot'] = inv.getSkSlots()

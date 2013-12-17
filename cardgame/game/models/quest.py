@@ -11,6 +11,7 @@ class quest(object):
 		object.__init__(self)
 		self.finish = {}
 		self.current = {}
+		self.drama = {}
 		
 	def init(self):
 		pass
@@ -20,6 +21,7 @@ class quest(object):
 		data = {}
 		data['finish'] = self.finish
 		data['current'] = self.current
+		data['drama'] = self.drama
 		return data
 		
 		
@@ -27,6 +29,7 @@ class quest(object):
 		object.load(self, roleid, data)
 		self.finish = data['finish']
 		self.current = data['current']
+		self.drama = data['drama']
 	
 	def getClientData(self):
 		self.updateQuest()
@@ -50,7 +53,7 @@ class quest(object):
 				t['count'] = t['dungeon_count']
 				del t['dungeon_count']
 			current[q] = t
-		return {'quest_current':current}	
+		return {'quest_current':current, 'quest_drama':self.drama}	
 	
 	@staticmethod
 	def makeQuest(questid):
@@ -131,7 +134,7 @@ class quest(object):
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
-			quest.notify_add_quest(q)			
+			quest.notify_add_quest(usr, q)			
 		self.save()
 		return {'accept_quest':q}
 		
@@ -145,7 +148,7 @@ class quest(object):
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
-			quest.notify_add_quest(q)			
+			quest.notify_add_quest(usr, q)
 		self.save()
 		return q
 	
@@ -173,8 +176,7 @@ class quest(object):
 		is in active duration
 		"""
 		if not questInfo['isOpen']:
-			return False
-		
+			return False		
 		
 		now = currentTime()
 		if questInfo['beginTime']:
@@ -183,8 +185,7 @@ class quest(object):
 		if questInfo['endTime']:
 			if now > questInfo['endTime']:
 				return False
-		return True
-			
+		return True			
 		
 	def canAccept(self, questInfo):		
 		usr = self.user
@@ -193,7 +194,6 @@ class quest(object):
 			return False		
 		if not self.isActive(questInfo):
 			return False
-
 		if not questInfo['isFirst']:
 			alreadyFinishPre = False
 			for q in self.finish:
@@ -227,7 +227,8 @@ class quest(object):
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
 		newQuest = self.acceptNextQuest(questInfo)
-		self.save()	
+		self.save()
+		#award here
 		data = {}
 		data['finish_quest'] = questid
 		if newQuest:
