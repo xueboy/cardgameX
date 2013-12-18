@@ -323,7 +323,12 @@ class user(gcuser):
 		inv.addCard('pet10001_4')
 		inv.addCard('pet10001_3')
 		inv.addCard('pet10001_4')
-		inv.team[0] = tc['id']
+		deq = []
+		dst = []
+		dsk = []
+		inv.setTeam(tc['id'], '', '', '', '', '', deq, dst, dsk)
+		
+	
 		self.onLevelup()		
 
 	def chargeStamina(self, point):
