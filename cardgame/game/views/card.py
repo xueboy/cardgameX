@@ -16,11 +16,11 @@ def set_team(request):
 	cardid5 = request.GET['card_id5']
 	cardid6 = request.GET['card_id6']
 	
-	dep = []
+	deq = []
 	dst = []
 	dsk = []
 	
-	msg = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk)
+	msg = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, deq, dst, dsk)
 	if msg:
 		return msg
 	data = {}
