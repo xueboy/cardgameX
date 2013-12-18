@@ -197,7 +197,7 @@ class quest(object):
 		if not questInfo['isFirst']:
 			alreadyFinishPre = False
 			for q in self.finish:
-				if self.finish[q]['questid'] == questInfo['nextId']:
+				if q == questInfo['nextId']:
 					alreadyFinishPre = True
 					break
 			if not alreadyFinishPre:
