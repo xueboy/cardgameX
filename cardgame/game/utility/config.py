@@ -45,6 +45,22 @@ class config(gcconfig):
 			return conf
 		if confname == 'almanac_combination':
 			return conf
+		if confname == 'reborn':
+			return conf
+		if confname == 'trp':
+			return conf
+		if confname == 'trp_price':
+			return conf
+		if confname == 'language':
+			return conf
+		if confname == 'drop':
+			return conf
+		if confname == 'dialog':
+			return conf
+		if confname == 'drama':
+			return conf
+		if confname == 'quest':
+			return config.questFilter(conf)
 		return None
 	
 	
@@ -125,4 +141,20 @@ class config(gcconfig):
 		data = {}
 		data['visitGold'] = conf['visitGold']
 		data['visitGem'] = conf['visitGem']		
+		return data
+		
+		
+	@staticmethod
+	def questFilter(conf):
+		data = {}
+		for questid in conf:
+			q = conf[questid].copy()			
+			if isinstance(q['finishValue'], list):
+				q['finishValue'] = []			
+				for e in conf[questid]['finishValue']:
+					q['finishValue'].append(str(e))
+			else: 
+				q['finishValue'] = [str(conf[questid]['finishValue'])]
+					
+			data[questid] = q
 		return data

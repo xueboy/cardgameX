@@ -6,6 +6,7 @@ from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
 from game.models.almanac import almanac
+from game.models.quest import quest
 from gclib.utility import currentTime, retrieval_object, is_expire
 from game.utility.config import config
 from game.models.massyell import massyell
@@ -36,6 +37,7 @@ class user(gcuser):
 		self.inv = None
 		self.network = None
 		self.almanac = None
+		self.quest = None
 		self.garcha = garcha.make()
 		self.notify = {}
 		self.gender = 'male'
@@ -51,6 +53,7 @@ class user(gcuser):
 		self.trp = 0
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
+		self.arena = {}
 		
 	
 	def init(self, acc):
@@ -63,6 +66,13 @@ class user(gcuser):
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
+		inv = self.getInventory()
+		tc = inv.addCard('pet10001_3')
+		inv.addCard('pet10001_4')
+		inv.addCard('pet10001_3')
+		inv.addCard('pet10001_4')
+		inv.team[0] = tc['id']
+		
 
 	
 	def getData(self):	
@@ -92,6 +102,7 @@ class user(gcuser):
 		data['trp'] = self.trp
 		data['stv'] = self.stv
 		data['stv_gem'] = self.stv_gem
+		data['arena'] = self.arena
 		return data
 		
 	def getClientData(self):
@@ -112,7 +123,7 @@ class user(gcuser):
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
 		usrData['trp'] = self.trp
-		usrData['stv'] = self.stv
+		usrData['stv'] = self.stv	
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
@@ -148,8 +159,26 @@ class user(gcuser):
 		data['member'] = teamCardid
 		return data
 		
-	def getLoginData(self):
+	def getBattleData(self):
 		data = {}
+		inv = self.getInventory()
+		data['roleid'] = self.roleid
+		data['level'] = self.level
+		data['name'] = self.name
+		data['team'] = inv.team
+		data['team_card'] = []
+		for cid in inv.team:
+			if cid:
+				data['team_card'].append(inventory.getClientCard(inv.getCard(cid)))																											
+			else:
+				data['team_card'].append({})
+		data['slot'] = inv.getSlots()
+		data['st_slot'] = inv.getStSlots()
+		data['sk_slot'] = inv.getSkSlots()
+		return data
+		
+	def getLoginData(self, gameConf):
+		data = {}		
 		self.updateStamina()
 		data.update(self.getClientData())
 		dun = self.getDungeon()
@@ -160,10 +189,13 @@ class user(gcuser):
 		data.update(nw.getClientData())
 		al = self.getAlmanac()
 		data.update(al.getClientData())
+		data.update(garcha.getClientData(self, gameConf))
+		qt = self.getQuest()
+		data.update(qt.getClientData())
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
+		gcuser.load(self, roleid, data)
 		self.name = data['name']
 		self.level = data['level']
 		self.stamina = data['stamina']
@@ -185,21 +217,21 @@ class user(gcuser):
 		self.luckycat = data['luckycat']
 		self.trp = data['trp']
 		self.stv = data['stv']
+		self.garcha = data['garcha']
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
-			 
-		
+		self.arena = data['arena']
+			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no		
 	
 	@retrieval_object
 	def getDungeon(self):
-		if self.dun != None:
-			return self.dun
-			
+		if self.dun:
+			return self.dun			
 		dun = dungeon.get(self.id)
-		if dun == None:	
+		if not dun:	
 			dun = dungeon()
 			dun.init()
 			dun.install(self.id)
@@ -209,10 +241,10 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getInventory(self):
-		if self.inv != None:
+		if self.inv:
 			return self.inv		
 		inv = inventory.get(self.id)
-		if inv == None:
+		if not inv:
 			inv = inventory()
 			inv.init()
 			inv.install(self.id)
@@ -222,10 +254,10 @@ class user(gcuser):
 		
 	@retrieval_object
 	def getNetwork(self):
-		if self.network != None:
+		if self.network:
 			return self.network
 		nt = network.get(self.id)
-		if nt == None:
+		if not nt:
 			nt = network()
 			nt.init()
 			nt.install(self.id)
@@ -235,16 +267,29 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getAlmanac(self):
-		if self.almanac != None:
+		if self.almanac:
 			return self.almanac
 		al = almanac.get(self.id)
-		if al == None:
+		if not al:
 			al = almanac()
 			al.init()
 			al.install(self.id)
 		al.user = self
 		self.almanac = al
 		return self.almanac
+		
+	@retrieval_object
+	def getQuest(self):
+		if self.quest:
+			return self.quest
+		qt = quest.get(self.id)
+		if not qt:
+			qt = quest()
+			qt.init()
+			qt.install(self.id)
+		qt.user = self
+		self.quest = qt
+		return self.quest
 	
 	def updateStamina(self):
 		"""
@@ -280,6 +325,9 @@ class user(gcuser):
 	def onInit(self):
 		self.onLevelup()		
 
+	def chargeStamina(self, point):
+		self.stamina = self.stamina + point
+	
 	def costStamina(self, point):
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:
@@ -304,7 +352,9 @@ class user(gcuser):
 				self.notify['luckycat_notify'] = self.luckycat				
 		nw = self.getNetwork()
 		nw.updateFriendData()
-		educate.levelup_update(self, gameConf)		
+		educate.levelup_update(self, gameConf)
+		qt = self.getQuest()
+		qt.updateQuest(True)
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')

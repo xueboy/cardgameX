@@ -22,7 +22,6 @@ class educate:
 			return {'msg':'educate_card_already_educate'}
 						
 		gameConf = config.getConfig('game')
-		educateGradeConf = config.getConfig('educate_grade')		
 		educateConf = config.getConfig('educate')
 		
 		educateInfo = educateConf[usr.level - 1]		
@@ -37,8 +36,7 @@ class educate:
 		slot['start_level'] = usr.level
 		slot['last_update_time'] = now
 		slot['fraction'] = 0.0
-		slot['expptm'] = educateInfo['expptm']		
-		slot['rate'] = educateGradeConf[usr.educate['edt']]['rate']
+		slot['expptm'] = educateInfo['expptm']				
 		slot['edt'] = usr.educate['edt']
 		
 		usr.gold = usr.gold - goldCost
@@ -50,7 +48,7 @@ class educate:
 	def stop(usr, edupos):
 		gameConf = config.getConfig('game')
 		educate.update_exp(usr, gameConf)
-		if not educate.is_edu_slot_start(edupos):
+		if not educate.is_edu_slot_start(usr, edupos):
 			return {'msg':'educate_edu_slot_not_start'}
 		usr.educate['edu_slot'][edupos] = educate.make_open_edu_slot(0)
 		usr.save()
@@ -72,8 +70,7 @@ class educate:
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost
 				
-		probability = educateGradeConf[edt]['probability']
-		rate = educateGradeConf[edt]['rate']
+		probability = educateGradeConf[edt]['probability']	
 		
 		if drop(probability):
 			edt = edt + 1
@@ -84,7 +81,21 @@ class educate:
 		usr.educate['edt'] = edt			
 		
 		return {'gold':usr.gold, 'gem':usr.gem, 'edu_edt':edt}				
+	
+	@staticmethod
+	def open_edu_solt(usr):
 		
+		gameConf = config.getConfig('game')
+		gemCost = 0
+		for i, solt in enumerate(usr.educate['edu_slot']):
+			if not solt:
+				gemCost = gameConf['educate_open_gem'][i]
+				if usr.gem < gemCost:
+					return {'msg':'gem_not_enough'}
+				usr.educate['edu_slot'][i] = educate.make_open_edu_slot(0)
+				return educate.getClientData(usr, gameConf)				
+		return {'msg':'educate_all_edu_slot_open'}	
+	
 	@staticmethod
 	def make():
 		data = {}
@@ -122,7 +133,7 @@ class educate:
 		for slot in usr.educate['edu_slot']:
 			if slot and slot.has_key('card_id') and slot['card_id'] == cardid:
 				return True
-		return False	
+		return False
 		
 	@staticmethod
 	def update_exp(usr, gameConf):		
@@ -135,21 +146,25 @@ class educate:
 		eduCard = []
 		for edu_slot in usr.educate['edu_slot']:
 			if edu_slot and edu_slot.has_key('start_time'):
-				educateDuration = now - edu_slot['last_update_time']
-				if educateDuration > gameConf['educate_duration']:
-					educateDuration = gameConf['educate_duration']
+				educateGradeConf = config.getConfig('educate_grade')		
+				educateEndTime = edu_slot['start_time'] + gameConf['educate_duration']
+				educateDuration = now - edu_slot['last_update_time']				
+				if now > educateEndTime:
+					educateDuration = educateEndTime - edu_slot['last_update_time']
 					del edu_slot['start_time']
 					del edu_slot['last_update_time']
-				else: 
-					exp = edu_slot['expptm'] * (now - edu_slot['last_update_time']) / 600 * edu_slot['rate'] + edu_slot['fraction']
+				else:
+					edu_slot['last_update_time'] = now
+				rate = educateGradeConf[edu_slot['edt']]['rate']
+				exp = edu_slot['expptm'] * educateDuration / 600 * rate + edu_slot['fraction']
 				edu_slot['fraction'] = exp - int(exp)
 				exp = int(exp)
 				if exp:
 					card = inv.getCard(edu_slot['card_id'])
-					pet.gainExp(card, int(exp), petConf, petLevelConf, gameConf)
-					edu_slot['last_update_time'] = now
+					pet.gainExp(card, int(exp), petConf, petLevelConf, gameConf)					
 					eduCard.append(card)		
-		inv.save()		
+		inv.save()
+		usr.save()	
 				
 	@staticmethod
 	def getEduSlots(usr, gameConf):

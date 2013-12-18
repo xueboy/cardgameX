@@ -3,9 +3,24 @@
 
 import random
 import math
+from gclib.utility import randint
 from game.utility.config import config
 
 class pet:
+	
+	
+	@staticmethod
+	def make_pet(inv, cardid, level, cardConf):
+		data = {}
+		data['cardid'] = cardid
+		data['id'] = inv.generateCardName()
+		data['level'] = level
+		data['exp'] = 0	
+		data['strength'] = cardConf[cardid]['strength']
+		data['intelligence'] = cardConf[cardid]['intelligence']
+		data['artifice'] = cardConf[cardid]['artifice']		
+		data['init_start'] = 1
+		return data
 	
 	@staticmethod
 	def isCardAvailable(usr, cardid):
@@ -64,8 +79,8 @@ class pet:
 		while exp > needExp and levelLimit > level:			
 			exp = exp - needExp
 			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]
-			level = level + 1
-			card['level'] = level
+			level = level + 1			
+			card['level'] = level			
 		card['exp'] = exp	
 	
 
@@ -98,17 +113,14 @@ class pet:
 			cost = gameConf['training_price3']
 		else:
 			return {'msg':'parameter_bad'}
-
-		
+	
 		if cost['gold'] > usr.gold:
 			return {'msg':'gold_not_enough'}
 		if cost['gem'] > usr.gem:
 			return {'msg': 'gem_not_enough'}
 		if cost['trp'] > usr.trp:
 			return {'msg': 'trp_not_enough'}
-		
-		
-		
+				
 		strrev = 0
 		itlrev = 0
 		artrev = 0
@@ -128,8 +140,7 @@ class pet:
 			strrev = random.randint(-10, int(card['level']))
 			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
 			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
-		
-		
+				
 		usr.train_prd['cardid'] = cardid
 		usr.train_prd['strength_revision'] = strrev
 		usr.train_prd['intelligence_revision'] = itlrev
@@ -220,16 +231,74 @@ class pet:
 		elif petConf['cardid']['quality'] == 5:
 			param1 = gameConf['pet_star_5_price_param1']
 			param2 = gameConf['pet_star_5_price_param2']
-		else: 
+		else:
 			return {'msg':'star_outof_expect'}
 				
 		price = param1 + param2 * card['level']
-		price = int(price - math.fmod(price, 100))
-			
-		usr.gold = usr.gold + price
-			
+		price = int(price - math.fmod(price, 100))			
+		usr.gold = usr.gold + price			
 		inv.delCard(id);
 		inv.save()
 		usr.save()
 		
 		return {'gold': usr.gold, 'sell_card':id}
+			
+			
+	@staticmethod
+	def reborn(usr, id):
+		
+		gameConf = config.getConfig('game')
+		rebornConf = config.getConfig('reborn')
+		
+		costGold = gameConf['pet_reborn_price']['gold']
+		costGem = gameConf['pet_reborn_price']['gem']
+		
+		if usr.gold < costGold:
+			return {'msg':'gold_not_enough'}
+		if usr.gem < costGem:
+			return {'msg':'gem_not_enough'}			
+		
+		inv = usr.getInventory()		
+		card = inv.getCard(id)
+		if not card:
+			return {'msg':'card_not_exist'}
+		
+		rebornInfo = None
+		for r in rebornConf:
+			if r['star_max'] > card['init_start']:
+				rebornInfo = r
+				break			
+			if r['level'] > card['reborn_level']:
+				rebornInfo = r
+				break
+		
+		if not rebornInfo:
+			return {'msg':'reborn_can_not'}
+				
+		if rebornInfo['level'] > card['level']:
+			return {'msg':'reborn_level_required'}
+			
+		if not card.has_key('reborn_level'):
+			card['reborn_level'] = 0
+		if not card.has_key('reborn_count'):
+			card['reborn_count'] = 0
+				
+		card['init_start'] = card['init_start'] = pet.reborn_inc_star(rebornInfo)
+		card['reborn_level'] = rebornInfo['level']
+		card['reborn_count'] = card['reborn_count'] + 1
+		usr.gold = usr.gold - costGold
+		inv.save()
+		usr.save()
+		
+		return {'update_card': card, 'gold':usr.gold}		
+				
+	@staticmethod
+	def reborn_inc_star(rebornInfo):
+		rn = randint()
+		
+		for pb in rebornInfo['star']:
+			if rn > pb['probability']:
+				rn = rn - pb['probability']
+			else: 
+				return pb['star']
+		return 0

@@ -4,6 +4,7 @@
 from django.conf.urls import patterns, url
 import gameadmin.views.admin 
 import gameadmin.views.main
+import gameadmin.views.tool
 
 
 urlpatterns = patterns('',
@@ -60,7 +61,24 @@ urlpatterns = patterns('',
     url(r'^educate_grade_import/$', gameadmin.views.main.educate_grade_import),
     url(r'^almanac_combination/$', gameadmin.views.main.almanac_combination),
     url(r'^almanac_combination_import/$', gameadmin.views.main.almanac_combination_import),
-    
-    
+    url(r'^reborn/$', gameadmin.views.main.reborn),
+    url(r'^reborn_import/$', gameadmin.views.main.reborn_import),
+    url(r'^ladder_score/$', gameadmin.views.main.ladder_score),
+    url(r'^ladder_score_import/$', gameadmin.views.main.ladder_score_import),
+    url(r'^arena_loot/$', gameadmin.views.main.arena_loot),
+    url(r'^arena_loot_import/$', gameadmin.views.main.arena_loot_import),    
+    url(r'^drop/$', gameadmin.views.main.drop),
+    url(r'^drop_import/$', gameadmin.views.main.drop_import),
+    url(r'^name/$', gameadmin.views.main.name),
+    url(r'^name_import/$', gameadmin.views.main.name_import),
+    url(r'^dialog/$', gameadmin.views.main.dialog),
+    url(r'^dialog_import/$', gameadmin.views.main.dialog_import),
+    url(r'^drama/$', gameadmin.views.main.drama),
+    url(r'^drama_import/$', gameadmin.views.main.drama_import),
+    url(r'^quest/$', gameadmin.views.main.quest),
+    url(r'^quest_import/$', gameadmin.views.main.quest_import),
+    url(r'^item/$', gameadmin.views.main.item),
+    url(r'^item_import/$', gameadmin.views.main.item_import),
+    url(r'^tool_create_player/$', gameadmin.views.tool.tool_create_player)
     
 )

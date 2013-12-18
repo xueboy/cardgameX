@@ -43,7 +43,7 @@ class dungeon(object):
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
+		object.load(self, roleid, data)		
 		self.normal_recored = data['normal_recored']
 		self.last_dungeon = data['last_dungeon']
 		self.reinforced_list = data['reinforced_list']

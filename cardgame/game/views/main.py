@@ -22,6 +22,7 @@ import game.views.stone
 import game.views.educate
 import game.views.skill
 import game.views.arena
+import game.views.quest
 
 
 viewsmap = {
@@ -36,6 +37,7 @@ viewsmap = {
 	'educate': sys.modules['game.views.educate'],
 	'skill': sys.modules['game.views.skill'],
 	'arena' : sys.modules['game.views.arena'],
+	'quest' : sys.modules['game.views.quest'],
 }
 
 def index(request):
@@ -52,8 +54,8 @@ def index(request):
 			return HttpResponse500()
 		onUserLogin(request, usr)
 		usr.last_login = currentTime()
-		
-		data = usr.getLoginData()			
+		gameConf = conf.getConfig('game')
+		data = usr.getLoginData(gameConf)			
 		usr.notify = {}
 		usr.save()
 		return HttpResponse(json.dumps(data))
@@ -86,6 +88,12 @@ def info(request):
 	info['educate_md5'] = conf.getClientConfigMd5('educate')
 	info['educate_grade_md5'] = conf.getClientConfigMd5('educate_grade')
 	info['almanac_combination_md5'] = conf.getClientConfigMd5('almanac_combination')
+	info['reborn_md5'] = conf.getClientConfigMd5('reborn')
+	info['drop_md5'] = conf.getClientConfigMd5('drop')
+	info['dialog_md5'] = conf.getClientConfigMd5('dialog')
+	info['drama_md5'] = conf.getClientConfigMd5('drama')
+	info['quest_md5'] = conf.getClientConfigMd5('quest')
+	
 	return HttpResponse(json.dumps({'info':info}))
 
 
@@ -130,6 +138,7 @@ def set_nickname(request):
 	
 	nickname = request.GET['nickname']
 	gender = request.GET['gender']
+	gameConf = conf.getConfig('game')
 	
 	if gender != 'male' and gender != 'female':
 		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
@@ -142,7 +151,7 @@ def set_nickname(request):
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, gender)		
-	data = usr.getLoginData()	
+	data = usr.getLoginData(gameConf)	
 	return HttpResponse(json.dumps(data))
 	
 

@@ -6,6 +6,7 @@ import xlrd
 from xlrd import USE_MMAP
 from django.http import HttpResponse
 from gclib.json import json
+from gclib.utility import str_to_time
 
 class excel_import:
 	@staticmethod
@@ -1129,3 +1130,410 @@ class excel_import:
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('almanac_import')			
 				
+				
+	@staticmethod
+	def reborn_import(request):
+		if request.method == 'POST':
+			reborn_file = request.FILES.get('reborn_file')
+			if not reborn_file:
+				return HttpResponse('转生xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
+			sheet = wb.sheet_by_index(0)					
+			conf = []
+			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				level = int(row[0])
+				star_max = int(row[1])				
+				star = []
+				star.append({'star':row[2], 'probability': row[3]})
+				star.append({'star':row[4], 'probability': row[5]})
+				star.append({'star':row[6], 'probability': row[7]})
+				star.append({'star':row[8], 'probability': row[9]})
+				star.append({'star':row[10], 'probability': row[11]})
+				
+				rebornConf = {}
+				rebornConf['level'] = level
+				rebornConf['star_max'] = star_max				
+				rebornConf['star'] = star
+				conf.append(rebornConf)
+				sorted(conf, key = lambda s:s['level'])			
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('reborn_import')
+	
+	@staticmethod
+	def ladder_score_import(request):
+		if request.method == 'POST':
+			reborn_file = request.FILES.get('ladder_score_file')
+			if not reborn_file:
+				return HttpResponse('天梯分数xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
+			sheet = wb.sheet_by_index(0)					
+			conf = []
+			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				no = int(row[0])
+				score = int(row[1])				
+				while len(conf) < no:
+					conf.append(0)					
+				conf[no - 1] = score
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('ladder_score_import')			
+	
+	@staticmethod
+	def name_import(request):
+		if request.method == 'POST':
+			name_file = request.FILES.get('name_file')
+			if not name_file:
+				return HttpResponse('姓名xlsx文件上传')
+					
+			conf = {}
+			conf['surname'] = []
+			conf['male_name'] = []
+			conf['female_name'] = []
+									
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, name_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['surname'].append(row[0])
+			
+			sheet = wb.sheet_by_index(1)		
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['male_name'].append(row[0])
+			
+			sheet = wb.sheet_by_index(2)		
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['female_name'].append(row[0])	
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('name_import')
+		
+	@staticmethod
+	def arena_loot_import(request):
+		if request.method == 'POST':
+			arena_loot_file = request.FILES.get('arena_loot_file')
+			if not arena_loot_file:
+				return HttpResponse('竞技场战利品xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, arena_loot_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = []			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				level = int(row[0])
+				gold = int(row[1])
+				exp = int(row[2])
+				skillid = row[3]
+				skilllevel = int(row[4])
+				cardid = row[5]
+				cardlevel = int(row[6])				
+				
+				while len(conf) < level:
+					conf.append({})
+					
+				arenaLootConf = {}
+				arenaLootConf['gold'] = gold
+				arenaLootConf['exp'] = exp
+				arenaLootConf['skillid'] = skillid
+				arenaLootConf['skilllevel'] = skilllevel
+				arenaLootConf['cardid'] = cardid
+				arenaLootConf['cardlevel'] = cardlevel				
+				conf[level - 1] = arenaLootConf
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))			
+		return HttpResponse('arena_loot_import')
+								
+	@staticmethod
+	def drop_import(request):
+		if request.method == 'POST':
+			drop_file = request.FILES.get('drop_file')
+			if not drop_file:
+				return HttpResponse('掉落xlsx文件上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drop_file.read())
+			sheet = wb.sheet_by_index(0)
+			conf = {}
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				dropid = row[0]
+				dropstr = row[1]
+				
+				conf[dropid] = excel_import.make_drop_dic(dropstr)
+			
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('drop_import')
+				
+	@staticmethod
+	def make_drop_dic(s):
+		dic = []
+		item = s.split(',')
+		for i in item:
+			f = i.split(':')
+			if f[0] == 'card':
+				dic.append(excel_import.drop_card(f))
+			elif f[0] == 'sk':
+				dic.append(excel_import.drop_skill(f))
+			elif f[0] == 'eq':
+				dic.append(excel_import.drop_equipment(f))
+			elif f[0] == 'item':
+				dic.append(excel_import.drop_item(f))
+			elif f[0] == 'stone':
+				dic.append(excel_import.drop_stone(f))
+			elif f[0] == 'gem':
+				dic.append(excel_import.drop_gem(f))
+			elif f[0] == 'st':
+				dic.append(excel_import.drop_stamina(f))
+			elif f[0] == 'sp':
+				dic.append(excel_import.drop_sp(f))
+			elif f[0] == 'exp':
+				dic.append(excel_import.drop_exp(f))
+			else:
+				dic.append({'unknow':i})			
+			
+		return dic
+		
+	@staticmethod
+	def drop_card(arr):
+		return {'type':'card', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod		
+	def drop_skill(arr):	
+		return {'type':'sk', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_equipment(arr):
+		return {'type':'eq', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_item(arr):
+		return {'type':'item', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_stone(arr):
+		return {'type':'stone', 'id':arr[1], 'probability':arr[2],'count':arr[3], 'level':arr[4]}
+	
+	@staticmethod
+	def drop_gem(arr):
+		return {'type':'gem','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod
+	def drop_stamina(arr):
+		return {'type':'st','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod		
+	def drop_sp(arr):
+		return {'type':'sp','probability':arr[2],'count':arr[3]}
+	
+	@staticmethod		
+	def drop_exp(arr):
+		return {'type':'exp','probability':arr[2],'count':arr[3]}
+	
+	
+	@staticmethod
+	def dialog_import(request):
+		if request.method == 'POST':
+			dialog_file = request.FILES.get('dialog_file')
+			if not dialog_file:
+				return HttpResponse('对话xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dialog_file.read())
+			sheet = wb.sheet_by_index(2)
+					
+			conf = {}
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				dialogid = row[0]
+				npcid = row[1]
+				text = row[2]
+				
+				dialog = {}
+				dialog['npcid'] = npcid
+				dialog['info'] = text
+				
+				if not conf.has_key(dialogid):
+					conf[dialogid] = []
+				conf[dialogid].append(dialog)
+					
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('dialog_import')
+					
+	@staticmethod
+	def drama_import(request):	
+		if request.method == 'POST':
+			drama_file = request.FILES.get('drama_file')
+			if not drama_file:
+				return HttpResponse('剧情xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drama_file.read())
+			sheet = wb.sheet_by_index(1)
+					
+			conf = {}
+			for rownum in range(3,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				type = int(row[0])
+				dramaid = row[1]
+				repeat = row[2]
+				dialogid = row[3]
+				drama = {}
+				drama['repeat'] = repeat
+				drama['talkId'] = dialogid
+				
+				if not conf.has_key(type):
+					conf[type] = {}
+				conf[type][dramaid] = drama
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('drama_import')
+	
+	@staticmethod
+	def quest_import(request):
+		if request.method == 'POST':
+			quest_file = request.FILES.get('quest_file')
+			if not quest_file:
+				return HttpResponse('任务xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, quest_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {}
+			for rownum in range(4,sheet.nrows):
+				row = sheet.row_values(rownum)
+				questid = row[0]
+				name = row[1]
+				mainType = row[2]
+				type = row[3]
+				level = int(row[4])
+				isFirst = int(row[5])
+				nextId = row[6]
+				image = row[7]
+				repeatCount = int(row[8])
+				talkId = row[9]
+				finishType = int(row[10])
+				finishValue = row[11]
+				trigerIcon = row[20]
+				dropid = row[21]
+				desc = row[30]
+				isOpen = row[31]
+				beginTime = row[32]
+				endTime = row[33]
+								
+				questConf = {}
+				questConf['name'] = name
+				questConf['mainType'] = mainType
+				questConf['type'] = type
+				questConf['level'] = level
+				questConf['isFirst'] = isFirst
+				questConf['nextId'] = nextId
+				questConf['repeatCount'] = repeatCount
+				questConf['talkId'] = talkId
+				questConf['finishType'] = excel_import.quest_get_cond_str(finishType)
+				questConf['finishValue'] = excel_import.quest_get_conf_value(questConf['finishType'], finishValue)
+				questConf['trigerIcon'] = trigerIcon
+				questConf['dropid'] = dropid
+				questConf['desc'] = desc
+				questConf['isOpen'] = isOpen
+				questConf['beginTime'] = 0
+				if beginTime:
+					questConf['beginTime'] = str_to_time(beginTime)
+				questConf['endTime'] = 0
+				if endTime:
+					questConf['endTime'] = str_to_time(endTime)
+				conf[questid] = questConf
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('quest_import')
+		
+	@staticmethod
+	def quest_get_cond_str(v):
+		if v == 1:
+			return 'dungeon_id'
+		if v == 2:
+			return 'talk_npc_id'
+		if v == 3:
+			return 'charge_cumulate'
+		if v == 4:
+			return 'world_talk_count'
+		if v == 5:
+			return 'friend_count'
+		if v == 6:
+			return 'vip_item_buy_count'
+		if v == 7:
+			return 'arena_win_count'
+		if v == 8:
+			return 'dungeon_win_count'
+		return ''
+	
+	@staticmethod
+	def quest_get_conf_value(v, value):
+		if v == 'dungeon_id':
+			return value.split(',')[0:2]
+		if v == 'talk_npc_id':
+			return value
+		if v == 'charge_cumulate':
+			return int(value)
+		if v == 'world_talk_count':
+			return int(value)
+		if v == 'friend_count':
+			return int(value)
+		if v == 'vip_item_buy_count':
+			s = v.split(',')
+			return [s[0], int(s[1])]
+		if v == 'arena_win_count':
+			return int(value)
+		if v == 'dungeon_win_count':
+			return int(value)		
+	
+	@staticmethod
+	def item_import(request):
+		if request.method == 'POST':
+			item_file = request.FILES.get('item_file')
+			if not item_file:
+				return HttpResponse('道具xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, item_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {}
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				itemid = row[0]
+				name = row[1]
+				level_required_min = row[2]
+				level_required_max = row[3]
+				icon = row[4]
+				model = row[5]
+				fun_str = row[6]
+				desc = row[7]
+				
+				itemConf = {}
+				itemConf['name'] = name				
+				itemConf['level_required_min'] = level_required_min
+				itemConf['level_required_max'] = level_required_max
+				itemConf['icon'] = icon
+				itemConf['model'] = model
+				itemConf['fun'] = excel_import.make_fun_dic(fun_str)
+				itemConf['desc'] = desc
+				conf[itemid] = itemConf			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('item_import')
+				
+	@staticmethod
+	def make_fun_dic(s):
+		dic = {}
+		item = s.split(',')
+		for i in item:
+			c = i.split(':')
+			dic[c[0]] = c[1:]
+		return dic
+			
+		
+	

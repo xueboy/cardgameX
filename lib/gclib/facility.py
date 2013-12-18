@@ -1,20 +1,26 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
+from gclib.cache import cache
+from gclib.DBPersistent import DBPersistent
+from gclib.persistable import persistable
 
 
-
-class facility():
+class facility(persistable):
 	
 	def __init__(self):
-		self.id = 0
+		persistable.__init__(self)
+		self.id = 0 
+		self.name = None
+		
+		
 		
 	
 	def install(self, name):
 		return DBPersistent.installFacility(self, name)
 		
 	@classmethod	
-	def get(cls, name):
+	def get(cls, name):		
 		return DBPersistent.getFacility(cls, name)
 		
 		
@@ -24,13 +30,21 @@ class facility():
 	def getData(self):
 		return {}	
 	
-	def load(self, roleid, data):
-		self.roleid = roleid
+	def load(self, name, data):
+		self.name = name
 		return 0
 		
 		
 	def save(self):
-		return DBPersistent.save(self)
+		return DBPersistent.saveFacility(self)
+		
+	@classmethod
+	def instance(cls):
+		obj = cls.get(cls.__name__)
+		if not obj:
+			obj = cls()
+			obj.install(cls.__name__)
+		return obj
 	
 
 		

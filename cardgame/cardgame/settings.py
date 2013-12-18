@@ -3,6 +3,8 @@
 
 # Django settings for cardgame project.
 
+from os import path
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -17,16 +19,19 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'gamecard',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',                      # Set to empty string for default.
+        'USER': 'root',        
+        #'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        #'PASSWORD': '123456',
+        'HOST': '42.62.50.75',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PASSWORD': 'Se7enmoon!',
+        'PORT': '3306',                      # Set to empty string for default.  
     }
 }
 
 MEMCACHED = {
 		'default':{
-			'HOST':'192.168.0.155',
+			#'HOST':'192.168.0.99',
+			'HOST':'42.62.50.75',
 			'PORT':11211
 	}
 }
@@ -36,6 +41,8 @@ DSSERVER = {
 	'HOST':'127.0.0.1',
 	'PORT': '1235'
 }
+
+ARENE_SERVER = 'http://192.168.0.119:8000'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -139,7 +146,8 @@ TEMPLATE_DIRS = (
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '192.168.0.155:11211',
+        #'LOCATION': '192.168.0.99:11211',
+        'LOCATION': '42.62.50.75:11211',
     },
     'in_memery': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
@@ -170,6 +178,11 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+        }
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -180,7 +193,20 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': path.join(STATIC_ROOT+'/logs/','all.log'), #或者直接写路径：'c:\logs\all.log',
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter':'standard',
+        },
     },
     'loggers': {
         'django.request': {
@@ -188,5 +214,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'default':
+        	{
+        	  'handlers': ['default','console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
     }
 }

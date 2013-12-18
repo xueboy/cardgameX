@@ -90,28 +90,33 @@ def del_equipment(request):
 		
 def add_trp(request):
 	trp = int(request.GET['trp'])
-	usr = request.user
-	
+	usr = request.user	
 	usr.trp = usr.trp + trp
 	usr.save()
 	return {'trp':usr.trp}
 		
 def add_stone(request):
-	stoneid = request.GET['stone']
-	
-	usr = request.user
-	
+	stoneid = request.GET['stone']	
+	usr = request.user	
 	inv = usr.getInventory()
 	stone = inv.addStone(stoneid)
 	inv.save()
 	return {'add_stone':stone}
 		
 def add_skill(request):
-	skillid = request.GET['skill']
-	
-	usr = request.user
-	
+	skillid = request.GET['skill']	
+	usr = request.user	
 	inv = usr.getInventory()
 	skill = inv.addSkill(skillid)
 	inv.save()
 	return {'add_skill':skill}
+		
+def add_item(request):
+	itemid = request.GET['itemid']
+	usr = request.user
+	inv = usr.getInventory()
+	item = inv.addItem(itemid)
+	if not item:
+		return {'msg':'fail_add_item'}
+	inv.save()
+	return {'add_item':item}

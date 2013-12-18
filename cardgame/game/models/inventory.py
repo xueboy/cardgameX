@@ -10,12 +10,14 @@ import copy
 from game.routine.equipment import equipment
 from game.routine.stone import stone
 from game.routine.skill import skill
+from game.routine.pet import pet
 
 class inventory(object):
 	
 	def __init__(self):
 		object.__init__(self)
 		self.card = []
+		self.item = []
 		self.team = ['', '', '', '', '', '']	
 		self.equipment = []
 		self.stone = []		
@@ -28,59 +30,59 @@ class inventory(object):
 	def getData(self):
 		data = {}
 		data['card'] = self.card
+		data['item'] = self.item
 		data['team'] = self.team
 		data['equipment'] = self.equipment
 		data['stone'] = self.stone
 		data['skill'] = self.skill
+		return data
+		
+		
+	@staticmethod
+	def getClientCard(card):
+		data = card.copy()
+		if data.has_key('slot'):
+			del data['slot']
+		if data.has_key('st_slot'):
+			del data['st_slot']
 		return data
 		
 	def getClientData(self):
 		data = {}		
 		card = []
 		
-		for c in self.card:
-			c1 = c.copy()
-			if c1.has_key('slot'):
-				del c1['slot']
-			if c1.has_key('st_slot'):
-				del c1['st_slot']
-			card.append(c1)		
+		for c in self.card:			
+			card.append(inventory.getClientCard(c))
 		
 		data['card'] = card
 		data['team'] = self.team
+		data['item'] = self.item
 		data['equipment'] = self.equipment
-		data['slots'] = self.getSlots()
-		data['st_slots'] = self.getStSlots()
-		data['sk_slots'] = self.getSkSlots()
+		data['slot'] = self.getSlots()
+		data['st_slot'] = self.getStSlots()
+		data['sk_slot'] = self.getSkSlots()
 		data['stone'] = self.stone
 		data['skill'] = self.skill
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid
+		object.load(self, roleid, data)
 		self.card = data['card']
+		self.item = data['item']
 		self.team = data['team']
 		self.equipment = data['equipment']
 		self.stone = data['stone']
 		self.skill = data['skill']		
 		
 	def addCard(self, cardid, level = 1):
-		cardconf = config.getConfig('pet')				
-		if cardconf.has_key(cardid):
-			data = {}
-			data['cardid'] = cardid
-			data['id'] = self.generateCardName()
-			data['level'] = level
-			data['exp'] = 0	
-			data['strength'] = cardconf[cardid]['strength']
-			data['intelligence'] = cardconf[cardid]['intelligence']
-			data['artifice'] = cardconf[cardid]['artifice']
-			data['star'] = 1
-			self.card.append(data)
+		cardConf = config.getConfig('pet')				
+		if cardConf.has_key(cardid):
+			card = pet.make_pet(self, cardid, level, cardConf)
+			self.card.append(card)
 			usr = self.user
 			al = usr.getAlmanac()
 			al.insert(cardid)
-			return data
+			return card
 		return None
 	
 	def addAllCard(self, cardid):
@@ -110,6 +112,17 @@ class inventory(object):
 			self.equipment.append(data)
 			return data
 		return None
+	def addEquipmentCount(self, equipmentid, cnt):
+		equipmentConf = config.getConfig('equipment')
+		equipment = []
+		for i in range(cnt):
+			if equipmentConf.has_key(equipmentid):
+				data = {}
+				data['equipmentid'] = equipmentid
+				data['id'] = self.generateEquipmentName()			
+				self.equipment.append(data)
+				equipment.append(data)			
+		return equipment
 		
 	def depositEquipment(self, equipment):
 		self.equipment.append(equipment)
@@ -138,6 +151,9 @@ class inventory(object):
 		
 	def generateSkillName(self):
 		return self.generateName('K')
+	
+	def generateItemName(self):
+		return self.generateName('I')
 	
 	def generateName(self, perfix):
 		serveridLen = len(str(serverid))
@@ -207,7 +223,7 @@ class inventory(object):
 				sk_slot['t' + str(i)] = skill.make_sk_slot()
 		return sk_slot
 	
-	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6):
+	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk):
 		
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
@@ -244,10 +260,6 @@ class inventory(object):
 		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
 			return {'msg':'level_required'}	
 			
-		deq = []
-		dst = []
-		dsk = []
-		
 		deq1, dst1, dsk1 = self.setTeamEquipmentStoneSkill(cardid1, 0, gameConf)
 		deq2, dst2, dsk2 = self.setTeamEquipmentStoneSkill(cardid2, 1, gameConf)
 		deq3, dst3, dsk3 = self.setTeamEquipmentStoneSkill(cardid3, 2, gameConf)
@@ -273,7 +285,7 @@ class inventory(object):
 		dsk.extend(dsk5)
 
 		self.save()
-		return self.team, deq, dst, dsk
+		return None
 	
 	
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
@@ -314,6 +326,21 @@ class inventory(object):
 		self.stone.append(st)
 		return st
 		
+	def addStoneCount(self, stoneid, cnt):
+		stoneConf = config.getConfig('stone')
+		
+		stone = []
+		stoneInfo = stoneConf[stoneid]		
+		for i in range(cnt):
+			st = {}
+			st['stoneid'] = stoneid
+			st['id'] = self.generateStoneName()
+			st['level'] = 1
+			st['exp'] = 0
+			self.stone.append(st)
+			stone.append(st)
+		return stone
+		
 	def getStone(self, id):					
 		for st in self.stone:
 			if st['id'] == id:				
@@ -335,7 +362,7 @@ class inventory(object):
 		self.stone.remove(res)
 		return res
 		
-	def addSkill(self, skillid):
+	def addSkill(self, skillid, level = 1):
 		skillConf = config.getConfig('skill')
 		
 		skillInfo = skillConf[skillid]
@@ -378,4 +405,31 @@ class inventory(object):
 		if res:
 			self.skill.remove(res)
 		return res
+		
+	def addItem(self, itemid):
+		itemConf = config.getConfig('item')
+		itemInfo = itemConf[itemid]
+		
+		it = {}
+		it['itemid'] = itemid
+		it['id'] = self.generateItemName()
+		it['count'] = 1
+		self.item.append(it)
+		return it
+	
+	def addItemCount(self, itemid, cnt):
+		itemConf = config.getConfig('item')
+		itemInfo = itemConf[itemid]
+		
+		item = []
+		for i in range(cnt):
+			it = {}
+			it['itemid'] = itemid
+			it['id'] = self.generateItemName()
+			item.append(it)
+			self.item.append(it)
+		return item
+		
+	def delItem(self, id):
+		self.item = filter(lambda i : i['id'] != id, self.item)
 		

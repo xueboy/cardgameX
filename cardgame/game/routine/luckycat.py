@@ -193,7 +193,7 @@ class luckycat:
 		
 		isLevelup = False
 			
-		while target.luckycat['level'] < gameConf['luckycat_max_level'] and luckycatLevelConf[target.luckycat['level'] - 1]['exp'] <= target.luckycat['exp']:
+		while target.luckycat['level'] < usr.level and luckycatLevelConf[target.luckycat['level'] - 1]['exp'] <= target.luckycat['exp']:
 			target.luckycat['exp'] = target.luckycat['exp'] - luckycatLevelConf[target.luckycat['level'] - 1]['level']
 			target.luckycat['level'] = target.luckycat['level'] + 1
 			gold, gem = luckycat.onEveryLeveup(usr)
@@ -232,7 +232,7 @@ class luckycat:
 			target.save()
 		
 		data = {}
-		data['luckycat'] = luckycat.getClientData(target)
+		data['luckycat'] = luckycat.getClientData(target, gameConf)
 		if awardGold:
 			data['gold'] = usr.gold
 		if awardGem:

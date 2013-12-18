@@ -4,17 +4,19 @@
 from django.conf import settings
 from gclib.DBPersistent import DBPersistent
 from gclib.json import json
+from gclib.persistable import persistable
 
 
 
 
-class object():
+class object(persistable):
 	
 	def __init__(self):
+		persistable.__init__(self)
 		self.id = 0
 		self.roleid = 0
 		self.__needSave = False
-		self.extend_columns = []
+		
 	
 	def install(self, roleid):
 		return DBPersistent.installObject(self, roleid)
@@ -35,13 +37,13 @@ class object():
 		return 0
 		
 	def save(self):
-		return DBPersistent.save(self)
-	
+		#return DBPersistent.save(self)
+		self.__needSave = True
+		self.do_save()
+		
 	def do_save(self):
-		conn = DBConnection.getConnection()
-		data = self.getData()
-		dumpstr = json.dumps(data)	
-		conn.excute("UPDATE " + self.__class__.__name__ + " SET object = %s WHERE id = %s", [dumpstr, self.id])
+		if self.__needSave:
+			return DBPersistent.saveObject(self)
 		
 		
 	@classmethod

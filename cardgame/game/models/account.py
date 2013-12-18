@@ -16,5 +16,8 @@ class account(gcaccount):
 	def __init__(self):
 		gcaccount.__init__(self)
 		
+	def load(self, roleid, data):
+		gcaccount.load(self, roleid, data)
+		
 	
 	

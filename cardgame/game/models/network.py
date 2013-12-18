@@ -6,7 +6,7 @@ from game.utility.config import config
 class network(object):
 	
 	def init(self):
-		return
+		pass
 		
 	
 	def __init__(self):
@@ -50,7 +50,7 @@ class network(object):
 		return data
 		
 	def load(self, roleid, data):
-		self.roleid = roleid		
+		object.load(self, roleid, data)
 		self.friend = data['friend']
 		self.message = data['message']
 		self.mail = data['mail']
@@ -174,9 +174,15 @@ class network(object):
 			if self.friend.has_key(friendid):
 				return {'msg':'friend_not_exist'}
 			friend = self.user.get(friendid)
+			friendQt = friend.getQuest()
+
 			friendData = self.addFriend(friend)
+			usr = self.user
+			qt = usr.getQuest()
+			qt.udpateFinishFriendQuest(usr, self)
 
 			friendNw = friend.getNetwork()
+			friendQt.udpateFinishFriendQuest(usr, friendNw)
 			friendNw.addFriend(self.user)
 			mailid = mail['id']
 			del self.email[mailid]

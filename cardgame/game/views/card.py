@@ -15,12 +15,19 @@ def set_team(request):
 	cardid4 = request.GET['card_id4']
 	cardid5 = request.GET['card_id5']
 	cardid6 = request.GET['card_id6']
-	team, deq, dst, dsk = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6)
+	
+	dep = []
+	dst = []
+	dsk = []
+	
+	msg = inv.setTeam(cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk)
+	if msg:
+		return msg
 	data = {}
-	data['team'] = team
-	data['slots'] = inv.getSlots()
-	data['st_slots'] = inv.getStSlots()
-	data['sk_slots'] = inv.getSkSlots()
+	data['team'] = inv.team
+	data['slot'] = inv.getSlots()
+	data['st_slot'] = inv.getStSlots()
+	data['sk_slot'] = inv.getSkSlots()
 	if deq:
 		data['add_equipment_array'] = deq
 	if dst:
@@ -128,3 +135,11 @@ def decompose(request):
 		cardids.append(request.GET['card_id10'])
 
 	return pet.decompose(usr, cardids)
+
+
+def reborn(request):
+	usr = request.user
+	
+	card_id = request.GET['card']
+	
+	return pet.reborn(usr, card_id)
