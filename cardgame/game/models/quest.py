@@ -52,6 +52,10 @@ class quest(object):
 			if t.has_key('dungeon_count'):
 				t['count'] = t['dungeon_count']
 				del t['dungeon_count']
+			if t.has_key('dungeon_id'):			
+				del t['dungeon_id']
+			if t.has_key('field_id'):			
+				del t['field_id']				
 			current[q] = t
 		return {'quest_current':current, 'quest_drama':self.drama}	
 	
