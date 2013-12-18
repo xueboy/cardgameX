@@ -31,6 +31,9 @@ class dungeon(object):
 		self.last_dungeon['battleid'] = conf[0]['battleId']
 		self.last_dungeon['fieldid'] = conf[0]['field'][0]['fieldId']
 	
+	def install(self, roleid):
+		object.install(self, roleid)
+	
 	def getData(self):
 		data = {}
 		data['normal_recored'] = self.normal_recored

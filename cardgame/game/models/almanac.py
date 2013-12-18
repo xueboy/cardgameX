@@ -15,6 +15,9 @@ class almanac(object):
 	
 	def init(self):
 		pass
+		
+	def install(self, roleid):
+		object.install(self, roleid)
 	
 	def load(self, roleid, data):
 		object.load(self, roleid, data)

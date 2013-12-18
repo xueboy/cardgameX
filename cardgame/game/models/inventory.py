@@ -27,6 +27,9 @@ class inventory(object):
 	def init(self):
 		return		
 		
+	def install(self, roleid):
+		object.install(self, roleid)
+		
 	def getData(self):
 		data = {}
 		data['card'] = self.card

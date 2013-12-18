@@ -73,9 +73,8 @@ class user(gcuser):
 		inv.addCard('pet10001_4')
 		inv.team[0] = tc['id']
 		
-
-
-	
+	def install(self, roleid):
+		gcuser.install(self, roleid)
 	
 	def getData(self):	
 		data = {}

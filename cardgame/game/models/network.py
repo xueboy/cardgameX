@@ -22,6 +22,9 @@ class network(object):
 		self.sequenceid = 1
 		self.user = None
 		
+	def install(self, roleid):
+		object.install(self, roleid)
+		
 	def getData(self):
 		data = {}		
 		data['friend'] = self.friend

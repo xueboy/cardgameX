@@ -18,6 +18,6 @@ class account(gcaccount):
 		
 	def load(self, roleid, data):
 		gcaccount.load(self, roleid, data)
-		
 	
-	
+	def install(self, roleid):
+		gcaccount.install(self, roleid)
