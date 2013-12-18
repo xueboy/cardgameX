@@ -252,6 +252,7 @@ class stone:
 					inv.depositStone(st)
 					dst.append(st)
 			del card['st_slot']
+		return dst
 
 	@staticmethod
 	def exchage(inv, fromCard, toCard, gameConf):				
