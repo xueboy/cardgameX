@@ -12,6 +12,9 @@ class user(object):
 	def init(self, acc):
 		self.id = 0
 		return
+			
+	def install(self, roleid):
+		object.install(self, roleid)
 		
 	def onInit(self):
 		pass

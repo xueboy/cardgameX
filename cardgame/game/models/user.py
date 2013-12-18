@@ -74,6 +74,8 @@ class user(gcuser):
 		inv.team[0] = tc['id']
 		
 
+
+	
 	
 	def getData(self):	
 		data = {}

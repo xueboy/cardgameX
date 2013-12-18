@@ -10,7 +10,10 @@ class MMPersistent:
 	
 	@staticmethod
 	def install(obj, roleid):
-		pass
+		i = 0			
+		for column in obj.extend_columns:
+			setattr(obj, column['name'], column['value'])
+			i = i + 1
 		
 	@staticmethod		
 	def get(tp, roleid):
@@ -25,7 +28,7 @@ class MMPersistent:
 			obj.load(roleid, json.loads(res[0][2]))
 			i = 0			
 			for column in obj.extend_columns:
-				setattr(obj, column, res[0][3 + i])
+				setattr(obj, column['name'], res[0][3 + i])
 				i = i + 1
 			return obj
 		return None

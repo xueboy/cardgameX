@@ -29,7 +29,10 @@ class account(object):
 			acc.saveLogin()
 			return acc
 		return None
-			
+				
+	def install(self, roleid):
+		object.install(self, roleid)
+		
 	def getUser(self):		
 		return self.userObject().get(self.roleid)
 	
