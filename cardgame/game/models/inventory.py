@@ -264,25 +264,29 @@ class inventory(object):
 		deq2, dst2, dsk2 = self.setTeamEquipmentStoneSkill(cardid2, 1, gameConf)
 		deq3, dst3, dsk3 = self.setTeamEquipmentStoneSkill(cardid3, 2, gameConf)
 		deq4, dst4, dsk4 = self.setTeamEquipmentStoneSkill(cardid4, 3, gameConf)
-		deq5, dst5, dsk5 = self.setTeamEquipmentStoneSkill(cardid5, 4, gameConf)		
+		deq5, dst5, dsk5 = self.setTeamEquipmentStoneSkill(cardid5, 4, gameConf)
+		deq6, dst6, dsk6 = self.setTeamEquipmentStoneSkill(cardid6, 5, gameConf)		
 		
 		deq.extend(deq1)
 		deq.extend(deq2)
 		deq.extend(deq3)
 		deq.extend(deq4)
 		deq.extend(deq5)
+		deq.extend(deq6)
 		
 		dst.extend(dst1)
 		dst.extend(dst2)
 		dst.extend(dst3)
 		dst.extend(dst4)
 		dst.extend(dst5)
+		dst.extend(dst6)
 		
 		dsk.extend(dsk1)
 		dsk.extend(dsk2)
 		dsk.extend(dsk3)
 		dsk.extend(dsk4)
 		dsk.extend(dsk5)
+		dsk.extend(dsk6)
 
 		self.save()
 		return None
@@ -307,10 +311,7 @@ class inventory(object):
 			teamCard = self.getCard(self.team[teamPos])
 			deq.extend(equipment.takeoff(self, teamCard))
 			dst.extend(stone.takeoff(self, teamCard))
-			dsk.extend(skill.takeoff(self, teamCard))
-			del teamCard['slot']
-			del teamCard['st_slot']
-			del teamCard['sk_slot']
+			dsk.extend(skill.takeoff(self, teamCard))			
 			self.team[teamPos] = ''
 		return deq, dst, dsk
 		
