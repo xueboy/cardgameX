@@ -223,7 +223,7 @@ class inventory(object):
 				sk_slot['t' + str(i)] = skill.make_sk_slot()
 		return sk_slot
 	
-	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, dep, dst, dsk):
+	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, deq, dst, dsk):
 		
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
