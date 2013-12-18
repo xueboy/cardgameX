@@ -22,4 +22,5 @@ class json():
 	
 	@staticmethod 
 	def dumps(obj, skipkeys=False, ensure_ascii=False, check_circular=True, allow_nan=True, cls=None, indent=None, separators=(',', ':'), encoding='utf-8', default=None, sort_keys=False, **kw):
-		return getattr(__import__("json"), 'dumps')(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default, sort_keys, **kw)
+		#@return getattr(__import__("json"), 'dumps')(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default, sort_keys, **kw)
+		return getattr(__import__("json"), 'dumps')(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default, **kw)
