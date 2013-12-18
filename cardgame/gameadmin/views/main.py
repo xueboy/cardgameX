@@ -11,7 +11,6 @@ from excel_import import excel_import
 def index(request):
 	return render(request, 'index.html', {})
 
-
 def dungeon(request):
 	return generalConfigRequestProcess(request, 'dungeon')		
 				

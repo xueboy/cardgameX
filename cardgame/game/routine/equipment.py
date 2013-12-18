@@ -22,10 +22,7 @@ class equipment:
 		gameConf = config.getConfig('game')
 		
 		if gameConf['equipment_strength_cooldown_cumulate_max'] < usr.equipment_strength_cooldown:
-			return {'msg':'equipment_strength_cooldown_max'}
-		
-		
-		
+			return {'msg':'equipment_strength_cooldown_max'}		
 		equipmentConf = config.getConfig('equipment')[equipment['equipmentid']]
 		strengthenPriceConf = config.getConfig('strength_price')
 		
@@ -72,8 +69,7 @@ class equipment:
 		if gemCost:
 			data['gem'] = usr.gem
 		return data
-		
-			
+					
 	@staticmethod		
 	def currentStrengthCurrentProbability():
 		strengthProbabilityConf = config.getConfig('strength_probability')
@@ -99,14 +95,11 @@ class equipment:
 		
 		equipment = inv.getEquipment(equipmentid)
 		if not equipment:
-			return {'msg':'equipment_not_exist'}
-				
-		
+			return {'msg':'equipment_not_exist'}		
 		
 		equipmentConf = config.getConfig('equipment')
 		equipmentInfo = equipmentConf[equipment['equipmentid']]
-		
-		
+				
 		card = inv.getCard(cardid)
 		if not card:
 			return {'msg':'card_not_exist'}
@@ -130,8 +123,7 @@ class equipment:
 			
 	@staticmethod
 	def sell(usr, equipmentid):
-		inv = usr.getInventory()
-		
+		inv = usr.getInventory()		
 		equipment = inv.getEquipment(equipmentid)
 		
 		if not equipment:
@@ -140,16 +132,13 @@ class equipment:
 		equipmentConf = config.getConfig('equipment')
 		equipmentInfo = equipmentConf[equipment['equipmentid']]
 		
-		sellGold = equipmentInfo['price']
-		
-		usr.gold = usr.gold + sellGold
-		
+		sellGold = equipmentInfo['price']		
+		usr.gold = usr.gold + sellGold		
 		inv.delEquipment(equipmentid)
 		inv.save()
 		usr.save()
 		
-		return {'gold':usr.gold, 'delete_equipment':equipmentid}
-		
+		return {'gold':usr.gold, 'delete_equipment':equipmentid}		
 		
 	@staticmethod
 	def takeoff(inv, card):
@@ -172,6 +161,5 @@ class equipment:
 		del fromCard['slot']
 		if toSlot:
 			fromCard['slot'] = toSlot
-		return []
-		
+		return []		
 			

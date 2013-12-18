@@ -241,10 +241,10 @@ class quest(object):
 		usr = self.user		
 		for questid in self.current:
 			questInfo = questConf[questid]
-			if questInfo['finishType'][0] == 'dungeon_id' and questInfo['finishType'][1] == 'fieldId':
-				if dungeonId == questInfo['finishValue']:
+			if questInfo['finishType'] == 'dungeon_id':
+				if dungeonId == questInfo['finishValue'][0] and fieldId == questInfo['finishValue'][1]:
 					self.current[questid]['dungeon_id'] = dungeonId
-					self.current[questid]['field+id'] = fieldId
+					self.current[questid]['field_id'] = fieldId
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]

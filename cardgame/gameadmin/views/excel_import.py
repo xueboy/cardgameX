@@ -1139,8 +1139,7 @@ class excel_import:
 				return HttpResponse('转生xlsx文件上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
-			sheet = wb.sheet_by_index(0)
-					
+			sheet = wb.sheet_by_index(0)					
 			conf = []
 			
 			for rownum in range(1,sheet.nrows):
@@ -1171,18 +1170,15 @@ class excel_import:
 				return HttpResponse('天梯分数xlsx文件上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
-			sheet = wb.sheet_by_index(0)
-					
+			sheet = wb.sheet_by_index(0)					
 			conf = []
 			
 			for rownum in range(1,sheet.nrows):
 				row = sheet.row_values(rownum)
 				no = int(row[0])
-				score = int(row[1])
-				
+				score = int(row[1])				
 				while len(conf) < no:
-					conf.append(0)
-					
+					conf.append(0)					
 				conf[no - 1] = score
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
@@ -1194,7 +1190,6 @@ class excel_import:
 			name_file = request.FILES.get('name_file')
 			if not name_file:
 				return HttpResponse('姓名xlsx文件上传')
-
 					
 			conf = {}
 			conf['surname'] = []
@@ -1203,7 +1198,6 @@ class excel_import:
 									
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, name_file.read())
 			sheet = wb.sheet_by_index(0)
-
 			
 			for rownum in range(3,sheet.nrows):
 				row = sheet.row_values(rownum)
@@ -1258,8 +1252,7 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('arena_loot_import')
-				
-				
+								
 	@staticmethod
 	def drop_import(request):
 		if request.method == 'POST':
@@ -1373,8 +1366,7 @@ class excel_import:
 					
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('dialog_import')
-				
-	
+					
 	@staticmethod
 	def drama_import(request):	
 		if request.method == 'POST':
@@ -1434,8 +1426,7 @@ class excel_import:
 				isOpen = row[31]
 				beginTime = row[32]
 				endTime = row[33]
-				
-				
+								
 				questConf = {}
 				questConf['name'] = name
 				questConf['mainType'] = mainType
@@ -1499,9 +1490,7 @@ class excel_import:
 		if v == 'arena_win_count':
 			return int(value)
 		if v == 'dungeon_win_count':
-			return int(value)
-		
-		
+			return int(value)		
 	
 	@staticmethod
 	def item_import(request):
