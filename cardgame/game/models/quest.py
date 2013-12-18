@@ -243,18 +243,16 @@ class quest(object):
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
 		questConf = config.getConfig('quest')
 		usr = self.user
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'dungeon_id':
 				if dungeonId == questInfo['finishValue'][0] and fieldId == questInfo['finishValue'][1]:
 					self.current[questid]['dungeon_id'] = dungeonId
 					self.current[questid]['field_id'] = fieldId
-					self.current[questid]['finish'] = 1
+					self.current[questid]['finish'] = 1					
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
-					
-		if self.current[questid].has_key('finish') and self.current[questid]['finish']:
-			del self.current[questid]
+					del self.current[questid]
 		self.save()
 		
 	def updateFinishNpcQuest(self):
@@ -263,7 +261,7 @@ class quest(object):
 	def udpateFinishChardgeQuest(self, amount):
 		questConf = config.getConfig('quest')
 		usr = self.user		
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'charge_cumulate':
 				if not self.current[questid].has_key('charge_count'):
@@ -279,7 +277,7 @@ class quest(object):
 	def updateFinishWorldTalkQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user		
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'world_talk_count':
 				if not self.current[questid].has_key('world_talk_count'):
@@ -295,7 +293,7 @@ class quest(object):
 	def udpateFinishFriendQuest(self, usrNt):
 		questConf = config.getConfig('quest')
 		usr = self.user
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'friend_count':				
 				if len(usrNt.friend) >= questInfo['finishValue']:
@@ -308,7 +306,7 @@ class quest(object):
 	def updateVipItemBuyQuest(self, item_id, item_count):
 		questConf = config.getConfig('quest')
 		usr = self.user
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
 			if questInfo['finishType'] == 'vip_item_buy_count':				
@@ -324,7 +322,7 @@ class quest(object):
 	def updateArenaWinQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
 			if questInfo['finishType'] == 'arena_win_count':				
@@ -340,7 +338,7 @@ class quest(object):
 	def updateDungeonCountQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user
-		for questid in self.current:
+		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
 			if questInfo['finishType'] == 'dungeon_win_count':				
