@@ -28,7 +28,7 @@ DATABASES = {
 
 MEMCACHED = {
 		'default':{
-			'HOST':'192.168.0.155',
+			'HOST':'192.168.0.99',
 			'PORT':11211
 	}
 }
