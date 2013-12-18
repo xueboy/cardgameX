@@ -87,7 +87,7 @@ def end(request):
 	dunConf = config.getConfig('dungeon')
 	
 	if dun.curren_field['battleid'] != battleId or fieldId != dun.curren_field['fieldid']:
-		return HttpResponse(gcjson.dumps({'msg':'dungeon_finished'}))
+		return {'msg':'dungeon_finished'}
 	
 	for battleConf in dunConf:
 		if battleConf['battleId'] == dun.curren_field['battleid']:

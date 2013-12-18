@@ -134,7 +134,7 @@ class quest(object):
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
-			quest.notify_add_quest(usr, q)			
+			quest.notify_add_quest(usr, questid, q)			
 		self.save()
 		return {'accept_quest':q}
 		
@@ -153,10 +153,10 @@ class quest(object):
 		return q
 	
 	@staticmethod
-	def notify_add_quest(usr, q):
+	def notify_add_quest(usr, questid, q):
 		if not usr.notify.has_key('quest_notify'):
 			usr.notify['quest_notify'] = {}			
-			if not usr.notify['quest_notify']['add_quest']:
+			if not usr.notify['quest_notify'].has_key('add_quest'):
 				usr.notify['quest_notify']['add_quest'] = {}
 			usr.notify['quest_notify']['add_quest'][questid] = q
 			usr.save()
@@ -238,7 +238,7 @@ class quest(object):
 	
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
 		questConf = config.getConfig('quest')
-		usr = self.user		
+		usr = self.user
 		for questid in self.current:
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'dungeon_id':
@@ -248,7 +248,9 @@ class quest(object):
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
-					del self.current[questid]
+					
+		if self.current[questid].has_key('finish') and self.current[questid]['finish']:
+			del self.current[questid]
 		self.save()
 		
 	def updateFinishNpcQuest(self):

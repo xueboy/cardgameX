@@ -1475,7 +1475,7 @@ class excel_import:
 	@staticmethod
 	def quest_get_conf_value(v, value):
 		if v == 'dungeon_id':
-			return value.split(',')[0:1]
+			return value.split(',')[0:2]
 		if v == 'talk_npc_id':
 			return value
 		if v == 'charge_cumulate':
