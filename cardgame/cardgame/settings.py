@@ -143,7 +143,7 @@ TEMPLATE_DIRS = (
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '192.168.0.155:11211',
+        'LOCATION': '192.168.0.99:11211',
     },
     'in_memery': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
