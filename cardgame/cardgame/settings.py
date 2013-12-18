@@ -19,16 +19,19 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'gamecard',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'USER': 'root',        
+        #'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        #'PASSWORD': '123456',
+        'HOST': '42.62.50.75',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PASSWORD': 'Se7enmoon!',
         'PORT': '3306',                      # Set to empty string for default.  
     }
 }
 
 MEMCACHED = {
 		'default':{
-			'HOST':'192.168.0.99',
+			#'HOST':'192.168.0.99',
+			'HOST':'42.62.50.75',
 			'PORT':11211
 	}
 }
@@ -143,7 +146,8 @@ TEMPLATE_DIRS = (
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '192.168.0.99:11211',
+        #'LOCATION': '192.168.0.99:11211',
+        'LOCATION': '42.62.50.75:11211',
     },
     'in_memery': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
