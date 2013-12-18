@@ -66,12 +66,6 @@ class user(gcuser):
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
-		inv = self.getInventory()
-		tc = inv.addCard('pet10001_3')
-		inv.addCard('pet10001_4')
-		inv.addCard('pet10001_3')
-		inv.addCard('pet10001_4')
-		inv.team[0] = tc['id']
 		
 	def install(self, roleid):
 		gcuser.install(self, roleid)
@@ -324,6 +318,12 @@ class user(gcuser):
 		return
 		
 	def onInit(self):
+		inv = self.getInventory()
+		tc = inv.addCard('pet10001_3')
+		inv.addCard('pet10001_4')
+		inv.addCard('pet10001_3')
+		inv.addCard('pet10001_4')
+		inv.team[0] = tc['id']
 		self.onLevelup()		
 
 	def chargeStamina(self, point):
