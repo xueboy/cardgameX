@@ -79,7 +79,7 @@ class account(object):
 	@classmethod
 	def new(cls, accountName, password):
 		try:
-			sql = "INSERT INTO account (email, password) VALUES (%s, %s)"
+			sql = "INSERT INTO account (accountname, password) VALUES (%s, %s)"
 			conn = DBConnection.getConnection()
 			conn.excute(sql, [accountName, password])
 		
