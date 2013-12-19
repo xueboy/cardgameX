@@ -1,0 +1,2 @@
+﻿#!/bin/bash
+uwsgi --stop /tmp/cardgame-master.pid
