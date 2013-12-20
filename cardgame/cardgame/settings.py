@@ -52,7 +52,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -147,12 +147,12 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         #'LOCATION': '192.168.0.99:11211',
-        'LOCATION': '42.62.50.75:11211',
-        'TIMEOUT':1800
+        'LOCATION': '42.62.50.75:11211',        
     },
     'in_memery': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake'
+        'LOCATION': 'unique-snowflake',
+        'TIMEOUT':1800
     }
 }
 

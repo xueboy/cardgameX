@@ -11,18 +11,14 @@ class facility(persistable):
 	def __init__(self):
 		persistable.__init__(self)
 		self.id = 0 
-		self.name = None
-		
-		
-		
+		self.name = None	
 	
 	def install(self, name):
 		return DBPersistent.installFacility(self, name)
 		
 	@classmethod	
 	def get(cls, name):		
-		return DBPersistent.getFacility(cls, name)
-		
+		return DBPersistent.getFacility(cls, name)		
 		
 	def delete(self):
 		return DBPersistent.delete(self)
@@ -32,8 +28,7 @@ class facility(persistable):
 	
 	def load(self, name, data):
 		self.name = name
-		return 0
-		
+		return 0		
 		
 	def save(self):
 		return DBPersistent.saveFacility(self)
@@ -45,9 +40,7 @@ class facility(persistable):
 			obj = cls()
 			obj.install(cls.__name__)
 		return obj
-	
-
-		
+				
 	@classmethod
 	def syncdb(cls):
 		"""

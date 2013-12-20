@@ -17,8 +17,7 @@ class user(object):
 		object.install(self, roleid)
 		
 	def onInit(self):
-		pass
-		
+		pass		
 		
 	def update(self):
 		return
@@ -26,9 +25,7 @@ class user(object):
 	def saveRoleId(self):
 		conn = DBConnection.getConnection()		
 		self.roleid = self.id
-		conn.excute("UPDATE user SET roleid = %s WHERE id = %s", [self.roleid, self.id])		
-		
-	
+		conn.excute("UPDATE user SET roleid = %s WHERE id = %s", [self.roleid, self.id])	
 		
 	def onLogin(self):
 		pass
