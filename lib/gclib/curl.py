@@ -12,16 +12,12 @@ def db(debug_type, debug_msg):
 	myfile = open(r'd:/debug.log', 'a')             # open for output (creates)
 
 	myfile.write( "debug(%d): %s" % (debug_type, debug_msg))        # write a line of text
-
 	myfile.close()
-
-
-
+	
 class curl:
 	
 	def __init__(self):
 		pass
-
 	 		
 	@staticmethod
 	def url(url, postData = None, getData = None):		
