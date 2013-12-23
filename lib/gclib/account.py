@@ -25,7 +25,9 @@ class account(object):
 			acc.nickname = res[0][3]
 			acc.gender = res[0][4]
 			acc.roleid = res[0][5]
-			acc.opendid = res[0][6]			
+			acc.opendid = res[0][6]
+			acc.longitude = res[0][8]
+			acc.latitude = res[0][9]
 			acc.saveLogin()
 			return acc
 		return None
@@ -34,7 +36,9 @@ class account(object):
 		object.install(self, roleid)
 		
 	def getUser(self):		
-		return self.userObject().get(self.roleid)
+		usr = self.userCls().get(self.roleid)
+		usr.account =  self
+		return usr
 	
 	def makeUserAndBind(self, nickname, gender):		
 		usr = self.userObject()

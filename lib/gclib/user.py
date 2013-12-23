@@ -8,9 +8,11 @@ class user(object):
 	
 	def __init__(self):
 		object.__init__(self)
+		self.account = None
 	
 	def init(self, acc):
 		self.id = 0
+		self.account = acc
 		return
 			
 	def install(self, roleid):
