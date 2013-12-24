@@ -120,13 +120,12 @@ class garcha:
 			garchaInfo['last_time'] = now
 			garchaInfo['count'] = garchaInfo['count'] + 1
 			
-		duration = now - garchaInfo['last_time']		
+		duration = now - garchaInfo['last_time']
 		cooldown = cooldownConf - duration
 		data = {}
 		data['garcha_card'] = garchaCard
 		data['gold'] = usr.gold
-		data['gem'] = usr.gem		
-	
+		data['gem'] = usr.gem	
 		
 		data['garcha'] = {}
 		data['garcha']['count'] = garchaInfo['count']
@@ -151,8 +150,7 @@ class garcha:
 		return {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0},'garcha10000':{'count': 0, 'last_time': 0}}
 			
 	@staticmethod
-	def update_garcha(usr, now):
-		
+	def update_garcha(usr, now):		
 		if not is_same_day(now, usr.garcha['garcha10']['last_time']):
 			usr.garcha['garcha10']['count'] = 0
 		if not is_same_day(now, usr.garcha['garcha100']['last_time']):

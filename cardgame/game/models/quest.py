@@ -12,6 +12,7 @@ class quest(object):
 		self.finish = {}
 		self.current = {}
 		self.drama = {}
+		self.user = None
 		
 	def init(self):
 		pass

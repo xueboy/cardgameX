@@ -6,6 +6,7 @@ import os
 import math
 from django.http import HttpResponse
 from gclib.utility import getAccountId
+from game.utility.config import config
 from game.models.account import account
 from game.routine.avatar import avatar
 
@@ -57,6 +58,12 @@ def locate(request):
 	
 	longitude = request.GET['longitude']
 	latitude = request.GET['latitude']	
+	
+	if longitude > 180 or longitude < -180:
+		return {'msg':'parameter_bad'}
+	if latitude > 360 or latitude < -360:
+		return {'msg':'parameter_bad'}
+	
 	usr = request.user
 	accountid = getAccountId(request)
 	account.locate(accountid, longitude, latitude)
@@ -64,16 +71,14 @@ def locate(request):
 	
 def nearby(request):
 	
+	gameConf = config.getConfig('game')
 	
 	longitude = float(request.GET['longitude'])
 	latitude = float(request.GET['latitude']	)
 	usr = request.user
 	
-	raidus = 1000
-	
-	earth_radius = 6378137
-	rad = math.pi
-	
+	raidus = gameConf['player_near_by_raidus']
+		
 	degree = (24901*1609)/360.0
 	raidusMile = raidus
 	dpmLat = 1 / degree
@@ -87,7 +92,7 @@ def nearby(request):
 	minLng = longitude - radiusLng;  
 	maxLng = longitude + radiusLng;
   
-	res = account.getRange(minLng, maxLng, minLat, maxLat)
+	res = account.getRange(minLng, maxLng, minLat, maxLat, gameConf['player_near_by_count'])
 	data = []
 	for r in res:
 		d = {}
@@ -98,6 +103,5 @@ def nearby(request):
 		d['longitude'] = longitude
 		d['latitude'] = latitude
 		d['avatar_id'] = avatar.getAvatarId(roleid)
-		data.append(d)
-  	
+		data.append(d)  	
 	return data

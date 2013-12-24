@@ -28,7 +28,6 @@ def defeat(request):
 	
 def convert(request):
 	roleid = request.REQUEST['roleid']
-	score = request.REQUEST['score']
-	
+	score = request.REQUEST['score']	
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.convert(roleid, score)))

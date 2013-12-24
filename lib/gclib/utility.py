@@ -9,12 +9,10 @@ import random
 
 from gclib.exception import NotHaveNickname, NotLogin
 
-
 def HttpResponse500():
 	response = HttpResponse()
 	response.status_code = 500
 	return resonse
-
 
 def getAccount(request, cls):
 	if not request.session.has_key('account_id'):

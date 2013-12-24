@@ -11,6 +11,7 @@ class almanac(object):
 		object.__init__(self)
 		self.card = {}
 		self.combinaion = []
+		self.user = None
 		return
 	
 	def init(self):

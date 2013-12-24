@@ -6,7 +6,6 @@ from game.utility.config import config
 from game.game_def import serverid
 from gclib.utility import currentTime
 import time
-import copy
 from game.routine.equipment import equipment
 from game.routine.stone import stone
 from game.routine.skill import skill
@@ -75,7 +74,7 @@ class inventory(object):
 		self.team = data['team']
 		self.equipment = data['equipment']
 		self.stone = data['stone']
-		self.skill = data['skill']		
+		self.skill = data['skill']
 		
 	def addCard(self, cardid, level = 1):
 		cardConf = config.getConfig('pet')				
@@ -111,7 +110,7 @@ class inventory(object):
 		if equipmentconf.has_key(equipmentid):
 			data = {}
 			data['equipmentid'] = equipmentid
-			data['id'] = self.generateEquipmentName()			
+			data['id'] = self.generateEquipmentName()
 			self.equipment.append(data)
 			return data
 		return None
@@ -122,9 +121,9 @@ class inventory(object):
 			if equipmentConf.has_key(equipmentid):
 				data = {}
 				data['equipmentid'] = equipmentid
-				data['id'] = self.generateEquipmentName()			
+				data['id'] = self.generateEquipmentName()
 				self.equipment.append(data)
-				equipment.append(data)			
+				equipment.append(data)
 		return equipment
 		
 	def depositEquipment(self, equipment):
@@ -140,7 +139,7 @@ class inventory(object):
 		return res
 			
 	def delEquipment(self, id):
-		self.equipment = filter(lambda e : e['id'] == id, self.equipment)		
+		self.equipment = filter(lambda e : e['id'] == id, self.equipment)
 		return 1
 	
 	def generateCardName(self):
@@ -170,7 +169,7 @@ class inventory(object):
 		return name
 		
 	def getCard(self, id):
-		for card in self.card:			
+		for card in self.card:
 			if card['id'] == id:
 				return card
 		return None
@@ -230,13 +229,13 @@ class inventory(object):
 		
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
-				return self.team			
+				return self.team
 		if cardid2 != '':
 			if cardid2 == cardid3 or cardid2 == cardid4 or cardid2 == cardid5 or cardid2 == cardid6:
-				return self.team			
+				return self.team
 		if cardid3 != '':
 			if cardid3 == cardid4 or cardid3 == cardid5 or cardid3 == cardid6:
-				return self.team			
+				return self.team
 		if cardid4 != '':
 			if cardid4 == cardid5 or cardid4 == cardid6:
 				return self.team
@@ -261,7 +260,7 @@ class inventory(object):
 		if cardid5 != self.team[4] and usr.level <  teamLevelConf[4]:
 			return {'msg':'level_required'}
 		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
-			return {'msg':'level_required'}	
+			return {'msg':'level_required'}
 			
 		deq1, dst1, dsk1 = self.setTeamEquipmentStoneSkill(cardid1, 0, gameConf)
 		deq2, dst2, dsk2 = self.setTeamEquipmentStoneSkill(cardid2, 1, gameConf)

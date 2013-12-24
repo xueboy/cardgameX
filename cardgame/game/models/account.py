@@ -35,7 +35,7 @@ class account(gcaccount):
 		conn.excute(sql, [longitude, latitude, accountid])
 	
 	@staticmethod	
-	def getRange(minLng, maxLng, minLat, maxLat):
-		sql = 'SELECT roleid, longitude, latitude FROM account WHERE longitude > %s and longitude < %s and latitude > %s and latitude < %s limit %s'
+	def getRange(minLng, maxLng, minLat, maxLat, cnt):
+		sql = 'SELECT roleid, longitude, latitude FROM account WHERE longitude >= %s and longitude <= %s and latitude >= %s and latitude <= %s limit %s'
 		conn = DBConnection.getConnection()
-		return conn.query(sql, [minLng, maxLng, minLat, maxLat, 50])
+		return conn.query(sql, [minLng, maxLng, minLat, maxLat, cnt])

@@ -24,8 +24,7 @@ def levelup(request):
 	
 def install(request):
 	
-	usr = request.user
-	
+	usr = request.user	
 	teamPosition = int(request.GET['team_position'])
 	slotpos = int(request.GET['sk_slot_pos'])
 	stoneid = request.GET['skill']

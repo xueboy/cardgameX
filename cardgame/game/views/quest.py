@@ -17,5 +17,5 @@ def new_drama(request):
 		qt.drama[dramaid] = {'count':0, 'dramaid':dramaid}
 	qt.drama[dramaid]['count'] = qt.drama[dramaid]['count'] + 1
 	qt.save()
-	return {'drama':pt.drama[dramaid]}
+	return {'drama':qt.drama[dramaid]}
 	
