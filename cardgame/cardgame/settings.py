@@ -20,18 +20,18 @@ DATABASES = {
         'NAME': 'gamecard',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',        
-        #'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        #'PASSWORD': '123456',
-        'HOST': '42.62.50.75',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PASSWORD': 'Se7enmoon!',
+        'HOST': '192.168.0.7',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PASSWORD': '123456',
+        #'HOST': '42.62.50.75',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        #'PASSWORD': 'Se7enmoon!',
         'PORT': '3306',                      # Set to empty string for default.  
     }
 }
 
 MEMCACHED = {
 		'default':{
-			#'HOST':'192.168.0.99',
-			'HOST':'42.62.50.75',
+			'HOST':'192.168.0.99',
+			#'HOST':'42.62.50.75',
 			'PORT':11211
 	}
 }
