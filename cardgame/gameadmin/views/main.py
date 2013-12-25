@@ -25,6 +25,9 @@ def game(request):
 
 def skill(request):
 	return generalConfigRequestProcess(request, 'skill')
+
+def skill_effect(request):
+	return generalConfigRequestProcess(request, 'skill_effect')
 	
 def skill_level(request):
 	return generalConfigRequestProcess(request, 'skill_level')
@@ -147,6 +150,9 @@ def dungeon_import(request):
 
 def skill_import(request):
 	return excel_import.skill_import(request)
+	
+def skill_effect_import(request):
+	return excel_import.skill_effect_import(request)
 	
 def skill_level_import(request):
 	return excel_import.skill_level_import(request)

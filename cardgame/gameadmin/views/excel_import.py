@@ -237,6 +237,49 @@ class excel_import:
 				conf[level - 1] = exp			
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('skill_level_import')	
+		
+		
+	@staticmethod
+	def skill_effect_import(request):
+		if request.method == 'POST':
+			skill_effect_file = request.FILES.get('skill_effect_file')		
+			if not skill_effect_file:
+				return HttpResponse('技能效果xlsx文件未上传')
+								
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, skill_effect_file.read())
+			sheet = wb.sheet_by_index(1)			
+			conf = {}
+			for rownum in range(4,sheet.nrows):
+				row = sheet.row_values(rownum)
+				skillEffid = row[0]
+				fcId = row[1]
+				fcSuit = int(row[3])
+				valueType = int(row[5])
+				coefficient = float(row[6])
+				fcValue = float(row[7])
+				Lvup = int(row[8])
+				buffId = row[9]
+				fcDuration = int(row[10])
+				isDisperse = int(row[11])
+				triggerType = int(row[12])
+				
+				skillEffectConf = {}
+				skillEffectConf['fcId'] = fcId
+				skillEffectConf['fcSuit'] = fcSuit
+				skillEffectConf['valueType'] = valueType
+				skillEffectConf['coefficient'] = coefficient
+				skillEffectConf['fcValue'] = fcValue
+				skillEffectConf['Lvup'] = Lvup
+				skillEffectConf['buffId'] = buffId
+				skillEffectConf['fcDuration'] = fcDuration
+				skillEffectConf['isDisperse'] = isDisperse
+				skillEffectConf['triggerType'] = triggerType
+				
+				conf[skillEffid] = skillEffectConf
+				
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('skill_effect_import')
 				
 	@staticmethod
 	def pet_import(request):
