@@ -996,6 +996,31 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('trp_import')
+		
+	@staticmethod
+	def trp_probability_import(request):
+		if request.method == 'POST':
+			trp_probability_file = request.FILES.get('trp_probability_file')
+			if not trp_probability_file:
+				return HttpResponse('培养概率xlsx文件上传')
+			
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_probability_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = {'point':[], 'training3':[], 'training2':[], 'training1':[], 'training':[] }
+			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				conf['point'].append(row[0])
+				conf['training3'].append(row[1])
+				conf['training2'].append(row[2])
+				conf['training1'].append(row[3])
+				conf['training'].append(row[4])
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('trp_probability_import')
+				
+		
 	
 	@staticmethod
 	def educate_import(request):

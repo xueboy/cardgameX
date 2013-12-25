@@ -77,6 +77,9 @@ def stone_level(request):
 def trp_price(request):
 	return generalConfigRequestProcess(request, 'trp_price')
 
+def trp_probability(request):
+	return generalConfigRequestProcess(request, 'trp_probability')
+
 def trp(request):
 	return generalConfigRequestProcess(request, 'trp')
 	
@@ -189,6 +192,9 @@ def trp_import(request):
 	
 def trp_price_import(request):
 	return excel_import.trp_price_import(request)
+	
+def trp_probability_import(request):
+	return excel_import.trp_probability_import(request)
 	
 def educate_import(request):
 	return excel_import.educate_import(request)
