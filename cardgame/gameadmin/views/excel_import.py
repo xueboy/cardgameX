@@ -942,7 +942,7 @@ class excel_import:
 			
 			for rownum in range(2,sheet.nrows):
 				row = sheet.row_values(rownum)
-				conf[str(rownum - 1)] = row[1:5]
+				conf[str(rownum - 1)] = row[1:6]
 					
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_level_import')
