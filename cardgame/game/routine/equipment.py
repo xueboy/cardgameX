@@ -85,15 +85,31 @@ class equipment:
 		return (selItem[1][0] + selItem[1][2]) / 2
 		
 	@staticmethod
-	def equip(usr, teamPosition, equipmentid):
+	def equip(usr, teamPosition, ownerTeamPosition, equipmentid):
 		inv = usr.getInventory()
 		
 		cardid = inv.team[teamPosition]
 		
 		if not cardid:
-			return {'msg': 'team_position_not_have_member'}
+			return {'msg': 'team_position_not_have_member1'}
 		
-		equipment = inv.getEquipment(equipmentid)
+		equipment = None
+		owner = None
+		if ownerTeamPosition >= 0:
+			ownerCardid = inv.team[ownerTeamPosition]
+			if not ownerCardid:
+				return {'msg': 'team_position_not_have_member2'}
+			owner = inv.getCard(ownerCardid)
+			if not owner:
+				return {'msg':'card_not_exist'}
+			for equip in owner['slot']:
+				if equip and equip['id'] == equipmentid:
+					equipment = equip
+					break			
+		else:
+			equipment = inv.getEquipment(equipmentid)
+			
+			
 		if not equipment:
 			return {'msg':'equipment_not_exist'}		
 		
@@ -112,14 +128,21 @@ class equipment:
 		if oldEquipment:
 			inv.depositEquipment(oldEquipment)
 		card['slot'][equipmentInfo['position']] = equipment
-		inv.equipment.remove(equipment)
-		inv.save()
-		
-		return{'solt':inv.getSlots(), 'equipment_delete':equipmentid}
+		if owner:
+			owner['slot'][equipmentInfo['position']] = {}
+		else:
+			inv.equipment.remove(equipment)
+		inv.save()		
+		data = {}
+		data['slot'] = inv.getSlots()
+		if not owner:
+			data['equipment_delete'] = equipmentid		
+		return data
 			
 	@staticmethod
 	def make_slot():
 		return [{}, {}, {}, {}, {}]
+	
 			
 	@staticmethod
 	def sell(usr, equipmentid):

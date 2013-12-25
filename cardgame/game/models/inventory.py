@@ -186,6 +186,12 @@ class inventory(object):
 				return equipment
 		return None
 		
+	def getOwnerEquipment(self, card, id):
+		for equipment in card['slot']:
+			if equipment['id'] == id:
+				return equipment
+		return None
+		
 	def getSlots(self):
 		slots = {}
 		for i, t in enumerate(self.team):

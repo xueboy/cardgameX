@@ -25,15 +25,15 @@ def set_team(request):
 		return msg
 	data = {}
 	data['team'] = inv.team
-	data['slot'] = inv.getSlots()
-	data['st_slot'] = inv.getStSlots()
-	data['sk_slot'] = inv.getSkSlots()
-	if deq:
-		data['add_equipment_array'] = deq
-	if dst:
-		data['add_stone_array'] = dst
-	if dsk:
-		data['add_skill_array'] = dsk
+#	data['slot'] = inv.getSlots()
+#	data['st_slot'] = inv.getStSlots()
+#	data['sk_slot'] = inv.getSkSlots()
+#	if deq:
+#		data['add_equipment_array'] = deq
+#	if dst:
+#		data['add_stone_array'] = dst
+#	if dsk:
+#		data['add_skill_array'] = dsk
 	return data
 
 	
