@@ -182,9 +182,9 @@ class excel_import:
 				maxLevel = row[10]
 				triggerType = row[11]
 				isActive = row[12]
-				startEffect = row[13]
-				inprocessEffect = row[14]
-				finishEffect = row[15]
+				#startEffect = row[13]
+				#inprocessEffect = row[14]
+				#finishEffect = row[15]
 				result = []
 				if row[16]:
 					result.append(row[16])
@@ -194,6 +194,13 @@ class excel_import:
 					result.append(row[18])
 				if row[19]:
 					result.append(row[19])			
+				if row[20]:
+					result.append(row[20])
+				mp = int(row[21])
+				exp = int(row[22])
+				probability = int(row[23])
+				chip = int(row[24])
+				position = int(row[25])
 					
 				skillConf = {}
 				skillConf['name'] = name
@@ -207,10 +214,15 @@ class excel_import:
 				skillConf['maxLevel'] = maxLevel
 				skillConf['triggerType'] = triggerType
 				skillConf['isActive'] = isActive
-				skillConf['startEffect'] = startEffect
-				skillConf['inprocessEffect'] = inprocessEffect
-				skillConf['finishEffect'] = finishEffect
+#				skillConf['startEffect'] = startEffect
+#				skillConf['inprocessEffect'] = inprocessEffect
+#				skillConf['finishEffect'] = finishEffect
 				skillConf['result'] = result				
+				skillConf['mp'] = mp
+				skillConf['exp'] = exp
+				skillConf['probability'] = probability
+				skillConf['chip'] = chip
+				skillConf['position'] = position
 				
 				conf[unicode(skillid)] = skillConf
 			
