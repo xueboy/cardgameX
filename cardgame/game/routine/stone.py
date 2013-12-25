@@ -28,7 +28,8 @@ class stone:
 		if msg:
 			return msg		
 		data = result[0]
-		data['gold'] = usr.gold		
+		data['gold'] = usr.gold	
+		data['gem'] = usr.gem
 		return data
 		
 	@staticmethod
@@ -73,7 +74,7 @@ class stone:
 		usr.save()
 		inv.save()
 		
-		return {'stv':usr.stv, 'add_stone':stone, 'gem':usr.gem}
+		return {'stv':usr.stv, 'add_stone':stone, 'gem':usr.gem, 'gold':usr.gold}
 			
 	@staticmethod
 	def visit_clickonce(usr, count):	
