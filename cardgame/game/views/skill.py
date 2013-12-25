@@ -26,7 +26,8 @@ def install(request):
 	
 	usr = request.user	
 	teamPosition = int(request.GET['team_position'])
+	ownerTeamPosition = int(request.GET['owner_team_position'])
 	slotpos = int(request.GET['sk_slot_pos'])
 	stoneid = request.GET['skill']
 	
-	return skill.install(usr, teamPosition, slotpos, stoneid)
+	return skill.install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid)

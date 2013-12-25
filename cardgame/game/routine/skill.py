@@ -31,11 +31,11 @@ class skill:
 		return {'update_skill': destSkill, 'delete_skill_array': sourceSkill_id}
 			
 	@staticmethod
-	def install(usr, teamPosition, slotpos, skill_id):
+	def install(usr, teamPosition, ownerTeamPosition, slotpos, skill_id):
 		inv = usr.getInventory()
 		
 		if not inv.team[teamPosition]:
-			return {'msg':'team_position_not_have_member'}				
+			return {'msg':'team_position_not_have_member'}
 		card = inv.getCard(inv.team[teamPosition])
 		if not card:
 			return {'msg': 'card_not_exist'}
@@ -43,7 +43,23 @@ class skill:
 			card['sk_slot'] = skill.make_sk_slot()
 			
 		oldsk = card['sk_slot'][slotpos]
-		sk = inv.withdrawSkill(skill_id)
+		
+		sk = None
+		owner = None
+		if ownerTeamPosition < 0:
+			sk = inv.withdrawSkill(skill_id)
+		else:
+			ownerid = inv.team[ownerTeamPosition]
+			if not ownerid:
+				return {'msg':'team_position_not_have_member'}
+			owner = inv.getCard(ownerid)
+			if not owner:
+				return {'msg': 'card_not_exist'}
+			for i, s in enumerate(owner['sk_slot']):
+				if s and s['id'] == skill_id:
+					sk = s
+					owner['sk_slot'][i] = {}
+					break			
 		
 		if not sk:
 			return {'msg':'skill_not_exist'}
@@ -51,12 +67,13 @@ class skill:
 		card['sk_slot'][slotpos] = sk
 		
 		if oldsk:
-			inv.depositSkill(oldsk)
+			inv.depositSkill(oldsk)	
 		
-		inv.save()
-		
+		inv.save()		
 		data = {}
 		data['sk_slot'] = inv.getSkSlots()
+		if not owner:
+			data['delete_skill'] = skill_id
 		if oldsk:
 			data['add_skill'] = oldsk
 	
