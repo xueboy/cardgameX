@@ -147,15 +147,27 @@ class stone:
 		
 			
 	@staticmethod
-	def levelup(usr, dest_stoneid, source_stoneid):
+	def levelup(usr, teamPosition, dest_stoneid, source_stoneid):
 			
 		if not source_stoneid:
 			return {'msg':'stone_not_specified'}
 				
 		stoneConf = config.getConfig('stone')
 				
-		inv = usr.getInventory()		
-		dest_stone = inv.getStone(dest_stoneid)	
+		inv = usr.getInventory()
+		if teamPosition < 0:	
+			dest_stone = inv.getStone(dest_stoneid)	
+		else:
+			ownerid = inv.team[teamPosition]
+			if not ownerid:
+				return {'msg':'team_position_not_have_member'}
+			owner = inv.getCard(ownerid)
+			if not owner:
+				return {'msg': 'card_not_exist'}
+			for i, s in enumerate(owner['st_slot']):
+				if s and s['id'] == stoneid:
+					dest_stone = s					
+					break			
 		if not dest_stone:
 			return {'msg':'stone_not_exist'}
 		exp = 0
@@ -249,11 +261,11 @@ class stone:
 			inv.depositStone(oldst)		
 		inv.save()			
 		data = {}		
-		#data['st_slot'] = inv.getStSlots()
-		#if oldst:
-		#	data['add_stone'] = oldst			
-		#if st:
-		#	data['delete_stone'] = st
+		data['st_slot'] = inv.getStSlots()
+		if oldst:
+			data['add_stone'] = oldst			
+		if st:
+			data['delete_stone'] = st
 			
 		return data		
 		

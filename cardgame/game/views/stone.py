@@ -25,7 +25,8 @@ def levelup(request):
 	
 	usr = request.user
 	
-	dest_stoneid = request.GET['dest_stone']	
+	dest_stoneid = request.GET['dest_stone']
+	teamPosition = request.GET['team_position']
 	source_stoneid = []	
 	i = 1	
 	source_key = 'source_stone' + str(i)
@@ -35,7 +36,7 @@ def levelup(request):
 		i = i + 1
 		source_key = 'source_stone' + str(i)
 	
-	return stone.levelup(usr, dest_stoneid, source_stoneid)
+	return stone.levelup(usr, teamPosition, dest_stoneid, source_stoneid)
 
 
 	

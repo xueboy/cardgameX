@@ -391,8 +391,8 @@ class inventory(object):
 		return stone
 		
 	def getStone(self, id):					
-		for st in self.stone:
-			if st['id'] == id:				
+		for st in self.stone:			
+			if st['id'] == id:
 				return st
 		return None
 		

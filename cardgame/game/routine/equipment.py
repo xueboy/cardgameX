@@ -123,17 +123,17 @@ class equipment:
 		if not card.has_key('slot'):
 			card['slot'] = equipment.make_slot()
 		
-		oldEquipment = card['slot'][equipmentInfo['position']]
+		oldEquipment = card['slot'][equipmentInfo['position'] - 1]
 		
 		if oldEquipment:
 			inv.depositEquipment(oldEquipment)
 			if oldEquipment['id'] == equipmentid:
-				card['slot'][equipmentInfo['position']] = {}
+				card['slot'][equipmentInfo['position'] - 1] = {}
 				inv.save()
 				return {}
-		card['slot'][equipmentInfo['position']] = equipment
+		card['slot'][equipmentInfo['position'] - 1] = equipment
 		if owner:
-			owner['slot'][equipmentInfo['position']] = {}
+			owner['slot'][equipmentInfo['position'] - 1] = {}
 		else:
 			inv.equipment.remove(equipment)
 		inv.save()		
