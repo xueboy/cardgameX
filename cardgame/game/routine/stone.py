@@ -249,11 +249,11 @@ class stone:
 			inv.depositStone(oldst)		
 		inv.save()			
 		data = {}		
-		data['st_slot'] = inv.getStSlots()
-		if oldst:
-			data['add_stone'] = oldst			
-		if st:
-			data['delete_stone'] = st
+		#data['st_slot'] = inv.getStSlots()
+		#if oldst:
+		#	data['add_stone'] = oldst			
+		#if st:
+		#	data['delete_stone'] = st
 			
 		return data		
 		

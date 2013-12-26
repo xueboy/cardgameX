@@ -71,11 +71,11 @@ class skill:
 		
 		inv.save()		
 		data = {}
-		data['sk_slot'] = inv.getSkSlots()
-		if not owner:
-			data['delete_skill'] = skill_id
-		if oldsk:
-			data['add_skill'] = oldsk
+		#data['sk_slot'] = inv.getSkSlots()
+		#if not owner:
+		#	data['delete_skill'] = skill_id
+		#if oldsk:
+		#	data['add_skill'] = oldsk
 	
 		return data
 	
