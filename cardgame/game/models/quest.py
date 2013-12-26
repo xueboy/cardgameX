@@ -145,11 +145,9 @@ class quest(object):
 		self.save()
 		return {'accept_quest':q}
 		
-	def acceptNextQuest(self, questInfo):
-		questConf = config.getConfig('quest')		
+	def acceptNextQuest(self, questid, questInfo):		
 		if not self.canAccept(questInfo):
-			return None
-		
+			return None		
 		q = quest.makeQuest(questid)
 		usr = self.user
 		self.current[questid] = q
@@ -232,7 +230,7 @@ class quest(object):
 		del self.current[questid]
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
-		newQuest = self.acceptNextQuest(questInfo)	
+		newQuest = self.acceptNextQuest(questid, questInfo)	
 		
 		data = {}
 		data['finish_quest'] = questid
