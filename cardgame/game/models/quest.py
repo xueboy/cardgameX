@@ -146,8 +146,7 @@ class quest(object):
 		return {'accept_quest':q}
 		
 	def acceptNextQuest(self, questInfo):
-		questConf = config.getConfig('quest')
-		questInfo = questConf[questid]
+		questConf = config.getConfig('quest')		
 		if not self.canAccept(questInfo):
 			return None
 		
