@@ -44,7 +44,8 @@ def install(request):
 	usr = request.user
 	
 	teamPosition = int(request.GET['team_position'])
+	ownerTeamPosition = int(request.GET['owner_team_position'])
 	slotpos = int(request.GET['st_slot_pos'])
 	stoneid = request.GET['stone']
 		
-	return stone.install(usr, teamPosition, slotpos, stoneid)
+	return stone.install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid)
