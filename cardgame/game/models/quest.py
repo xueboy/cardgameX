@@ -4,6 +4,7 @@
 from gclib.object import object
 from gclib.utility import currentTime, is_same_day
 from game.utility.config import config
+from game.routine.drop import drop
 
 class quest(object):
 	
