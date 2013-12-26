@@ -30,7 +30,8 @@ class network(object):
 		data['friend'] = self.friend
 		data['message'] = self.message
 		data['mail'] = self.mail
-		data['email'] = self.email
+		data['email'] = {}
+		data['friend_request'] = self.email
 		data['blacklist'] = self.blacklist
 		data['sequenceid'] = self.sequenceid
 		return data		
