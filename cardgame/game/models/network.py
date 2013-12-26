@@ -70,9 +70,9 @@ class network(object):
 		data.update({'type':'firend_request', 'id':requestid})		
 		friendNw.email[requestid] = data		
 		friendNw.save()
-		if not friend.notify.has_key('notify_email'):
-			friend.notify['notify_email'] = {}
-		friend.notify['notify_email'][requestid] = data
+		if not friend.notify.has_key('notify_friend_request'):
+			friend.notify['notify_friend_request'] = {}
+		friend.notify['notify_friend_request'][requestid] = data
 		friend.save()		
 		return data	
 		
@@ -192,11 +192,11 @@ class network(object):
 			del self.email[mailid]
 			self.save()
 			friendNw.save()
-			return {'email_delete':mailid, 'friend_new':friendData}
+			return {'friend_request_delete':mailid, 'friend_new':friendData}
 		elif option == 'no':
 			del self.email[mail['id']]		
 			self.save()
-			return {'email_delete':mailid}
+			return {'friend_request_delete':mailid}
 		return {}
 	
 	def emailMarkReaded(self, emailid):
