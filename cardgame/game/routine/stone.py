@@ -198,7 +198,7 @@ class stone:
 		return [1, 0, 0, 0, 0]
 
 	@staticmethod
-	def install(usr, teamPosition, slotpos, stoneid):
+	def install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid):
 		
 		inv = usr.getInventory()
 		
@@ -215,9 +215,23 @@ class stone:
 			card['st_slot'] = stone.make_st_solt()
 	
 		stoneConf = config.getConfig('stone')		
-		st = {}
-		if stoneid:
+		st = None
+		owner = None
+		if ownerTeamPosition < 0:		
 			st = inv.withdrawStone(stoneid)
+		else:
+			ownerid = inv.team[ownerTeamPosition]
+			if not ownerid:
+				return {'msg':'team_position_not_have_member'}
+			owner = inv.getCard(ownerid)
+			if not owner:
+				return {'msg': 'card_not_exist'}
+			for i, s in enumerate(owner['st_slot']):
+				if s and s['id'] == stoneid:
+					st = s
+					owner['st_slot'][i] = {}
+					break			
+		
 		if not st:
 			return {'msg':'stone_not_exist'}
 				
