@@ -127,6 +127,8 @@ class equipment:
 		
 		if oldEquipment:
 			inv.depositEquipment(oldEquipment)
+			if oldEquipment['id'] == equipmentid:
+				return {}
 		card['slot'][equipmentInfo['position']] = equipment
 		if owner:
 			owner['slot'][equipmentInfo['position']] = {}
