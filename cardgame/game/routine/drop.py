@@ -28,7 +28,8 @@ class drop:
 				break
 		return awd
 						
-			
+	
+	@staticmethod
 	def award(usr, dropInfo, awd):		
 		if dropInfo['type'] == 'st':
 			usr.chargeStamina(dropInfo['count'])
