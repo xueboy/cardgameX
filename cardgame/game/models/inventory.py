@@ -51,20 +51,60 @@ class inventory(object):
 		
 	def getClientData(self):
 		data = {}		
-		card = []
+		card = {}
 		
 		for c in self.card:			
-			card.append(inventory.getClientCard(c))
+			card[c['id']] = inventory.getClientCard(c)
+		team = [{},{},{},{},{},{}]
+		for i, memberid in enumerate(self.team):
+			if memberid:
+				card = self.getCard(memberid)
+				if card:
+					team[i] = card
+		
+		equipment  = {}
+		for equip in self.equipment:
+			equipment[equip['id']] = equip
+			
+		for card in team:
+			if card and card.has_key('slot'):
+				for equip in card['slot']:
+					if equip:
+						equipment[equip['id']] = equip
+						
+		stone = {}
+		for st in self.stone:
+			stone[st['id']] = st
+		
+		for card in team:
+			if card and card.has_key('st_slot'):
+				for st in card['st_slot']:
+					if st:
+						stone[st['id']] = st
+		
+		skill = {}
+		for sk in self.skill:
+			skill[sk['id']]	= sk
+			
+		for card in team:
+			if card and card.has_key('sk_slot'):
+				for sk in card['sk_slot']:
+					if sk:
+						skill[sk['id']] = sk
+					
+		item = {}		
+		for  it in self.item:
+			item[it['id']] = id					
 		
 		data['card'] = card
 		data['team'] = self.team
-		data['item'] = self.item
-		data['equipment'] = self.equipment
+		data['item'] = item
+		data['equipment'] = equipment
 		data['slot'] = self.getSlots()
 		data['st_slot'] = self.getStSlots()
 		data['sk_slot'] = self.getSkSlots()
-		data['stone'] = self.stone
-		data['skill'] = self.skill
+		data['stone'] = stone
+		data['skill'] = skill
 		return data
 		
 	def load(self, roleid, data):
