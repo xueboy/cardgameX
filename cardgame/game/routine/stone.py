@@ -208,7 +208,7 @@ class stone:
 		if not card:
 			return {'msg': 'card_not_exist'}		
 		gameConf = config.getConfig('game')		
-		if gameConf['stone_slot_level'][slotpos] > card['level']:
+		if gameConf['stone_slot_level'][slotpos] > usr.level:
 			return {'msg': 'card_level_required'}
 		
 		if not card.has_key('st_slot'):

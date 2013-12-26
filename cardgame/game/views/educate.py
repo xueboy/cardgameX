@@ -20,7 +20,6 @@ def stop(request):
 	return educate.stop(usr, edu_slot_pos)
 
 def open_slot(request):
-	usr = request.user
-	
+	usr = request.user	
 	return educate.open_edu_solt(usr)
 	
