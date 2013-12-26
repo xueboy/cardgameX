@@ -128,6 +128,8 @@ class equipment:
 		if oldEquipment:
 			inv.depositEquipment(oldEquipment)
 			if oldEquipment['id'] == equipmentid:
+				card['slot'][equipmentInfo['position']] = {}
+				inv.save()
 				return {}
 		card['slot'][equipmentInfo['position']] = equipment
 		if owner:
