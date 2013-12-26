@@ -151,7 +151,7 @@ class quest(object):
 		q = quest.makeQuest(questid)
 		usr = self.user
 		self.current[questid] = q
-		quest.notify_add_quest(usr, q)
+		quest.notify_add_quest(usr,questid, q)
 		self.save()
 		return q
 	
