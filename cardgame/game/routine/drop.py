@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.utility import randbigint
+from game.utility.config import config
 
 class drop:
 	@staticmethod
