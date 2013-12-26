@@ -134,9 +134,9 @@ class equipment:
 			inv.equipment.remove(equipment)
 		inv.save()		
 		data = {}
-		data['slot'] = inv.getSlots()
-		if not owner:
-			data['equipment_delete'] = equipmentid		
+		#data['slot'] = inv.getSlots()
+		#if not owner:
+		#	data['equipment_delete'] = equipmentid		
 		return data
 			
 	@staticmethod
