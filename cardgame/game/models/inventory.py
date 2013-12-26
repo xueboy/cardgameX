@@ -408,7 +408,8 @@ class inventory(object):
 			if st['id'] == id:
 				res = st
 				break
-		self.stone.remove(res)
+		if res:
+			self.stone.remove(res)
 		return res
 		
 	def addSkill(self, skillid, level = 1):

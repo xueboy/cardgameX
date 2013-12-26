@@ -209,7 +209,7 @@ class stone:
 			return {'msg': 'card_not_exist'}		
 		gameConf = config.getConfig('game')		
 		if gameConf['stone_slot_level'][slotpos] > usr.level:
-			return {'msg': 'card_level_required'}
+			return {'msg': 'level_required'}
 		
 		if not card.has_key('st_slot'):
 			card['st_slot'] = stone.make_st_solt()
@@ -217,7 +217,10 @@ class stone:
 		stoneConf = config.getConfig('stone')		
 		st = {}
 		if stoneid:
-			st = inv.withdrawStone(stoneid)			
+			st = inv.withdrawStone(stoneid)
+		if not st:
+			return {'msg':'stone_not_exist'}
+				
 		oldst = card['st_slot'][slotpos]
 		if (not oldst) and (not stoneid):
 			return {'msg':'stone_not_exist'}
