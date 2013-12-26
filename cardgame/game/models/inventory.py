@@ -23,7 +23,7 @@ class inventory(object):
 		self.user = None
 		self.skill = []
 		
-	def init(self):
+	def init(self):		
 		return		
 		
 	def install(self, roleid):
@@ -58,17 +58,17 @@ class inventory(object):
 		team = [{},{},{},{},{},{}]
 		for i, memberid in enumerate(self.team):
 			if memberid:
-				card = self.getCard(memberid)
-				if card:
-					team[i] = card
+				cd = self.getCard(memberid)
+				if cd:
+					team[i] = cd
 		
 		equipment  = {}
 		for equip in self.equipment:
 			equipment[equip['id']] = equip
 			
-		for card in team:
-			if card and card.has_key('slot'):
-				for equip in card['slot']:
+		for m in team:
+			if m and m.has_key('slot'):
+				for equip in m['slot']:
 					if equip:
 						equipment[equip['id']] = equip
 						
@@ -76,9 +76,9 @@ class inventory(object):
 		for st in self.stone:
 			stone[st['id']] = st
 		
-		for card in team:
-			if card and card.has_key('st_slot'):
-				for st in card['st_slot']:
+		for m in team:
+			if m and m.has_key('st_slot'):
+				for st in m['st_slot']:
 					if st:
 						stone[st['id']] = st
 		
@@ -86,9 +86,9 @@ class inventory(object):
 		for sk in self.skill:
 			skill[sk['id']]	= sk
 			
-		for card in team:
-			if card and card.has_key('sk_slot'):
-				for sk in card['sk_slot']:
+		for m in team:
+			if m and m.has_key('sk_slot'):
+				for sk in m['sk_slot']:
 					if sk:
 						skill[sk['id']] = sk
 					

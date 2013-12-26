@@ -327,8 +327,7 @@ class user(gcuser):
 		dst = []
 		dsk = []
 		inv.setTeam(tc['id'], '', '', '', '', '', deq, dst, dsk)
-		
-	
+		inv.save()	
 		self.onLevelup()		
 
 	def chargeStamina(self, point):
