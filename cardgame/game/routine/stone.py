@@ -225,7 +225,7 @@ class stone:
 		if (not oldst) and (not stoneid):
 			return {'msg':'stone_not_exist'}
 			
-		sttype = stoneConf[st['stoneid']][type]			
+		sttype = stoneConf[st['stoneid']]['type']
 		for st1 in card['st_slot']:
 			if st1 and stoneConf[st1['stoneid']]['type'] == sttype:
 				return {'msg':'stone_same_type_installed'}				
