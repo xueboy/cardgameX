@@ -18,60 +18,60 @@ class drop:
 			probablity = d['probability']
 			msg = None
 			if probablity == 1000000:
-				msg = drop.award(usr, dropInfo, awd)
+				msg = drop.award(usr, d, awd)
 				if msg:
 					break
 			elif probablity < rd:
 				rd = rd - probablity
 			else:
-				msg = drop.award(usr, dropInfo, awd)
+				msg = drop.award(usr, d, awd)
 				break
 		return awd
 						
 	
 	@staticmethod
-	def award(usr, dropInfo, awd):		
-		if dropInfo['type'] == 'st':
-			usr.chargeStamina(dropInfo['count'])
+	def award(usr, dropItem, awd):		
+		if dropItem['type'] == 'st':
+			usr.chargeStamina(dropItem['count'])
 			awd['st'] = usr.stamina
 			usr.save()
-		elif dropInfo['type'] == 'gem':
-			usr.gem = usr.gem + dropInfo['count']
+		elif dropItem['type'] == 'gem':
+			usr.gem = usr.gem + dropItem['count']
 			awd['gem'] = usr.gem
 			usr.save()
-		elif dropInfo['type'] == 'sp':
-			usr.sp = usr.sp + dropInfo['count']
+		elif dropItem['type'] == 'sp':
+			usr.sp = usr.sp + dropItem['count']
 			awd['sp'] = usr.sp
 			usr.save()
-		elif dropInfo['type'] == 'exp':
-			usr.gainExp(dropInfo['count'])
+		elif dropItem['type'] == 'exp':
+			usr.gainExp(dropItem['count'])
 			awd['level'] = usr.level
 			awd['exp'] = usr.exp
 			usr.save()
-		elif dropInfo['type'] == 'stone':
+		elif dropItem['type'] == 'stone':
 			inv = usr.getInventory()
-			stone = inv.addStoneCount(dropInfo['id'], dropInfo['count'])
+			stone = inv.addStoneCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_stone_array'):
 				awd['add_stone_array'] = []
 			awd['add_stone_array'].extend(stone)
 			inv.save()
-		elif dropInfo['type'] == 'eq':
+		elif dropItem['type'] == 'eq':
 			inv = usr.getInventory()
-			equipment = inv.addEquipmentCount(dropInfo['id'], dropInfo['count'])
+			equipment = inv.addEquipmentCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_equipment_array'):
 				awd['add_equipment_array'] = []
 			awd['add_equipment_array'].extend(equipment)
 			inv.save()
-		elif dropInfo['type'] == 'card':
+		elif dropItem['type'] == 'card':
 			inv = usr.getInventory()
-			card = inv.addCardCount(dropInfo['id'], dropInfo['count'])
+			card = inv.addCardCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_card_array'):
 				awd['add_card_array'] = []
 			awd['add_card_array'].extend(card)
 			inv.save()
-		elif dropInfo['type'] == 'sk':
+		elif dropItem['type'] == 'sk':
 			inv = usr.getInventory()
-			sk = inv.addSkillCount(dropInfo['id'], dropInfo['count'])
+			sk = inv.addSkillCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_skill_array'):
 				awd['add_skill_array'] = []
 			awd['add_skill_array'].extend(sk)
