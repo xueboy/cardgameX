@@ -3,13 +3,14 @@
 
 from django.http import HttpResponse
 from game.models.user import user
+from gclib.utility import currentTime
 
 	
 def tool_create_player(request):
 	if request.method == 'POST':
 		levelf = request.POST['levelf']
 		levelt = request.POST['levelt']
-		cnt = request.POST['count']
+		cnt = int(request.POST['count'])
 		main_card_dropid = request.POST['main_card_dropid']
 		other_card_dropid = request.POST['other_card_dropid']
 		card_levelf = request.POST['card_levelf']
@@ -22,7 +23,17 @@ def tool_create_player(request):
 		stone_levelt = request.POST['stone_levelt']
 		
 		for i in range(cnt):
-			pass
+			usr = user()					
+			usr.init(None)
+			usr.last_login = currentTime()
+			usr.name = nickname
+			usr.gender = gender
+			usr.avatar = avatar
+			usr.install(0)
+			
+			usr.saveRoleId()
+			usr.onInit()
+			usr.save()
 			
 		
 	return HttpResponse('tool_create_player')

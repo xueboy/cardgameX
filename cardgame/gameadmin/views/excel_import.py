@@ -1613,7 +1613,5 @@ class excel_import:
 		for i in item:
 			c = i.split(':')
 			dic[c[0]] = c[1:]
-		return dic
-			
-		
+		return dic	
 	

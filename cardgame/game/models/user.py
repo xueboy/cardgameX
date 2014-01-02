@@ -57,11 +57,12 @@ class user(gcuser):
 		self.avatar = ''
 		
 	
-	def init(self, acc):
+	def init(self, acc = None):
 		gcuser.init(self, acc)
-		self.id = acc.roleid
-		self.roleid = acc.roleid
-		self.name = acc.nickname
+		if acc:
+			self.id = acc.roleid
+			self.roleid = acc.roleid
+			self.name = acc.nickname
 		self.level = 1
 		self.stamina = 100				
 		self.vip = 0
@@ -323,7 +324,7 @@ class user(gcuser):
 		
 	def onInit(self):
 		inv = self.getInventory()
-		tc = inv.addCard('pet10001_3')
+		tc = inv.addCard('pet10111_3')
 		inv.addCard('pet10001_4')
 		inv.addCard('pet10001_3')
 		inv.addCard('pet10001_4')
