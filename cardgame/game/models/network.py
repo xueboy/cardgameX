@@ -215,7 +215,9 @@ class network(object):
 		return {'msg':'email_not_exist'}
 
 	def yell(self, name, msg):
-		ms = massyell.get(0)		
+		ms = massyell.get(0)
+		qt = self.user.getQuest()		
+		qt.updateFinishYellQuest()
 		return ms.yell(self.roleid, name, msg)
 		
 		
