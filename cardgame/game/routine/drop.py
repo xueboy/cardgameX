@@ -14,12 +14,15 @@ class drop:
 		
 		awd = {}
 		
+		print dropInfo
 		for d in dropInfo:
 			probablity = d['probability']
+			print d
 			msg = None
 			if probablity == 1000000:
 				msg = drop.award(usr, d, awd)
 				if msg:
+					print msg.a
 					break
 			elif probablity < rd:
 				rd = rd - probablity

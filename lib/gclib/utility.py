@@ -113,7 +113,7 @@ def is_expire(daytime, t):
 def is_same_day(t1, t2):
 	t1tm = time.gmtime(t1)
 	t2tm = time.gmtime(t2)
-	return (t1tm.Tm_Year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)
+	return (t1tm.tm_year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)
 	
 def day_diff(t1, t2):
 	d1 = datetime.datetime(t1)

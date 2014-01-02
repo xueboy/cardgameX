@@ -30,8 +30,6 @@ class ladder(facility):
 		if not usr:
 			return {'msg':'user_not_exist'}	
 		
-		print 'roleid', roleid
-		print 'item', self.item
 		if not self.item.has_key(roleid):			
 			rd = {}
 			rd['roleid'] = roleid
