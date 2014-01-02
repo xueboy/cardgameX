@@ -184,7 +184,8 @@ class educate:
 				data.append(s)
 			else:
 				s = educate.make_open_edu_slot(slot['edt'])
-				s['card_id'] = slot['card_id']
+				if slot['card_id']:
+					s['card_id'] = slot['card_id']
 				data.append(s)
 		return data
 	
