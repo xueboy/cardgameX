@@ -152,7 +152,7 @@ CACHES = {
     'in_memery': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
-        'TIMEOUT':1800
+       # 'TIMEOUT':1800
     }
 }
 
