@@ -165,7 +165,7 @@ class stone:
 			if not owner:
 				return {'msg': 'card_not_exist'}
 			for i, s in enumerate(owner['st_slot']):
-				if s and s['id'] == stoneid:
+				if s and s['id'] == dest_stoneid:
 					dest_stone = s					
 					break			
 		if not dest_stone:
