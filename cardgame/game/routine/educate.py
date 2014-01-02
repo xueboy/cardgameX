@@ -182,11 +182,14 @@ class educate:
 				s['finish_countdown'] = countdown
 				s['card_id'] = slot['card_id']
 				data.append(s)
-			else:
+			elif slot:
 				s = educate.make_open_edu_slot(slot['edt'])
-				if slot['card_id']:
+				if slot.has_key('card_id'):
 					s['card_id'] = slot['card_id']
 				data.append(s)
+			else:
+				data.append({})
+			
 		return data
 	
 	@staticmethod
