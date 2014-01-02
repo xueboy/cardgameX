@@ -4,7 +4,9 @@
 from django.http import HttpResponse
 from game.models.user import user
 from gclib.utility import currentTime
-
+from django.shortcuts import render
+from game.routine.arena import arena
+from gclib.json import json
 	
 def tool_create_player(request):
 	if request.method == 'POST':
@@ -34,6 +36,11 @@ def tool_create_player(request):
 			usr.saveRoleId()
 			usr.onInit()
 			usr.save()
-			
+			res = arena.stand_ladder(usr)
+			res = json.loads()
+			if isinstance(res, dict) and res.has_key('msg'):
+				return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])
 		
-	return HttpResponse('tool_create_player')
+		ld = arena.show_all()
+	#return HttpResponse('tool_create_player')
+	return render(request, 'tool.html', ld)

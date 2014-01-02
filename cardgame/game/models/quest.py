@@ -279,16 +279,16 @@ class quest(object):
 					#del self.current[questid]
 		self.save()
 		
-	def updateFinishWorldTalkQuest(self):
+	def updateFinishYellQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user		
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
-			if questInfo['finishType'] == 'world_talk_count':
-				if not self.current[questid].has_key('world_talk_count'):
-					self.current[questid]['world_talk_count'] = 0
-				self.current[questid]['world_talk_count'] = self.current[questid]['world_talk_count'] + 1
-				if self.current[questid]['world_talk_count'] >= questInfo['finishValue']:
+			if questInfo['finishType'] == 'yell_count':
+				if not self.current[questid].has_key('yell_count'):
+					self.current[questid]['yell_count'] = 0
+				self.current[questid]['yell_count'] = self.current[questid]['yell_count'] + 1
+				if self.current[questid]['yell_count'] >= questInfo['finishValue']:
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
 					#self.finish[questid] = self.current[questid]

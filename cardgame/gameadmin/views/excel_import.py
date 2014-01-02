@@ -1541,7 +1541,7 @@ class excel_import:
 		if v == 3:
 			return 'charge_cumulate'
 		if v == 4:
-			return 'world_talk_count'
+			return 'yell_count'
 		if v == 5:
 			return 'friend_count'
 		if v == 6:

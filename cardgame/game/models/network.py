@@ -1,7 +1,7 @@
 ﻿from gclib.object import object
 from gclib.utility import currentTime
 from game.utility.config import config
-
+from game.models.massyell import massyell
 
 class network(object):
 	

@@ -5,6 +5,7 @@ from gclib.curl import curl
 from gclib.utility import randint
 from cardgame.settings import ARENE_SERVER
 from game.models.user import user
+from game.routine.arena import arena
 
 def show_ladder(request):	
 	usr = request.user	
@@ -12,8 +13,10 @@ def show_ladder(request):
 		
 def stand_ladder(request):
 	usr = request.user
-	return curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)})
-		
+	return arena.stand_ladder(usr)
+	
+def show_all(request):
+	return arena.show_all()
 		
 def challenge(request):
 	usr = request.user

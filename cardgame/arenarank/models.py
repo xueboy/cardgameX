@@ -30,7 +30,9 @@ class ladder(facility):
 		if not usr:
 			return {'msg':'user_not_exist'}	
 		
-		if not self.item.has_key(roleid):
+		print 'roleid', roleid
+		print 'item', self.item
+		if not self.item.has_key(roleid):			
 			rd = {}
 			rd['roleid'] = roleid
 			rd['name'] = usr.name
@@ -86,6 +88,13 @@ class ladder(facility):
 			self.save()
 			return ls			
 		return None
+		
+	def show_all(self):
+		uls = []
+		for position in range(len(self.rank)):
+			uls.append(self.show_floor(position))			
+		return uls
+			
 						
 	def show_floor(self, position):
 		rd = self.item[self.rank[position]]

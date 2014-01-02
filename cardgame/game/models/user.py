@@ -381,9 +381,9 @@ class user(gcuser):
 
 	def yell_listen(self):		
 		ms = massyell.get(0)
-		yells = ms.listen(self.yell_hear_id)
+		yells = ms.listen(self)
 		self.yell_hear_id = ms.sequenceid
 		if yells:			
-			return {'yell':ms.listen()}
+			return {'yell':yells}
 		return {}
 		

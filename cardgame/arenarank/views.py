@@ -8,13 +8,13 @@ from arenarank.models import ladder
 
 def show_ladder(request):	
 			
-	roleid = request.REQUEST['roleid'][0]	
+	roleid = request.REQUEST['roleid']
 	ld = ladder.instance()
 	return HttpResponse(json.dumps( ld.show(roleid)))	
 	
 def stand_ladder(request):
 	
-	roleid = request.REQUEST['roleid'][0]	
+	roleid = request.REQUEST['roleid']
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.stand(roleid)))
 	
@@ -31,3 +31,7 @@ def convert(request):
 	score = request.REQUEST['score']	
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.convert(roleid, score)))
+	
+def show_all(request):
+	ld = ladder.instance()
+	return HttpResponse(json.dumps(ld.show_all()))

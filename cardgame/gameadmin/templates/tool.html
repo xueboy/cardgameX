@@ -106,6 +106,20 @@
 
 </form>
 <hr />
+<table width="877" border="1">
+  <tr>
+    <td width="154">排名</td>
+    <td width="164">玩家名</td>
+    <td width="161">等级</td>    
+  </tr>
+  {%for item in ladder %}
+  <tr>
+    <td width="154">{{item.no}}</td>
+    <td width="164">{{item.name}}</td>
+    <td width="161">{{item.level}}</td>    
+  </tr>
+  {%endfor%}
+</table>
 
 </body>
 </html>
