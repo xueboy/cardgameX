@@ -139,6 +139,7 @@ def set_nickname(request):
 	
 	nickname = request.GET['nickname']
 	gender = request.GET['gender']
+	avatar = request.GET['avatar']
 	gameConf = conf.getConfig('game')
 	
 	if gender != 'male' and gender != 'female':
@@ -151,7 +152,7 @@ def set_nickname(request):
 		return HttpResponse(json.dumps({'msg':'nickname_already_have'}))
 	acc.nickname = nickname
 	acc.gender = gender
-	usr = acc.makeUserAndBind(nickname, gender)		
+	usr = acc.makeUserAndBind(nickname, avatar, gender)		
 	data = usr.getLoginData(gameConf)	
 	return HttpResponse(json.dumps(data))
 	

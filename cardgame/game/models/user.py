@@ -54,6 +54,7 @@ class user(gcuser):
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
 		self.arena = {}
+		self.avatar = ''
 		
 	
 	def init(self, acc):
@@ -98,6 +99,7 @@ class user(gcuser):
 		data['stv'] = self.stv
 		data['stv_gem'] = self.stv_gem
 		data['arena'] = self.arena
+		data['avatar'] = self.avatar
 		return data
 		
 	def getClientData(self):
@@ -125,6 +127,7 @@ class user(gcuser):
 		if self.luckycat:
 			data['luckycat'] = luckycat.getClientData(self, gameConf)
 		data['educate'] = educate.getClientData(self, gameConf)
+		data['avatar'] = self.avatar
 		return data
 		
 		
@@ -216,6 +219,7 @@ class user(gcuser):
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
 		self.arena = data['arena']
+		self.avatar = data['avatar']
 			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1

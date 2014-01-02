@@ -40,12 +40,13 @@ class account(object):
 		usr.account =  self
 		return usr
 	
-	def makeUserAndBind(self, nickname, gender):		
+	def makeUserAndBind(self, nickname, avatar, gender):		
 		usr = self.userObject()
 		usr.init(self)
 		usr.last_login = self.last_login
 		usr.name = nickname
 		usr.gender = gender
+		usr.avatar = avatar
 		usr.install(0)
 		self.roleid = usr.id
 		self.bind(usr.id, nickname, gender)	

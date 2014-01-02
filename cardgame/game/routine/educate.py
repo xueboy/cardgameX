@@ -178,6 +178,7 @@ class educate:
 				countdown = gameConf['educate_duration'] - (now - slot['start_time'])
 				if countdown < 0:
 					countdown = 0
+				s['expptm'] = slot['expptm']
 				s['finish_countdown'] = countdown
 				s['card_id'] = slot['card_id']
 				data.append(s)

@@ -146,13 +146,18 @@ class quest(object):
 		self.save()
 		return {'accept_quest':q}
 		
-	def acceptNextQuest(self, questid, questInfo):		
-		if not self.canAccept(questInfo):
+	def acceptNextQuest(self, questid, questInfo, questConf):
+		nextQuestid = questInfo['nextId']
+		if not  questConf.has_key(nextQuestid):
+			return None
+		nextQuestInfo = questConf[nextQuestid]
+		
+		if not self.canAccept(nextQuestInfo):
 			return None		
-		q = quest.makeQuest(questid)
+		q = quest.makeQuest(nextQuestid)
 		usr = self.user
-		self.current[questid] = q
-		quest.notify_add_quest(usr,questid, q)
+		self.current[nextQuestid] = q
+		quest.notify_add_quest(usr,nextQuestid, q)
 		self.save()
 		return q
 	
@@ -230,7 +235,7 @@ class quest(object):
 	#	quest.notify_finish_quest(usr, questid)		
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
-		newQuest = self.acceptNextQuest(questid, questInfo)	
+		newQuest = self.acceptNextQuest(questid, questInfo, questConf)	
 		
 		data = {}
 		data['finish_quest'] = questid
