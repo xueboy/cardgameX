@@ -183,7 +183,9 @@ class educate:
 				s['card_id'] = slot['card_id']
 				data.append(s)
 			else:
-				data.append(slot)
+				s = educate.make_open_edu_slot(slot['edt'])
+				s['card_id'] = slot['card_id']
+				data.append(s)
 		return data
 	
 	@staticmethod
