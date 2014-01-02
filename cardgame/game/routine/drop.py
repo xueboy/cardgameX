@@ -76,7 +76,7 @@ class drop:
 				awd['add_skill_array'] = []
 			awd['add_skill_array'].extend(sk)
 			inv.save()
-	return None
+		return None
 	
 	
 		
