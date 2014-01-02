@@ -26,9 +26,9 @@ def tool_create_player(request):
 			usr = user()					
 			usr.init(None)
 			usr.last_login = currentTime()
-			usr.name = nickname
-			usr.gender = gender
-			usr.avatar = avatar
+			usr.name = 'testRobot'
+			usr.gender = 'female'
+			usr.avatar = '1'
 			usr.install(0)
 			
 			usr.saveRoleId()
