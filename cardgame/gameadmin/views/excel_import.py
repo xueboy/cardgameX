@@ -1384,39 +1384,39 @@ class excel_import:
 		
 	@staticmethod
 	def drop_card(arr):
-		return {'type':'card', 'id':arr[1], 'probability':arr[2],'count':int(arr[3]), 'level':arr[4]}
+		return {'type':'card', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3]), 'level':arr[4]}
 	
 	@staticmethod		
 	def drop_skill(arr):	
-		return {'type':'sk', 'id':arr[1], 'probability':arr[2],'count':int(arr[3]), 'level':arr[4]}
+		return {'type':'sk', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3]), 'level':arr[4]}
 	
 	@staticmethod
 	def drop_equipment(arr):
-		return {'type':'eq', 'id':arr[1], 'probability':arr[2],'count':int(arr[3]), 'level':arr[4]}
+		return {'type':'eq', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3]), 'level':arr[4]}
 	
 	@staticmethod
 	def drop_item(arr):
-		return {'type':'item', 'id':arr[1], 'probability':arr[2],'count':int(arr[3]), 'level':arr[4]}
+		return {'type':'item', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3]), 'level':arr[4]}
 	
 	@staticmethod
 	def drop_stone(arr):
-		return {'type':'stone', 'id':arr[1], 'probability':arr[2],'count':int(arr[3]), 'level':arr[4]}
+		return {'type':'stone', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3]), 'level':arr[4]}
 	
 	@staticmethod
 	def drop_gem(arr):
-		return {'type':'gem','probability':arr[2],'count':int(arr[3])}
+		return {'type':'gem','probability':int(arr[2]),'count':int(arr[3])}
 	
 	@staticmethod
 	def drop_stamina(arr):
-		return {'type':'st','probability':arr[2],'count':int(arr[3])}
+		return {'type':'st','probability':int(arr[2]),'count':int(arr[3])}
 	
 	@staticmethod		
 	def drop_sp(arr):
-		return {'type':'sp','probability':arr[2],'count':int(arr[3])}
+		return {'type':'sp','probability':int(arr[2]),'count':int(arr[3])}
 	
 	@staticmethod		
 	def drop_exp(arr):
-		return {'type':'exp','probability':arr[2],'count':int(arr[3])}
+		return {'type':'exp','probability':int(arr[2]),'count':int(arr[3])}
 	
 	
 	@staticmethod

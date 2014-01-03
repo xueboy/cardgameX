@@ -158,7 +158,7 @@ class inventory(object):
 		equipmentConf = config.getConfig('equipment')
 		equipment = []
 		for i in range(cnt):
-			if equipmentConf.has_key(equipmentid):
+			if equipmentConf.has_key(equipmentid):				
 				data = {}
 				data['equipmentid'] = equipmentid
 				data['id'] = self.generateEquipmentName()

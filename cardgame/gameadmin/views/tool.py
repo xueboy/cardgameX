@@ -36,11 +36,11 @@ def tool_create_player(request):
 			usr.saveRoleId()
 			usr.onInit()
 			usr.save()
-			res = arena.stand_ladder(usr)
+			res = arena.stand_ladder(usr)			
 			res = json.loads()
 			if isinstance(res, dict) and res.has_key('msg'):
 				return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])
 		
-		ld = arena.show_all()
+	ld = arena.show_all()
 	#return HttpResponse('tool_create_player')
 	return render(request, 'tool.html', ld)

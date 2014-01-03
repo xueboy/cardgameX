@@ -21,13 +21,12 @@ class drop:
 			msg = None
 			if probablity == 1000000:
 				msg = drop.award(usr, d, awd)
-				if msg:
-					print msg.a
-					break
+				if msg:				
+					break				
 			elif probablity < rd:
-				rd = rd - probablity
+				rd = rd - probablity				
 			else:
-				msg = drop.award(usr, d, awd)
+				msg = drop.award(usr, d, awd)				
 				break
 		return awd
 						
