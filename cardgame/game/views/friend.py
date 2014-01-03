@@ -15,9 +15,9 @@ def request(request):
 		return {'friend':data}
 	return {'msg':'friend_not_exist'}
 		
-def email_anwser(request):
+def friend_anwser(request):
 	usr = request.user
-	mailid = request.GET['email_id']
+	mailid = request.GET['friend_id']
 	option = request.GET['option']	
 	usrNw = usr.getNetwork()
 	return usrNw.emailAnswer(mailid, option)

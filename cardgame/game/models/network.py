@@ -158,7 +158,7 @@ class network(object):
 		
 	def emailAnswer(self, id, option):
 		if not self.email.has_key(id):
-			return {'msg':'email_not_exist'}
+			return {'msg':'request_not_exist'}
 		email = self.email[id]
 		if email['type'] == 'firend_request':
 			return self.emailAnswerFriendRequest(email, option)
