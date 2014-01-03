@@ -384,6 +384,6 @@ class user(gcuser):
 		yells = ms.listen(self)
 		self.yell_hear_id = ms.sequenceid
 		if yells:			
-			return {'yell':yells}
+			return {'yell_notify':yells}
 		return {}
 		

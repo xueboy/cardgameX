@@ -163,21 +163,17 @@ class quest(object):
 	
 	@staticmethod
 	def notify_add_quest(usr, questid, q):
-		if not usr.notify.has_key('quest_notify'):
-			usr.notify['quest_notify'] = {}			
-			if not usr.notify['quest_notify'].has_key('add_quest'):
-				usr.notify['quest_notify']['add_quest'] = {}
-			usr.notify['quest_notify']['add_quest'][questid] = q
-			usr.save()
+		if not usr.notify.has_key('add_quest_notify'):
+			usr.notify['add_quest_notify'] = {}						
+		usr.notify['add_quest_notify'][questid] = q
+		usr.save()
 			
 	@staticmethod
 	def notify_finish_quest(usr, questid):
-		if not usr.notify.has_key('quest_notify'):			
-			usr.notify['quest_notify'] = {}			
-			if not usr.notify['quest_notify'].has_key('finish_quest'):
-				usr.notify['quest_notify']['finish_quest'] = []
-			usr.notify['quest_notify']['finish_quest'].append(questid)
-			usr.save()
+		if not usr.notify.has_key('finish_quest_notify'):
+			usr.notify['finish_quest_notify'] = {}				
+		usr.notify['finish_quest_notify'].append(questid)
+		usr.save()
 	
 	@staticmethod
 	def isActive(questInfo):
