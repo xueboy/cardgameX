@@ -83,6 +83,6 @@ urlpatterns = patterns('',
     url(r'^quest_import/$', gameadmin.views.main.quest_import),
     url(r'^item/$', gameadmin.views.main.item),
     url(r'^item_import/$', gameadmin.views.main.item_import),
-    url(r'^tool_create_player/$', gameadmin.views.tool.tool_create_player)
-    
+    url(r'^tool_create_player/$', gameadmin.views.tool.tool_create_player),
+    url(r'^tool_ladder_remove/$', gameadmin.views.tool.tool_ladder_remove)    
 )

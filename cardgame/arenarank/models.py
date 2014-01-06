@@ -75,27 +75,40 @@ class ladder(facility):
 				lastPosition = ladder.up_floor(position, lastPosition)
 				uls.append(self.show_floor(lastPosition))
 				lastPosition = ladder.up_floor(position, lastPosition)
-				uls.append(self.show_floor(lastPosition))				
+				uls.append(self.show_floor(lastPosition))
 				lastPosition = ladder.up_floor(position, lastPosition)
 				uls.append(self.show_floor(lastPosition))
 				uls.reverse()
 				ls.extend(uls)
 				#self and below 7
 				for i in range(position, position + 7):
-					ls.append(self.show_floor(lastPosition))					
+					ls.append(self.show_floor(lastPosition))
 			self.save()
 			return ls			
 		return None
 		
 	def show_all(self):
 		uls = []
-		for position in range(len(self.rank)):
-			uls.append(self.show_floor(position))			
+		for position in range(len(self.rank)):			
+			uls.append(self.show_floor(position))					
 		return uls
 			
+	def remove(self, roleid):
+		if roleid in self.rank:
+			self.rank.remove(roleid)
+			del self.item[roleid]
+			self.save()
+			return {}
+		return {'msg':'roleid_not_exsit'}
 						
 	def show_floor(self, position):
-		rd = self.item[self.rank[position]]
+		
+		if len(self.rank) <= position:
+			return {'msg':'position_invalid'}
+		roleid = self.rank[position]
+		if not self.item.has_key(roleid):
+			return {'msg' : 'roleid_not_exist'}		
+		rd = self.item[roleid]
 		return {'position': position, 'roleid':rd['roleid'], 'score':rd['score'], 'name':rd['name'], 'level':rd['level']}
 			
 	@staticmethod

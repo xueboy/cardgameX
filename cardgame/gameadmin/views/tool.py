@@ -23,6 +23,7 @@ def tool_create_player(request):
 		skill_levelt = request.POST['skill_levelt']
 		stone_levelf = request.POST['stone_levelf']
 		stone_levelt = request.POST['stone_levelt']
+		stand_ladder = request.POST.has_key('stand_ladder')
 		
 		for i in range(cnt):
 			usr = user()					
@@ -36,11 +37,22 @@ def tool_create_player(request):
 			usr.saveRoleId()
 			usr.onInit()
 			usr.save()
-			res = arena.stand_ladder(usr)			
-			res = json.loads()
-			if isinstance(res, dict) and res.has_key('msg'):
-				return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])
+			if stand_ladder:
+				res = arena.stand_ladder(usr)	
+				if isinstance(res, str):
+					res = json.loads(res)
+					if res.has_key('msg'):
+						return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])		
+	ld = arena.show_all()	
+	return render(request, 'tool.html', {'ladder':ld})
 		
-	ld = arena.show_all()
-	#return HttpResponse('tool_create_player')
-	return render(request, 'tool.html', ld)
+def tool_ladder_remove(request):
+	if request.method == 'POST':
+		print str(request.POST)
+		optid = request.POST['optid']
+		operator = request.POST['operator']
+		if operator == 'remove':
+			arena.remove(optid)		
+	ld = arena.show_all()	
+	print ld
+	return render(request, 'tool.html', {'ladder':ld})

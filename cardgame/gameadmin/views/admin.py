@@ -4,7 +4,7 @@
 from gclib.DBConnection import DBConnection
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from game.routine.arena import arena
 
 def login(request):
 	if request.method == 'POST':
@@ -24,4 +24,5 @@ def login(request):
 		return render(request, 'login.html', {})
 		
 def tool(request):
-	return render(request, 'tool.html', {})
+	ld = arena.show_all()
+	return render(request, 'tool.html',  {'ladder':ld})

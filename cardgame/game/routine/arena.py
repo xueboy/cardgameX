@@ -14,3 +14,7 @@ class arena:
 	@staticmethod
 	def show_all():
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/show_all/', None, {}))
+		
+	@staticmethod
+	def remove(roleid):
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/remove/', None, {'roleid':roleid}))

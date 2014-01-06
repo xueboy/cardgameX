@@ -35,5 +35,5 @@ class curl:
 			url = url + '?' + urllib.urlencode(getData)
 		c.setopt(pycurl.URL, url)
 		c.perform()
-		c.close()
+		#c.close()
 		return ret.getvalue()

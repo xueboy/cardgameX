@@ -8,10 +8,10 @@
 <body>
 <hr />
 
-<form id="" name="form1" action="/admin/tool_create_player/" method="post">{% csrf_token %}
+<form id="form1" name="form1" action="/admin/tool_create_player/" method="post">{% csrf_token %}
  <table width="879" border="1">
   <tr>
-    <td colspan="4"><div align="center">创建离线玩家</div></td>
+    <td colspan="4"><div align="center">创建排行榜玩家</div></td>
     </tr>
   <tr>
     <td width="163">玩家等级从</td>
@@ -96,6 +96,14 @@
     <td></td>
   </tr>
   <tr>
+    <td>&nbsp;</td>
+    <td><label>
+      <input type="checkbox" name="stand_ladder" value="checkbox" />
+      加入排行榜</label></td>
+    <td>&nbsp;</td>
+    <td></td>
+  </tr>
+  <tr>
     <td colspan="4"><label>
       <div align="center">
         <input type="submit" name="Submit" value="提交" />
@@ -106,20 +114,36 @@
 
 </form>
 <hr />
+<form id="form2" name="form2" action="/admin/tool_ladder_remove/" method="post">{% csrf_token %}
+<input id="optid" name="optid" type="hidden" />
+<input id="operator" name="operator" type="hidden" />
+
+<script type="text/javascript">
+function setOperator(opt, v){
+//JS函数
+document.getElementById("operator").value = opt;
+document.getElementById("optid").value = v;
+}
+</script>
 <table width="877" border="1">
   <tr>
     <td width="154">排名</td>
+    <td width="154">roleid</td>
     <td width="164">玩家名</td>
-    <td width="161">等级</td>    
+    <td width="161">等级</td>   
+    <td width="161"></td>    
   </tr>
-  {%for item in ladder %}
+  {% for item in ladder %}
   <tr>
-    <td width="154">{{item.no}}</td>
-    <td width="164">{{item.name}}</td>
-    <td width="161">{{item.level}}</td>    
+    <td width="154">{{ item.position }}</td>
+	<td width="154">{{ item.roleid }}</td>
+    <td width="164">{{ item.name }}</td>
+    <td width="161">{{ item.level }}</td> 
+    <td width="161"><input name="remove" type="submit" value="删除" onclick="setOperator('remove', '{{ item.roleid }}');this.form.submit()"/></td>    
   </tr>
-  {%endfor%}
+  {% endfor %}
 </table>
+</form>
 
 </body>
 </html>

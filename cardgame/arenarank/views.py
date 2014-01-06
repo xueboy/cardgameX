@@ -35,3 +35,10 @@ def convert(request):
 def show_all(request):
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.show_all()))
+	
+
+def remove(request):
+	roleid = request.REQUEST['roleid']
+	ld = ladder.instance()
+	ld.remove(roleid)
+	return HttpResponse(json.dumps(ld.show_all()))
