@@ -22,7 +22,7 @@ class quest(object):
 		object.install(self, roleid)
 	
 	def getData(self):
-		data = {}
+		data = object.getData(self)
 		data['finish'] = self.finish
 		data['current'] = self.current
 		data['drama'] = self.drama
@@ -171,7 +171,7 @@ class quest(object):
 	@staticmethod
 	def notify_finish_quest(usr, questid):
 		if not usr.notify.has_key('finish_quest_notify'):
-			usr.notify['finish_quest_notify'] = {}				
+			usr.notify['finish_quest_notify'] = []				
 		usr.notify['finish_quest_notify'].append(questid)
 		usr.save()
 	
