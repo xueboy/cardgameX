@@ -173,7 +173,7 @@ class pet:
 		
 		inv.save()
 		usr.save()
-		return {'training_card':inventory.getClientCard(card)}
+		return {'training_card':inv.getClientCard(card)}
 	
 	
 	@staticmethod		
