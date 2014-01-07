@@ -35,7 +35,7 @@ class dungeon(object):
 		object.install(self, roleid)
 	
 	def getData(self):
-		data = {}
+		data = object.getData(self)
 		data['normal_recored'] = self.normal_recored
 		data['last_dungeon'] = self.last_dungeon		
 		data['reinforced_list'] = self.reinforced_list
