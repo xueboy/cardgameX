@@ -24,7 +24,7 @@
     </tr>
   </table>
   </div>
-  </form>
+</form>
   {% if account_name %}
   <form id="form2" name="form2" action="/admin/gm_tool_set_profile/" method="post">{% csrf_token %}
   <div align="center">
@@ -95,108 +95,180 @@
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
 	{% endif %}
   </table>
 </div>
+</form>
+<hr />
+  <form id="form3" name="form3" action="/admin/gm_tool_set_card/" method="post">
+    <div align="center">{% csrf_token %}
+      <input id="petopt" name="petopt" type="hidden" />
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
+      <script language="javascript">
+  function setPetOpt(opt)
+  {
+	document.getElementById("petopt").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+      </script>
+      <table width="658" border="1">
+        <tr>
+          <td colspan="4">宠物</td>
+    </tr>
+        <tr>
+          <td colspan="4">
+            <select name="petSelect">       
+	  {% for petid, pet in petConf.items %}
+        <option value="{{ petid }}"> {{ pet.name }}</option>        
+	  {% endfor %}      
+      </select>
+            <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add')" />          </td>
+    </tr>
+        <tr>
+          <td width="33">id</td>
+      <td width="33">名称</td>
+      <td width="33">等级</td>
+      <td>&nbsp;</td>
+    </tr>
+        {% for pet in petList %}
+        <tr>    
+          <td>{{ pet.id }}</td>
+      <td></td>
+      <td>{{ pet.level }}</td>
+      <td>&nbsp;</td>
+    </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <p>&nbsp;</p>
+</form>
+  <hr />
+  <form id="form4" name="form4" action="/admin/gm_tool_set_stone/" method="post">{% csrf_token %}
+    <div align="center">
+	    <input id="stoneopt" name="stoneopt" type="hidden" />
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
+      <script language="javascript">
+  function setStoneOpt(opt)
+  {
+	document.getElementById("stoneopt").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+      </script>
+      <table width="666" border="1">
+        <tr>
+          <td colspan="5"><div align="center">宝石</div></td>
+      </tr>
+        <tr>
+          <td colspan="5"><label>
+            <select name="stoneSelect">
+				{% for stoneid, stone in stoneConf.items %}
+        		<option value="{{ stoneid }}"> {{ stone.name }}</option>        
+				{% endfor %}      
+
+            </select>
+          </label>
+            <label>
+            <input type="submit" name="Submit4" value="添加" onclick="setStoneOpt('add')" />
+          </label></td>
+      </tr>
+        <tr>
+          <td width="73">id</td>
+      <td width="102">名称</td>
+      <td width="151">等级</td>
+      <td width="312">&nbsp;</td>
+    </tr>
+	{% for st in stoneList %}
+        <tr>
+       <td>{{ st.id }}</td>
+      <td>&nbsp;</td>
+      <td>{{ st.level }}</td>
+      <td>&nbsp;</td>  
+    </tr>
+	{% endfor %}
+     
+      </table>
+    </div>
+  </form>
+ <hr />
+    <form id="form5" name="form4" action="/admin/gm_tool_set_equipment/" method="post">{% csrf_token %}
+  <div align="center">
+	    <input id="equipmentopt" name="equipmentopt" type="hidden" />
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
+      <script language="javascript">
+  function setEquipmentOpt(opt)
+  {
+	document.getElementById("equipmentopt").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+      </script>
+	  
+	  <table width="676" border="1">
+        <tr>
+          <td colspan="4">装备</td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <select name="equipmentSelect">
+				{% for equipmentid, equipment in equipmentConf.items %}
+        		<option value="{{ equipmentid }}"> {{ equipment.name }}</option>        
+				{% endfor %}
+			</select>
+            <input type="submit" name="Submit5" value="添加" onclick="setEquipmentOpt('add')"/>		  </td>
+        </tr>
+       {% for eq in equipmentList %}
+        <tr>
+       <td>{{ eq.id }}</td>
+      <td>&nbsp;</td>
+      <td>{{ eq.level }}</td>
+      <td>&nbsp;</td>  
+   	 </tr>
+	{% endfor %}       
+      </table>
+  </div>
+	</form>
+	<hr />
+	   <form id="form5" name="form4" action="/admin/gm_tool_set_skill/" method="post">{% csrf_token %}
+  <div align="center">
+	    <input id="skillopt" name="skillopt" type="hidden" />
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
+      <script language="javascript">
+  function setSkillOpt(opt)
+  {
+	document.getElementById("skillopt").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+      </script>
+	  
+	  <table width="699" border="1">
+        <tr>
+          <td colspan="5">技能</td>
+        </tr>
+        <tr>
+          <td colspan="5">
+            <select name="skillSelect">
+				{% for skillid, skill in skillConf.items %}
+        		<option value="{{ skillid }}"> {{ skill.name }}</option>        
+				{% endfor %}
+            </select>
+			<input type="submit" name="Submit6" value="添加" onclick="setSkillOpt('add')" /></td>
+        </tr>
+        <tr>
+          <td width="29">id</td>
+          <td width="74">名称</td>
+          <td width="31">等级</td>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+          {% for skill in skillList %}
+        <tr>
+       <td>{{ skill.id }}</td>
+      <td>&nbsp;</td>
+      <td>{{ skill.level }}</td>
+      <td>&nbsp;</td>  
+   	 </tr>
+	{% endfor %}       
+       
+      </table>
+  </div>
+	  </form>
 </body>
 </html>

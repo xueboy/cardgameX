@@ -87,5 +87,9 @@ urlpatterns = patterns('',
     url(r'^tool_ladder_remove/$', gameadmin.views.tool.tool_ladder_remove),
     url(r'^gm_tool/$', gameadmin.views.tool.gm_tool),
     url(r'^gm_tool_profile_find', gameadmin.views.tool.gm_tool_profile_find),
-    url(r'^gm_tool_set_profile', gameadmin.views.tool.gm_tool_set_profile)
+    url(r'^gm_tool_set_profile', gameadmin.views.tool.gm_tool_set_profile),
+    url(r'^gm_tool_set_card', gameadmin.views.tool.gm_tool_set_pet),
+    url(r'^gm_tool_set_stone', gameadmin.views.tool.gm_tool_set_stone),
+    url(r'^gm_tool_set_equipment', gameadmin.views.tool.gm_tool_set_equipment),
+    url(r'^gm_tool_set_skill', gameadmin.views.tool.gm_tool_set_skill),
 )

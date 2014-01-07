@@ -100,7 +100,7 @@ def gm_tool_set_profile(request):
 			usr = user.get(roleid)
 			if not usr:
 				return HttpResponse('玩家不存在')
-			usr.gold =  usr.gold + int(value)
+			usr.gold = int(value)
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
@@ -111,7 +111,7 @@ def gm_tool_set_profile(request):
 			usr = user.get(roleid)
 			if not usr:
 				return HttpResponse('玩家不存在')
-			usr.gem =  usr.gem + int(value)
+			usr.gem = int(value)
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
@@ -122,10 +122,103 @@ def gm_tool_set_profile(request):
 			usr = user.get(roleid)
 			if not usr:
 				return HttpResponse('玩家不存在')
-			usr.stamina =  usr.stamina + int(value)
+			usr.stamina = int(value)
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
 	return render(request, 'profile.html', data)
 			
+def gm_tool_set_pet(request):
 	
+	data = {}
+	if request.method == 'POST':
+		petopt = request.POST['petopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)
+		
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()		
+		
+		if petopt == 'add':
+			cardid = request.POST['petSelect']
+			inv = usr.getInventory()
+			c = inv.addCard(cardid)
+			inv.save()
+			if not c:
+				return HttpResponse('添加失败')
+			data = gm.show_profile(acc, usr)
+			
+	return render(request, 'profile.html', data)
+			
+			
+def gm_tool_set_stone(request):
+	data = {}
+	if request.method == 'POST':
+		stoneopt = request.POST['stoneopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)
+		
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()		
+		
+		if stoneopt == 'add':
+			stoneid = request.POST['stoneSelect']
+			inv = usr.getInventory()
+			s = inv.addStone(stoneid)
+			inv.save()
+			if not s:
+				return HttpResponse('添加失败')
+			data = gm.show_profile(acc, usr)
+			
+	return render(request, 'profile.html', data)
+	
+def gm_tool_set_equipment(request):
+	data = {}
+	if request.method == 'POST':
+		equipmentopt = request.POST['equipmentopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)
+		
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()		
+		
+		if equipmentopt == 'add':
+			equipmentid = request.POST['equipmentSelect']
+			inv = usr.getInventory()
+			s = inv.addEquipment(equipmentid)
+			inv.save()
+			if not s:
+				return HttpResponse('添加失败')
+			data = gm.show_profile(acc, usr)
+			
+	return render(request, 'profile.html', data)
+	
+
+def gm_tool_set_skill(request):
+	data = {}
+	if request.method == 'POST':
+		skillopt = request.POST['skillopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)
+		
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()		
+		
+		if skillopt == 'add':
+			skillid = request.POST['skillSelect']
+			inv = usr.getInventory()
+			s = inv.addSkill(skillid)
+			inv.save()
+			if not s:
+				return HttpResponse('添加失败')
+			data = gm.show_profile(acc, usr)
+			
+	return render(request, 'profile.html', data)
