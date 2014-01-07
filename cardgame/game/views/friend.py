@@ -17,7 +17,7 @@ def request(request):
 		
 def friend_anwser(request):
 	usr = request.user
-	mailid = request.GET['friend_id']
+	mailid = request.GET['request_id']
 	option = request.GET['option']	
 	usrNw = usr.getNetwork()
 	return usrNw.emailAnswer(mailid, option)
