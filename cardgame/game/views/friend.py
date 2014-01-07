@@ -85,6 +85,14 @@ def mail(request):
 		usrNw.sendMail(toUser, mail)
 		return {}
 	return {'msg':'friend_not_exist'}
+		
+def delete_mail(request):
+	mailid = request.GET['mail_id']
+	usr = request.user
+	usrNw = usr.getNetwork()
+	usrNw.deleteMail(mailid)
+	return {'message_delete': messageid}
+
 
 def email_read(request):
 	emailid = request.GET['email_id']

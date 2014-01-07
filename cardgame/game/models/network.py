@@ -51,6 +51,7 @@ class network(object):
 		data['message'] = self.message
 		data['mail'] = self.mail
 		data['email'] = self.email
+		data['friend_request'] = self.email
 		return data
 		
 	def load(self, roleid, data):
@@ -138,6 +139,11 @@ class network(object):
 		toUser.notify['notify_mail'][requestid] = msgData
 		toUser.save()
 		toUserNw.save()
+		
+	def deleteMail(self, mailid):
+		if self.message.has_key(messageid):
+			del self.mail[mailid]
+			self.save()
 		
 		
 	def ban(self, ben_roleid, ben_name):
