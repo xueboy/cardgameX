@@ -9,7 +9,8 @@ class config(gcconfig):
 	def getClientConfig(confname):
 		conf = config.getConfig(confname)
 		if confname == 'dungeon':
-			return config.dungeonFilter(conf)			
+			#return config.dungeonFilter(conf)			
+			return conf
 		if confname == 'game':
 			return conf
 		if confname == 'pet':
