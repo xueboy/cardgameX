@@ -497,11 +497,12 @@ class excel_import:
 				imageId = row[5]
 				fieldId = row[7]
 				fieldName = row[8]
-				stamina = int(row[10])
-				exp = int(row[12])
-				difficult = int(row[13])
-				mayDrop1 = row[14]
-				mayDrop2 = row[15]
+				stamina = int(row[11])
+				exp = int(row[13])
+				difficult = int(row[14])
+				mayDrop1 = row[15]
+				mayDrop2 = row[16]
+				dropId = row[17]
 				if dunConf['battleId'] != battleId:
 					if dunConf['battleId'] != '':
 						Conf.append(dunConf)
@@ -518,6 +519,7 @@ class excel_import:
 				fieldConf['exp'] = exp
 				fieldConf['difficult'] = difficult
 				fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
+				fieldConf['dropid'] = dropId
 				fieldConf['wave'] = excel_import.read_waves(row, dropConf)
 				dunConf['field'].append(fieldConf)
 			Conf.append(dunConf)			
@@ -527,28 +529,28 @@ class excel_import:
 	@staticmethod
 	def read_waves(row, dropConf):	
 		waveConf = []	
-		wave = excel_import.read_wave(row, 16, dropConf)
+		wave = excel_import.read_wave(row, 20, dropConf)
 		if wave:
 			waveConf.append(wave)	
-			wave = excel_import.read_wave(row, 30, dropConf)
+			wave = excel_import.read_wave(row, 34, dropConf)
 			if wave:
 				waveConf.append(wave)
-				wave = excel_import.read_wave(row, 44, dropConf)
+				wave = excel_import.read_wave(row, 48, dropConf)
 				if wave:
 					waveConf.append(wave)
-					wave = excel_import.read_wave(row, 58, dropConf)	
+					wave = excel_import.read_wave(row, 62, dropConf)	
 					if wave:
 						waveConf.append(wave)
-						wave = excel_import.read_wave(row, 72, dropConf)
+						wave = excel_import.read_wave(row, 76, dropConf)
 						if wave:
 							waveConf.append(wave)
-							wave = excel_import.read_wave(row, 86, dropConf)
+							wave = excel_import.read_wave(row, 90, dropConf)
 							if wave:
 								waveConf.append(wave)
-								wave = excel_import.read_wave(row, 100, dropConf)
+								wave = excel_import.read_wave(row, 104, dropConf)
 								if wave:
 									waveConf.append(wave)
-									wave = excel_import.read_wave(row, 114, dropConf)
+									wave = excel_import.read_wave(row, 118, dropConf)
 									if wave:
 										waveConf.append(wave)	
 		return waveConf
