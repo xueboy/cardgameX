@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.user import user as gcuser
+#from game.models.account import account
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
 from game.models.network import network
@@ -73,7 +74,7 @@ class user(gcuser):
 		gcuser.install(self, roleid)
 	
 	def getData(self):	
-		data = {}
+		data = gcuser.getData(self)
 		data['name'] = self.name
 		data['level'] = self.level
 		data['stamina'] = self.stamina
@@ -141,20 +142,21 @@ class user(gcuser):
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
-		data['luckycat_level'] = self.luckycat['level']
+		if self.luckycat:
+			data['luckycat_level'] = self.luckycat['level']
 		teamCardid = []
-		if self.team[0]:
-			teamCardid.append(inv.getCard(self.team[0])['cardid'])
-		if self.team[1]:
-			teamCardid.append(inv.getCard(self.team[1])['cardid'])
-		if self.team[2]:
-			teamCardid.append(inv.getCard(self.team[2])['cardid'])
-		if self.team[3]:
-			teamCardid.append(inv.getCard(self.team[3])['cardid'])
-		if self.team[4]:
-			teamCardid.append(inv.getCard(self.team[4])['cardid'])
-		if self.team[5]:
-			teamCardid.append(inv.getCard(self.team[5])['cardid'])		
+		if inv.team[0]:
+			teamCardid.append(inv.getCard(inv.team[0])['cardid'])
+		if inv.team[1]:
+			teamCardid.append(inv.getCard(inv.team[1])['cardid'])
+		if inv.team[2]:
+			teamCardid.append(inv.getCard(inv.team[2])['cardid'])
+		if inv.team[3]:
+			teamCardid.append(inv.getCard(inv.team[3])['cardid'])
+		if inv.team[4]:
+			teamCardid.append(inv.getCard(inv.team[4])['cardid'])
+		if inv.team[5]:
+			teamCardid.append(inv.getCard(inv.team[5])['cardid'])		
 		data['member'] = teamCardid
 		return data
 		
@@ -192,6 +194,9 @@ class user(gcuser):
 		qt = self.getQuest()
 		data.update(qt.getClientData())
 		return data
+		
+	def getAccount(self):
+		return __import__('game.models.account', globals(), locals(), ['account']).account.get(self.accountid)		
 		
 	def load(self, roleid, data):
 		gcuser.load(self, roleid, data)

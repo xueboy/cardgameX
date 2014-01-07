@@ -26,13 +26,13 @@ class massyell(cacheable):
 		return y
 		
 	def getData(self):
-		data = {}
+		data = cacheable.getData(self)
 		data['record'] = self.record
 		data['sequenceid'] = self.sequenceid		
 		return data
 	
 	def load(self, cacheid, data):
-		self.cacheid = cacheid
+		cacheable.load(self, cacheid, data)
 		self.record = data['record']
 		self.sequenceid = data['sequenceid']
 		return 0

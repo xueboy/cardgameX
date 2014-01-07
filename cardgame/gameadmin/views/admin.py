@@ -23,6 +23,6 @@ def login(request):
 	else:
 		return render(request, 'login.html', {})
 		
-def tool(request):
+def arena_tool(request):
 	ld = arena.show_all()
-	return render(request, 'tool.html',  {'ladder':ld})
+	return render(request, 'arena_tool.html',  {'ladder':ld})

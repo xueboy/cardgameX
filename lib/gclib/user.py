@@ -9,10 +9,12 @@ class user(object):
 	def __init__(self):
 		object.__init__(self)
 		self.account = None
+		self.accountid = 0
 	
 	def init(self, acc):
 		self.id = 0
 		self.account = acc
+		self.accountid = acc.id
 		return
 			
 	def install(self, roleid):
@@ -20,6 +22,16 @@ class user(object):
 		
 	def onInit(self):
 		pass		
+	
+	def load(self, roleid, data):
+		object.load(self, roleid, data)
+		self.accountid = data['accountid']
+		
+	def getData(self):
+		data = object.getData(self)
+		data['accountid'] = self.accountid
+		return data
+
 		
 	def update(self):
 		return

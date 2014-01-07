@@ -27,7 +27,7 @@ class almanac(object):
 		self.combinaion = data['combinaion']
 		
 	def getData(self):
-		data = {}
+		data = object.getData(self)
 		data['card'] = self.card
 		data['combinaion'] = self.combinaion
 		return data

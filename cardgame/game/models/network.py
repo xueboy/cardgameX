@@ -26,7 +26,7 @@ class network(object):
 		object.install(self, roleid)
 		
 	def getData(self):
-		data = {}		
+		data = object.getData(self)
 		data['friend'] = self.friend
 		data['message'] = self.message
 		data['mail'] = self.mail

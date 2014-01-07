@@ -30,7 +30,7 @@ class inventory(object):
 		object.install(self, roleid)
 		
 	def getData(self):
-		data = {}
+		data = object.getData(self)
 		data['card'] = self.card
 		data['item'] = self.item
 		data['team'] = self.team

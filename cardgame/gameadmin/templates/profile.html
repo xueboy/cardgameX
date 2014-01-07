@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+<form id="form1" name="form1" action="/admin/gm_tool_profile_find/" method="post">{% csrf_token %}
+<p align="center"><a href="/admin/index">主页</a></p>
+<div align="center">
+  <table width="887" border="1">
+    <tr>
+      <td width="209">roleid
+        <label>
+        <input type="text" name="tfRoleid" />
+      </label></td>
+      <td width="42"><label>
+        <input type="submit" name="Submit" value="查询" />
+      </label></td>
+      <td width="107">&nbsp;</td>
+      <td width="221">&nbsp;</td>
+      <td width="274">&nbsp;</td>
+    </tr>
+  </table>
+  </div>
+  </form>
+  {% if account_name %}
+  <form id="form2" name="form2" action="/admin/gm_tool_set_profile/" method="post">{% csrf_token %}
+  <div align="center">
+  <p>&nbsp;</p>
+   <input id="operator" name="operator" type="hidden" />
+   <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
+  <script language="javascript">
+  function setOperator(opt)
+  {
+	document.getElementById("operator").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+  </script>
+  <table width="1129" border="1">
+    <tr>
+      <td width="175">帐号名</td>
+      <td width="179">{{ account_name }} </td>
+      <td width="206">玩家名称</td>
+      <td width="187">{{ nickname }} </td>
+      <td width="171">OpenID</td>
+      <td width="171">{{ openid }} </td>
+      <td width="171">roleid</td>
+      <td width="171">{{ roleid }}</td>
+    </tr>
+    <tr>
+      <td>等级</td>
+      <td>{{ level }}</td>
+      <td>经验</td>
+      <td>{{ exp }}</td>
+      <td><label>
+        <input name="tfExp" type="text" size="8" />
+        <input type="submit" name="Submit2" value="增加经验" onclick="setOperator('exp');" />
+      </label></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>金币</td>
+      <td><input name="tfGold" type="text" value="{{ gold }}" size="8" />
+        <input type="submit" name="Submit22" value="设置金币" onclick="setOperator('gold');" /></td>
+      <td>钻石</td>
+      <td><input name="tfGem" type="text" value="{{ gem }}" size="8" />
+        <input type="submit" name="Submit222" value="设置钻石" onclick="setOperator('gem');" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>体力</td>
+      <td><input name="tfStamina" type="text" value="{{ stamina }}" size="8" />
+        <input type="submit" name="Submit223" value="设置体力" onclick="setOperator('stamina');" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+	{% endif %}
+  </table>
+</div>
+</body>
+</html>

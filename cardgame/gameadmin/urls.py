@@ -10,7 +10,7 @@ import gameadmin.views.tool
 urlpatterns = patterns('',
     #url(r'^$', views.index, name='index')    
     url(r'^login/$', gameadmin.views.admin.login),
-    url(r'^tool/$', gameadmin.views.admin.tool),
+    url(r'^arena_tool/$', gameadmin.views.admin.arena_tool),
     url(r'^dungeon/$', gameadmin.views.main.dungeon),
     url(r'^index/$', gameadmin.views.main.index),
     url(r'^level/$', gameadmin.views.main.level),
@@ -84,5 +84,8 @@ urlpatterns = patterns('',
     url(r'^item/$', gameadmin.views.main.item),
     url(r'^item_import/$', gameadmin.views.main.item_import),
     url(r'^tool_create_player/$', gameadmin.views.tool.tool_create_player),
-    url(r'^tool_ladder_remove/$', gameadmin.views.tool.tool_ladder_remove)    
+    url(r'^tool_ladder_remove/$', gameadmin.views.tool.tool_ladder_remove),
+    url(r'^gm_tool/$', gameadmin.views.tool.gm_tool),
+    url(r'^gm_tool_profile_find', gameadmin.views.tool.gm_tool_profile_find),
+    url(r'^gm_tool_set_profile', gameadmin.views.tool.gm_tool_set_profile)
 )

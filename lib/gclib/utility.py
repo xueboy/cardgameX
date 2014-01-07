@@ -41,7 +41,7 @@ def beginRequest(request,cls):
 	if not request.session.has_key('user_id'):
 		raise NotHaveNickname
 	userid = request.session['user_id']
-	usr = cls.get(userid)
+	usr = cls.get(userid)	
 	if not usr:
 		raise NotHaveNickname		
 	request.user = usr

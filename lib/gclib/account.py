@@ -25,7 +25,7 @@ class account(object):
 			acc.nickname = res[0][3]
 			acc.gender = res[0][4]
 			acc.roleid = res[0][5]
-			acc.opendid = res[0][6]
+			acc.openid = res[0][6]
 			acc.longitude = res[0][8]
 			acc.latitude = res[0][9]
 			acc.saveLogin()
@@ -46,7 +46,7 @@ class account(object):
 		usr.last_login = self.last_login
 		usr.name = nickname
 		usr.gender = gender
-		usr.avatar = avatar
+		usr.avatar = avatar		
 		usr.install(0)
 		self.roleid = usr.id
 		self.bind(usr.id, nickname, gender)	
@@ -71,7 +71,7 @@ class account(object):
 			acc.nickname = res[0][3]
 			acc.gender = res[0][4]		
 			acc.roleid = res[0][5]
-			acc.opendid = res[0][6]			
+			acc.openid = res[0][6]			
 			acc.saveLogin()
 			return acc
 		return None
@@ -96,7 +96,7 @@ class account(object):
 			acc.username = accountName
 			acc.nickname = ''
 			acc.roleid = 0
-			acc.opendid = 0
+			acc.openid = 0
 			acc.saveLogin()
 		except IntegrityError:
 			return {'msg':'account_already_exist'}

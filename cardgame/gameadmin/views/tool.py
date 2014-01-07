@@ -7,6 +7,7 @@ from gclib.utility import currentTime
 from django.shortcuts import render
 from game.routine.arena import arena
 from gclib.json import json
+from gameadmin.routine.gm import gm
 	
 def tool_create_player(request):
 	if request.method == 'POST':
@@ -47,12 +48,84 @@ def tool_create_player(request):
 	return render(request, 'tool.html', {'ladder':ld})
 		
 def tool_ladder_remove(request):
-	if request.method == 'POST':
-		print str(request.POST)
+	if request.method == 'POST':		
 		optid = request.POST['optid']
 		operator = request.POST['operator']
 		if operator == 'remove':
 			arena.remove(optid)		
 	ld = arena.show_all()	
 	print ld
-	return render(request, 'tool.html', {'ladder':ld})
+	return render(request, 'arena_tool.html', {'ladder':ld})
+		
+def gm_tool(request):
+	if request.method == 'POST':
+		pass
+	
+		
+	
+	return render(request, 'profile.html', {})
+	
+def gm_tool_profile_find(request):
+	data = {}
+	if request.method == 'POST':		
+		roleid = request.POST['tfRoleid']
+		if roleid:
+			usr = user.get(roleid)
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)		
+		
+	return render(request, 'profile.html', data)
+	
+def gm_tool_set_profile(request):
+	
+	data = {}
+	if request.method == 'POST':
+		operator = request.POST['operator']
+		roleid = request.POST['roleid']		
+		if operator == 'exp':
+			value = request.POST['tfExp']
+			if value == '':
+				return HttpResponse('经验为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.gainExp(int(value))
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+		if operator == 'gold':
+			value = request.POST['tfGold']
+			if value == '':
+				return HttpResponse('金钱为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.gold =  usr.gold + int(value)
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+		if operator == 'gem':
+			value = request.POST['tfGem']
+			if value == '':
+				return HttpResponse('宝石为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.gem =  usr.gem + int(value)
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+		if operator == 'stamina':
+			value = request.POST['tfStamina']
+			if value == '':
+				return HttpResponse('体力为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.stamina =  usr.stamina + int(value)
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+	return render(request, 'profile.html', data)
+			
+	
