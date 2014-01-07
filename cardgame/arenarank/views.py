@@ -30,7 +30,7 @@ def convert(request):
 	roleid = request.REQUEST['roleid']
 	score = request.REQUEST['score']	
 	ld = ladder.instance()
-	return HttpResponse(json.dumps(ld.convert(roleid, score)))
+	return HttpResponse(json.dumps(ld.convert(roleid, int(score))))
 	
 def show_all(request):
 	ld = ladder.instance()

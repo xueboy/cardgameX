@@ -2,14 +2,17 @@
 #!/usr/bin/env python
 
 from gclib.curl import curl
+from gclib.json import json
 from gclib.utility import randint
 from cardgame.settings import ARENE_SERVER
 from game.models.user import user
 from game.routine.arena import arena
+from game.utility.config import config
+
 
 def show_ladder(request):	
 	usr = request.user	
-	return curl.url(ARENE_SERVER +  '/arena/show_ladder/', None, {'roleid':str(usr.roleid)})
+	return json.loads(curl.url(ARENE_SERVER +  '/arena/show_ladder/', None, {'roleid':str(usr.roleid)}))
 		
 def stand_ladder(request):
 	usr = request.user
@@ -23,24 +26,24 @@ def challenge(request):
 	defenceRoleid = request.GET['defence_roleid']
 	defenceRole = user.get(defenceRoleid)
 	
-	usr.arena['challenge_roleid'] = defenceRole
+	usr.arena['challenge_roleid'] = defenceRole.roleid
 	usr.save()
 	
 	return {'defence':defenceRole.getBattleData()}
 		
 def defeate(request):
-	usr = request.user
-	
-	res = None
+	usr = request.user	
+	res = None	
 	if usr.arena.has_key('challenge_roleid'):
-		res = curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)})
-		res = json.dumps(res)
-		if not res.has_key('msg'):
+		res = curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']})		
+		res = json.loads(res)		
+		if isinstance(res, list):
 			arenaLootConf = config.getConfig('arena_loot')
+			gameConf = config.getConfig('game')
 			arenaLootInfo = arenaLootConf[usr.level - 1]
 			card = None			
 			gold = 0
-			skill = None
+			skl = None
 			rd = randint()
 			rd = rd - gameConf['arena_loot_gold_probability']
 			if rd <= 0:
@@ -65,9 +68,12 @@ def defeate(request):
 				data['add_skill'] = skl
 				inv.save()
 			return data
+		return res
+	return {'msg':'arena_ladder_have_not_chellenge'}
 			
 def convert(request):
 	mediumCount = request.GET['medium_count']
+	mediumCount = int(mediumCount)
 	
 	usr = request.user
 	gameConf = config.getConfig('game')
@@ -75,14 +81,15 @@ def convert(request):
 	pointConsume = mediumCount * gameConf['arena_medium_price']
 	
 	res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
-	res = json.dumps(res)
+	from django.http import HttpResponse	
+	res = json.loads(res)
 	
 	if res.has_key('msg'):
 		return res
 		
 	mediumId = gameConf['arena_dedium_id']
 	inv = usr.getInventory()
-	item = inf.addCountItem(mediumId, mediumCount)
+	item = inv.addItemCount(mediumId, mediumCount)
 	inv.save()
 	if not item:
 		return {'msg':'fail_add_item'}

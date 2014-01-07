@@ -10,5 +10,6 @@ urlpatterns = patterns('',
  url(r'^stand_ladder/', 'arenarank.views.stand_ladder'),
  url(r'^show_all/', 'arenarank.views.show_all'),
  url(r'^remove/', 'arenarank.views.remove'),
-   
+ url(r'^defeat/', 'arenarank.views.defeat'),
+ url(r'^convert/', 'arenarank.views.convert')
 )

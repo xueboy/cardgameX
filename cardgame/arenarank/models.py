@@ -48,7 +48,7 @@ class ladder(facility):
 		
 		if self.item.has_key(roleid):
 			position = self.rank.index(roleid)
-			self.update(roleid, currentTime())
+			self.update(position, roleid, currentTime())
 			if position < 26:
 				#top 25				
 				cnt = len(self.rank)
@@ -85,7 +85,7 @@ class ladder(facility):
 					ls.append(self.show_floor(lastPosition))
 			self.save()
 			return ls			
-		return None
+		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
 		uls = []
@@ -115,15 +115,13 @@ class ladder(facility):
 	def up_floor(position, lastPosition):
 		return lastPosition - int(position / 101) - 1
 		
-	def update(self, roleid, now):
+	def update(self, position, roleid, now):
 		
 		ladderScoreConf = config.getConfig('ladder_score')		
 		item = self.item[roleid]		
 		duration = now - item['last_update']		
 		if duration < 60:
-			return
-		
-		position = self.rank.index(roleid)
+			return		
 		score = 0
 		if position < len(ladderScoreConf) - 1:
 			score = ladderScoreConf[position - 1]			
@@ -140,20 +138,21 @@ class ladder(facility):
 		offencePosition = self.rank.index(offenceRoleid)
 		defencePosition = self.rank.index(defenceRoleid)
 		
-		self.rank.remove(offencePosition)
-		self.insert(defencePosition, offenceRoleid)
+		del self.rank[offencePosition]
+		self.rank.insert(defencePosition, offenceRoleid)
 		for i in range(defencePosition, offencePosition):
 			self.update(i, self.rank[i], currentTime())
 		return self.show(offenceRoleid)
 		
 	def convert(self, roleid, score):
-		position = self.rank.find(roleid)
-		if position != -1:
-			item = self.item[position]
-			if item['score'] < socre:
-				return {'msg':'arena_score_not_enoughk'}
+		
+		if roleid in self.rank:
+			position = self.rank.index(roleid)			
+			item = self.item[roleid]			
+			if item['score'] < score:
+				return {'msg':'arena_score_not_enoug'}
 			item['score'] = item['score'] - score
 			self.save()
-			return item
+			return item		
 		return {'msg':'arena_ladder_not_stand'}
 		
