@@ -59,11 +59,13 @@ def locate(request):
 	longitude = request.GET['longitude']
 	latitude = request.GET['latitude']	
 	
+	longitude = float(longitude)
+	latitude = float(latitude)
+	
 	if longitude > 180 or longitude < -180:
 		return {'msg':'parameter_bad'}
 	if latitude > 360 or latitude < -360:
-		return {'msg':'parameter_bad'}
-	
+		return {'msg':'parameter_bad'}	
 	usr = request.user
 	accountid = getAccountId(request)
 	account.locate(accountid, longitude, latitude)

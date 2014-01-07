@@ -22,6 +22,7 @@ class gm:
 		data['gold'] = usr.gold
 		data['gem'] = usr.gem
 		data['stamina'] = usr.stamina
+		data['trp'] = usr.trp
 		
 		inv = usr.getInventory()
 		

@@ -126,6 +126,17 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
+		if operator == 'trp':
+			value = request.POST['tfTrp']
+			if value == '':
+				return HttpResponse('培养点为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.trp = int(value)
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
 	return render(request, 'profile.html', data)
 			
 def gm_tool_set_pet(request):

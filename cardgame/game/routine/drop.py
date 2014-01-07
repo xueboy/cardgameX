@@ -12,12 +12,10 @@ class drop:
 		rd = randbigint()
 		dropInfo = dropConf[dropid]
 		
-		awd = {}
+		awd = {}		
 		
-		print dropInfo
 		for d in dropInfo:
-			probablity = d['probability']
-			print d
+			probablity = d['probability']			
 			msg = None
 			if probablity == 1000000:
 				msg = drop.award(usr, d, awd)
