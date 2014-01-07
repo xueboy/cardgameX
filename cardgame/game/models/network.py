@@ -192,7 +192,7 @@ class network(object):
 			qt.udpateFinishFriendQuest(usr, self)
 
 			friendNw = friend.getNetwork()
-			friendQt.udpateFinishFriendQuest(usr, friendNw)
+			friendQt.udpateFinishFriendQuest(friendNw)
 			friendNw.addFriend(self.user)
 			mailid = mail['id']
 			del self.email[mailid]
