@@ -189,7 +189,7 @@ class network(object):
 			friendData = self.addFriend(friend)
 			usr = self.user
 			qt = usr.getQuest()
-			qt.udpateFinishFriendQuest(usr, self)
+			qt.udpateFinishFriendQuest(self )
 
 			friendNw = friend.getNetwork()
 			friendQt.udpateFinishFriendQuest(friendNw)
