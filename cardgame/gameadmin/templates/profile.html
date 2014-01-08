@@ -125,7 +125,7 @@
         <option value="{{ petid }}"> {{ pet.name }}</option>        
 	  {% endfor %}      
       </select>
-            <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add')" />          </td>
+            <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add', '0')" />          </td>
     </tr>
         <tr>
           <td width="33">id</td>
@@ -151,12 +151,13 @@
   <form id="form4" name="form4" action="/admin/gm_tool_set_stone/" method="post">{% csrf_token %}
     <div align="center">
 	    <input id="stoneopt" name="stoneopt" type="hidden" />
+		<input id="stoneid" name="stoneid" type="hidden" />
       <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
       <script language="javascript">
-  function setStoneOpt(opt)
+  function setStoneOpt(opt, stoneid)
   {
 	document.getElementById("stoneopt").value = opt;
-	//document.getElementById("optvalue").value = value;
+	document.getElementById("stoneid").value = stoneid;
   }
       </script>
       <table width="666" border="1">
@@ -173,7 +174,7 @@
             </select>
           </label>
             <label>
-            <input type="submit" name="Submit4" value="添加" onclick="setStoneOpt('add')" />
+            <input type="submit" name="Submit4" value="添加" onclick="setStoneOpt('add', '0')" />
           </label></td>
       </tr>
         <tr>
@@ -187,7 +188,7 @@
        <td>{{ st.id }}</td>
       <td>&nbsp;</td>
       <td>{{ st.level }}</td>
-      <td>&nbsp;</td>  
+      <td><input type="submit" name="Submit72" value="删除" onclick="setStoneOpt('remove', '{{ st.id }}')"/></td>  
     </tr>
 	{% endfor %}
      
@@ -197,12 +198,15 @@
  <hr />
     <form id="form5" name="form4" action="/admin/gm_tool_set_equipment/" method="post">{% csrf_token %}
   <div align="center">
-	    <input id="equipmentopt" name="equipmentopt" type="hidden" />
+	  <input id="equipmentopt" name="equipmentopt" type="hidden" />
+	  <input id="equipmentid" name="equipmentid" type="hidden" />
       <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
       <script language="javascript">
-  function setEquipmentOpt(opt)
+  function setEquipmentOpt(opt, equipmentid)
   {
 	document.getElementById("equipmentopt").value = opt;
+	document.getElementById("equipmentid").value = equipmentid;
+	
 	//document.getElementById("optvalue").value = value;
   }
       </script>
@@ -218,14 +222,14 @@
         		<option value="{{ equipmentid }}"> {{ equipment.name }}</option>        
 				{% endfor %}
 			</select>
-            <input type="submit" name="Submit5" value="添加" onclick="setEquipmentOpt('add')"/>		  </td>
+            <input type="submit" name="Submit5" value="添加" onclick="setEquipmentOpt('add', '0')"/>		  </td>
         </tr>
        {% for eq in equipmentList %}
         <tr>
        <td>{{ eq.id }}</td>
       <td>&nbsp;</td>
-      <td>{{ eq.level }}</td>
-      <td>&nbsp;</td>  
+      <td>{% if dq.level %} {{ eq.level }} {% endif %}</td>
+      <td><input type="submit" name="Submit722" value="删除" onclick="setEquipmentOpt('remove', '{{ eq.id }}')"/></td>  
    	 </tr>
 	{% endfor %}       
       </table>
@@ -235,12 +239,13 @@
 	   <form id="form5" name="form4" action="/admin/gm_tool_set_skill/" method="post">{% csrf_token %}
   <div align="center">
 	    <input id="skillopt" name="skillopt" type="hidden" />
+	    <input id="skillid" name="skillid" type="hidden" />
       <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
       <script language="javascript">
-  function setSkillOpt(opt)
+  function setSkillOpt(opt, skillid)
   {
 	document.getElementById("skillopt").value = opt;
-	//document.getElementById("optvalue").value = value;
+	document.getElementById("skillid").value = skillid;
   }
       </script>
 	  
@@ -255,20 +260,20 @@
         		<option value="{{ skillid }}"> {{ skill.name }}</option>        
 				{% endfor %}
             </select>
-			<input type="submit" name="Submit6" value="添加" onclick="setSkillOpt('add')" /></td>
+			<input type="submit" name="Submit6" value="添加" onclick="setSkillOpt('add', '0')" /></td>
         </tr>
         <tr>
-          <td width="29">id</td>
+          <td width="76">id</td>
           <td width="74">名称</td>
-          <td width="31">等级</td>
-          <td colspan="2">&nbsp;</td>
+          <td width="100">等级</td>
+          <td width="421" colspan="2">&nbsp;</td>
         </tr>
           {% for skill in skillList %}
         <tr>
        <td>{{ skill.id }}</td>
       <td>&nbsp;</td>
       <td>{{ skill.level }}</td>
-      <td>&nbsp;</td>  
+      <td><input type="submit" name="Submit7222" value="删除" onclick="setSkillOpt('remove', '{{ skill.id }}')"/></td>  
    	 </tr>
 	{% endfor %}       
        

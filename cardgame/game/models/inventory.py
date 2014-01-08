@@ -179,7 +179,7 @@ class inventory(object):
 		return res
 			
 	def delEquipment(self, id):
-		self.equipment = filter(lambda e : e['id'] == id, self.equipment)
+		self.equipment = filter(lambda e : e['id'] != id, self.equipment)
 		return 1
 	
 	def generateCardName(self):
@@ -397,7 +397,8 @@ class inventory(object):
 		return None
 		
 	def delStone(self, id):
-		self.stone = filter(lambda s : s['id'] != id, self.stone)		
+		self.stone = filter(lambda s : s['id'] != id, self.stone)
+		return 1
 			
 	def depositStone(self, st):
 		self.stone.append(st)
@@ -442,6 +443,7 @@ class inventory(object):
 	
 	def delSkill(self, id):
 		self.skill = filter(lambda s : s['id'] != id, self.skill)
+		return 1
 			
 	def depositSkill(self, sk):
 		self.skill.append(sk)

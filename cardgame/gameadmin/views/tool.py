@@ -165,8 +165,9 @@ def gm_tool_set_pet(request):
 			if not inv.delCard(id):
 				return HttpResponse('删除失败')		
 			inv.save()	
-	data = gm.show_profile(acc, usr)
-	return render(request, 'profile.html', data)
+		data = gm.show_profile(acc, usr)
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
 			
 			
 def gm_tool_set_stone(request):
@@ -188,9 +189,17 @@ def gm_tool_set_stone(request):
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')
-			data = gm.show_profile(acc, usr)
+		elif stoneopt == 'remove':
+			id = request.POST['stoneid']
+			inv = usr.getInventory()
+			if not inv.delStone(id):
+				return HttpResponse('删除失败')
+			inv.save()
+		data = gm.show_profile(acc, usr)
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
 			
-	return render(request, 'profile.html', data)
+	
 	
 def gm_tool_set_equipment(request):
 	data = {}
@@ -211,9 +220,15 @@ def gm_tool_set_equipment(request):
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')
-			data = gm.show_profile(acc, usr)
-			
-	return render(request, 'profile.html', data)
+		elif equipmentopt == 'remove':
+			id = request.POST['equipmentid']
+			inv = usr.getInventory()
+			if not inv.delEquipment(id):
+				return HttpResponse('删除失败')
+			inv.save()			
+		data = gm.show_profile(acc, usr)			
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
 	
 
 def gm_tool_set_skill(request):
@@ -236,5 +251,12 @@ def gm_tool_set_skill(request):
 			if not s:
 				return HttpResponse('添加失败')
 			data = gm.show_profile(acc, usr)
-			
-	return render(request, 'profile.html', data)
+		elif skillopt == 'remove':
+			id = request.POST['skillid']
+			inv = usr.getInventory()
+			if not inv.delSkill(id):
+				return HttpResponse('删除失败')
+			inv.save()		
+		data = gm.show_profile(acc, usr)
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
