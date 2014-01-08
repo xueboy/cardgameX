@@ -104,12 +104,14 @@
   <form id="form3" name="form3" action="/admin/gm_tool_set_card/" method="post">
     <div align="center">{% csrf_token %}
       <input id="petopt" name="petopt" type="hidden" />
+	  <input id="petid" name="petid" type="hidden" />
       <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
       <script language="javascript">
-  function setPetOpt(opt)
+  function setPetOpt(opt, petid)
   {
 	document.getElementById("petopt").value = opt;
-	//document.getElementById("optvalue").value = value;
+	document.getElementById("petid").value = petid;
+
   }
       </script>
       <table width="658" border="1">
@@ -134,9 +136,11 @@
         {% for pet in petList %}
         <tr>    
           <td>{{ pet.id }}</td>
-      <td></td>
+      <td>  </td>
       <td>{{ pet.level }}</td>
-      <td>&nbsp;</td>
+      <td><label>
+        <input type="submit" name="Submit7" value="删除" onclick="setPetOpt('remove', '{{ pet.id }}')"/>
+      </label></td>
     </tr>
         {% endfor %}
       </table>

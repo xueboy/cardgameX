@@ -158,9 +158,14 @@ def gm_tool_set_pet(request):
 			c = inv.addCard(cardid)
 			inv.save()
 			if not c:
-				return HttpResponse('添加失败')
-			data = gm.show_profile(acc, usr)
-			
+				return HttpResponse('添加失败')			
+		elif petopt == 'remove':
+			id = request.POST['petid']
+			inv = usr.getInventory()
+			if not inv.delCard(id):
+				return HttpResponse('删除失败')		
+			inv.save()	
+	data = gm.show_profile(acc, usr)
 	return render(request, 'profile.html', data)
 			
 			
