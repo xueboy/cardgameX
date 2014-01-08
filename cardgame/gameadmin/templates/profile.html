@@ -25,7 +25,7 @@
   </table>
   </div>
 </form>
-  {% if account_name %}
+  {% if roleid %}
   <form id="form2" name="form2" action="/admin/gm_tool_set_profile/" method="post">{% csrf_token %}
   <div align="center">
   <p>&nbsp;</p>
@@ -96,11 +96,13 @@
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-	{% endif %}
+
   </table>
 </div>
 </form>
+{% endif %}
 <hr />
+ {% if roleid %}
   <form id="form3" name="form3" action="/admin/gm_tool_set_card/" method="post">
     <div align="center">{% csrf_token %}
       <input id="petopt" name="petopt" type="hidden" />
@@ -147,7 +149,10 @@
     </div>
     <p>&nbsp;</p>
 </form>
+
   <hr />
+  {% endif %}
+  {% if roleid %}
   <form id="form4" name="form4" action="/admin/gm_tool_set_stone/" method="post">{% csrf_token %}
     <div align="center">
 	    <input id="stoneopt" name="stoneopt" type="hidden" />
@@ -195,6 +200,8 @@
       </table>
     </div>
   </form>
+  {% endif %}
+    {% if roleid %}
  <hr />
     <form id="form5" name="form4" action="/admin/gm_tool_set_equipment/" method="post">{% csrf_token %}
   <div align="center">
@@ -235,7 +242,10 @@
       </table>
   </div>
 	</form>
+	{% endif %}
+	{% if roleid %}
 	<hr />
+	  
 	   <form id="form5" name="form4" action="/admin/gm_tool_set_skill/" method="post">{% csrf_token %}
   <div align="center">
 	    <input id="skillopt" name="skillopt" type="hidden" />
@@ -280,5 +290,6 @@
       </table>
   </div>
 	  </form>
+  {% endif %}
 </body>
 </html>

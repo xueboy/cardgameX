@@ -39,6 +39,10 @@ class drop:
 			usr.gem = usr.gem + dropItem['count']
 			awd['gem'] = usr.gem
 			usr.save()
+		elif dropItem['type'] == 'gold':
+			usr.gold = usr.gold + dropItem['count']
+			awd['gold'] = usr.gold
+			usr.save()
 		elif dropItem['type'] == 'sp':
 			usr.sp = usr.sp + dropItem['count']
 			awd['sp'] = usr.sp
