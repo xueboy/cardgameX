@@ -1379,6 +1379,8 @@ class excel_import:
 				dic.append(excel_import.drop_sp(f))
 			elif f[0] == 'exp':
 				dic.append(excel_import.drop_exp(f))
+			elif f[0] == 'gold':
+				dic.append(excel_import.drop_gold(f))
 			else:
 				dic.append({'unknow':i})			
 			
@@ -1415,6 +1417,10 @@ class excel_import:
 	@staticmethod		
 	def drop_sp(arr):
 		return {'type':'sp','probability':int(arr[2]),'count':int(arr[3])}
+	
+	@staticmethod		
+	def drop_gold(arr):
+		return {'type':'gold','probability':int(arr[2]),'count':int(arr[3])}
 	
 	@staticmethod		
 	def drop_exp(arr):
