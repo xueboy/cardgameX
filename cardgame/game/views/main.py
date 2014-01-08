@@ -52,10 +52,11 @@ def index(request):
 		if usr == None:
 			raise Http500("server error")
 			return HttpResponse500()
-		onUserLogin(request, usr)
+		loginData = onUserLogin(request, usr)
 		usr.last_login = currentTime()
 		gameConf = conf.getConfig('game')
-		data = usr.getLoginData(gameConf)			
+		data = usr.getLoginData(gameConf)
+		data['login'] = loginData		
 		usr.notify = {}
 		usr.save()
 		return HttpResponse(json.dumps(data))
@@ -94,6 +95,7 @@ def info(request):
 	info['dialog_md5'] = conf.getClientConfigMd5('dialog')
 	info['drama_md5'] = conf.getClientConfigMd5('drama')
 	info['quest_md5'] = conf.getClientConfigMd5('quest')
+	info['signin_md5'] = conf.getClientConfigMd5('signin')
 	
 	return HttpResponse(json.dumps({'info':info}))
 

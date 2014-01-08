@@ -64,6 +64,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'quest':
 			return config.questFilter(conf)
+		if confname == 'signin':
+			return conf
 		return None
 	
 	

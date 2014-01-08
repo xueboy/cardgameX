@@ -122,6 +122,9 @@ def quest(request):
 def item(request):
 	return generalConfigRequestProcess(request, 'item')
 	
+def signin(request):
+	return generalConfigRequestProcess(request, 'signin')
+	
 	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -237,3 +240,4 @@ def quest_import(request):
 	
 def item_import(request):
 	return excel_import.item_import(request)
+

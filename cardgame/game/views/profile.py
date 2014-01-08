@@ -9,8 +9,7 @@ from gclib.utility import getAccountId
 from game.utility.config import config
 from game.models.account import account
 from game.routine.avatar import avatar
-
-
+from game.routine.signin import signin
 from game.models.user import user
 
 def set_avatar(request):
@@ -107,3 +106,7 @@ def nearby(request):
 		d['avatar_id'] = avatar.getAvatarId(roleid)
 		data.append(d)  	
 	return data
+	
+def sign_in(request):	
+	usr = request.user	
+	return signin.do_signin(usr)

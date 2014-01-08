@@ -31,7 +31,7 @@ def onAccountLogin(request, acc):
 
 def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
-	usr.onLogin()
+	return usr.onLogin()
 
 def beginRequest(request,cls):
 	
@@ -94,7 +94,7 @@ def randbigint():
 
 def retrieval_object(func):
 	"""
-	mark this funtion return a object whitch need to save db.
+	mark this funtion return a object whith need to save db.
 	"""
 	def retrieval_fun(obj):		
 		res = func(obj)
@@ -116,8 +116,8 @@ def is_same_day(t1, t2):
 	return (t1tm.tm_year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)
 	
 def day_diff(t1, t2):
-	d1 = datetime.datetime(t1)
-	d2 = datetime.datetime(t2)
+	d1 = datetime.datetime.fromtimestamp(t1)
+	d2 = datetime.datetime.fromtimestamp(t2)
 	return (d1 - d2).days
 
 def str_to_time(s):

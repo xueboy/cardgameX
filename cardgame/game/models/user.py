@@ -15,6 +15,7 @@ from game.routine.luckycat import luckycat
 from game.routine.garcha import garcha
 from game.routine.educate import educate
 from game.routine.stone import stone
+from game.routine.signin import signin
 
 
 class user(gcuser):
@@ -51,6 +52,7 @@ class user(gcuser):
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
 		self.luckycat = {}
 		self.educate = educate.make()
+		self.signin = signin.make()
 		self.trp = 0
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
@@ -102,6 +104,7 @@ class user(gcuser):
 		data['stv_gem'] = self.stv_gem
 		data['arena'] = self.arena
 		data['avatar'] = self.avatar
+		data['signin'] = self.signin
 		return data
 		
 	def getClientData(self):
@@ -226,6 +229,7 @@ class user(gcuser):
 		self.educate = data['educate']
 		self.arena = data['arena']
 		self.avatar = data['avatar']
+		self.signin = data['signin']
 			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
@@ -356,8 +360,11 @@ class user(gcuser):
 			friend.save()
 	
 	def onLogin(self):
+		gcuser.onLogin(self)
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)
+		data = signin.login(self)
+		return data
 		
 	def onLevelup(self):
 		gameConf = config.getConfig('game')
