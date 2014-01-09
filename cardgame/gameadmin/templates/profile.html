@@ -9,11 +9,11 @@
 <form id="form1" name="form1" action="/admin/gm_tool_profile_find/" method="post">{% csrf_token %}
 <p align="center"><a href="/admin/index">主页</a></p>
 <div align="center">
- <input id="operator" name="operator" type="hidden" />
+ <input id="findopt" name="findopt" type="hidden" />
   <script language="javascript" type="text/javascript">
-  function setOperator(opt)
+  function setFindOperator(opt)
   {
-	document.getElementById("operator").value = opt;
+	document.getElementById("findopt").value = opt;
 	//document.getElementById("optvalue").value = value;
   }
   </script>
@@ -24,13 +24,13 @@
         <input type="text" name="tfRoleid" />
       </label></td>
       <td width="42"><label>
-        <input type="submit" name="Submit" value="查询" onclick="setOperator('roleidFind')"/>
+        <input type="submit" name="Submit" value="查询" onclick="setFindOperator('roleidFind')"/>
       </label></td>
       <td width="221"><label>帐号名
           <input type="text" name="tfAccountName" />
       </label></td>
       <td width="142"><label>
-        <input type="submit" name="Submit9" value="查询" onclick="setOperator('accountFind')"/>
+        <input type="submit" name="Submit9" value="查询" onclick="setFindOperator('accountFind')"/>
       </label></td>
       <td width="244">&nbsp;</td>
     </tr>

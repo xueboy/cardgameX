@@ -67,7 +67,7 @@ def gm_tool(request):
 def gm_tool_profile_find(request):
 	data = {}
 	if request.method == 'POST':
-		opt = request.POST['operator']
+		opt = request.POST['findopt']
 		if opt == 'roleidFind':
 			roleid = request.POST['tfRoleid']
 			if roleid:
@@ -93,7 +93,8 @@ def gm_tool_set_profile(request):
 	data = {}
 	if request.method == 'POST':
 		operator = request.POST['operator']
-		roleid = request.POST['roleid']		
+		roleid = request.POST['roleid']
+		print request.POST
 		if operator == 'exp':
 			value = request.POST['tfExp']
 			if value == '':
