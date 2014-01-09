@@ -19,7 +19,7 @@ class levelup:
 		if not levelupConf.has_key(levelKey):
 			return {'msg':'levelup_award_not_exist'}
 		
-		dropid = levelupConf[levelKey]['dropid']		
+		dropid = levelupConf[levelKey]
 		
 		awd = {}
 		awd = drop.open(usr, dropid, awd)

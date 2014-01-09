@@ -19,7 +19,7 @@ class signin:
 		usr.signin['last_login_time'] = currentTime()
 		
 		data = {}
-		data['signin_index'] = usr.signin['login_count'] % len(signinConf)
+		data['signin_index'] = (usr.signin['login_count'] - 1) % len(signinConf)
 		data['have_signin'] = signin.have_signin(usr, now)
 		usr.save()		
 		return data

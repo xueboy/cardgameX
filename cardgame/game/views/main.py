@@ -98,7 +98,7 @@ def info(request):
 	info['drama_md5'] = conf.getClientConfigMd5('drama')
 	info['quest_md5'] = conf.getClientConfigMd5('quest')
 	info['signin_md5'] = conf.getClientConfigMd5('signin')
-	info['levelup'] = conf.getClientConfigMd5('levelup')
+	info['levelup_md5'] = conf.getClientConfigMd5('levelup')
 	
 	return HttpResponse(json.dumps({'info':info}))
 

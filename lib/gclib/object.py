@@ -27,7 +27,7 @@ class object(persistable):
 		
 		
 	def delete(self):
-		return DBPersistent.deleteObject(self)
+		return DBPersistent.delete(self)
 		
 	def getData(self):
 		return {}	

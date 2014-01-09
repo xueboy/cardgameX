@@ -84,7 +84,9 @@ class DBPersistent:
 		update_value.append(obj.id)
 		conn.excute(sql, update_value)		
 		
+		
+	@staticmethod
 	def delete(obj):
-		conn = DBconnection.getConnection()
-		conn.excute('DELETE FROM ' + self.__class__.__name__ + ' WHERE id = %s', [self.id])		
+		conn = DBConnection.getConnection()
+		conn.excute('DELETE FROM ' + obj.__class__.__name__ + ' WHERE id = %s', [obj.id])		
 		return		

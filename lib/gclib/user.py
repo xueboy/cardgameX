@@ -39,10 +39,18 @@ class user(object):
 	def saveRoleId(self):
 		conn = DBConnection.getConnection()		
 		self.roleid = self.id
-		conn.excute("UPDATE user SET roleid = %s WHERE id = %s", [self.roleid, self.id])	
+		conn.excute('UPDATE user SET roleid = %s WHERE id = %s', [self.roleid, self.id])	
 		
 	def onLogin(self):
 		pass
 		
 	def getClientData(self):
-		pass
+		pass		
+		
+	def delete(self):
+		object.delete(self)
+		conn = DBConnection.getConnection()
+		if self.accountid:
+			conn.excute('UPDATE account SET roleid = 0 ,nickname = Null, gender = Null, openid = "0", lastlogin = Null, longitude = Null, latitude = Null WHERE id=%s', [self.accountid])
+	
+		

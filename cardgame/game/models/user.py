@@ -404,3 +404,13 @@ class user(gcuser):
 			return {'yell_notify':yells}
 		return {}
 		
+	def delete(self):
+		gcuser.delete(self)
+		
+	def clear(self):
+		self.getInventory().delete()
+		self.getNetwork().delete()
+		self.getQuest().delete()
+		self.getDungeon().delete()
+		self.getAlmanac().delete()
+		self.delete()

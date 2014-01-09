@@ -61,9 +61,6 @@ def tool_ladder_remove(request):
 def gm_tool(request):
 	if request.method == 'POST':
 		pass
-	
-		
-	
 	return render(request, 'profile.html', {})
 	
 def gm_tool_profile_find(request):
@@ -72,6 +69,8 @@ def gm_tool_profile_find(request):
 		roleid = request.POST['tfRoleid']
 		if roleid:
 			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)		
 		
@@ -94,7 +93,7 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'gold':
+		elif operator == 'gold':
 			value = request.POST['tfGold']
 			if value == '':
 				return HttpResponse('金钱为空')
@@ -105,7 +104,7 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'gem':
+		elif operator == 'gem':
 			value = request.POST['tfGem']
 			if value == '':
 				return HttpResponse('宝石为空')
@@ -116,7 +115,7 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'stamina':
+		elif operator == 'stamina':
 			value = request.POST['tfStamina']
 			if value == '':
 				return HttpResponse('体力为空')
@@ -127,7 +126,7 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'trp':
+		elif operator == 'trp':
 			value = request.POST['tfTrp']
 			if value == '':
 				return HttpResponse('培养点为空')
@@ -138,13 +137,13 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'reset_login':
+		elif operator == 'reset_login':
 			usr = user.get(roleid)
 			signin.reset(usr)
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		if operator == 'login_count':
+		elif operator == 'login_count':
 			value = request.POST['tfLoginCount']
 			if value == '':
 				return HttpResponse('次数不能为空')
@@ -157,6 +156,12 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
+		elif operator == 'delete_role':
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.clear()
+			return gm_tool(request)
 			
 	return render(request, 'profile.html', data)
 			
