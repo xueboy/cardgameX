@@ -320,10 +320,10 @@ def gm_tool_set_item(request):
 			data = gm.show_profile(acc, usr)
 		elif skillopt == 'remove':
 			id = request.POST['itemid']
-			inv = usr.getInventory()
+			inv = usr.getInventory()			
 			if not inv.delItem(id):
 				return HttpResponse('删除失败')
 			inv.save()		
-		data = gm.show_profile(acc, usr)
+			data = gm.show_profile(acc, usr)
 		return render(request, 'profile.html', data)
 	return HttpResponse('未知命令')

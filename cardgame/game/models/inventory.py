@@ -484,6 +484,7 @@ class inventory(object):
 		
 	def delItem(self, id):
 		self.item = filter(lambda i : i['id'] != id, self.item)
+		return 1
 			
 	def getItem(self, id):
 		for it in self.item:
