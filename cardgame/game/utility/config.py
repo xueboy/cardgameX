@@ -28,6 +28,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'equipment':
 			return conf
+		if confname == 'item':
+			return conf
 		if confname == 'prompt':
 			return conf
 		if confname == 'strength_price':

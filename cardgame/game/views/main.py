@@ -78,6 +78,7 @@ def info(request):
 	info['pet_level_md5'] = conf.getClientConfigMd5('pet_level')
 	info['prompt_md5'] = conf.getClientConfigMd5('prompt')
 	info['equipment_md5'] = conf.getClientConfigMd5('equipment')
+	info['item_md5'] = conf.getClientConfigMd5('item')
 	info['strength_price_md5'] = conf.getClientConfigMd5('strength_price')
 	info['strength_probability_md5'] = conf.getClientConfigMd5('strength_probability')
 	info['luck_md5'] = conf.getClientConfigMd5('luck')
