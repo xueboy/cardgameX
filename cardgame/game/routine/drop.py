@@ -25,7 +25,7 @@ class drop:
 				rd = rd - probablity				
 			else:
 				msg = drop.award(usr, d, awd)				
-				break
+				break		
 		return awd
 		
 	@staticmethod
@@ -147,55 +147,66 @@ class drop:
 			
 	
 	@staticmethod
-	def award(usr, dropItem, awd):		
+	def award(usr, dropItem, awd):
+		save_user = False
+		save_inv = False
+		inv = None
 		if dropItem['type'] == 'st':
 			usr.chargeStamina(dropItem['count'])
 			awd['st'] = usr.stamina
-			usr.save()
+			save_user = True
 		elif dropItem['type'] == 'gem':
 			usr.gem = usr.gem + dropItem['count']
 			awd['gem'] = usr.gem
-			usr.save()
+			save_user = True
 		elif dropItem['type'] == 'gold':
 			usr.gold = usr.gold + dropItem['count']
 			awd['gold'] = usr.gold
-			usr.save()
+			save_user = True
 		elif dropItem['type'] == 'sp':
 			usr.sp = usr.sp + dropItem['count']
 			awd['sp'] = usr.sp
-			usr.save()
+			save_user = True
 		elif dropItem['type'] == 'exp':
 			usr.gainExp(dropItem['count'])
 			awd['level'] = usr.level
 			awd['exp'] = usr.exp
-			usr.save()
+			save_user = True
 		elif dropItem['type'] == 'stone':
-			inv = usr.getInventory()
+			if not inv:
+				inv = usr.getInventory()
 			stone = inv.addStoneCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_stone_array'):
 				awd['add_stone_array'] = []
 			awd['add_stone_array'].extend(stone)
-			inv.save()
+			save_inv = True
 		elif dropItem['type'] == 'eq':
-			inv = usr.getInventory()
+			if not inv:
+				inv = usr.getInventory()
 			equipment = inv.addEquipmentCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_equipment_array'):
 				awd['add_equipment_array'] = []
 			awd['add_equipment_array'].extend(equipment)
-			inv.save()
+			save_inv = True
 		elif dropItem['type'] == 'card':
-			inv = usr.getInventory()
+			if not inv:
+				inv = usr.getInventory()
 			card = inv.addCardCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_card_array'):
 				awd['add_card_array'] = []
 			awd['add_card_array'].extend(card)
-			inv.save()
+			save_inv = True
 		elif dropItem['type'] == 'sk':
-			inv = usr.getInventory()
+			if not inv:
+				inv = usr.getInventory()
 			sk = inv.addSkillCount(dropItem['id'], dropItem['count'])
 			if not awd.has_key('add_skill_array'):
 				awd['add_skill_array'] = []
 			awd['add_skill_array'].extend(sk)
+			save_inv = True
+		if save_user:
+			usr.save()
+		if save_inv:
 			inv.save()
 		return None
 	     

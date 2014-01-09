@@ -93,4 +93,5 @@ urlpatterns = patterns('',
     url(r'^gm_tool_set_equipment', gameadmin.views.tool.gm_tool_set_equipment),
     url(r'^gm_tool_set_skill', gameadmin.views.tool.gm_tool_set_skill),
     url(r'^signin', gameadmin.views.main.signin),
+    url(r'^levelup', gameadmin.views.main.levelup),
 )

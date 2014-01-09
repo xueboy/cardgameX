@@ -87,7 +87,7 @@ def convert(request):
 	if res.has_key('msg'):
 		return res
 		
-	mediumId = gameConf['arena_dedium_id']
+	mediumId = gameConf['arena_medium_id']
 	inv = usr.getInventory()
 	item = inv.addItemCount(mediumId, mediumCount)
 	inv.save()

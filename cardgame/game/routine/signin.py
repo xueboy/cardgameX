@@ -38,7 +38,7 @@ class signin:
 			return {'msg':'signin_already_have'}
 		
 		signinConf = config.getConfig('signin')
-		signin_index = usr.signin['login_count'] % len(signinConf)		
+		signin_index = (usr.signin['login_count'] - 1) % len(signinConf)
 		signinAward = signinConf[signin_index]
 		
 		awd = {}
@@ -51,3 +51,7 @@ class signin:
 	def make():
 		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0}
 		
+
+	@staticmethod
+	def reset(usr):
+		usr.signin = signin.make()

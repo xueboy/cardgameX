@@ -156,7 +156,13 @@ def set_nickname(request):
 	acc.nickname = nickname
 	acc.gender = gender
 	usr = acc.makeUserAndBind(nickname, avatar, gender)		
-	data = usr.getLoginData(gameConf)	
+	loginData = onUserLogin(request, usr)
+	usr.last_login = currentTime()
+	gameConf = conf.getConfig('game')
+	data = usr.getLoginData(gameConf)
+	data['login'] = loginData		
+	usr.notify = {}
+	usr.save()	
 	return HttpResponse(json.dumps(data))
 	
 

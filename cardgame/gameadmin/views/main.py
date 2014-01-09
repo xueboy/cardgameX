@@ -125,6 +125,9 @@ def item(request):
 def signin(request):
 	return generalConfigRequestProcess(request, 'signin')
 	
+def levelup(request):
+	return generalConfigRequestProcess(request, 'levelup')
+	
 	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':

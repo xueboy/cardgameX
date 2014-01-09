@@ -68,6 +68,8 @@ class config(gcconfig):
 			return config.questFilter(conf)
 		if confname == 'signin':
 			return conf
+		if confname == 'levelup':
+			return conf
 		return None
 	
 	

@@ -8,6 +8,7 @@ from django.shortcuts import render
 from game.routine.arena import arena
 from gclib.json import json
 from gameadmin.routine.gm import gm
+from game.routine.signin import signin
 	
 def tool_create_player(request):
 	if request.method == 'POST':
@@ -134,6 +135,12 @@ def gm_tool_set_profile(request):
 			if not usr:
 				return HttpResponse('玩家不存在')
 			usr.trp = int(value)
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+		if operator == 'reset_login':
+			usr = user.get(roleid)
+			signin.reset(usr)
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
