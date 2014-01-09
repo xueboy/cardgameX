@@ -16,9 +16,9 @@ class educate:
 			return {'msg':'card_not_exist'}
 				
 		if educate.is_edu_slot_start(usr, edupos):
-			return {'msg':'educate_edu_slot_already_start'}
+			educate.stop(usr, edupos)			
 				
-		if educate.card_already_educate(usr, cardid):
+		if educate.card_already_educate(usr, cardid):			
 			return {'msg':'educate_card_already_educate'}
 						
 		gameConf = config.getConfig('game')
