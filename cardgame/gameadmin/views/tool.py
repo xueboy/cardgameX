@@ -315,6 +315,7 @@ def gm_tool_set_item(request):
 			itemid = request.POST['itemSelect']
 			inv = usr.getInventory()
 			s = inv.addItem(itemid)
+			print inv.item
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')
@@ -323,7 +324,7 @@ def gm_tool_set_item(request):
 			id = request.POST['itemid']
 			inv = usr.getInventory()			
 			if not inv.delItem(id):
-				return HttpResponse('删除失败')
+				return HttpResponse('删除失败')			
 			inv.save()		
 			data = gm.show_profile(acc, usr)
 		return render(request, 'profile.html', data)

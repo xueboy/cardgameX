@@ -94,7 +94,7 @@ class inventory(object):
 					
 		item = {}		
 		for  it in self.item:
-			item[it['id']] = id					
+			item[it['id']] = it
 		
 		data['card'] = card
 		data['team'] = self.team
