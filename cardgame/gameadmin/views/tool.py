@@ -144,6 +144,20 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
+		if operator == 'login_count':
+			value = request.POST['tfLoginCount']
+			if value == '':
+				return HttpResponse('次数不能为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			usr.signin['login_count'] = int(value)
+			usr.signin['last_login_time'] = currentTime()
+			usr.signin['last_signin_time'] = currentTime()
+			usr.save()
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
+			
 	return render(request, 'profile.html', data)
 			
 def gm_tool_set_pet(request):
