@@ -9,18 +9,30 @@
 <form id="form1" name="form1" action="/admin/gm_tool_profile_find/" method="post">{% csrf_token %}
 <p align="center"><a href="/admin/index">主页</a></p>
 <div align="center">
+ <input id="operator" name="operator" type="hidden" />
+  <script language="javascript" type="text/javascript">
+  function setOperator(opt)
+  {
+	document.getElementById("operator").value = opt;
+	//document.getElementById("optvalue").value = value;
+  }
+  </script>
   <table width="887" border="1">
     <tr>
-      <td width="209">roleid
+      <td width="204">roleid
         <label>
         <input type="text" name="tfRoleid" />
       </label></td>
       <td width="42"><label>
-        <input type="submit" name="Submit" value="查询" />
+        <input type="submit" name="Submit" value="查询" onclick="setOperator('roleidFind')"/>
       </label></td>
-      <td width="107">&nbsp;</td>
-      <td width="221">&nbsp;</td>
-      <td width="274">&nbsp;</td>
+      <td width="221"><label>帐号名
+          <input type="text" name="tfAccountName" />
+      </label></td>
+      <td width="142"><label>
+        <input type="submit" name="Submit9" value="查询" onclick="setOperator('accountFind')"/>
+      </label></td>
+      <td width="244">&nbsp;</td>
     </tr>
   </table>
   </div>
@@ -30,8 +42,8 @@
   <div align="center">
   <p>&nbsp;</p>
    <input id="operator" name="operator" type="hidden" />
-   <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
-  <script language="javascript">
+   <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+  <script language="javascript" type="text/javascript">
   function setOperator(opt)
   {
 	document.getElementById("operator").value = opt;
@@ -117,8 +129,8 @@
     <div align="center">{% csrf_token %}
       <input id="petopt" name="petopt" type="hidden" />
 	  <input id="petid" name="petid" type="hidden" />
-      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
-      <script language="javascript">
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+      <script language="javascript" type="text/javascript">
   function setPetOpt(opt, petid)
   {
 	document.getElementById("petopt").value = opt;
@@ -167,8 +179,8 @@
     <div align="center">
 	    <input id="stoneopt" name="stoneopt" type="hidden" />
 		<input id="stoneid" name="stoneid" type="hidden" />
-      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
-      <script language="javascript">
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+      <script language="javascript" type="text/javascript">
   function setStoneOpt(opt, stoneid)
   {
 	document.getElementById("stoneopt").value = opt;
@@ -213,12 +225,12 @@
   {% endif %}
     {% if roleid %}
  <hr />
-    <form id="form5" name="form4" action="/admin/gm_tool_set_equipment/" method="post">{% csrf_token %}
+    <form id="form5" name="form5" action="/admin/gm_tool_set_equipment/" method="post">{% csrf_token %}
   <div align="center">
 	  <input id="equipmentopt" name="equipmentopt" type="hidden" />
 	  <input id="equipmentid" name="equipmentid" type="hidden" />
-      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
-      <script language="javascript">
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+      <script language="javascript" type="text/javascript">
   function setEquipmentOpt(opt, equipmentid)
   {
 	document.getElementById("equipmentopt").value = opt;
@@ -256,12 +268,12 @@
 	{% if roleid %}
 	<hr />
 	  
-	   <form id="form5" name="form4" action="/admin/gm_tool_set_skill/" method="post">{% csrf_token %}
+	   <form id="form6" name="form6" action="/admin/gm_tool_set_skill/" method="post">{% csrf_token %}
   <div align="center">
 	    <input id="skillopt" name="skillopt" type="hidden" />
 	    <input id="skillid" name="skillid" type="hidden" />
-      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}">
-      <script language="javascript">
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+      <script language="javascript" type="text/javascript">
   function setSkillOpt(opt, skillid)
   {
 	document.getElementById("skillopt").value = opt;
@@ -301,5 +313,54 @@
   </div>
 	  </form>
   {% endif %}
+  {% if roleid %}
+	<hr />
+	  
+	   <form id="form7" name="form7" action="/admin/gm_tool_set_item/" method="post">{% csrf_token %}
+  <div align="center">
+	    <input id="itemopt" name="itemopt" type="hidden" />
+	    <input id="itemid" name="itemid" type="hidden" />
+      <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+      <script language="javascript" type="text/javascript">
+  function setItemOpt(opt, itemid)
+  {
+	document.getElementById("itemopt").value = opt;
+	document.getElementById("itemid").value = itemid;
+  }
+      </script>
+	  </div>
+	  <div align="center">
+	    <table width="700" border="1">
+	      <tr>
+	        <td colspan="4"><div align="center">物品</div></td>
+      </tr>
+	      <tr>
+	        <td colspan="4"><label>
+	          <select name="itemSelect">
+			  {% for itemid, item in itemConf.items %}
+        		<option value="{{ itemid }}"> {{ item.name }}</option>        
+				{% endfor %}
+            </select>
+	          <input type="submit" name="Submit62" value="添加" onclick="setItemOpt('add', '0')" />
+	        </label></td>
+      </tr>
+	      <tr>
+	        <td width="149">id</td>
+      <td width="104">名称</td>
+      <td width="173">等级</td>
+      <td width="246">&nbsp;</td>
+    </tr>
+	{% for it in itemList %}
+	      <tr>
+	        <td>{{ it.id }}</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit72222" value="删除" onclick="setItemOpt('remove', '{{ item.id }}')"/></td>
+    </tr>
+	{% endfor %}
+        </table>
+	    </div>
+	   </form>
+	    {% endif %}
 </body>
 </html>

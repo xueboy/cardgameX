@@ -34,6 +34,8 @@ class gm:
 		data['equipmentList'] = inv.equipment
 		data['skillConf'] = config.getConfig('skill')
 		data['skillList'] = inv.skill
+		data['itemConf'] = config.getConfig('item')
+		data['itemList'] = inv.item
 		data['login_count'] = usr.signin['login_count']
 		
 		return data

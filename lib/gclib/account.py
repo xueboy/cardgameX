@@ -37,6 +37,8 @@ class account(object):
 		
 	def getUser(self):		
 		usr = self.userCls().get(self.roleid)
+		if not usr:
+			return None
 		usr.account =  self
 		return usr
 	
@@ -75,7 +77,22 @@ class account(object):
 			acc.saveLogin()
 			return acc
 		return None
-		
+	
+	@classmethod
+	def get_by_account_name(cls, name)	:
+		conn = DBConnection.getConnection()
+		res = conn.query("SELECT * FROM account WHERE accountname = %s ", [name])
+		if len(res) == 1:
+			acc = cls.accountObject()
+			acc.id = res[0][0]
+			acc.username = res[0][1]
+			acc.nickname = res[0][3]
+			acc.gender = res[0][4]		
+			acc.roleid = res[0][5]
+			acc.openid = res[0][6]			
+			return acc
+		return None
+	
 	def save(self):
 		raise NotImplemented
 	

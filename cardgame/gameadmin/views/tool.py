@@ -3,6 +3,7 @@
 
 from django.http import HttpResponse
 from game.models.user import user
+from game.models.account import account
 from gclib.utility import currentTime
 from django.shortcuts import render
 from game.routine.arena import arena
@@ -65,14 +66,25 @@ def gm_tool(request):
 	
 def gm_tool_profile_find(request):
 	data = {}
-	if request.method == 'POST':		
-		roleid = request.POST['tfRoleid']
-		if roleid:
-			usr = user.get(roleid)
+	if request.method == 'POST':
+		opt = request.POST['operator']
+		if opt == 'roleidFind':
+			roleid = request.POST['tfRoleid']
+			if roleid:
+				usr = user.get(roleid)
+				if not usr:
+					return HttpResponse('玩家不存在')
+				acc = usr.getAccount()
+				data = gm.show_profile(acc, usr)
+		elif opt == 'accountFind':
+			name = request.POST['tfAccountName']
+			acc = account.get_by_account_name(name)
+			if not acc:
+				return HttpResponse('帐号不存在')
+			usr = acc.getUser()
 			if not usr:
 				return HttpResponse('玩家不存在')
-			acc = usr.getAccount()
-			data = gm.show_profile(acc, usr)		
+			data = gm.show_profile(acc, usr)
 		
 	return render(request, 'profile.html', data)
 	
@@ -281,6 +293,35 @@ def gm_tool_set_skill(request):
 			id = request.POST['skillid']
 			inv = usr.getInventory()
 			if not inv.delSkill(id):
+				return HttpResponse('删除失败')
+			inv.save()		
+		data = gm.show_profile(acc, usr)
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
+	
+def gm_tool_set_item(request):
+	data = {}
+	if request.method == 'POST':
+		skillopt = request.POST['itemopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)		
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()		
+		
+		if skillopt == 'add':
+			itemid = request.POST['itemSelect']
+			inv = usr.getInventory()
+			s = inv.addItem(itemid)
+			inv.save()
+			if not s:
+				return HttpResponse('添加失败')
+			data = gm.show_profile(acc, usr)
+		elif skillopt == 'remove':
+			id = request.POST['itemid']
+			inv = usr.getInventory()
+			if not inv.delItem(id):
 				return HttpResponse('删除失败')
 			inv.save()		
 		data = gm.show_profile(acc, usr)
