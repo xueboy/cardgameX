@@ -31,7 +31,8 @@ class user(gcuser):
 		self.gem = 0
 		self.gold = 0
 		self.exp = 0
-		self.vip = 0		
+		self.vip = 0
+		self.sp = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0
 		self.leader = ''		
@@ -86,6 +87,7 @@ class user(gcuser):
 		data['gold'] = self.gold
 		data['exp'] = self.exp
 		data['vip'] = self.vip
+		data['sp'] = self.sp
 		data['stamina_last_recover'] = self.stamina_last_recover
 		data['last_card_no'] = self.last_card_no
 		data['last_login'] = self.last_login		
@@ -227,6 +229,7 @@ class user(gcuser):
 		self.yell_hear_id = data['yell_hear_id']
 		self.luckycat = data['luckycat']
 		self.trp = data['trp']
+		self.sp = data['sp']
 		self.stv = data['stv']
 		self.garcha = data['garcha']
 		self.stv_gem = data['stv_gem']

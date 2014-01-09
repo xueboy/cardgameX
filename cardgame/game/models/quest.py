@@ -81,7 +81,7 @@ class quest(object):
 		newQuest = []
 		for qid in questConf:			
 			if questConf[qid]['type'] == 1:
-				if self.commonIsAvailable(usr, qid, questConf[qid]):
+				if self.commonIsAvailable(usr, qid, questConf[qid]):					
 					newQuest.append(qid)
 			elif questConf[qid]['type'] == 2:
 				if self.dayIsAvailable(usr, qid, questConf[qid]):			
@@ -135,10 +135,16 @@ class quest(object):
 		
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]
-		if not self.canAccept(questInfo):
+		if not self.canAccept(questid, questInfo, questConf):
 			return {'msg':'quest_can_not_accept'}
 		
-		q = quest.makeQuest(questid)
+		q = None
+		if self.finish.has_key(questid):
+			q = self.finish[questid]
+			del self.finish[questid]
+		else:
+			q = quest.makeQuest(questid)			
+		
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
@@ -148,12 +154,14 @@ class quest(object):
 		
 	def acceptNextQuest(self, questid, questInfo, questConf):
 		nextQuestid = questInfo['nextId']
-		if not  questConf.has_key(nextQuestid):
+		if not nextQuestid:
 			return None
+		if not  questConf.has_key(nextQuestid):
+			return None.s
 		nextQuestInfo = questConf[nextQuestid]
 		
-		if not self.canAccept(nextQuestInfo):
-			return None		
+		if not self.canAccept(nextQuestid, nextQuestInfo, questConf):
+			return None.s
 		q = quest.makeQuest(nextQuestid)
 		usr = self.user
 		self.current[nextQuestid] = q
@@ -192,21 +200,22 @@ class quest(object):
 				return False
 		return True			
 		
-	def canAccept(self, questInfo):		
+	def canAccept(self, questid, questInfo, questConf):		
 		usr = self.user
 		
 		if usr.level < questInfo['level']:
-			return False		
+			return False.s
 		if not self.isActive(questInfo):
-			return False
+			return False.s
 		if not questInfo['isFirst']:
 			alreadyFinishPre = False
-			for q in self.finish:
-				if q == questInfo['nextId']:
+			for qid in self.finish:
+				finishQuestInfo = questConf[qid]
+				if finishQuestInfo['nextId'] == questid:
 					alreadyFinishPre = True
 					break
 			if not alreadyFinishPre:
-				return False		
+				return False
 		return True
 		
 	@staticmethod
@@ -226,9 +235,10 @@ class quest(object):
 		usr = self.user
 		if not quest.isFinish(questid, q):
 			return {'msg':'quest_not_finish'}
+		q['count'] = q['count'] + 1
 		del self.current[questid]
 		self.finish[questid] = q
-	#	quest.notify_finish_quest(usr, questid)		
+		quest.notify_finish_quest(usr, questid)		
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
 		newQuest = self.acceptNextQuest(questid, questInfo, questConf)	
