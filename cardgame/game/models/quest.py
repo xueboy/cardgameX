@@ -238,7 +238,7 @@ class quest(object):
 		q['count'] = q['count'] + 1
 		del self.current[questid]
 		self.finish[questid] = q
-		quest.notify_finish_quest(usr, questid)		
+		#quest.notify_finish_quest(usr, questid)		
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
 		newQuest = self.acceptNextQuest(questid, questInfo, questConf)	
