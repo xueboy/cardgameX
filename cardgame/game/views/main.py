@@ -68,7 +68,7 @@ def info(request):
 	
 	info = {}	
 	info[u'status'] = u'OK'
-	#info['greet'] = u'ÄãºÃ'
+	#info['greet'] = u'ä½ å¥½'
 	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
 	info['level_md5'] = conf.getClientConfigMd5('level')
 	info['game_md5'] = conf.getClientConfigMd5('game')
@@ -98,6 +98,7 @@ def info(request):
 	info['drama_md5'] = conf.getClientConfigMd5('drama')
 	info['quest_md5'] = conf.getClientConfigMd5('quest')
 	info['signin_md5'] = conf.getClientConfigMd5('signin')
+	info['levelup'] = conf.getClientConfigMd5('levelup')
 	
 	return HttpResponse(json.dumps({'info':info}))
 
