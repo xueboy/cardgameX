@@ -52,12 +52,13 @@ def index(request):
 		if usr == None:
 			raise Http500("server error")
 			return HttpResponse500()
+		usr.notify = {}
 		loginData = onUserLogin(request, usr)
 		usr.last_login = currentTime()
 		gameConf = conf.getConfig('game')
 		data = usr.getLoginData(gameConf)
 		data['login'] = loginData		
-		usr.notify = {}
+		
 		usr.save()
 		return HttpResponse(json.dumps(data))
 	return HttpResponse(json.dumps({'msg':'account_name_not_exist'}))
@@ -161,7 +162,6 @@ def set_nickname(request):
 	gameConf = conf.getConfig('game')
 	data = usr.getLoginData(gameConf)
 	data['login'] = loginData		
-	usr.notify = {}
 	usr.save()	
 	return HttpResponse(json.dumps(data))
 	

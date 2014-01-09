@@ -16,6 +16,7 @@ from game.routine.garcha import garcha
 from game.routine.educate import educate
 from game.routine.stone import stone
 from game.routine.signin import signin
+from game.routine.levelup import levelup
 
 
 class user(gcuser):
@@ -53,6 +54,7 @@ class user(gcuser):
 		self.luckycat = {}
 		self.educate = educate.make()
 		self.signin = signin.make()
+		self.levelup = levelup.make()
 		self.trp = 0
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
@@ -105,6 +107,7 @@ class user(gcuser):
 		data['arena'] = self.arena
 		data['avatar'] = self.avatar
 		data['signin'] = self.signin
+		data['levelup'] = self.levelup
 		return data
 		
 	def getClientData(self):
@@ -133,6 +136,7 @@ class user(gcuser):
 			data['luckycat'] = luckycat.getClientData(self, gameConf)
 		data['educate'] = educate.getClientData(self, gameConf)
 		data['avatar'] = self.avatar
+		data['levelup'] = self.levelup['record']
 		return data
 		
 		
@@ -230,6 +234,7 @@ class user(gcuser):
 		self.arena = data['arena']
 		self.avatar = data['avatar']
 		self.signin = data['signin']
+		self.levelup = data['levelup']
 			 		
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1

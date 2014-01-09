@@ -11,6 +11,7 @@ from game.models.account import account
 from game.routine.avatar import avatar
 from game.routine.signin import signin
 from game.models.user import user
+from game.routine.levelup import levelup
 
 def set_avatar(request):
 	
@@ -110,3 +111,8 @@ def nearby(request):
 def sign_in(request):	
 	usr = request.user	
 	return signin.do_signin(usr)
+	
+def levelup_award(request):
+	usr = request.user
+	level = int(request.GET['level'])
+	return levelup.award(usr, level)
