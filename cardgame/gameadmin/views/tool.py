@@ -55,8 +55,7 @@ def tool_ladder_remove(request):
 		operator = request.POST['operator']
 		if operator == 'remove':
 			arena.remove(optid)		
-	ld = arena.show_all()	
-	print ld
+	ld = arena.show_all()
 	return render(request, 'arena_tool.html', {'ladder':ld})
 		
 def gm_tool(request):
@@ -94,7 +93,6 @@ def gm_tool_set_profile(request):
 	if request.method == 'POST':
 		operator = request.POST['operator']
 		roleid = request.POST['roleid']
-		print request.POST
 		if operator == 'exp':
 			value = request.POST['tfExp']
 			if value == '':
@@ -315,7 +313,6 @@ def gm_tool_set_item(request):
 			itemid = request.POST['itemSelect']
 			inv = usr.getInventory()
 			s = inv.addItem(itemid)
-			print inv.item
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')

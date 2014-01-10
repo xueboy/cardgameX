@@ -177,7 +177,6 @@ def test(request):
 	from gclib.cache import cache	
 	#url = r'http://127.0.0.1:1235/?cmd=save&type=test&id=587'
 	#f = curl.url(url)
-	#print f	
 	#return HttpResponse(f, mimetype="text/plain")	
 #	data = {}
 #	data['notify'] = {}
@@ -198,6 +197,5 @@ def test(request):
 
 	cache.loc_setValue('test_rank', data)
 	dt = cache.loc_getValue('test_rank')
-	#print dt
 	#json.loads(dt)
 	return HttpResponse(dt)

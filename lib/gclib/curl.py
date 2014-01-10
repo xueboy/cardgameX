@@ -29,7 +29,6 @@ class curl:
 		#c.setopt(pycurl.DEBUGFUNCTION, db)
 		if postData:
 			c.setopt(pycurl.POST, 1)
-			print urllib.urlencode(postData)
 			c.setopt(pycurl.POSTFIELDS, urllib.urlencode(postData))
 		if getData:
 			url = url + '?' + urllib.urlencode(getData)
