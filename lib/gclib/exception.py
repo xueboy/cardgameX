@@ -11,3 +11,6 @@ class NotHaveNickname(Exception):
 	
 class NotImplemented(Exception):
 	pass
+	
+class DuplicateNickname(Exception):
+	pass

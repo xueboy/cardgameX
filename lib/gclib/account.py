@@ -7,7 +7,7 @@ from gclib.object import object
 from gclib.DBConnection import DBConnection
 from gclib.user import user
 from gclib.utility import currentTime
-from gclib.exception import NotImplemented
+from gclib.exception import NotImplemented, DuplicateNickname
 
 class account(object):
 	
@@ -129,8 +129,11 @@ class account(object):
 		
 		
 	def bind(self, roleid, nickname, gender):
-		conn = DBConnection.getConnection()
-		conn.excute("UPDATE account SET roleid = %s, nickname = %s, gender = %s WHERE id = %s", [roleid, nickname, gender, self.id])
+		try:
+			conn = DBConnection.getConnection()
+			conn.excute("UPDATE account SET roleid = %s, nickname = %s, gender = %s WHERE id = %s", [roleid, nickname, gender, self.id])
+		except IntegrityError:
+			raise DuplicateNickname
 		
 	def saveLogin(self):
 		self.last_login = currentTime()

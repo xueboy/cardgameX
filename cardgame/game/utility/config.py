@@ -70,6 +70,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'levelup':
 			return conf
+		if confname == 'open_award':
+			return conf
 		return None
 	
 	

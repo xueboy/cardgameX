@@ -128,6 +128,8 @@ def signin(request):
 def levelup(request):
 	return generalConfigRequestProcess(request, 'levelup')
 	
+def open_award(request):
+	return generalConfigRequestProcess(request, 'open_award')
 	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
