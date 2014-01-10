@@ -100,7 +100,7 @@ def info(request):
 	info['quest_md5'] = conf.getClientConfigMd5('quest')
 	info['signin_md5'] = conf.getClientConfigMd5('signin')
 	info['levelup_md5'] = conf.getClientConfigMd5('levelup')
-	info['open_award_md5'] = confi.getClientConfigMd5('open_award')	
+	info['open_award_md5'] = conf.getClientConfigMd5('open_award')	
 	return HttpResponse(json.dumps({'info':info}))
 
 
