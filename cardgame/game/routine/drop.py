@@ -79,6 +79,10 @@ class drop:
 			if not awd.has_key('add_skill_array'):
 				awd['add_skill_array'] = []
 			awd['add_skill_array'].append({'id':dropItem['id'], 'count':dropItem['count']})		
+		elif dropItem['type'] == 'item':
+			if not awd.has_key('add_item_array'):
+				awd['add_item_array'] = []
+			awd['add_item_array'].append({'id':dropItem['id'], 'count':dropItem['count']})
 		return awd
 		
 	@staticmethod
@@ -138,6 +142,14 @@ class drop:
 			for a in awd['add_skill_array']:
 				skill.extend(inv.addSkillCount(a['id'], a['count']))
 			awd['add_skill_array'] = skill
+			save_inv = True
+		if awd.has_key('add_item_array'):
+			if not inv:
+				inv = usr.getInventory()
+			item = []
+			for a in awd['add_item_array']:
+				item.extend(inv.addItemCount(a['id'], a['count']))
+			awd['add_item_array'] = item
 			save_inv = True
 		if save_user:
 			usr.save()
@@ -203,6 +215,14 @@ class drop:
 			if not awd.has_key('add_skill_array'):
 				awd['add_skill_array'] = []
 			awd['add_skill_array'].extend(sk)
+			save_inv = True
+		elif dropItem['type'] == 'item':
+			if not inv:
+				inv = usr.getInventory()
+			it = inv.addItemCount(dropItem['id'], dropItem['count'])
+			if not awd.has_key('add_item_array'):
+				awd['add_item_array'] = []
+			awd['add_item_array'].extend(it)
 			save_inv = True
 		if save_user:
 			usr.save()
