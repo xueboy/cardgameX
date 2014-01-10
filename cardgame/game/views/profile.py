@@ -116,3 +116,8 @@ def levelup_award(request):
 	usr = request.user
 	level = int(request.GET['level'])
 	return levelup.award(usr, level)
+	
+
+def meal(request):
+	usr = request.user
+	return signin.meal(usr)

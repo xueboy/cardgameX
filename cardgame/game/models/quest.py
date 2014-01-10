@@ -59,7 +59,9 @@ class quest(object):
 			if t.has_key('dungeon_id'):			
 				del t['dungeon_id']
 			if t.has_key('field_id'):			
-				del t['field_id']				
+				del t['field_id']
+			if t.has_key('finish'):
+				del t['finish']
 			current[q] = t
 		return {'quest_current':current, 'quest_drama':self.drama}	
 	
@@ -232,10 +234,11 @@ class quest(object):
 		if not self.current.has_key(questid):
 			return {'msg':'quest_not_exist'}
 		q = self.current[questid]
-		usr = self.user
+		usr = self.user		
 		if not quest.isFinish(questid, q):
 			return {'msg':'quest_not_finish'}
 		q['count'] = q['count'] + 1
+		
 		del self.current[questid]
 		self.finish[questid] = q
 		#quest.notify_finish_quest(usr, questid)		
@@ -260,7 +263,7 @@ class quest(object):
 				if dungeonId == questInfo['finishValue'][0] and fieldId == questInfo['finishValue'][1]:
 					self.current[questid]['dungeon_id'] = dungeonId
 					self.current[questid]['field_id'] = fieldId
-					self.current[questid]['finish'] = 1					
+					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
 					#self.finish[questid] = self.current[questid]
 					#del self.current[questid]
@@ -311,6 +314,8 @@ class quest(object):
 				if len(usrNt.friend) >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1		
 					quest.notify_finish_quest(usr, questid)
+					print self.current[questid]					
+			
 					#self.finish[questid] = self.current[questid]
 					#del self.current[questid]
 		self.save()

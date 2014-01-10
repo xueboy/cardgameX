@@ -123,6 +123,23 @@ def day_diff(t1, t2):
 def str_to_time(s):
 	return int(time.mktime(datetime.datetime.strptime(s, '%Y-%m-%d %H:%M:%S').timetuple()))
 	
+def str_to_day_time(s):
+	return datetime.datetime.strptime(s, '%H:%M:%S').time()
+	
 def time_to_str(t):
 	return datetime.strftime(t, '%Y-%m-%d %H:%M:%S')
+	
+def day_time_to_str(t):
+	return datetime.strftime(t, '%H:%M:%S')
+
+def time_to_day_time(t):
+	return datetime.datetime.fromtimestamp(t).time()
+	
+def is_in_day_period(td1, td2, t):		
+		nowDayTime = time_to_day_time(t)		
+		if td1 > nowDayTime or td2 < nowDayTime:
+			return False
+		return True
+	
+	
 	
