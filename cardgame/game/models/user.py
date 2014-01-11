@@ -176,7 +176,7 @@ class user(gcuser):
 		data['roleid'] = self.roleid
 		data['level'] = self.level
 		data['name'] = self.name
-		data['team'] = inv.team
+		#data['team'] = inv.team
 		data['team_card'] = []
 		for cid in inv.team:
 			if cid:
