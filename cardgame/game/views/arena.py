@@ -41,6 +41,7 @@ def defeate(request):
 			arenaLootConf = config.getConfig('arena_loot')
 			gameConf = config.getConfig('game')
 			arenaLootInfo = arenaLootConf[usr.level - 1]
+			del usr.arena['challenge_roleid']
 			card = None			
 			gold = 0
 			skl = None
@@ -60,13 +61,14 @@ def defeate(request):
 			data = {}
 			if gold:
 				data['gold'] = usr.gold
-				usr.save()
+			
 			if card:
 				data['add_card'] = card
 				inv.save()
 			if skl:
 				data['add_skill'] = skl
 				inv.save()
+			usr.save()
 			return data
 		return res
 	return {'msg':'arena_ladder_have_not_chellenge'}
