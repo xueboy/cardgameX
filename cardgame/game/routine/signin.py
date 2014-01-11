@@ -49,7 +49,7 @@ class signin:
 		
 	@staticmethod
 	def make():
-		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0, 'last_meal_time':[]}
+		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0, 'last_meal_time':[], 'open_award_time':[]}
 		
 
 	@staticmethod
@@ -82,7 +82,27 @@ class signin:
 			if last_meal_time and is_in_day_period(t1, t2, last_meal_time[-1]):
 				return False
 			else: 
-				return True		
+				return True
 		return False
+	
+	@staticmethod
+	def continue_award(usr, no):
+		if signin.continue_have_award(usr, no):
+			return {'msg':'open_award_already_have'}
+		
+		openAwardConf = config.getConfig('open_awar')
+		
+		data = {}
+		
+		
+	@staticmethod
+	def continue_have_award(usr, no):
+		if len(usr.signin['open_award_time']) < no:
+			return False
+		if not usr.signin['open_award_time'][no -1]:
+			return False
+		return True
+			
+		
 		
 		

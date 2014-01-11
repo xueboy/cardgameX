@@ -385,6 +385,9 @@ class user(gcuser):
 		educate.levelup_update(self, gameConf)
 		qt = self.getQuest()
 		qt.updateQuest(True)
+		
+		if self.level == gameConf['arena_level']:
+			arena.stand_ladder(self)
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')
