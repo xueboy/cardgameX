@@ -1601,6 +1601,7 @@ class excel_import:
 				model = row[5]
 				fun_str = row[6]
 				desc = row[7]
+				stack = int(row[8])
 				
 				itemConf = {}
 				itemConf['name'] = name				
@@ -1610,6 +1611,7 @@ class excel_import:
 				itemConf['model'] = model
 				itemConf['fun'] = excel_import.make_fun_dic(fun_str)
 				itemConf['desc'] = desc
+				itemConf['stack'] = stack
 				conf[itemid] = itemConf			
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('item_import')

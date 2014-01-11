@@ -464,25 +464,52 @@ class inventory(object):
 		itemConf = config.getConfig('item')
 		itemInfo = itemConf[itemid]
 		
+		for it in self.item:
+			if it['itemid'] == itemid and it['count'] < itemInfo['stack']:
+				it['count'] = it['count'] + 1
+				return it, None
+		
 		it = {}
 		it['itemid'] = itemid
 		it['id'] = self.generateItemName()
 		it['count'] = 1
 		self.item.append(it)
-		return it
+		return None, it
 	
 	def addItemCount(self, itemid, cnt):
 		itemConf = config.getConfig('item')
 		itemInfo = itemConf[itemid]
 		
+		itemCount = cnt
+		
+		its = []
+		
+		for it in self.item:
+			if it['itemid'] == itemid and itemCount and it['count'] < itemInfo['stack']:
+				if it['count'] + itemCount > itemInfo['stack']:
+					itemCount = it['count'] + itemCount - itemInfo['stack']
+					it['count'] = itemInfo['stack']
+					its.append(it)
+				else:
+					it['count'] = it['count'] + itemCount
+					itemCount = 0
+					its.append(its)
+		
 		item = []
-		for i in range(cnt):
-			it = {}
+		
+		while itemCount != 0:
+			it = {}			
 			it['itemid'] = itemid
 			it['id'] = self.generateItemName()
+			if itemCount > itemInfo['stack']:
+				it['count'] = itemInfo['stack']
+				itemCount = itemCount - itemInfo['stack']
+			else:
+				it['count'] = itemCount
+				itemCount = 0
 			item.append(it)
-			self.item.append(it)
-		return item
+			self.item.append(it)						
+		return its, item
 		
 	def delItem(self, id):
 		self.item = filter(lambda i : i['id'] != id, self.item)

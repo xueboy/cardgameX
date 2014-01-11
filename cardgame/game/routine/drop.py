@@ -146,10 +146,14 @@ class drop:
 		if awd.has_key('add_item_array'):
 			if not inv:
 				inv = usr.getInventory()
-			item = []
+			updateItem = []
+			newItem = []
 			for a in awd['add_item_array']:
-				item.extend(inv.addItemCount(a['id'], a['count']))
-			awd['add_item_array'] = item
+				updateIt , newIt = inv.addItemCount(a['id'], a['count'])
+				updateItem.extend(updateIt)
+				newItem.extend(newIt)
+			awd['add_item_array'] = newItem
+			awd['update_item_array'] = updateItem
 			save_inv = True
 		if save_user:
 			usr.save()
@@ -219,10 +223,16 @@ class drop:
 		elif dropItem['type'] == 'item':
 			if not inv:
 				inv = usr.getInventory()
-			it = inv.addItemCount(dropItem['id'], dropItem['count'])
-			if not awd.has_key('add_item_array'):
+			updateIt, newIt = inv.addItemCount(dropItem['id'], dropItem['count'])
+			if (not awd.has_key('add_item_array')) and newIt:
 				awd['add_item_array'] = []
-			awd['add_item_array'].extend(it)
+			if (not awd.has_key('update_item_array')) and updateIt:
+				awd['update_item_array'] = []
+			
+			if newIt:
+				awd['add_item_array'].extend(newIt)
+			if updateIt:
+				awd['update_item_array'].extend(updateIt)
 			save_inv = True
 		if save_user:
 			usr.save()

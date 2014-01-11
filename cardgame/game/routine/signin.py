@@ -4,6 +4,7 @@
 from gclib.utility import is_same_day, currentTime, day_diff, str_to_day_time, is_in_day_period
 from game.utility.config import config
 from game.routine.drop import drop
+import random
 
 class signin:
 	
@@ -49,7 +50,7 @@ class signin:
 		
 	@staticmethod
 	def make():
-		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0, 'last_meal_time':[], 'open_award_time':[]}
+		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0, 'last_meal_time':[], 'continue_award_time':[], 'draw_award_time':[]}
 		
 
 	@staticmethod
@@ -87,22 +88,74 @@ class signin:
 	
 	@staticmethod
 	def continue_award(usr, no):
-		if signin.continue_have_award(usr, no):
-			return {'msg':'open_award_already_have'}
+		openAwardConf = config.getConfig('open_award')
+		if not signin.is_continue_award_available(no, openAwardConf):
+			return {'msg':'open_award_not_available'}
 		
-		openAwardConf = config.getConfig('open_awar')
 		
+		if usr.signin['login_count'] < no:
+			return {'msg':'bad_parameter'}
+				
+		if signin.is_continue_award_already_get(usr, no):
+			return {'msg':'open_award_already_get'}
+		
+		while len(usr.signin['continue_award_time']) < no:
+			usr.signin['continue_award_time'].append(None)
+		
+		usr.signin['continue_award_time'][no - 1] = currentTime()
+		
+		cardid = openAwardConf['continue_award'][no - 1]
+		
+		inv = usr.getInventory()
+		c = inv.addCard(cardid)
+		inv.save()
 		data = {}
-		
+		data['add_card'] = c
+		return data
 		
 	@staticmethod
-	def continue_have_award(usr, no):
-		if len(usr.signin['open_award_time']) < no:
+	def draw_award(usr):
+		openAwardConf = config.getConfig('open_award')
+		drawidx = []
+		
+		for t in usr.signin['draw_award_time']:
+			if is_same_day(t, currentTime()):
+				return {'msg':'open_award_already_get'}
+		
+		for idx, ad in enumerate(openAwardConf['draw_award']):
+			 if len(usr.signin['draw_award_time']) > idx and not usr.signin['draw_award_time'][idx]:
+			 	continue
+			 if ad['day'] > len(usr.signin['draw_award_time']):
+			 	continue			 	
+			 drawidx.append(idx)
+			 
+		if not drawidx:
+			return {'msg':'open_award_already_get'}
+			
+		adidx = random.sample(drawidx, 1)[0]
+		ad = openAwardConf['draw_award'][adidx]
+		data = {}
+		data = drop.open(usr, ad['dropid'], data)
+		while len(usr.signin['draw_award_time']) <= adidx:
+			usr.signin['draw_award_time'].append(None)
+		usr.signin['draw_award_time'][adidx] = currentTime()
+		usr.save()		
+		
+		return data	
+		
+	@staticmethod
+	def is_continue_award_available(no, openAwardConf):
+		if len(openAwardConf['continue_award']) < no:
 			return False
-		if not usr.signin['open_award_time'][no -1]:
+		if not openAwardConf['continue_award'][no -1]:
 			return False
 		return True
 			
+	@staticmethod
+	def is_continue_award_already_get(usr ,no):
+		if len(usr.signin['continue_award_time']) < no:
+			return False
 		
-		
-		
+		if usr.signin['continue_award_time'][no - 1]:
+			return True
+		return False

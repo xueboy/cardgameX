@@ -111,6 +111,11 @@ def is_expire(daytime, t):
 	return exipre_time < t
 	
 def is_same_day(t1, t2):
+	if not t1:
+		return False
+	if not t2:
+		return False
+		
 	t1tm = time.gmtime(t1)
 	t2tm = time.gmtime(t2)
 	return (t1tm.tm_year == t2tm.tm_year) and (t1tm.tm_mon == t2tm.tm_mon) and (t1tm.tm_mday == t2tm.tm_mday)

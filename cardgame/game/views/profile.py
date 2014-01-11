@@ -117,7 +117,15 @@ def levelup_award(request):
 	level = int(request.GET['level'])
 	return levelup.award(usr, level)
 	
-
 def meal(request):
 	usr = request.user
 	return signin.meal(usr)
+	
+def continue_award(request):
+	usr = request.user
+	no = request.GET['no']
+	return signin.continue_award(usr, int(no))
+	
+def draw_award(request):
+	usr = request.user	
+	return signin.draw_award(usr)

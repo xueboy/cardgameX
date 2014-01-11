@@ -115,8 +115,13 @@ def add_item(request):
 	itemid = request.GET['itemid']
 	usr = request.user
 	inv = usr.getInventory()
-	item = inv.addItem(itemid)
+	upIt, newIt = inv.addItem(itemid)
 	if not item:
 		return {'msg':'fail_add_item'}
 	inv.save()
-	return {'add_item':item}
+	data = {}
+	if newIt:
+		data['add_item'] = newIt
+	if upIt:
+		data['update_item'] = upIt
+	return data

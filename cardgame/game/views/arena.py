@@ -91,9 +91,13 @@ def convert(request):
 		
 	mediumId = gameConf['arena_medium_id']
 	inv = usr.getInventory()
-	item = inv.addItemCount(mediumId, mediumCount)
+	updateIt, newIt = inv.addItemCount(mediumId, mediumCount)
 	inv.save()
-	if not item:
-		return {'msg':'fail_add_item'}
-	return {'add_item_array':item}
+	
+	data = {}
+	if updateIt:
+		data['update_item_array'] = updateIt
+	if newIt:
+		data['add_item_array'] = newIt	
+	return data
 	
