@@ -81,8 +81,11 @@ class ladder(facility):
 				uls.reverse()
 				ls.extend(uls)
 				#self and below 7
+				
 				for i in range(position, position + 7):
-					ls.append(self.show_floor(lastPosition))
+					if i > len(self.rank):
+						break
+					ls.append(self.show_floor(i))
 			self.save()
 			return {'ladder':ls}
 		return {'msg':'arena_ladder_not_stand'}
@@ -103,9 +106,9 @@ class ladder(facility):
 						
 	def show_floor(self, position):
 		
-		if len(self.rank) <= position:
+		if len(self.rank) < position:
 			return {'msg':'position_invalid'}
-		roleid = self.rank[position]
+		roleid = self.rank[position - 1]
 		if not self.item.has_key(roleid):
 			return {'msg' : 'roleid_not_exist'}		
 		rd = self.item[roleid]
