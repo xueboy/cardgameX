@@ -13,8 +13,9 @@ class user(object):
 	
 	def init(self, acc):
 		self.id = 0
-		self.account = acc
-		self.accountid = acc.id
+		if acc:
+			self.account = acc
+			self.accountid = acc.id
 		return
 			
 	def install(self, roleid):

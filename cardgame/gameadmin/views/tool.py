@@ -47,7 +47,7 @@ def tool_create_player(request):
 					if res.has_key('msg'):
 						return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])		
 	ld = arena.show_all()	
-	return render(request, 'tool.html', {'ladder':ld})
+	return render(request, 'arena_tool.html', {'ladder':ld})
 		
 def tool_ladder_remove(request):
 	if request.method == 'POST':		
