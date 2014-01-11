@@ -87,7 +87,7 @@ class ladder(facility):
 						break
 					ls.append(self.show_floor(i))
 			self.save()
-			return {'ladder':ls}
+			return {'ladder':ls, 'score':self.item[roleid]['score']}
 		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
@@ -112,7 +112,7 @@ class ladder(facility):
 		if not self.item.has_key(roleid):
 			return {'msg' : 'roleid_not_exist'}		
 		rd = self.item[roleid]
-		return {'position': position, 'roleid':rd['roleid'], 'score':rd['score'], 'name':rd['name'], 'level':rd['level']}
+		return {'position': position, 'roleid':rd['roleid'], 'name':rd['name'], 'level':rd['level']}
 			
 	@staticmethod
 	def up_floor(position, lastPosition):
