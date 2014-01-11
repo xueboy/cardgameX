@@ -17,6 +17,7 @@ from game.routine.educate import educate
 from game.routine.stone import stone
 from game.routine.signin import signin
 from game.routine.levelup import levelup
+from game.routine.arena import arena
 
 
 class user(gcuser):
@@ -386,8 +387,9 @@ class user(gcuser):
 		qt = self.getQuest()
 		qt.updateQuest(True)
 		
-		if self.level == gameConf['arena_level']:
+		if self.level > gameConf['arena_level'] and not self.arena.has_key('stand'):
 			arena.stand_ladder(self)
+			self.arena['stand'] = 1
 	
 	def updateFatigue(self):
 		gameConf = config.getConfig('game')

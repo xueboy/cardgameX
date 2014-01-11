@@ -84,7 +84,7 @@ class ladder(facility):
 				for i in range(position, position + 7):
 					ls.append(self.show_floor(lastPosition))
 			self.save()
-			return ls			
+			return {'ladder':ls}
 		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
