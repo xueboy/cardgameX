@@ -150,7 +150,10 @@ class quest(object):
 		usr = self.user
 		self.current[questid] = q
 		if isNotify:
-			quest.notify_add_quest(usr, questid, q)			
+			quest.notify_add_quest(usr, questid, q)
+		if quest.isFinish(questid, q):
+			quest.notify_finish_quest(usr, questid)
+			
 		self.save()
 		return {'accept_quest':q}
 		
@@ -168,6 +171,8 @@ class quest(object):
 		usr = self.user
 		self.current[nextQuestid] = q
 		quest.notify_add_quest(usr,nextQuestid, q)
+		if quest.isFinish(nextQuestid, q):
+			quest.notify_finish_quest(usr, nextQuestid)
 		self.save()
 		return q
 	
