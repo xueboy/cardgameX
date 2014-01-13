@@ -155,27 +155,30 @@ class user(gcuser):
 		data['name'] = self.name
 		data['level'] = self.level		
 		data['last_login'] = self.last_login
-		data['create_time'] = currentTime()
+		#data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
-		data['sex'] = self.gender
+		if self.gender == 'male':
+			data['sex'] = 1
+		else:
+			data['sex'] = 0		
 		data['longitude'] = self.longitude
 		data['latitude'] = self.latitude
 		if self.luckycat:
 			data['luckycat_level'] = self.luckycat['level']
-		teamCardid = []
-		if inv.team[0]:
-			teamCardid.append(inv.getCard(inv.team[0])['cardid'])
-		if inv.team[1]:
-			teamCardid.append(inv.getCard(inv.team[1])['cardid'])
-		if inv.team[2]:
-			teamCardid.append(inv.getCard(inv.team[2])['cardid'])
-		if inv.team[3]:
-			teamCardid.append(inv.getCard(inv.team[3])['cardid'])
-		if inv.team[4]:
-			teamCardid.append(inv.getCard(inv.team[4])['cardid'])
-		if inv.team[5]:
-			teamCardid.append(inv.getCard(inv.team[5])['cardid'])		
-		data['member'] = teamCardid
+		#teamCardid = []
+		#if inv.team[0]:
+		#	teamCardid.append(inv.getCard(inv.team[0])['cardid'])
+		#if inv.team[1]:
+		#	teamCardid.append(inv.getCard(inv.team[1])['cardid'])
+		#if inv.team[2]:
+		#	teamCardid.append(inv.getCard(inv.team[2])['cardid'])
+		#if inv.team[3]:
+		#	teamCardid.append(inv.getCard(inv.team[3])['cardid'])
+		#if inv.team[4]:
+		#	teamCardid.append(inv.getCard(inv.team[4])['cardid'])
+		#if inv.team[5]:
+		#	teamCardid.append(inv.getCard(inv.team[5])['cardid'])		
+		#data['member'] = teamCardid
 		return data
 		
 	def getBattleData(self):
