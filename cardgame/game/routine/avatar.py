@@ -24,7 +24,7 @@ class avatar:
 		m = hashlib.md5(body)
 		avatar_id = m.hexdigest()
 	
-		file_title = "".join([str(usr.roleid), ".avt"])
+		file_title = "".join([str(roleid), ".avt"])
 		file_name = "/".join([STATIC_ROOT, "avatar", file_title])
 		try:
 			f = open(file_name, "wb")
