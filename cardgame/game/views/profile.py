@@ -13,9 +13,8 @@ from game.routine.signin import signin
 from game.models.user import user
 from game.routine.levelup import levelup
 
-def set_avatar(request):
+def set_avatar(request):	
 	
-	gender = request.GET['gender']
 	body = request.body	
 	usr = request.user
 		
