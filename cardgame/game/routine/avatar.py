@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from cardgame.settings import STATIC_ROOT
+import hashlib
 
 class avatar:
 	
