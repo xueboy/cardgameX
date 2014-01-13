@@ -50,7 +50,7 @@ class network(object):
 		data['friend'] = self.friend	
 		data['message'] = self.message
 		data['mail'] = self.mail
-		data['email'] = self.email
+		data['email'] = {#}self.email
 		data['friend_request'] = self.email
 		return data
 		
@@ -68,7 +68,7 @@ class network(object):
 		friendNw = friend.getNetwork()
 		requestid = str(friendNw.sequenceid)
 		friendNw.sequenceid = friendNw.sequenceid + 1
-		data.update({'id':requestid})		
+		#data.update({'id':requestid})		
 		friendNw.email[requestid] = data		
 		friendNw.save()
 		if not friend.notify.has_key('notify_friend_request'):
