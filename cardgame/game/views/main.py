@@ -152,7 +152,7 @@ def set_nickname(request):
 		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
 	try:
 		acc = getAccount(request, account)
-		acc.nickname = nickname
+		
 		acc.gender = gender
 		usr = acc.makeUserAndBind(nickname, avatar, gender)		
 		loginData = onUserLogin(request, usr)
@@ -163,6 +163,7 @@ def set_nickname(request):
 	if acc.nickname:
 		return HttpResponse(json.dumps({'msg':'nickname_already_have'}))
 	
+	acc.nickname = nickname
 	usr.last_login = currentTime()
 	gameConf = conf.getConfig('game')
 	data = usr.getLoginData(gameConf)

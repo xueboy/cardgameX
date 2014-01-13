@@ -43,7 +43,7 @@ class drop:
 			if probablity == 1000000:
 				msg = drop.award(usr, d, awd)
 				if msg:				
-					break				
+					break
 			elif probablity < rd:
 				rd = rd - probablity				
 			else:

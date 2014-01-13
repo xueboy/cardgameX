@@ -68,7 +68,10 @@ def locate(request):
 		return {'msg':'parameter_bad'}	
 	usr = request.user
 	accountid = getAccountId(request)
+	usr.longitude = longitude
+	usr.latitude = latitude
 	account.locate(accountid, longitude, latitude)
+	usr.save()
 	return {}
 	
 def nearby(request):

@@ -62,6 +62,8 @@ class user(gcuser):
 		self.stv_gem = stone.make_stv()
 		self.arena = {}
 		self.avatar = ''
+		self.longitude = 0.0
+		self.latitude = 0.0
 		
 	
 	def init(self, acc = None):
@@ -89,6 +91,7 @@ class user(gcuser):
 		data['exp'] = self.exp
 		data['vip'] = self.vip
 		data['sp'] = self.sp
+		data['gender'] = self.gender
 		data['stamina_last_recover'] = self.stamina_last_recover
 		data['last_card_no'] = self.last_card_no
 		data['last_login'] = self.last_login		
@@ -111,6 +114,8 @@ class user(gcuser):
 		data['avatar'] = self.avatar
 		data['signin'] = self.signin
 		data['levelup'] = self.levelup
+		data['longitude'] = self.longitude
+		data['latitude'] = self.latitude
 		return data
 		
 	def getClientData(self):
@@ -152,6 +157,9 @@ class user(gcuser):
 		data['last_login'] = self.last_login
 		data['create_time'] = currentTime()
 		data['avatar_id'] = self.avatar_id
+		data['sex'] = self.gender
+		data['longitude'] = self.longitude
+		data['latitude'] = self.latitude
 		if self.luckycat:
 			data['luckycat_level'] = self.luckycat['level']
 		teamCardid = []
@@ -216,7 +224,8 @@ class user(gcuser):
 		self.gem = data['gem']
 		self.gold = data['gold']
 		self.exp = data['exp']
-		self.vip = data['vip']		
+		self.vip = data['vip']
+		self.gender = data['gender']
 		self.stamina_last_recover = data['stamina_last_recover']		
 		self.last_card_no = data['last_card_no']		
 		self.last_login = data['last_login']		
@@ -239,7 +248,9 @@ class user(gcuser):
 		self.avatar = data['avatar']
 		self.signin = data['signin']
 		self.levelup = data['levelup']
-			 		
+		self.longitude = data['longitude']
+		self.latitude = data['latitude']
+
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no		
