@@ -511,9 +511,19 @@ class inventory(object):
 			self.item.append(it)						
 		return its, item
 		
-	def delItem(self, id):
-		self.item = filter(lambda i : i['id'] != id, self.item)
-		return 1
+	def delItem(self, id, cnt = 1):
+		it = self.getItem(id)
+		
+		if it:
+			if ['count'] < cnt:
+				return 0
+		
+			it['count'] = it['count'] - cnt
+			if it['count'] > 0:
+				return it
+			else: 
+				return None
+		return 0
 			
 	def getItem(self, id):
 		for it in self.item:

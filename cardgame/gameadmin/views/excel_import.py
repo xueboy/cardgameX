@@ -1595,8 +1595,8 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				itemid = row[0]
 				name = row[1]
-				level_required_min = row[2]
-				level_required_max = row[3]
+				level_required_min = int(row[2])
+				level_required_max = int(row[3])
 				icon = row[4]
 				model = row[5]
 				fun_str = row[6]

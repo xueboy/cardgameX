@@ -8,6 +8,9 @@ from game.models.user import user
 def request(request):
 	usr = request.user
 	friendid = request.GET['friend_id']
+	friendid = int(friendid)
+	if friendid == usr.roleid:
+		return {'msg':'friend_can_not_self'}
 	friend = user.get(int(friendid))
 	if friend != None:		
 		usrNw = usr.getNetwork()
