@@ -18,7 +18,7 @@ def set_avatar(request):
 	body = request.body	
 	usr = request.user
 		
-	m = hashlib.md5(avatar)
+	m = hashlib.md5(body)
 	usr.avatar_id = avatar.setAvatar(usr.roleid, body)
 	
 	usr.save()	
