@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from game.utility.config import config
+from game.routine.drop import drop
 
 class item:
 	@staticmethod
@@ -27,19 +28,20 @@ class item:
 				key = None
 				while itemCount > 0:
 					keyitemid = v[1]
-					dropid = v[0]				
-					key = item.get_by_itemid(inv, keyitemid)
-					if not key:
-						if itemCount == cnt:
-							return {'msg':'key_not_exist'}
-						else:
-							break
-					data = drop.open(usr, dropid, data)				
-					data['delete_item_array'].append(key['id'])
-					itemCount = itemCount - 1
-					if inv.delItem(key['id']) == None:
-						data['delete_item_array'].append(key['id'])
-						key = None
+					dropid = v[0]		
+					if keyitemid != '':
+						key = item.get_by_itemid(inv, keyitemid)
+						if not key:
+							if itemCount == cnt:
+								return {'msg':'key_not_exist'}
+							else:
+								break
+						if inv.delItem(key['id']) == None:
+							data['delete_item_array'].append(key['id'])
+							key = None						
+							
+					data = drop.open(usr, dropid, data)					
+					itemCount = itemCount - 1					
 				if key:					
 					data['update_item_array'].append(key)
 			elif funkey == 'protect':
@@ -91,7 +93,7 @@ class item:
 			del data['delete_item_array']
 		if not data['update_item_array']:
 			del data['update_item_array']
-		
+		inv.save()
 		return data			
 
 				

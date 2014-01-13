@@ -423,10 +423,26 @@ class inventory(object):
 		sk = {}
 		sk['skillid'] = skillid
 		sk['id'] = self.generateSkillName()
-		sk['level'] = 1
+		sk['level'] = level
 		sk['exp'] = 0
 		self.skill.append(sk)
 		return sk
+	
+	def addSkillCount(self, skillid, cnt):
+		skillConf = config.getConfig('skill')
+		skillInfo = skillConf[skillid]
+		
+		skill = []
+		
+		for i in range(cnt):
+			sk = {}
+			sk['skillid'] = skillid
+			sk['id'] = self.generateSkillName()
+			sk['level'] = 1
+			sk['exp'] = 0
+			self.skill.append(sk)
+			skill.append(sk)
+		return skill
 	
 	def addAllSkill(self, skillid):
 		newSkill = []
@@ -512,6 +528,8 @@ class inventory(object):
 		return its, item
 		
 	def delItem(self, id, cnt = 1):
+		if cnt <= 0:
+			return 0
 		it = self.getItem(id)
 		
 		if it:
@@ -522,6 +540,7 @@ class inventory(object):
 			if it['count'] > 0:
 				return it
 			else: 
+				self.item.remove(it)
 				return None
 		return 0
 			

@@ -10,9 +10,7 @@ class drop:
 		dropConf = config.getConfig('drop')
 		
 		rd = randbigint()
-		dropInfo = dropConf[dropid]
-		
-		awd = {}		
+		dropInfo = dropConf[dropid]			
 		
 		for d in dropInfo:
 			probablity = d['probability']			
