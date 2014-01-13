@@ -145,7 +145,7 @@ class account(object):
 		conn = DBConnection.getConnection()				
 		res = conn.query("SELECT * FROM account WHERE nickname = %s", [name])
 		if len(res) == 1:
-			return res[0][4]
+			return res[0][5]
 		return 0
 	
 	def onLogin(self):
