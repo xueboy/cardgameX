@@ -95,3 +95,7 @@ def convert(request):
 	if newIt:
 		data['add_item_array'] = newIt
 	return data
+
+def score(request):
+	usr = request.user
+	return arena.score(usr.roleid)

@@ -25,6 +25,10 @@ class arena:
 	@staticmethod
 	def set_avatar_id(roleid, avatar_id):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
+			
+	@staticmethod
+	def score(roleid):
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/score/', None, {'roleid':roleid}))
 
 	@staticmethod
 	def make():
@@ -55,3 +59,4 @@ class arena:
 			gameConf = config.getConfig('game')			
 			usr.arena['times'] = gameConf['arena_times']
 		usr.arena['last_update_time'] = currentTime()
+		

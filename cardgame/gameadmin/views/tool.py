@@ -25,8 +25,7 @@ def tool_create_player(request):
 		skill_levelf = request.POST['skill_levelf']
 		skill_levelt = request.POST['skill_levelt']
 		stone_levelf = request.POST['stone_levelf']
-		stone_levelt = request.POST['stone_levelt']
-		stand_ladder = request.POST.has_key('stand_ladder')
+		stone_levelt = request.POST['stone_levelt']		
 		
 		for i in range(cnt):
 			usr = user()					
@@ -40,12 +39,11 @@ def tool_create_player(request):
 			usr.saveRoleId()
 			usr.onInit()
 			usr.save()
-			if stand_ladder:
-				res = arena.stand_ladder(usr)	
-				if isinstance(res, str):
-					res = json.loads(res)
-					if res.has_key('msg'):
-						return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])		
+			res = arena.stand_ladder(usr)	
+			if isinstance(res, str):
+				res = json.loads(res)
+				if res.has_key('msg'):
+					return HttpResponse('error:' + str(i) + ':' + str(usr.roleid) + res['msg'])		
 	ld = arena.show_all()	
 	return render(request, 'arena_tool.html', {'ladder':ld})
 		

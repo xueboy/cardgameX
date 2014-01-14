@@ -137,6 +137,7 @@ class ladder(facility):
 		score = score * duration / 600
 		item['last_update'] = now
 		item['score'] = item['score'] + score
+		return item
 		
 	def defeat(self, offenceRoleid, defenceRoleid):
 		offencePosition = self.rank.index(offenceRoleid)
@@ -161,11 +162,21 @@ class ladder(facility):
 		return {'msg':'arena_ladder_not_stand'}
 		
 		
-	def set_avatar_id(self, roleid, avatar_id):
-		
+	def set_avatar_id(self, roleid, avatar_id):		
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.item[roleid]
 			item['avatar_id'] = avatar_id
 			self.save()
 			return item
+		else:
+			return {'msg':'arena_ladder_not_stand'}
+				
+	def score(self, roleid):
+		if roleid in self.rank:
+			position = self.rank.index(roleid)
+			item = self.update(position, roleid, currentTime())			
+			self.save()
+			return {'score':item['score']}
+		else:
+			return {'msg':'arena_ladder_not_stand'}

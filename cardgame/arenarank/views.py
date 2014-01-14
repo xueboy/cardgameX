@@ -48,3 +48,9 @@ def set_avatar_id(request):
 	avatar_id = request.REQUEST['avatar_id']
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.set_avatar_id(roleid, avatar_id)))
+	
+	
+def score(request):
+	roleid = request.REQUEST['roleid']
+	ld = ladder.instance()
+	return HttpResponse(json.dumps(ld.score(roleid)))
