@@ -389,7 +389,6 @@ class user(gcuser):
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)
 		data = signin.login(self)
-		print self.arena
 		arena.arena_update(self)
 		return data
 		

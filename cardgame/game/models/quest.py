@@ -302,7 +302,6 @@ class quest(object):
 				if not self.current[questid].has_key('yell_count'):
 					self.current[questid]['yell_count'] = 0
 				self.current[questid]['yell_count'] = self.current[questid]['yell_count'] + 1
-				print self.current[questid]['yell_count']
 				if self.current[questid]['yell_count'] >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
@@ -318,9 +317,7 @@ class quest(object):
 			if questInfo['finishType'] == 'friend_count':				
 				if len(usrNt.friend) >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1		
-					quest.notify_finish_quest(usr, questid)
-					print self.current[questid]					
-			
+					quest.notify_finish_quest(usr, questid)			
 					#self.finish[questid] = self.current[questid]
 					#del self.current[questid]
 		self.save()
