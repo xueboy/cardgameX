@@ -42,3 +42,9 @@ def remove(request):
 	ld = ladder.instance()
 	ld.remove(roleid)
 	return HttpResponse(json.dumps(ld.show_all()))
+	
+def set_avatar_id(request):
+	roleid = request.REQUEST['roleid']
+	avatar_id = request.REQUEST['avatar_id']
+	ld = ladder.instance()
+	return HttpResponse(json.dumps(ld.set_avatar_id(roleid, avatar_id)))

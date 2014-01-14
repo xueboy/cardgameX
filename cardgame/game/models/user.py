@@ -60,7 +60,7 @@ class user(gcuser):
 		self.trp = 0
 		self.stv = stone.make_stv()
 		self.stv_gem = stone.make_stv()
-		self.arena = {}
+		self.arena = arena.make()
 		self.avatar = ''
 		self.longitude = 0.0
 		self.latitude = 0.0
@@ -145,6 +145,7 @@ class user(gcuser):
 		data['educate'] = educate.getClientData(self, gameConf)
 		data['avatar'] = self.avatar
 		data['levelup'] = self.levelup['record']
+		data['arena_time'] = self.arena['times']
 		return data
 		
 		
@@ -252,7 +253,7 @@ class user(gcuser):
 		self.signin = data['signin']
 		self.levelup = data['levelup']
 		self.longitude = data['longitude']
-		self.latitude = data['latitude']
+		self.latitude = data['latitude']		
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
@@ -387,6 +388,8 @@ class user(gcuser):
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)
 		data = signin.login(self)
+		print self.arena
+		arena.arena_update(self)
 		return data
 		
 	def onLevelup(self):

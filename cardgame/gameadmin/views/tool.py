@@ -302,7 +302,7 @@ def gm_tool_set_item(request):
 	data = {}
 	if request.method == 'POST':
 		skillopt = request.POST['itemopt']
-		roleid = request.POST['roleid']
+		roleid = request.POST['roleid']	
 		
 		usr = user.get(roleid)		
 		if not usr:
@@ -311,8 +311,10 @@ def gm_tool_set_item(request):
 		
 		if skillopt == 'add':
 			itemid = request.POST['itemSelect']
+			cnt = request.POST['tfItemCount']
+			cnt = int(cnt)
 			inv = usr.getInventory()
-			s = inv.addItem(itemid)
+			s = inv.addItemCount(itemid, cnt)
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')

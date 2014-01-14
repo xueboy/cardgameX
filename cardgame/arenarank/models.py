@@ -37,6 +37,7 @@ class ladder(facility):
 			rd['level'] = usr.level
 			rd['last_update'] = currentTime()
 			rd['score'] = 0
+			rd['avatar_id'] = usr.avatar_id
 			self.item[roleid] = rd
 			self.rank.append(roleid)
 			self.save()
@@ -112,7 +113,7 @@ class ladder(facility):
 		if not self.item.has_key(roleid):
 			return {'msg' : 'roleid_not_exist'}		
 		rd = self.item[roleid]
-		return {'position': position, 'roleid':rd['roleid'], 'name':rd['name'], 'level':rd['level']}
+		return {'position': position, 'roleid':rd['roleid'], 'name':rd['name'], 'level':rd['level'], 'avatar_id':rd['avatar_id']}
 			
 	@staticmethod
 	def up_floor(position, lastPosition):
@@ -159,3 +160,12 @@ class ladder(facility):
 			return item		
 		return {'msg':'arena_ladder_not_stand'}
 		
+		
+	def set_avatar_id(self, roleid, avatar_id):
+		
+		if roleid in self.rank:
+			position = self.rank.index(roleid)
+			item = self.item[roleid]
+			item['avatar_id'] = avatar_id
+			self.save()
+			return item

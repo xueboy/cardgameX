@@ -130,22 +130,24 @@ document.getElementById("optid").value = v;
     </script>
     <table width="877" border="1">
       <tr>
-        <td colspan="5"><div align="center">排行榜</div></td>
+        <td colspan="6"><div align="center">排行榜</div></td>
       </tr>
       <tr>
-        <td width="154">排名</td>
-      <td width="154">roleid</td>
-      <td width="164">玩家名</td>
-      <td width="161">等级</td>   
-      <td width="161"></td>    
+        <td width="158">排名</td>
+      <td width="115">roleid</td>
+      <td width="150">玩家名</td>
+      <td width="116">等级</td>   
+      <td width="130">avatar_id</td>
+      <td width="168"></td>    
     </tr>
       {% for item in ladder %}
       <tr>
-        <td width="154">{{ item.position }}</td>
-	  <td width="154">{{ item.roleid }}</td>
-      <td width="164">{{ item.name }}</td>
-      <td width="161">{{ item.level }}</td> 
-      <td width="161"><input name="remove" type="submit" value="删除" onclick="setOperator('remove', '{{ item.roleid }}');this.form.submit()"/></td>    
+        <td width="158">{{ item.position }}</td>
+	  <td width="115">{{ item.roleid }}</td>
+      <td width="150">{{ item.name }}</td>
+      <td width="116">{{ item.level }}</td> 
+      <td width="130">{{ item.avatar_id }}</td>
+      <td width="168"><input name="remove" type="submit" value="删除" onclick="setOperator('remove', '{{ item.roleid }}');this.form.submit()"/></td>    
     </tr>
       {% endfor %}
     </table>

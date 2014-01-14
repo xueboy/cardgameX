@@ -72,6 +72,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'open_award':
 			return conf
+		if confname == 'ladder_score':
+			return conf
+		if confname == 'arena_loot':
+			return conf
 		return None
 	
 	

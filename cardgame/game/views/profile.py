@@ -12,6 +12,7 @@ from game.routine.avatar import avatar
 from game.routine.signin import signin
 from game.models.user import user
 from game.routine.levelup import levelup
+from game.routine.arena import arena
 
 def set_avatar(request):	
 	
@@ -20,6 +21,7 @@ def set_avatar(request):
 		
 	m = hashlib.md5(body)
 	usr.avatar_id = avatar.setAvatar(usr.roleid, body)
+	arena.set_avatar_id(usr.roleid, usr.avatar_id)
 	
 	usr.save()	
 	if usr.avatar_id:
