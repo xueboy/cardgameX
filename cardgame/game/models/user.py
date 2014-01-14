@@ -136,7 +136,8 @@ class user(gcuser):
 		usrData['fatigue_last_time'] = self.fatigue_last_time
 		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
 		usrData['trp'] = self.trp
-		usrData['stv'] = self.stv	
+		usrData['stv'] = self.stv
+		usrData['arena_time'] = self.arena['times']
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
@@ -145,7 +146,7 @@ class user(gcuser):
 		data['educate'] = educate.getClientData(self, gameConf)
 		data['avatar'] = self.avatar
 		data['levelup'] = self.levelup['record']
-		data['arena_time'] = self.arena['times']
+	
 		return data
 		
 		
