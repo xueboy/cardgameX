@@ -277,19 +277,19 @@ class inventory(object):
 		
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
-				return self.team
+				return {'team':self.team}
 		if cardid2 != '':
 			if cardid2 == cardid3 or cardid2 == cardid4 or cardid2 == cardid5 or cardid2 == cardid6:
-				return self.team
+				return {'team':self.team}
 		if cardid3 != '':
 			if cardid3 == cardid4 or cardid3 == cardid5 or cardid3 == cardid6:
-				return self.team
+				return {'team':self.team}
 		if cardid4 != '':
 			if cardid4 == cardid5 or cardid4 == cardid6:
-				return self.team
+				return {'team':self.team}
 		if cardid5 != '':
 			if cardid5 == cardid6:
-				return self.team
+				return {'team':self.team}
 				
 		gameConf = config.getConfig('game')
 		
@@ -339,7 +339,7 @@ class inventory(object):
 		dsk.extend(dsk6)
 
 		self.save()
-		return None
+		return {'team':self.team}
 	
 	
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
