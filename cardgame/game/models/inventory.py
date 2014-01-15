@@ -339,7 +339,7 @@ class inventory(object):
 		dsk.extend(dsk6)
 
 		self.save()
-		return {'team':self.team}
+		return None
 	
 	
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
