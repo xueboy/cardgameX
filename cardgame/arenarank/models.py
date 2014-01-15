@@ -88,7 +88,7 @@ class ladder(facility):
 						break
 					ls.append(self.show_floor(i))
 			self.save()
-			return {'ladder':ls, 'score':self.item[roleid]['score']}
+			return {'ladder':ls, 'score':self.item[roleid]['score'], 'position':position}
 		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
