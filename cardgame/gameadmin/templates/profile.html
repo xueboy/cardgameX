@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
+{% load filter_extras %}
 </head>
 
 <body>
@@ -138,7 +139,7 @@
 
   }
       </script>
-      <table width="658" border="1">
+      <table width="825" border="1">
         <tr>
           <td colspan="4">宠物</td>
     </tr>
@@ -152,15 +153,15 @@
             <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add', '0')" />          </td>
     </tr>
         <tr>
-          <td width="33">id</td>
-      <td width="33">名称</td>
-      <td width="33">等级</td>
-      <td>&nbsp;</td>
+          <td width="96">id</td>
+      <td width="252">名称</td>
+      <td width="66">等级</td>
+      <td width="216">&nbsp;</td>
     </tr>
         {% for pet in petList %}
         <tr>    
           <td>{{ pet.id }}</td>
-      <td>  </td>
+      <td>{{ petConf | dict_get:pet.cardid | dict_get:'name' }}   </td>
       <td>{{ pet.level }}</td>
       <td><label>
         <input type="submit" name="Submit7" value="删除" onclick="setPetOpt('remove', '{{ pet.id }}')"/>
@@ -213,7 +214,7 @@
 	{% for st in stoneList %}
         <tr>
        <td>{{ st.id }}</td>
-      <td>&nbsp;</td>
+      <td>{{ stoneConf | dict_get:st.stoneid | dict_get:'name' }} </td>
       <td>{{ st.level }}</td>
       <td><input type="submit" name="Submit72" value="删除" onclick="setStoneOpt('remove', '{{ st.id }}')"/></td>  
     </tr>
@@ -253,12 +254,19 @@
 			</select>
             <input type="submit" name="Submit5" value="添加" onclick="setEquipmentOpt('add', '0')"/>		  </td>
         </tr>
+		<tr>
+          <td>id</td>
+          <td>名称</td>
+          <td>强化等级</td>
+          <td>&nbsp;</td>
+        </tr>
        {% for eq in equipmentList %}
+       
         <tr>
-       <td>{{ eq.id }}</td>
-      <td>&nbsp;</td>
-      <td>{% if dq.level %} {{ eq.level }} {% endif %}</td>
-      <td><input type="submit" name="Submit722" value="删除" onclick="setEquipmentOpt('remove', '{{ eq.id }}')"/></td>  
+       <td width="111">{{ eq.id }}</td>
+      <td width="90">{{ equipmentConf | dict_get:eq.equipmentid | dict_get:'name' }} </td>
+      <td width="367">{% if dq.level %} {{ eq.level }} {% endif %}</td>
+      <td width="80"><input type="submit" name="Submit722" value="删除" onclick="setEquipmentOpt('remove', '{{ eq.id }}')"/></td>  
    	 </tr>
 	{% endfor %}       
       </table>
@@ -303,7 +311,7 @@
           {% for skill in skillList %}
         <tr>
        <td>{{ skill.id }}</td>
-      <td>&nbsp;</td>
+      <td>{{ skillConf | dict_get:skill.skillid | dict_get:'name' }}</td>
       <td>{{ skill.level }}</td>
       <td><input type="submit" name="Submit7222" value="删除" onclick="setSkillOpt('remove', '{{ skill.id }}')"/></td>  
    	 </tr>
@@ -355,7 +363,7 @@
 	{% for it in itemList %}
 	      <tr>
 	        <td>{{ it.id }}</td>
-      <td>&nbsp;</td>
+      <td>{{ itemConf | dict_get:it.itemid | dict_get:'name' }}</td>
       <td>{{ it.count }} </td>
       <td><input type="submit" name="Submit72222" value="删除" onclick="setItemOpt('remove', '{{ it.id }}')"/></td>
     </tr>
