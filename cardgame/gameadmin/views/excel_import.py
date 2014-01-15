@@ -268,8 +268,8 @@ class excel_import:
 				fcSuit = int(row[3])
 				valueType = int(row[5])
 				coefficient = float(row[6])
-				fcValue = float(row[7])
-				Lvup = int(row[8])
+				fcValue = int(row[7])
+				Lvup = float(row[8])
 				buffId = row[9]
 				fcDuration = int(row[10])
 				isDisperse = int(row[11])
