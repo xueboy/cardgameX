@@ -267,7 +267,9 @@ class pet:
 		for r in rebornConf:
 			if r['star_max'] > card['init_start']:
 				rebornInfo = r
-				break			
+				break
+			if not card.has_key('reborn_level'):
+				card['reborn_level'] = 0
 			if r['level'] > card['reborn_level']:
 				rebornInfo = r
 				break
