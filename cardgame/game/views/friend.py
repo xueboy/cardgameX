@@ -30,7 +30,7 @@ def search(request):
 	friendname = request.GET['friend_name']
 	
 	friendid = account.getRoleid(friendname)
-	if friend == 0:
+	if friendid == 0:
 		return {'friend': {}}
 	friend = user.get(friendid)	
 	if friend != None:
