@@ -51,7 +51,11 @@ class account(object):
 		usr.avatar = avatar		
 		usr.install(0)
 		self.roleid = usr.id
-		self.bind(usr.id, nickname, gender)	
+		try:
+			self.bind(usr.id, nickname, gender)
+		except:
+			usr.delete()
+			raise
 		usr.saveRoleId()
 		usr.onInit()
 		return usr
