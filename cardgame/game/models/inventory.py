@@ -125,7 +125,7 @@ class inventory(object):
 		self.equipment_chip = data['equipment_chip']
 		self.stone = data['stone']
 		self.skill = data['skill']
-		self.skill = data['skill_chip']
+		self.skill_chip = data['skill_chip']
 		
 	def addCard(self, cardid, level = 1):
 		cardConf = config.getConfig('pet')				
