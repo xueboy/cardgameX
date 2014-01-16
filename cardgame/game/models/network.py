@@ -194,8 +194,14 @@ class network(object):
 			friendNw = friend.getNetwork()
 			friendQt.udpateFinishFriendQuest(friendNw)
 			friendNw.addFriend(self.user)
-			mailid = mail['id']
+			
+			mailid = [mail['id']]
 			del self.email[mailid]
+			
+			for key, val in self.email.items:
+				if val['roleid'] == friendid:
+					del self.email[key]
+					emailid.append(key)				
 			self.save()
 			friendNw.save()
 			return {'friend_request_delete':mailid, 'friend_new':friendData}
