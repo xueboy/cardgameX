@@ -28,6 +28,7 @@ class equipment:
 		
 		equipmentQuality = equipmentConf['quality']
 		strengthenProbability = 0
+		strengthLevel = 0
 		if equipment.has_key('strengthLevel'):
 			strengthLevel = equipment['strengthLevel']
 		
