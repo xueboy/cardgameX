@@ -16,12 +16,15 @@ class inventory(object):
 	def __init__(self):
 		object.__init__(self)
 		self.card = []
+		self.card_chip = {}
 		self.item = []
 		self.team = ['', '', '', '', '', '']	
 		self.equipment = []
+		self.equipment_chip = {}
 		self.stone = []		
 		self.user = None
 		self.skill = []
+		self.skill_chip = {}
 		
 	def init(self):		
 		return		
@@ -32,11 +35,14 @@ class inventory(object):
 	def getData(self):
 		data = object.getData(self)
 		data['card'] = self.card
-		data['item'] = self.item
+		data['card_chip'] = self.card_chip
+		data['item'] = self.item		
 		data['team'] = self.team
 		data['equipment'] = self.equipment
+		data['equipment_chip'] = self.equipment_chip
 		data['stone'] = self.stone
 		data['skill'] = self.skill
+		data['skill_chip'] = self.skill_chip
 		return data
 		
 		
@@ -112,11 +118,14 @@ class inventory(object):
 	def load(self, roleid, data):
 		object.load(self, roleid, data)
 		self.card = data['card']
+		self.card_chip = data['card_chip']
 		self.item = data['item']
 		self.team = data['team']
 		self.equipment = data['equipment']
+		self.equipment_chip = data['equipment_chip']
 		self.stone = data['stone']
 		self.skill = data['skill']
+		self.skill = data['skill_chip']
 		
 	def addCard(self, cardid, level = 1):
 		cardConf = config.getConfig('pet')				
@@ -515,6 +524,7 @@ class inventory(object):
 					it['count'] = it['count'] + itemCount
 					itemCount = 0
 					its.append(its)
+					break
 		
 		item = []
 		

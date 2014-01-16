@@ -369,6 +369,7 @@ class excel_import:
 				if unicode(row[54]):
 					luck.append(unicode(row[54]))
 				srgrowth = int(row[55])
+				chip = int(row[56])
 				petConf = {}
 				petConf['model'] = model
 				petConf['icon'] = icon
@@ -410,6 +411,7 @@ class excel_import:
 				petConf['desc'] = desc
 				petConf['luck'] = luck
 				petConf['srgrowth'] = srgrowth
+				petConf['chip'] = chip
 				conf[str(petid)] = petConf
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('pet_import')
@@ -689,6 +691,7 @@ class excel_import:
 				ptgrowth = int(row[22])
 				mt = int(row[23])
 				mtgrowth = int(row[24])
+				chip = int(row[25])
 				price = int(row[28])
 				desc = row[29]				
 				
@@ -716,6 +719,7 @@ class excel_import:
 				equipmentConf['ptgrowth'] = ptgrowth
 				equipmentConf['mt'] = mt
 				equipmentConf['mtgrowth'] = mtgrowth
+				equipmentConf['chip'] = chip
 				equipmentConf['price'] = price
 				equipmentConf['desc'] = desc			
 				
