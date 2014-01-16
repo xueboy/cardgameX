@@ -293,7 +293,7 @@ class pet:
 		inv.save()
 		usr.save()
 		
-		return {'update_card': card, 'gold':usr.gold}		
+		return {'update_card': inv.getClientCard(card), 'gold':usr.gold}		
 				
 	@staticmethod
 	def reborn_inc_star(rebornInfo):
