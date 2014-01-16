@@ -1,4 +1,4 @@
-﻿#coding:utf-8
+﻿`#coding:utf-8
 #!/usr/bin/env python
 
 import random
@@ -64,7 +64,7 @@ class pet:
 		exp = int(exp * 0.5)
 		pet.gainExp(destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
-		return {'update_card':destCard, 'delete_card':sourceCardid}
+		return {'update_card':inv.getClientCard(destCard), 'delete_card':inv.getClientCard(sourceCardid)}
 
 
 	@staticmethod
