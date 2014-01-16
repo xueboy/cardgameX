@@ -166,8 +166,8 @@ class network(object):
 		if not self.email.has_key(id):
 			return {'msg':'request_not_exist'}
 		email = self.email[id]
-		if email['type'] == 'firend_request':
-			return self.emailAnswerFriendRequest(email, option)
+		#if email['type'] == 'firend_request':
+		return self.emailAnswerFriendRequest(email, option)
 			
 	def updateFriendData(self):
 		for friendid in self.friend:
