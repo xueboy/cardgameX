@@ -98,4 +98,5 @@ def convert(request):
 
 def score(request):
 	usr = request.user
+	print usr.roleid
 	return arena.score(usr.roleid)

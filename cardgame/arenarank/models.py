@@ -127,7 +127,7 @@ class ladder(facility):
 		item = self.item[roleid]		
 		duration = now - item['last_update']		
 		if duration < 60:
-			return		
+			return item
 		score = 0
 		if position < len(ladderScoreConf) - 1:
 			score = ladderScoreConf[position - 1]			
@@ -174,7 +174,7 @@ class ladder(facility):
 		else:
 			return {'msg':'arena_ladder_not_stand'}
 				
-	def score(self, roleid):
+	def score(self, roleid):		
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.update(position, roleid, currentTime())			
