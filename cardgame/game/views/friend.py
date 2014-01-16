@@ -29,7 +29,9 @@ def search(request):
 	usr = request.user	
 	friendname = request.GET['friend_name']
 	
-	friendid = account.getRoleid(friendname)	
+	friendid = account.getRoleid(friendname)
+	if friend == 0:
+		return {'friend': {}}
 	friend = user.get(friendid)	
 	if friend != None:
 		return {'friend':friend.getFriendData()}
