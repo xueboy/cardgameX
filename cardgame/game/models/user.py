@@ -346,8 +346,8 @@ class user(gcuser):
 		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
 		isLevelup = False
-		while self.exp > levelConf[self.level - 1]['levelExp']:
-			self.exp = self.exp - levelConf[self.level - 1]['levelExp']			
+		while self.exp > levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp']:
+			self.exp = self.exp - levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp']		
 			self.level = self.level + 1
 			isLevelup = True
 		if isLevelup:
