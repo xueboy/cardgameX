@@ -8,6 +8,7 @@ import calendar
 import random
 
 from gclib.exception import NotHaveNickname, NotLogin
+from gclib.cache import cache, cachekey_usr_session_profix
 
 def HttpResponse500():
 	response = HttpResponse()
@@ -29,18 +30,30 @@ def onAccountLogin(request, acc):
 	acc.onLogin()
 	return acc
 
+def cache_session_key(roleid):
+	return cachekey_usr_session_profix + str(roleid)
+
 def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
+	cskey  = cache_session_key(usr.id)
+	cache.mc_setValue(cskey, request.session.session_key)	
 	return usr.onLogin()
 
 def beginRequest(request,cls):
 	
 	if not request.session.has_key('account_id'):
-		raise NotLogin		
-	
+		raise NotLogin	
 	if not request.session.has_key('user_id'):
 		raise NotHaveNickname
+
 	userid = request.session['user_id']
+	cskey = cache_session_key(userid)
+	
+	session_key = cache.mc_getValue(cskey)
+	if request.session.session_key != session_key:
+		logout(request)
+		raise NotLogin
+	
 	usr = cls.get(userid)	
 	if not usr:
 		raise NotHaveNickname		
@@ -62,8 +75,8 @@ def dayTime():
 	return int(time.time()) % (60 * 60 * 24)
 
 def logout(request):
-	del request.session['user_id']
-	del request.session['account_id']
+	request.session.flush()
+	
 	
 def hit(probs):
 	"""
