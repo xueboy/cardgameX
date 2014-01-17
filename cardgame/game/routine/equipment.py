@@ -50,7 +50,7 @@ class equipment:
 		if usr.gem < gemCost:
 			return {'msg':'gem_not_enough'}
 				
-		usr.equipment_strength_cooldown = usr.equipment_strength_cooldown + (gameConf['equipment_strength_cooldown_base'] * (1 + usr.fatigue / 2))
+		usr.equipment_strength_cooldown = usr.equipment_strength_cooldown + (gameConf['equipment_strength_cooldown_base'] * (1 + usr.fatigue / 6))
 		usr.equipment_strength_last_time = currentTime()
 		usr.fatigue = usr.fatigue + 1
 		usr.fatigue_last_time = currentTime()
