@@ -1629,3 +1629,84 @@ class excel_import:
 			dic[c[0]] = c[1:]
 		return dic	
 	
+	@staticmethod
+	def tower_monster_import(request):		
+		if request.method == 'POST':
+			tower_monster_file = request.FILES.get('tower_monster_file')
+			if not tower_monster_file:
+				return HttpResponse('神武塔Npcxlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_monster_file.read())
+			sheet = wb.sheet_by_index(0)
+					
+			conf = []
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				floor = int(row[0])
+				
+				ezMonsterCount = [int(i) for i in row[1].split(',')]
+				ezSpeed = int(row[2])
+				ezMonster = []
+				if row[3]:
+					ezMonster.append(row[3])
+				if row[4]:
+					ezMonster.append(row[4])
+				if row[5]:
+					ezMonster.append(row[5])
+				if row[6]:				
+					ezMonster.append(row[6])
+				if row[7]:
+					ezMonster.append(row[7])
+				
+				mdMonsterCount = [int(i) for i in  row[8].split(',')]
+				mdSpeed = int(row[9])
+				mdMonster = []
+				if row[10]:
+					mdMonster.append(row[10])
+				if row[11]:
+					mdMonster.append(row[11])
+				if row[12]:
+					mdMonster.append(row[12])
+				if row[13]:
+					mdMonster.append(row[13])
+				if row[14]:
+					mdMonster.append(row[14])	
+				
+				hdMonsterCount = [int(i) for i in row[15].split(',')]
+				hdSpeed = int(row[16])
+				hdMonster = []
+				if row[17]:
+					hdMonster.append(row[17])		
+				if row[18]:
+					hdMonster.append(row[18])
+				if row[19]:
+					hdMonster.append(row[19])
+				if row[20]:
+					hdMonster.append(row[20])
+				if row[21]:
+					hdMonster.append(row[21])
+				
+				dropid = row[22]
+				
+				towerMonsterConf = {}
+				towerMonsterConf['easyMonsterCount'] = ezMonsterCount
+				towerMonsterConf['easySpeed'] = ezSpeed
+				towerMonsterConf['easyMonster'] = ezMonster
+				towerMonsterConf['middleMonsterCount'] = mdMonsterCount
+				towerMonsterConf['middleSpeed'] = mdSpeed
+				towerMonsterConf['middleMonster'] = mdMonster
+				towerMonsterConf['hardMonsterCount'] = hdMonsterCount
+				towerMonsterConf['hardSpeed'] = hdSpeed
+				towerMonsterConf['hardMonster'] = hdMonster
+				towerMonsterConf['dropid'] = dropid
+				
+				while len(conf) < floor:
+					conf.append({})
+				conf[floor - 1] = towerMonsterConf
+				
+			return HttpResponse(json.dumps(conf))
+		return HttpResponse('tower_monster_import')
+		
+	def tower_markup_import(request):
+		pass

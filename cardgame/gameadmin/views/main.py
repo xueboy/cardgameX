@@ -131,6 +131,15 @@ def levelup(request):
 def open_award(request):
 	return generalConfigRequestProcess(request, 'open_award')
 	
+def tower_monster(request):
+	return generalConfigRequestProcess(request, 'tower_monster')
+	
+def tower_markup(request):
+	return generalConfigRequestProcess(request, 'tower_markup')
+
+def tower_award(request):
+	return generalConfigRequestProcess(request, 'tower_award')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -246,3 +255,11 @@ def quest_import(request):
 def item_import(request):
 	return excel_import.item_import(request)
 
+def tower_monster_import(request):
+	return excel_import.tower_monster_import(request)
+	
+def tower_markup_import(request):
+	return excel_import.tower_markup_import(request)
+	
+def tower_award_import(request):
+	return excel_import.tower_award_import(request)
