@@ -159,7 +159,7 @@ def set_nickname(request):
 		usr = acc.makeUserAndBind(nickname, avatar, gender)		
 		loginData = onUserLogin(request, usr)
 	except NotLogin:
-		return info(request)
+		return {'msg':'logout'}
 	except DuplicateNickname:
 		return HttpResponse(json.dumps({'msg':'nickname_duplicate'}))
 	if acc.nickname:
