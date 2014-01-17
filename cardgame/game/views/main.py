@@ -203,4 +203,4 @@ def test(request):
 	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
 	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
 	
-	return HttpResponse(data)
+	return HttpResponse(json.dumps(data))
