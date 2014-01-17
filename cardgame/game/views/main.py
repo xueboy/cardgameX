@@ -196,11 +196,11 @@ def test(request):
 #	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 #	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 
-	data = {}
-	data['md'] = []
-	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
-	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
-	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
-	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	
+	data = []
+	data.append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data.append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data.append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data.append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
 	
 	return HttpResponse(json.dumps(data))
