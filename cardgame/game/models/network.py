@@ -208,7 +208,7 @@ class network(object):
 		elif option == 'no':
 			del self.email[email['id']]		
 			self.save()
-			return {'friend_request_delete':[mail['id']]}
+			return {'friend_request_delete':[email['id']]}
 		return {}
 	
 	def emailMarkReaded(self, emailid):
