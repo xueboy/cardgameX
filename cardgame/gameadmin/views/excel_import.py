@@ -865,11 +865,11 @@ class excel_import:
 			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 							
-				strid = row[1]
+				strid = unicode(row[0])
 				chinese = row[2]
 				lanConf = {}
 				#lanConf['strid'] = strid
-				lanConf['chinese'] = chinese
+				lanConf[strid] = chinese
 				conf[strid] = lanConf
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('language_import')
