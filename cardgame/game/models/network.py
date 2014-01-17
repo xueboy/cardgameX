@@ -206,7 +206,7 @@ class network(object):
 			friendNw.save()
 			return {'friend_request_delete':emailid, 'friend_new':friendData}
 		elif option == 'no':
-			del self.email[mail['id']]		
+			del self.email[email['id']]		
 			self.save()
 			return {'friend_request_delete':[mail['id']]}
 		return {}
