@@ -76,6 +76,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'arena_loot':
 			return conf
+		if confname == 'tower_monster':
+			return conf
 		return None
 	
 	
