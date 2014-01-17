@@ -198,7 +198,7 @@ class network(object):
 			emailid = [email['id']]
 			del self.email[email['id']]
 			
-			for key, val in self.email.items:
+			for key, val in self.email.items():
 				if val['roleid'] == friendid:
 					del self.email[key]
 					emailid.append(key)				
