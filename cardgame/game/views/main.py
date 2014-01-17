@@ -196,12 +196,11 @@ def test(request):
 #	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 #	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 
-	data = []
-	for i in range(1000000):
-		#rd = {"name": "test2", "level": 1, "roleid": 2, "id": "3", "create_time": 1381734253, "last_login": 1381734250, "type": "firend_request", "avatar_id": "e7cc74f1d4f389976bb41ee5cf33d1c4", "member": ['pet10052_2', 'pet10052_2', 'pet10052_2', 'pet10052_2', 'pet10052_2']}
-		data.append(i)
-
-	cache.loc_setValue('test_rank', data)
-	dt = cache.loc_getValue('test_rank')
-	#json.loads(dt)
-	return HttpResponse(dt)
+	data = {}
+	data['md'] = []
+	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	data['md'].append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])
+	
+	return HttpResponse(data)
