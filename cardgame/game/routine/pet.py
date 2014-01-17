@@ -64,7 +64,7 @@ class pet:
 		exp = int(exp * 0.5)
 		pet.gainExp(destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
-		return {'update_card':inv.getClientCard(destCard), 'delete_card':inv.getClientCard(sourceCardid)}
+		return {'update_card':inv.getClientCard(destCard), 'delete_card':sourceCardid}
 
 
 	@staticmethod

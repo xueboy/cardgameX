@@ -92,14 +92,14 @@ class equipment:
 		cardid = inv.team[teamPosition]
 		
 		if not cardid:
-			return {'msg': 'team_position_not_have_member1'}
+			return {'msg': 'team_position_not_have_member'}
 		
 		equipment = None
 		owner = None
 		if ownerTeamPosition >= 0:
 			ownerCardid = inv.team[ownerTeamPosition]
 			if not ownerCardid:
-				return {'msg': 'team_position_not_have_member2'}
+				return {'msg': 'team_position_not_have_member'}
 			owner = inv.getCard(ownerCardid)
 			if not owner:
 				return {'msg':'card_not_exist'}

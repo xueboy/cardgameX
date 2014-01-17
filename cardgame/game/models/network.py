@@ -178,9 +178,9 @@ class network(object):
 				fNw.save()
 			
 		
-	def emailAnswerFriendRequest(self, mail, option):
+	def emailAnswerFriendRequest(self, email, option):
 		if option == 'yes':
-			friendid = mail['roleid']
+			friendid = email['roleid']
 			if self.friend.has_key(friendid):
 				return {'msg':'friend_not_exist'}
 			friend = self.user.get(friendid)
@@ -195,8 +195,8 @@ class network(object):
 			friendQt.udpateFinishFriendQuest(friendNw)
 			friendNw.addFriend(self.user)
 			
-			mailid = [mail['id']]
-			del self.email[mailid]
+			emailid = [email['id']]
+			del self.email[email['id']]
 			
 			for key, val in self.email.items:
 				if val['roleid'] == friendid:
@@ -204,11 +204,11 @@ class network(object):
 					emailid.append(key)				
 			self.save()
 			friendNw.save()
-			return {'friend_request_delete':mailid, 'friend_new':friendData}
+			return {'friend_request_delete':emailid, 'friend_new':friendData}
 		elif option == 'no':
 			del self.email[mail['id']]		
 			self.save()
-			return {'friend_request_delete':mailid}
+			return {'friend_request_delete':[mail['id']]}
 		return {}
 	
 	def emailMarkReaded(self, emailid):
