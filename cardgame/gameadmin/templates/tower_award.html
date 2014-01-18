@@ -2,27 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>ÎÞ±êÌâÎÄµµ</title>
+<title>ç¥žæ­¦å¡”å¥–åŠ±è®¾å®š</title>
 </head>
 
 <body>
 <form id="/admin/tower_award/" name="form1" method="post" action="">{% csrf_token %}
-<p align="center"><a href="/admin/index">Ö÷Ò³</a></p>
-<p>ÎäÉñËþ½±ÀøÉè¶¨</p>
+<p align="center"><a href="/admin/index">ä¸»é¡µ</a></p>
+<p>ç¥žæ­¦å¡”å¥–åŠ±è®¾å®š</p>
   <label>
   <textarea name="config" rows=45 cols="180">{{ config }}</textarea>
   </label>
   <p>
     <label>
     	<div align="center">
-        <input type="submit" name="Submit" value="±£´æ" />        
+        <input type="submit" name="Submit" value="ä¿å­˜"/>        
       </div>
     </label>
   </p>
 </form>
 <form id = "" name="form1" action="/admin/tower_award_import/" method="post" enctype="multipart/form-data">{% csrf_token %}
  <p><input name="tower_award_file" type="file" /></p>
-  <input name="Submit" type="submit" value="ÉÏ´«" />
+  <input name="Submit" type="submit" value="ä¸Šä¼ " />
   </form>
 </body>
 </body>

@@ -1645,7 +1645,7 @@ class excel_import:
 				
 				floor = int(row[0])
 				
-				ezMonsterCount = [int(i) for i in row[1].split(',')]
+				ezPlayerCount = [int(i) for i in row[1].split(',')]
 				ezSpeed = int(row[2])
 				ezMonster = []
 				if row[3]:
@@ -1659,7 +1659,7 @@ class excel_import:
 				if row[7]:
 					ezMonster.append(row[7])
 				
-				mdMonsterCount = [int(i) for i in  row[8].split(',')]
+				mdPlayerCount = [int(i) for i in  row[8].split(',')]
 				mdSpeed = int(row[9])
 				mdMonster = []
 				if row[10]:
@@ -1673,7 +1673,7 @@ class excel_import:
 				if row[14]:
 					mdMonster.append(row[14])	
 				
-				hdMonsterCount = [int(i) for i in row[15].split(',')]
+				hdPlayerCount = [int(i) for i in row[15].split(',')]
 				hdSpeed = int(row[16])
 				hdMonster = []
 				if row[17]:
@@ -1689,17 +1689,24 @@ class excel_import:
 				
 				dropid = row[22]
 				
+				ezMonsterCount = [int(i) for i in row[23].split(',')]
+				mdMonsterCount = [int(i) for i in row[24].split(',')]
+				hdMonsterCount = [int(i) for i in row[25].split(',')]
+				
 				towerMonsterConf = {}
-				towerMonsterConf['easyMonsterCount'] = ezMonsterCount
+				towerMonsterConf['easyPlayerCount'] = ezPlayerCount
 				towerMonsterConf['easySpeed'] = ezSpeed
 				towerMonsterConf['easyMonster'] = ezMonster
-				towerMonsterConf['middleMonsterCount'] = mdMonsterCount
+				towerMonsterConf['middlePlyerCount'] = mdPlayerCount
 				towerMonsterConf['middleSpeed'] = mdSpeed
 				towerMonsterConf['middleMonster'] = mdMonster
-				towerMonsterConf['hardMonsterCount'] = hdMonsterCount
+				towerMonsterConf['hardPlyaerCount'] = hdPlayerCount
 				towerMonsterConf['hardSpeed'] = hdSpeed
 				towerMonsterConf['hardMonster'] = hdMonster
 				towerMonsterConf['dropid'] = dropid
+				towerMonsterConf['easyMonsterCount'] = ezMonsterCount
+				towerMonsterConf['middleMonsterCount']= mdMonsterCount
+				towerMonsterConf['hardMonsterCount'] = hdMonsterCount
 				
 				while len(conf) < floor:
 					conf.append({})
@@ -1708,5 +1715,50 @@ class excel_import:
 			return HttpResponse(json.dumps(conf))
 		return HttpResponse('tower_monster_import')
 		
+	@staticmethod
 	def tower_markup_import(request):
-		pass
+		if request.method == 'POST':
+			tower_markup_file = request.FILES.get('tower_markup_file')
+			if not tower_markup_file:
+				return HttpResponse('神武塔开局属性xlsx文件上传')
+						
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_markup_file.read())
+			sheet = wb.sheet_by_index(1)
+					
+			conf = []
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				floor = int(row[0])
+				markup = int(row[1])
+				
+				while len(conf) < floor:
+					conf.append(0)
+				conf[floor - 1] = markup				
+			return HttpResponse(json.dumps(conf))			
+		return HttpResponse('tower_markup_import')
+		
+	@staticmethod
+	def tower_award_import(request):
+		if request.method == 'POST':
+			tower_award_file = request.FILES.get('tower_award_file')
+			if not tower_award_file:
+				return HttpResponse('神武塔奖励xlsx文件上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_award_file.read())
+			sheet = wb.sheet_by_index(3)
+					
+			conf = {}
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				floor = str(int(row[0]))
+				award = []
+				if row[1]:
+					award.append(row[1])
+				if row[2]:
+					award.append(row[2])
+				if row[3]:
+					award.append(row[3])
+					
+				conf[floor] = award
+			return HttpResponse(json.dumps(conf))
+		return HttpResponse('tower_award_import')

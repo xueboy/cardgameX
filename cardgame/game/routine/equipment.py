@@ -53,6 +53,8 @@ class equipment:
 		usr.equipment_strength_cooldown = usr.equipment_strength_cooldown + (gameConf['equipment_strength_cooldown_base'] * (1 + usr.fatigue / 6))
 		usr.equipment_strength_last_time = currentTime()
 		usr.fatigue = usr.fatigue + 1
+		if usr.fatigue > gameConf['equipment_strength_fatigue_max']:
+			usr.fatigue = gameConf['equipment_strength_fatigue_max']
 		usr.fatigue_last_time = currentTime()
 		
 		equipment['strengthLevel'] = strengthLevel + 1

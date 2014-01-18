@@ -104,6 +104,8 @@ def info(request):
 	info['ladder_score_md5'] = conf.getClientConfigMd5('ladder_score')
 	info['arena_loot_md5'] = conf.getClientConfigMd5('arena_loot')
 	info['tower_monster_md5'] = conf.getClientConfigMd5('tower_monster')
+	info['tower_markup_md5'] = conf.getClientConfigMd5('tower_markup')
+	info['tower_award_md5'] = conf.getClientConfigMd5('tower_award')
 	return HttpResponse(json.dumps({'info':info}))
 
 

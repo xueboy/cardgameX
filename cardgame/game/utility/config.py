@@ -78,6 +78,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'tower_monster':
 			return conf
+		if confname == 'tower_markup':
+			return conf
+		if confname == 'tower_award':
+			return conf
 		return None
 	
 	
