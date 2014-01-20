@@ -14,7 +14,7 @@ class signin:
 		signinConf = config.getConfig('signin')
 		dd = day_diff(now, usr.signin['last_login_time'])
 		if dd == 1:
-			usr.sigin['login_count'] = usr.signin['login_count'] + 1
+			usr.signin['login_count'] = usr.signin['login_count'] + 1
 		elif dd > 1:
 			usr.signin['login_count'] = 1
 		usr.signin['last_login_time'] = currentTime()
