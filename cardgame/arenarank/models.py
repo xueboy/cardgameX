@@ -184,3 +184,107 @@ class ladder(facility):
 			return {'score':item['score']}
 		else:
 			return {'msg':'arena_ladder_not_stand'}
+				
+				
+class tower_ladder(facility):
+	def __init__(self):
+		facility.__init__(self)
+		self.rank20 = []
+		self.rank30 = []
+		self.rank40 = []
+		self.rank50 = []
+		self.item = {}
+		
+	def getData(self):
+		data = {}
+		data['rank20'] = self.rank20
+		data['rank30'] = self.rank30
+		data['rank40'] = self.rank40
+		data['rank50'] = self.rank50		
+		data['item'] = self.item
+		return data
+		
+	def load(self, name, data):
+		facility.load(self, name, data)
+		self.rank20 = data['rank20']
+		self.rank30 = data['rank30']
+		self.rank40 = data['rank40']
+		self.rank50 = data['rank50']		
+		self.item = data['item']
+		
+	def stand(self, roleid, name, level, point):
+		
+		gameConf = config.getConfig('game')
+		
+		if roleid in self.rank20:
+			self.rank20.remove(roleid)
+		if roleid in self.rank30:
+			self.rank30.remove(roleid)
+		if roleid in self.rank40:
+			self.rank40.remove(roleid)
+		if roleid in self.rank50:
+			self.rank50.remove(roleid)
+		
+		if roleid in self.item:
+			del self.item[roleid]
+		
+		if len(self.rank20) > gameConf['tower_ladder_size']:
+			self.rank20 = self.rank20[0:19]				
+		if len(self.rank30) > gameConf['tower_ladder_size']:
+			self.rank30 = self.rank30[0:19]		
+		if len(self.rank40) > gameConf['tower_ladder_size']:
+			self.rank40 = self.rank40[0:19]				
+		if len(self.rank50) > gameConf['tower_ladder_size']:
+			self.rank50 = self.rank50[0:19]		
+		
+		if level < 20:			
+			for (rk, i) in enumerate(self.rank20):
+				if point > rk['point']:
+					self.rank20.insert(i, {'point':point, 'roleid':roleid})
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+					return {'position': i, 'rank_level':20}
+		elif level < 30:
+			for (rk, i) in enumerate(self.rank30):
+				if point > rk['point']:
+					self.rank30.insert(i, {'point':point, 'roleid':roleid})
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+					return {'position':i, 'rank_level':30}
+		elif level < 40:
+			for (rk, i) in enumerate(self.rank40):
+				 if point > rk['point']:
+				 	self.rank40.insert(i, {'point': point, 'roleid':roleid})
+				 	self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+				 	return {'position':i, 'rank_level':40}
+		else:
+			for (rk, i) in enumerate(self.rank50):
+				if point > rk['point']:
+					self.rank50.insert(i, {'point':point, 'roleid':roleid})
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+					return {'position':i, 'rank_level':50}		
+		return {'msg':'tower_ladder_not_stand'}
+			
+	def show_ladder(self, level):
+		rank = None
+		
+		if level < 20:
+			rank = self.rank20
+		elif level < 30:
+			rank = self.rank30
+		elif level < 40:
+			rank = self.rank40
+		else:
+			rank = self.rank50
+			
+		ls = []
+			
+		for i in range(len(rank)):
+			ls.append(tower_ladder.show_position(rank, self.item, i))
+		return ls
+			
+		
+	@staticmethod
+	def show_position(rank, item, position):
+		roleid = rank[position]		
+		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position}
+		
+		

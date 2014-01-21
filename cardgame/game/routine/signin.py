@@ -22,6 +22,7 @@ class signin:
 		data = {}
 		data['signin_index'] = (usr.signin['login_count'] - 1) % len(signinConf)
 		data['have_signin'] = signin.have_signin(usr, now)
+		data['last_meal_time'] = usr.signin['last_meal_time']
 		usr.save()		
 		return data
 							

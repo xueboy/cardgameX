@@ -24,6 +24,7 @@ import game.views.skill
 import game.views.arena
 import game.views.quest
 import game.views.item
+import game.views.tower
 
 
 viewsmap = {
@@ -40,6 +41,7 @@ viewsmap = {
 	'arena' : sys.modules['game.views.arena'],
 	'quest' : sys.modules['game.views.quest'],
 	'item' : sys.modules['game.views.item'],
+	'tower': sys.modules['game.views.tower']
 }
 
 def index(request):
@@ -61,6 +63,7 @@ def index(request):
 		data = usr.getLoginData(gameConf)
 		data['login'] = loginData		
 		usr.save()
+		print request.session.session_key
 		return HttpResponse(json.dumps(data))
 	return HttpResponse(json.dumps({'msg':'account_name_not_exist'}))
 

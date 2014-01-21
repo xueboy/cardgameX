@@ -150,6 +150,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '192.168.0.99:11211',
+        'TIMEOUT': 3600
         #'LOCATION': '42.62.50.75:11211',        
     },
     'in_memery': {

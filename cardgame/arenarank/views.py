@@ -4,7 +4,7 @@
 from django.http import HttpResponse
 from gclib.cache import cache
 from gclib.json import json
-from arenarank.models import ladder
+from arenarank.models import ladder, tower_ladder
 
 def show_ladder(request):	
 			
@@ -54,3 +54,18 @@ def score(request):
 	roleid = request.REQUEST['roleid']
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.score(roleid)))
+	
+def tower_stand(request):
+	roleid = request.REQUEST['roleid']
+	level = request.REQUEST['level']
+	point = request.REQUEST['point']
+	name = request.REQUEST['name']
+	ld = tower_ladder.instance()
+	return HttpResponse(json.dumps(ld.stand(roleid, name, int(level), int(point))))
+	
+def tower_show(request):
+	
+	level = request.REQUEST['level']
+	
+	ld = tower_ladder.instance()
+	return HttpResponse(json.dumps(ld.show_ladder(level)))

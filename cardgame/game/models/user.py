@@ -18,6 +18,7 @@ from game.routine.stone import stone
 from game.routine.signin import signin
 from game.routine.levelup import levelup
 from game.routine.arena import arena
+from game.routine.tower import tower
 
 
 class user(gcuser):
@@ -64,6 +65,7 @@ class user(gcuser):
 		self.avatar = ''
 		self.longitude = 0.0
 		self.latitude = 0.0
+		self.tower = tower.make()
 		
 	
 	def init(self, acc = None):
@@ -116,6 +118,7 @@ class user(gcuser):
 		data['levelup'] = self.levelup
 		data['longitude'] = self.longitude
 		data['latitude'] = self.latitude
+		data['tower'] = self.tower
 		return data
 		
 	def getClientData(self):
@@ -128,6 +131,7 @@ class user(gcuser):
 		usrData['gold'] = self.gold
 		usrData['exp'] = self.exp
 		usrData['vip'] = self.vip
+		usrData['gender'] = self.gender
 		usrData['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
 		usrData['avatar_id'] = self.avatar_id
 		#if self.train_prd:
@@ -146,9 +150,8 @@ class user(gcuser):
 		data['educate'] = educate.getClientData(self, gameConf)
 		data['avatar'] = self.avatar
 		data['levelup'] = self.levelup['record']
-	
-		return data
-		
+		data['tower'] = tower.getClientData(self)	
+		return data		
 		
 	def getFriendData(self):
 		data = {}
@@ -254,12 +257,13 @@ class user(gcuser):
 		self.signin = data['signin']
 		self.levelup = data['levelup']
 		self.longitude = data['longitude']
-		self.latitude = data['latitude']		
+		self.latitude = data['latitude']
+		self.tower = data['tower']
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
-		return self.last_card_no		
-	
+		return self.last_card_no
+			
 	@retrieval_object
 	def getDungeon(self):
 		if self.dun:

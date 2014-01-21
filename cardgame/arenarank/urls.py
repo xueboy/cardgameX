@@ -13,5 +13,8 @@ urlpatterns = patterns('',
  url(r'^defeat/', 'arenarank.views.defeat'),
  url(r'^convert/', 'arenarank.views.convert'),
  url(r'^set_avatar_id/', 'arenarank.views.set_avatar_id'),
- url(r'^score/', 'arenarank.views.score')
+ url(r'^score/', 'arenarank.views.score'),
+ url(r'^tower_stand/', 'arenarank.views.tower_stand'),
+ url(r'^tower_show/','arenarank.views.tower_show'),
+ url(r'^tower_show/', 'arenarank.views.tower_show')
 )

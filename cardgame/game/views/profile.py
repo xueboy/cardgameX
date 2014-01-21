@@ -50,7 +50,7 @@ def show(request):
 	otNw = other.getNetwork()
 	data = {}
 	data['name'] = other.name
-	data['level'] = other.level
+	data['level'] = other.level	
 	data['message'] = otNw.message	
 	return data
 	
@@ -105,10 +105,16 @@ def nearby(request):
 		roleid = r[0]
 		longitude = r[1]
 		latitude = r[2]
+		player = user.get(roleid)
+		if not player:
+			continue
 		d['roleid'] = roleid
 		d['longitude'] = longitude
 		d['latitude'] = latitude
 		d['avatar_id'] = avatar.getAvatarId(roleid)
+		d['name'] = str(roleid)
+		d['level'] = player.level
+		d['gender'] = player.gender
 		data.append(d)  	
 	return data
 	
