@@ -64,6 +64,7 @@ class signin:
 		gameConf = config.getConfig('game')
 		if not signin.can_meal(now, usr.signin['last_meal_time'], gameConf):
 			return {'msg':'meal_can_not'}
+		usr.signin['last_meal_time'].append(now)
 		
 		usr.chargeStamina(gameConf['meal_point'])
 		return {'stamina':usr.stamina}
@@ -73,8 +74,8 @@ class signin:
 		
 		t1 = str_to_day_time(gameConf['meal_time1'][0])		
 		t2 = str_to_day_time(gameConf['meal_time1'][1])
-		if last_meal_time and is_in_day_period(t1, t2, now):
-			if is_in_day_period(t1, t2, last_meal_time[-1]):
+		if is_in_day_period(t1, t2, now):
+			if last_meal_time and is_in_day_period(t1, t2, last_meal_time[-1]):
 				return False
 			else:
 				return True
