@@ -49,10 +49,10 @@ def beginRequest(request,cls):
 	userid = request.session['user_id']
 	cskey = cache_session_key(userid)
 	
-	session_key = cache.mc_getValue(cskey)
-	if request.session.session_key != session_key:
-		logout(request)
-		raise NotLogin
+	#session_key = cache.mc_getValue(cskey)
+	#if request.session.session_key != session_key:
+		#logout(request)
+		#raise NotLogin
 	
 	usr = cls.get(userid)	
 	if not usr:
