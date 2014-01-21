@@ -61,7 +61,7 @@ class luckycat:
 			usr.luckycat['fatigue'] = usr.luckycat['fatigue'] + 1
 			if usr.luckycat['fatigue'] > gameConf['luckycat_fatigue_max']:
 				usr.luckycat['fatigue'] = gameConfig['luckycat_fatigue_max']
-			usr.luckycat['beckon_cooldown'] = usr.luckycat['beckon_cooldown'] + (gameConf['luckycat_cooldown_base'] * (1 + usr.luckycat['fatigue'] / 2))
+			usr.luckycat['beckon_cooldown'] = int(usr.luckycat['beckon_cooldown'] + (gameConf['luckycat_cooldown_base'] * (1 + usr.luckycat['fatigue'] / 9.4)))
 			usr.luckycat['beckon_last_update_time'] = currentTime()
 		rcd = {}
 		rcd['type'] = 'beckon'

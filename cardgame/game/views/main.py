@@ -25,6 +25,7 @@ import game.views.arena
 import game.views.quest
 import game.views.item
 import game.views.tower
+import game.views.almanac
 
 
 viewsmap = {
@@ -41,7 +42,8 @@ viewsmap = {
 	'arena' : sys.modules['game.views.arena'],
 	'quest' : sys.modules['game.views.quest'],
 	'item' : sys.modules['game.views.item'],
-	'tower': sys.modules['game.views.tower']
+	'tower': sys.modules['game.views.tower'],
+	'almanac': sys.modules['game.views.almanac']
 }
 
 def index(request):
@@ -71,7 +73,7 @@ def index(request):
 def info(request):
 	
 	info = {}	
-	info[u'status'] = u'OK'
+	info[u'status'] = 'OK'
 	#info['greet'] = u'你好'
 	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
 	info['level_md5'] = conf.getClientConfigMd5('level')
@@ -108,7 +110,7 @@ def info(request):
 	info['arena_loot_md5'] = conf.getClientConfigMd5('arena_loot')
 	info['tower_monster_md5'] = conf.getClientConfigMd5('tower_monster')
 	info['tower_markup_md5'] = conf.getClientConfigMd5('tower_markup')
-	info['tower_award_md5'] = conf.getClientConfigMd5('tower_award')
+	info['tower_award_md5'] = conf.getClientConfigMd5('tower_award')	
 	return HttpResponse(json.dumps({'info':info}))
 
 

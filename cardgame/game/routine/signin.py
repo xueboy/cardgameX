@@ -11,6 +11,7 @@ class signin:
 	@staticmethod
 	def login(usr):
 		now = currentTime()
+		gameConf = config.getConfig('game')
 		signinConf = config.getConfig('signin')
 		dd = day_diff(now, usr.signin['last_login_time'])
 		if dd == 1:
@@ -22,7 +23,28 @@ class signin:
 		data = {}
 		data['signin_index'] = (usr.signin['login_count'] - 1) % len(signinConf)
 		data['have_signin'] = signin.have_signin(usr, now)
-		data['last_meal_time'] = usr.signin['last_meal_time']
+		
+		t1 = [str_to_day_time(gameConf['meal_time1'][0]), str_to_day_time(gameConf['meal_time1'][1])]
+		t2 = [str_to_day_time(gameConf['meal_time2'][0]), str_to_day_time(gameConf['meal_time2'][1])]
+		
+		b1 = False
+		b2 = False
+		
+		if  len(usr.signin['last_meal_time']) > 2:
+			usr.signin['last_meal_time'] =  usr.signin['last_meal_time'][-2:-1]
+		
+		if len(usr.signin['last_meal_time']) > 1:
+			if is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time'][-2]) or is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time'][-1]):
+				b1 = True
+			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time'][-1]):
+				b2 = True
+			
+		elif len(usr.signin['last_meal_time']) > 0:
+			if is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time']):
+				b1 = True
+			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time']):
+				b2 = True
+		data['last_meal_time'] = [b1, b2]
 		usr.save()		
 		return data
 							
@@ -70,8 +92,7 @@ class signin:
 		return {'stamina':usr.stamina}
 	
 	@staticmethod
-	def can_meal(now, last_meal_time, gameConf):
-		
+	def can_meal(now, last_meal_time, gameConf):		
 		t1 = str_to_day_time(gameConf['meal_time1'][0])		
 		t2 = str_to_day_time(gameConf['meal_time1'][1])
 		if is_in_day_period(t1, t2, now):

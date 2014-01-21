@@ -1167,35 +1167,40 @@ class excel_import:
 			for rownum in range(3,sheet.nrows):
 				row = sheet.row_values(rownum)
 				almanacCombinationid = row[0]
-				combinCardid = row[1].split(',')
-				itemid = row[2]
-				cardid = row[3]
-				skillid = row[4]
-				equipmentid = row[5]
-				gem = int(row[6])
-				gold = int(row[7])
-				strength = int(row[8])
-				intelligence = int(row[9])
-				artifice = int(row[10])
-				hit = int(row[11])
-				dodge = int(row[12])
-				critical = int(row[13])
-				tenacity = int(row[14])
-				wreck = int(row[15])
-				block = int(row[16])
-				pt = int(row[17])
-				mt = int(row[18])
-				pd = int(row[19])
-				md = int(row[20])
-				speed = int(row[21])
+				if row[1] == '':
+					combinCardid = []
+				else:
+					combinCardid = row[1].split(',')
+				if row[2] == '':
+					combinSkillid = []
+				else:
+					combinCardid = row[2].split(',')
+				if row[3]	== '':
+					combinEquipmentid = []
+				else:
+					combinEquipmentid = row[3].split(',')		
+				
+				dropid = row[4]				
+				strength = int(row[10])
+				intelligence = int(row[11])
+				artifice = int(row[12])
+				hit = int(row[13])
+				dodge = int(row[14])
+				critical = int(row[15])
+				tenacity = int(row[16])
+				wreck = int(row[17])
+				block = int(row[18])
+				pt = int(row[19])
+				mt = int(row[20])
+				pd = int(row[21])
+				md = int(row[22])
+				speed = int(row[23])
 				
 				almanacConf = {}
 				almanacConf['combin_cardid'] = combinCardid
-				almanacConf['itemid'] = itemid
-				almanacConf['cardid'] = cardid
-				almanacConf['skillid'] = skillid
-				almanacConf['gem'] = gem
-				almanacConf['gold'] = gold
+				almanacConf['combin_skillid'] = combinSkillid
+				almanacConf['combin_equipmentid'] = combinEquipmentid
+				almanacConf['dropid'] = dropid				
 				almanacConf['strength'] = strength
 				almanacConf['intelligence'] = intelligence
 				almanacConf['artifice'] = artifice
@@ -1697,10 +1702,10 @@ class excel_import:
 				towerMonsterConf['easyPlayerCount'] = ezPlayerCount
 				towerMonsterConf['easySpeed'] = ezSpeed
 				towerMonsterConf['easyMonster'] = ezMonster
-				towerMonsterConf['middlePlyerCount'] = mdPlayerCount
+				towerMonsterConf['middlePlayerCount'] = mdPlayerCount
 				towerMonsterConf['middleSpeed'] = mdSpeed
 				towerMonsterConf['middleMonster'] = mdMonster
-				towerMonsterConf['hardPlyaerCount'] = hdPlayerCount
+				towerMonsterConf['hardPlayerCount'] = hdPlayerCount
 				towerMonsterConf['hardSpeed'] = hdSpeed
 				towerMonsterConf['hardMonster'] = hdMonster
 				towerMonsterConf['dropid'] = dropid

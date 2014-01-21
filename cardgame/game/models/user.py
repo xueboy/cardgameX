@@ -443,3 +443,5 @@ class user(gcuser):
 		self.getDungeon().delete()
 		self.getAlmanac().delete()
 		self.delete()
+		
+	

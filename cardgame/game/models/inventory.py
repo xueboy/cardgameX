@@ -134,7 +134,7 @@ class inventory(object):
 			self.card.append(card)
 			usr = self.user
 			al = usr.getAlmanac()
-			al.insert(cardid)
+			al.addCard(cardid)
 			return card
 		return None
 	
@@ -168,18 +168,25 @@ class inventory(object):
 			data['equipmentid'] = equipmentid
 			data['id'] = self.generateEquipmentName()
 			self.equipment.append(data)
+			usr = self.user
+			al = usr.getAlmanac()
+			al.addEquipment(equipmentid)
 			return data
 		return None
+		
 	def addEquipmentCount(self, equipmentid, cnt):
 		equipmentConf = config.getConfig('equipment')
 		equipment = []
+		usr = self.user
+		al = usr.getAlmanac()
 		for i in range(cnt):
 			if equipmentConf.has_key(equipmentid):				
 				data = {}
 				data['equipmentid'] = equipmentid
 				data['id'] = self.generateEquipmentName()
 				self.equipment.append(data)
-				equipment.append(data)
+				equipment.append(data)				
+				al.addEquipment(equipmentid)
 		return equipment
 		
 	def depositEquipment(self, equipment):
@@ -440,6 +447,9 @@ class inventory(object):
 		sk['level'] = level
 		sk['exp'] = 0
 		self.skill.append(sk)
+		usr = self.user
+		al = usr.getAlmanac()
+		al.addSkill(skillid)		
 		return sk
 	
 	def addSkillCount(self, skillid, cnt):
@@ -447,7 +457,8 @@ class inventory(object):
 		skillInfo = skillConf[skillid]
 		
 		skill = []
-		
+		usr = self.user
+		al = usr.getAlmanac()
 		for i in range(cnt):
 			sk = {}
 			sk['skillid'] = skillid
@@ -456,6 +467,7 @@ class inventory(object):
 			sk['exp'] = 0
 			self.skill.append(sk)
 			skill.append(sk)
+			al.addSkill(skillid)
 		return skill
 	
 	def addAllSkill(self, skillid):
