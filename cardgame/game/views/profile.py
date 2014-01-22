@@ -112,7 +112,7 @@ def nearby(request):
 		d['longitude'] = longitude
 		d['latitude'] = latitude
 		d['avatar_id'] = avatar.getAvatarId(roleid)
-		d['name'] = str(roleid)
+		d['name'] = player.name
 		d['level'] = player.level
 		d['gender'] = player.gender
 		data.append(d)  	
