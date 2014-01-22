@@ -1238,46 +1238,24 @@ class excel_import:
 				else:
 					combinEquipmentid = row[3].split(',')		
 				
-				dropid = row[4]				
-				strength = int(row[10])
-				intelligence = int(row[11])
-				artifice = int(row[12])
-				hit = int(row[13])
-				dodge = int(row[14])
-				critical = int(row[15])
-				tenacity = int(row[16])
-				wreck = int(row[17])
-				block = int(row[18])
-				pt = int(row[19])
-				mt = int(row[20])
-				pd = int(row[21])
-				md = int(row[22])
-				speed = int(row[23])
+				dropid = row[4]
+				typestr = row[25]
+				type = row[26]
+				value = row[27]				
 				
 				almanacConf = {}
 				almanacConf['combin_cardid'] = combinCardid
 				almanacConf['combin_skillid'] = combinSkillid
 				almanacConf['combin_equipmentid'] = combinEquipmentid
-				almanacConf['dropid'] = dropid				
-				almanacConf['strength'] = strength
-				almanacConf['intelligence'] = intelligence
-				almanacConf['artifice'] = artifice
-				almanacConf['hit'] = hit
-				almanacConf['dodge'] = dodge
-				almanacConf['critical'] = critical
-				almanacConf['tenacity'] = tenacity
-				almanacConf['wreck'] = wreck
-				almanacConf['block'] = block
-				almanacConf['pt'] = pt
-				almanacConf['mt'] = mt
-				almanacConf['pd'] = pd
-				almanacConf['md']=  md
-				almanacConf['speed'] = speed
+				almanacConf['dropid'] = dropid
+				almanacConf['typestr'] = typestr
+				almanacConf['type'] = type
+				almanacConf['value'] = value
 				
 				conf[almanacCombinationid] = almanacConf
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('almanac_import')			
+		return HttpResponse('almanac_import')
 				
 				
 	@staticmethod
