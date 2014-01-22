@@ -39,6 +39,10 @@ class skill:
 		card = inv.getCard(inv.team[teamPosition])
 		if not card:
 			return {'msg': 'card_not_exist'}
+		
+		if usr.level < gameConf['skill_slot_level'][slotpos]:
+			return {'msg':'level_required'}
+		
 		if not card.has_key('sk_slot'):
 			card['sk_slot'] = skill.make_sk_slot()
 			

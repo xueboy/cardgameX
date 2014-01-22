@@ -29,21 +29,47 @@ class excel_import:
 				name = row[3]
 				type = row[5]
 				nature = row[7]
-				distance = row[8]
-				level = row[9]
-				hp = row[10]
-				attack = row[11]
-				recovery = row[12]
-				agile = row[13]
-				prob = row[14]
-				skillId = []
-				skillId.append(row[15])
-				if row[16] != '':
-					skillId.append(row[16])
-				if row[17] != '':
-					skillId.append(row[17])
-				if row[18] != '':
-					skillId.append(row[18])
+				level = int(row[8])
+				star = int(row[9])
+				attackType = int(row[10])
+				position = int(row[11])
+				immunity = int(row[12])
+				strength = int(row[13])
+				intelligence = int(row[14])
+				artifice = int(row[15])
+				hit = int(row[16])
+				dodge = int(row[17])
+				critical = int(row[18])
+				tenacity = int(row[19])
+				block =  int(row[20])
+				wreck = int(row[21])
+				hp = int(row[22])
+				attack = int(row[23])
+				pr = int(row[24])
+				mr = int(row[25])
+				pa = int(row[26])
+				ma = int(row[27])
+				pe = int(row[28])				#Pysical Extra
+				me = int(row[29])				#Magical Extra
+				pi = int(row[30])				#Pysical Immune
+				mi = int(row[31])				#Magical Immune
+				
+				skill = []
+				if row[32] and row[36] and row[41]:
+					skill.append({'id':row[32], 'level':int(row[36]), 'probability':int(row[41])})
+				if row[33] and row[37] and row[42]:
+					skill.append({'id':row[33], 'level':int(row[37]), 'probability':int(row[42])})
+				if row[34] and row[38] and row[43]:
+					skill.append({'id':row[34], 'level':int(row[38]), 'probability':int(row[43])})
+				if row[35] and row[39] and row[44]:
+					skill.append({'id':row[35], 'level':int(row[39]), 'probability':int(row[44])})
+				
+				dropid = row[40]
+				
+				pt = int(row[45])
+				mt = int(row[46])
+				pd = int(row[47])
+				md = int(row[48])				
 				
 				monsterConf = {}
 				monsterConf['monsterId'] = monsterId
@@ -52,14 +78,46 @@ class excel_import:
 				monsterConf['name'] = name
 				monsterConf['type'] = type
 				monsterConf['nature'] = nature
-				monsterConf['distance'] = distance
+				monsterConf['level'] = level
+				monsterConf['star'] = star
+				monsterConf['attackType'] = attackType
+				monsterConf['position'] = position
+				monsterConf['immunity'] = immunity
+				monsterConf['strength'] = strength
+				monsterConf['intelligence'] = intelligence
+				monsterConf['artifice'] = artifice
+				monsterConf['hit'] = hit
+				monsterConf['dodge'] = dodge
+				monsterConf['critical'] = critical
+				monsterConf['tenacity'] = tenacity
+				monsterConf['block'] = block
+				monsterConf['wreck'] = wreck
+				monsterConf['hp'] = hp
+				monsterConf['attack'] = attack
+				monsterConf['pr'] = pr
+				monsterConf['mr'] = mr
+				monsterConf['pa'] = pa
+				monsterConf['ma'] = ma
+				monsterConf['pe'] = pe
+				monsterConf['me'] = me
+				monsterConf['pi'] = pi
+				monsterConf['mi'] = mi
 				monsterConf['level'] = level
 				monsterConf['hp'] = hp
 				monsterConf['attack'] = attack
-				monsterConf['recovery'] = recovery
-				monsterConf['agile'] = agile
-				monsterConf['probability'] = prob
-				monsterConf['skillId'] = skillId
+				monsterConf['pr'] = pr
+				monsterConf['mr'] = mr
+				monsterConf['pa'] = pa
+				monsterConf['ma'] = ma
+				monsterConf['pe'] = pe
+				monsterConf['me'] = me
+				monsterConf['pi'] = pi
+				monsterConf['mi'] = mi				
+				monsterConf['skill'] = skill
+				monsterConf['pt'] = pt
+				monsterConf['mt'] = mt
+				monsterConf['pd'] = pd
+				monsterConf['md'] = md
 				conf[monsterId] = monsterConf
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('monster_import')
