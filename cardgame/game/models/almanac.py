@@ -80,7 +80,7 @@ class almanac(object):
 			return {'msg':'almanac_combine_already_get'}
 		
 		if not combinaionConf.has_key(cmbid):
-			return {'msg':'almanac_combination_not_exist'}		
+			return {'msg':'almanac_combination_not_exist'}
 		
 		combinationInfo = combinaionConf[cmbid]
 		
@@ -109,32 +109,32 @@ class almanac(object):
 			
 		return data			
 				
-		def notifyCard(self, cardid):
-			usr = self.user
-			if not usr.notify.has_key('almanac_notify'):
-				usr.notify['almanac_notify'] = {}				
-			if not usr.notify['almanac_notify'].has_key('card'):
-				usr.notify['almanac_notify']['card'] = []				
-			usr.notify['almanac_notify'].append(cardid)
-			usr.save()
+	def notifyCard(self, cardid):
+		usr = self.user
+		if not usr.notify.has_key('almanac_notify'):
+			usr.notify['almanac_notify'] = {}				
+		if not usr.notify['almanac_notify'].has_key('card'):
+			usr.notify['almanac_notify']['card'] = []				
+		usr.notify['almanac_notify'].append(cardid)
+		usr.save()
 			
-		def notifySkill(self, skillid):
-			usr = self.user
-			if not usr.notify.has_key('almanac_notify'):
-				usr.notify['almanac_notify'] = {}				
-			if not usr.notify['almanac_notify'].has_key('skill'):
-				usr.notify['almanac_notify']['skill'] = []				
-			usr.notify['almanac_notify'].append(skillid)
-			usr.save()
+	def notifySkill(self, skillid):
+		usr = self.user
+		if not usr.notify.has_key('almanac_notify'):
+			usr.notify['almanac_notify'] = {}				
+		if not usr.notify['almanac_notify'].has_key('skill'):
+			usr.notify['almanac_notify']['skill'] = []				
+		usr.notify['almanac_notify'].append(skillid)
+		usr.save()
 
 			
-		def notifyEquipment(self, equipmentid):
-			usr = self.user
-			if not usr.notify.has_key('almanac_notify'):
-				usr.notify['almanac_notify'] = {}				
-			if not usr.notify['almanac_notify'].has_key('equipment'):
-				usr.notify['almanac_notify']['equipment'] = []				
-			usr.notify['almanac_notify'].append(equipmentid)
-			usr.save()
+	def notifyEquipment(self, equipmentid):
+		usr = self.user
+		if not usr.notify.has_key('almanac_notify'):
+			usr.notify['almanac_notify'] = {}				
+		if not usr.notify['almanac_notify'].has_key('equipment'):
+			usr.notify['almanac_notify']['equipment'] = []				
+		usr.notify['almanac_notify'].append(equipmentid)
+		usr.save()
 
 	
