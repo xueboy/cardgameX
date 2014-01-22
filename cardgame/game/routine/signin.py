@@ -37,12 +37,11 @@ class signin:
 			if is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time'][-2]) or is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time'][-1]):
 				b1 = True
 			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time'][-1]):
-				b2 = True
-			
+				b2 = True			
 		elif len(usr.signin['last_meal_time']) > 0:
-			if is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time']):
+			if is_in_day_period(t1[0], t1[1], usr.signin['last_meal_time'][-1]):
 				b1 = True
-			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time']):
+			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time'][-1]):
 				b2 = True
 		data['last_meal_time'] = [b1, b2]
 		usr.save()		

@@ -210,6 +210,7 @@ class tower:
 					usr.tower['max_floor'] = rd['floor']
 				if rd['point'] > point:
 					usr.tower['max_floor'] = rd['point']
+			usr.tower['current'] = {}
 			usr.tower['record'] = []				
 			usr.tower['times'] = 0
 			usr.tower['last_update'] = now
