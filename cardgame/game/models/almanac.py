@@ -115,7 +115,7 @@ class almanac(object):
 			usr.notify['almanac_notify'] = {}				
 		if not usr.notify['almanac_notify'].has_key('card'):
 			usr.notify['almanac_notify']['card'] = []				
-		usr.notify['almanac_notify'].append(cardid)
+		usr.notify['almanac_notify']['card'].append(cardid)
 		usr.save()
 			
 	def notifySkill(self, skillid):
@@ -124,7 +124,7 @@ class almanac(object):
 			usr.notify['almanac_notify'] = {}				
 		if not usr.notify['almanac_notify'].has_key('skill'):
 			usr.notify['almanac_notify']['skill'] = []				
-		usr.notify['almanac_notify'].append(skillid)
+		usr.notify['almanac_notify']['skill'].append(skillid)
 		usr.save()
 
 			
@@ -134,7 +134,7 @@ class almanac(object):
 			usr.notify['almanac_notify'] = {}				
 		if not usr.notify['almanac_notify'].has_key('equipment'):
 			usr.notify['almanac_notify']['equipment'] = []				
-		usr.notify['almanac_notify'].append(equipmentid)
+		usr.notify['almanac_notify']['equipment'].append(equipmentid)
 		usr.save()
 
 	
