@@ -96,7 +96,7 @@ class config(gcconfig):
 	def gameFilter(conf):
 		data = conf.copy()
 		
-		del data['dungeon_medol_probablity']
+		del data['dungeon_medal_probablity']
 		
 		return data
 	
