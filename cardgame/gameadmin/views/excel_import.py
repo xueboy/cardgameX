@@ -935,7 +935,7 @@ class excel_import:
 		if request.method == 'POST':
 			stone_file = request.FILES.get('stone_file')
 			if not stone_file:
-				return HttpResponse('宝石xlsx文件上传')
+				return HttpResponse('宝石xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_file.read())
 			sheet = wb.sheet_by_index(2)
@@ -972,7 +972,7 @@ class excel_import:
 		if request.method == 'POST':
 			stone_probability_file = request.FILES.get('stone_probability_file')
 			if not stone_probability_file:
-				return HttpResponse('宝石概率xlsx文件上传')
+				return HttpResponse('宝石概率xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_probability_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -1050,7 +1050,7 @@ class excel_import:
 		if request.method == 'POST':
 			stone_level_file = request.FILES.get('stone_level_file')
 			if not stone_level_file:
-				return HttpResponse('宝石等级xlsx文件上传')			
+				return HttpResponse('宝石等级xlsx文件未上传')			
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_level_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1069,7 +1069,7 @@ class excel_import:
 		if request.method == 'POST':
 			trp_price_file = request.FILES.get('trp_price_file')
 			if not trp_price_file:
-				return HttpResponse('培养价格xlsx文件上传')			
+				return HttpResponse('培养价格xlsx文件未上传')			
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_price_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1094,7 +1094,7 @@ class excel_import:
 		if request.method == 'POST':
 			trp_file = request.FILES.get('trp_file')
 			if not trp_file:
-				return HttpResponse('培养点xlsx文件上传')			
+				return HttpResponse('培养点xlsx文件未上传')			
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -1119,7 +1119,7 @@ class excel_import:
 		if request.method == 'POST':
 			trp_probability_file = request.FILES.get('trp_probability_file')
 			if not trp_probability_file:
-				return HttpResponse('培养概率xlsx文件上传')
+				return HttpResponse('培养概率xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, trp_probability_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1144,7 +1144,7 @@ class excel_import:
 		if request.method == 'POST':
 			educate_file = request.FILES.get('educate_file')
 			if not educate_file:
-				return HttpResponse('训练xlsx文件上传')			
+				return HttpResponse('训练xlsx文件未上传')			
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, educate_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1174,7 +1174,7 @@ class excel_import:
 		if request.method == 'POST':
 			educate_grade_file = request.FILES.get('educate_grade_file')
 			if not educate_grade_file:
-				return HttpResponse('训练档次xlsx文件上传')
+				return HttpResponse('训练档次xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, educate_grade_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -1213,7 +1213,7 @@ class excel_import:
 		if request.method == 'POST':
 			almanac_combination_file = request.FILES.get('almanac_combination_file')
 			if not almanac_combination_file:
-				return HttpResponse('图鉴组合xlsx文件上传')
+				return HttpResponse('图鉴组合xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, almanac_combination_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1238,7 +1238,7 @@ class excel_import:
 				
 				dropid = row[4]
 				typestr = row[25]
-				type = row[26]
+				type = int(row[26])
 				value = row[27]				
 				
 				almanacConf = {}
@@ -1261,7 +1261,7 @@ class excel_import:
 		if request.method == 'POST':
 			reborn_file = request.FILES.get('reborn_file')
 			if not reborn_file:
-				return HttpResponse('转生xlsx文件上传')
+				return HttpResponse('转生xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
 			sheet = wb.sheet_by_index(0)					
@@ -1292,7 +1292,7 @@ class excel_import:
 		if request.method == 'POST':
 			reborn_file = request.FILES.get('ladder_score_file')
 			if not reborn_file:
-				return HttpResponse('天梯分数xlsx文件上传')
+				return HttpResponse('天梯分数xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
 			sheet = wb.sheet_by_index(0)					
@@ -1314,7 +1314,7 @@ class excel_import:
 		if request.method == 'POST':
 			name_file = request.FILES.get('name_file')
 			if not name_file:
-				return HttpResponse('姓名xlsx文件上传')
+				return HttpResponse('姓名xlsx文件未上传')
 					
 			conf = {}
 			conf['surname'] = []
@@ -1346,7 +1346,7 @@ class excel_import:
 		if request.method == 'POST':
 			arena_loot_file = request.FILES.get('arena_loot_file')
 			if not arena_loot_file:
-				return HttpResponse('竞技场战利品xlsx文件上传')
+				return HttpResponse('竞技场战利品xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, arena_loot_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1383,7 +1383,7 @@ class excel_import:
 		if request.method == 'POST':
 			drop_file = request.FILES.get('drop_file')
 			if not drop_file:
-				return HttpResponse('掉落xlsx文件上传')
+				return HttpResponse('掉落xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drop_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1475,7 +1475,7 @@ class excel_import:
 		if request.method == 'POST':
 			dialog_file = request.FILES.get('dialog_file')
 			if not dialog_file:
-				return HttpResponse('对话xlsx文件上传')
+				return HttpResponse('对话xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, dialog_file.read())
 			sheet = wb.sheet_by_index(2)
@@ -1503,7 +1503,7 @@ class excel_import:
 		if request.method == 'POST':
 			drama_file = request.FILES.get('drama_file')
 			if not drama_file:
-				return HttpResponse('剧情xlsx文件上传')
+				return HttpResponse('剧情xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drama_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -1531,7 +1531,7 @@ class excel_import:
 		if request.method == 'POST':
 			quest_file = request.FILES.get('quest_file')
 			if not quest_file:
-				return HttpResponse('任务xlsx文件上传')
+				return HttpResponse('任务xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, quest_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1628,7 +1628,7 @@ class excel_import:
 		if request.method == 'POST':
 			item_file = request.FILES.get('item_file')
 			if not item_file:
-				return HttpResponse('道具xlsx文件上传')
+				return HttpResponse('道具xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, item_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1673,7 +1673,7 @@ class excel_import:
 		if request.method == 'POST':
 			tower_monster_file = request.FILES.get('tower_monster_file')
 			if not tower_monster_file:
-				return HttpResponse('神武塔Npcxlsx文件上传')
+				return HttpResponse('神武塔Npcxlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_monster_file.read())
 			sheet = wb.sheet_by_index(0)
@@ -1759,7 +1759,7 @@ class excel_import:
 		if request.method == 'POST':
 			tower_markup_file = request.FILES.get('tower_markup_file')
 			if not tower_markup_file:
-				return HttpResponse('神武塔开局属性xlsx文件上传')
+				return HttpResponse('神武塔开局属性xlsx文件未上传')
 						
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_markup_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -1781,7 +1781,7 @@ class excel_import:
 		if request.method == 'POST':
 			tower_award_file = request.FILES.get('tower_award_file')
 			if not tower_award_file:
-				return HttpResponse('神武塔奖励xlsx文件上传')
+				return HttpResponse('神武塔奖励xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, tower_award_file.read())
 			sheet = wb.sheet_by_index(3)
@@ -1801,3 +1801,46 @@ class excel_import:
 				conf[floor] = award
 			return HttpResponse(json.dumps(conf))
 		return HttpResponse('tower_award_import')
+		
+	@staticmethod
+	def medal_import(request):
+		if request.method == 'POST':
+			medal_file = request.FILES.get['medal_file']
+			if not medal_file:
+				return HttpResponse('勋章设定xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {}
+			for rownum in range(2,sheet.nrows):
+				row = sheet.row_values(rownum)
+				modelid = str(int(row[0]))
+				quality = row[3]
+				name = row[4]
+				icon = row[5]
+				typestr = row[6]
+				type = row[7]
+				val = int(row[8])
+				gravel = int(row[9])
+				chip = int(row[10])
+				desc = int(row[11])
+				
+				medalConf = {}
+				medalConf['modelid'] = modelid
+				medalConf['quality'] = quality
+				medalConf['name'] = name
+				medalConf['icon'] = icon
+				medalConf['typestr'] = typestr
+				medalConf['type'] = type
+				medalConf['val'] = val
+				medalConf['gravel'] = gravel
+				medalConf['chip'] = chip
+				medalConf['desc'] = desc
+				
+				conf[modelid] = medalConf
+				
+			return HttpResponse(json.dumps(conf))
+		return HttpResponse('medal_import')
+				
+			
