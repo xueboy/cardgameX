@@ -27,9 +27,16 @@ class tower:
 		tower.dayUpdate(usr, now)		
 		gameConf = config.getConfig('game')
 		data = {}
+		
+		data['tower_floor'] = -1	
 		if usr.tower['current']:
 			data['tower_floor'] = usr.tower['current']['floor']
-			
+			data['tower_point'] = usr.tower['current']['point']
+			data['tower_energy'] = usr.tower['current']['energy']
+			data['tower_strength'] = usr.tower['current']['strength']
+			data['tower_intelligence'] = usr.tower['current']['intelligence']
+			data['tower_artifice'] = usr.tower['current']['artifice']
+		
 		if usr.tower.has_key('ladder_position'):
 			data['tower_ladder_position'] = usr.tower['ladder_position']
 		else:
@@ -80,6 +87,9 @@ class tower:
 	def beat(usr, difficulty, star, dp, ehc):
 		if not usr.tower['current']:
 			return {'msg':'tower_not_start'}
+				
+		if usr.tower['current'].has_key('enhance') and (ehc == -1):
+			return {'msg':'tower_enhance_required'}
 				
 		gameConf = config.getConfig('game')
 		towerAwardConf = config.getConfig('tower_award')
@@ -157,6 +167,7 @@ class tower:
 			usr.tower['current']['intelligence'] = usr.tower['current']['intelligence'] + usr.tower['current']['enhance'][1]
 		elif ehc == 2:
 			usr.tower['current']['artifice'] = usr.tower['current']['artifice'] + usr.tower['current']['enhance'][2]
+		del usr.tower['current']['enhance']
 		
 	@staticmethod
 	def do_markup(usr, mkp):
