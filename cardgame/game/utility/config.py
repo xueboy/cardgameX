@@ -12,7 +12,7 @@ class config(gcconfig):
 			#return config.dungeonFilter(conf)			
 			return conf
 		if confname == 'game':
-			return conf
+			return gameFilter(conf)
 		if confname == 'pet':
 			#return config.petFileter(conf)
 			return conf
@@ -91,6 +91,15 @@ class config(gcconfig):
 		if confobj:
 			return config.getMd5(confobj)
 		return ''		
+	
+	@staticmethod
+	def gameFilter(conf):
+		data = conf.copy()
+		
+		del data['dungeon_medol_probablity']
+		
+		return data
+	
 			
 	@staticmethod
 	def dungeonFilter(conf):
