@@ -12,7 +12,7 @@ class config(gcconfig):
 			#return config.dungeonFilter(conf)			
 			return conf
 		if confname == 'game':
-			return gameFilter(conf)
+			return config.gameFilter(conf)
 		if confname == 'pet':
 			#return config.petFileter(conf)
 			return conf
