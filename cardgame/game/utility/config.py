@@ -94,9 +94,10 @@ class config(gcconfig):
 	
 	@staticmethod
 	def gameFilter(conf):
-		data = conf.copy()
-		
+		data = conf.copy()		
 		del data['dungeon_medal_probablity']
+		del data['"medal_holder_level_at_last']
+		del data['medal_holder_count']
 		
 		return data
 	
