@@ -425,8 +425,7 @@ class excel_import:
 				if unicode(row[53]):
 					luck.append(unicode(row[53]))
 				if unicode(row[54]):
-					luck.append(unicode(row[54]))
-				srgrowth = int(row[55])
+					luck.append(unicode(row[54]))				
 				chip = int(row[56])
 				petConf = {}
 				petConf['model'] = model
@@ -467,8 +466,7 @@ class excel_import:
 				petConf['evoObjectId'] = evoObjectId
 				petConf['evoPrice'] = evoPrice
 				petConf['desc'] = desc
-				petConf['luck'] = luck
-				petConf['srgrowth'] = srgrowth
+				petConf['luck'] = luck				
 				petConf['chip'] = chip
 				conf[str(petid)] = petConf
 			return HttpResponse(json.dumps(conf, sort_keys=True))
@@ -1250,7 +1248,7 @@ class excel_import:
 				almanacConf['dropid'] = dropid
 				almanacConf['typestr'] = typestr
 				almanacConf['type'] = type
-				almanacConf['value'] = value
+				almanacConf['val'] = value
 				
 				conf[almanacCombinationid] = almanacConf
 				
