@@ -1230,7 +1230,7 @@ class excel_import:
 				if row[2] == '':
 					combinSkillid = []
 				else:
-					combinCardid = row[2].split(',')
+					combinSkillid = row[2].split(',')
 				if row[3]	== '':
 					combinEquipmentid = []
 				else:
@@ -1805,7 +1805,7 @@ class excel_import:
 	@staticmethod
 	def medal_import(request):
 		if request.method == 'POST':
-			medal_file = request.FILES.get['medal_file']
+			medal_file = request.FILES.get('medal_file')
 			if not medal_file:
 				return HttpResponse('勋章设定xlsx文件未上传')
 				
@@ -1813,9 +1813,9 @@ class excel_import:
 			sheet = wb.sheet_by_index(0)
 			
 			conf = {}
-			for rownum in range(2,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
-				modelid = str(int(row[0]))
+				modelid = row[0]
 				quality = row[3]
 				name = row[4]
 				icon = row[5]
@@ -1824,7 +1824,7 @@ class excel_import:
 				val = int(row[8])
 				gravel = int(row[9])
 				chip = int(row[10])
-				desc = int(row[11])
+				desc = row[11]
 				
 				medalConf = {}
 				medalConf['modelid'] = modelid
@@ -1844,3 +1844,16 @@ class excel_import:
 		return HttpResponse('medal_import')
 				
 			
+	@staticmethod
+	def medal_loot_import(request):
+		if request.method == 'POST':
+			medal_loot_file = request.FILES.get('medal_loot_file')
+			if not medal_loot_file:
+				return HttpResponse('勋章战利品设定xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_loot_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {}
+			for rownum in range(4,sheet.nrows):
+				row = sheet.row_values(rownum)
