@@ -54,7 +54,7 @@ class network(object):
 		data['mail'] = self.mail
 		data['email'] = {}#self.email
 		data['friend_request'] = self.email
-		data['nt_info'] = self.nt_info
+		#data['nt_info'] = self.nt_info
 		return data			
 		
 	def load(self, roleid, data):
