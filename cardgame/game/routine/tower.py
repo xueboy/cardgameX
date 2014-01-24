@@ -48,7 +48,8 @@ class tower:
 			data['tower_markup'] = towerMarkupConf[usr.tower['max_floor']]
 			
 		data['tower_max_point'] = usr.tower['max_point']
-		data['tower_max_floow'] = usr.tower['max_floor']		
+		data['tower_max_floor'] = usr.tower['max_floor']
+		data['tower_last_max_floor'] = usr.tower['last_max_floor']
 		
 		data['tower_times'] = tower.times(usr, gameConf)
 		
