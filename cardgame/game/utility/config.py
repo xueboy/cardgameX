@@ -86,7 +86,7 @@ class config(gcconfig):
 			return conf
 		if confname == 'medal_loot':
 			return conf
-		if confname == 'medal_info':
+		if confname == 'medal_level':
 			return conf
 		return None
 	
