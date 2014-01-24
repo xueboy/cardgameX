@@ -110,7 +110,10 @@ def info(request):
 	info['arena_loot_md5'] = conf.getClientConfigMd5('arena_loot')
 	info['tower_monster_md5'] = conf.getClientConfigMd5('tower_monster')
 	info['tower_markup_md5'] = conf.getClientConfigMd5('tower_markup')
-	info['tower_award_md5'] = conf.getClientConfigMd5('tower_award')	
+	info['tower_award_md5'] = conf.getClientConfigMd5('tower_award')
+	info['medal_md5'] = config.getClientConfigMd5('medal')
+	info['medal_loot_md5'] = config.getClientConfigMd5('medal_loot')
+	info['medal_info_md5'] = config.getClientConfigMd5('medal_info')
 	return HttpResponse(json.dumps({'info':info}))
 
 

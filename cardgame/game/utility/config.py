@@ -82,6 +82,12 @@ class config(gcconfig):
 			return conf
 		if confname == 'tower_award':
 			return conf
+		if confname == 'medal':
+			return conf
+		if confname == 'medal_loot':
+			return conf
+		if confname == 'medal_info':
+			return conf
 		return None
 	
 	
