@@ -104,6 +104,7 @@ class config(gcconfig):
 		del data['dungeon_medal_probablity']
 		del data['medal_holder_level_at_last']
 		del data['medal_holder_count']
+		del data['medal_holder_appear_member_position']
 		
 		return data
 	
