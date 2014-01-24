@@ -197,10 +197,11 @@ class config(gcconfig):
 		return data
 		
 	@staticmethod
-	def madelFilter(conf)
+	def madelFilter(conf):
 		data = {}
 		for (madelid, madel) in conf.items():
 			m = madel.copy()
 			del m['typestr']			
+			del m['modelid']
 			data[madelid] = m
 		return data
