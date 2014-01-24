@@ -14,7 +14,7 @@ class tower:
 		
 	@staticmethod
 	def make():
-		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0}
+		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0}
 
 	@staticmethod			
 	def make_data():
@@ -137,7 +137,10 @@ class tower:
 				if usr.tower['current']['award_score'] > 30:
 					data = drop.open(usr, towerAwardInfo[2], data)				
 			usr.tower['current']['score'] = 0
-		
+
+		if usr.tower['max_floor'] < usr.tower['current']['floor']:
+			 usr.tower['max_floor'] = usr.tower['current']['floor']				
+
 		if dp:
 			data = drop.open(usr, towerMonster[usr.tower['current']['floor']]['dropid'], data)
 		
@@ -156,6 +159,7 @@ class tower:
 		data['tower_intelligence'] = usr.tower['current']['intelligence']
 		data['tower_artifice'] = usr.tower['current']['artifice']
 		data['tower_floor'] = usr.tower['current']['floor']
+		data['tower_max_floow'] = usr.tower['max_floor']
 		
 		return data		
 		
@@ -180,20 +184,22 @@ class tower:
 		markup = towerMarkupConf[usr.tower['max_floor']]
 		
 		if mkp == 'strength':
-			usr.tower['current']['strength'] = usr.tower['current']['strength'] + usr.tower['max_floor']
+			usr.tower['current']['strength'] = usr.tower['current']['strength'] + usr.tower['last_max_floor']
 		if mkp == 'intelligence':
-			usr.tower['current']['intelligence'] = usr.tower['current']['intelligence'] + usr.tower['max_floor']
+			usr.tower['current']['intelligence'] = usr.tower['current']['intelligence'] + usr.tower['last_max_floor']
 		if mkp == 'artifice':
-			usr.tower['current']['artifice']= usr.tower['current']['artifice'] + usr.tower['max_floor']
+			usr.tower['current']['artifice']= usr.tower['current']['artifice'] + usr.tower['last_max_floor']
 		
 	@staticmethod
 	def fail(usr):
 		if not usr.tower['current']:
 			return {'msg':'tower_not_start'}		
+		if usr.tower['max_floor'] < usr.tower['current']['floor']:
+			 usr.tower['max_floor'] = usr.tower['current']['floor']
 		usr.tower['record'].append(usr.tower['current'])
 		usr.tower['current'] = {}
 		usr.save()
-		return {}		
+		return {'max_floor': usr.tower['max_floor']}	
 		
 	@staticmethod
 	def make_enhance_list():
@@ -218,12 +224,13 @@ class tower:
 			point = 0
 			for rd in usr.tower['record']:
 				if rd['floor'] > floor:
-					usr.tower['max_floor'] = rd['floor']
+					usr.tower['last_max_floor'] = rd['floor']
 				if rd['point'] > point:
-					usr.tower['max_floor'] = rd['point']
+					usr.tower['last_max_floor'] = rd['point']
 			usr.tower['current'] = {}
 			usr.tower['record'] = []				
 			usr.tower['times'] = 0
+			usr.tower['max_floor'] = 0
 			usr.tower['last_update'] = now
 			usr.tower['floor_point'] = []
 			
