@@ -56,7 +56,7 @@ class medal:
 		hData['cards'] = member
 		return hData
 		
-	@staticmethod	
+	@staticmethod
 	def medallevelup(usr, medalid):
 		medalConfig = config.getConfig('medal')
 		medalLevelConfig = config.getConfig('medal_level')
@@ -106,9 +106,11 @@ class medal:
 	def levelupMedal(roleid, medalid):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/medal_levelup/', None, { 'medalid':medalid, 'roleid': roleid, 'medalid': medalid}))
 			
+	def grab(usr, defenceRoleid):		
+		return {'sp':usr.sp}
 	
 	@staticmethod
-	def grab(usr, defenceRoleid):
+	def win(usr, defenceRoleid):
 		
 		gameConf = config.getConfig('game')
 		

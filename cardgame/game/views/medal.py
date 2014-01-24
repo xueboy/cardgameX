@@ -11,12 +11,18 @@ def seek_holder(request):
 	usr = request.user	
 	return medal.seek_holder(usr, medalid, chipnum)
 	
+
+def grab():
+	grabRoleid = request.GET['grab_roleid']
 	
-def grab(request):
+	return medal.grab(usr, grabRoleid)
+	
+	
+def win(request):
 	
 	grabRoleid = request.GET['grab_roleid']
 	usr = request.user	
-	return medal.grab(usr, grabRoleid)
+	return medal.win(usr, grabRoleid)
 	
 def grab_fail(request):
 	usr = request.user
