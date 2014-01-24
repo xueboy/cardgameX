@@ -81,6 +81,8 @@ class tower:
 		data['tower_artifice'] = usr.tower['current']['artifice']
 		data['tower_times'] = tower.times(usr, gameConf)
 		data['tower_floor'] = 0
+		if usr.tower['current']['enhance']:
+			data['tower_enhance'] = enhance
 			
 		return data
 		
