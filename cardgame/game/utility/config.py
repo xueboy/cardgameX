@@ -83,7 +83,7 @@ class config(gcconfig):
 		if confname == 'tower_award':
 			return conf
 		if confname == 'medal':
-			return conf
+			return config.madelFilter(conf)
 		if confname == 'medal_loot':
 			return conf
 		if confname == 'medal_level':
