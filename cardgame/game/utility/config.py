@@ -195,3 +195,12 @@ class config(gcconfig):
 					
 			data[questid] = q
 		return data
+		
+	@staticmethod
+	def madelFilter(conf)
+		data = {}
+		for (madelid, madel) in conf.items():
+			m = madel.copy()
+			del m['typestr']			
+			data[madelid] = m
+		return data
