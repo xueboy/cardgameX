@@ -20,6 +20,7 @@ class network(object):
 		self.friend_request = {}
 		self.blacklist = []
 		self.sequenceid = 1
+		self.nt_info = {}
 		self.user = None
 		
 	def install(self, roleid):
@@ -34,6 +35,7 @@ class network(object):
 		data['friend_request'] = self.email
 		data['blacklist'] = self.blacklist
 		data['sequenceid'] = self.sequenceid
+		data['nt_info'] = self.nt_info
 		return data		
 	
 	def getClientData(self):	
@@ -52,7 +54,8 @@ class network(object):
 		data['mail'] = self.mail
 		data['email'] = {}#self.email
 		data['friend_request'] = self.email
-		return data
+		data['nt_info'] = self.nt_info
+		return data			
 		
 	def load(self, roleid, data):
 		object.load(self, roleid, data)
@@ -61,7 +64,7 @@ class network(object):
 		self.mail = data['mail']
 		self.email = data['email']
 		self.sequenceid = data['sequenceid']
-		
+		self.nt_info = data['nt_info']		
 		
 	def addFriendRequest(self, friend):		
 		data = self.user.getFriendData()
@@ -74,8 +77,8 @@ class network(object):
 		if not friend.notify.has_key('notify_friend_request'):
 			friend.notify['notify_friend_request'] = {}
 		friend.notify['notify_friend_request'][requestid] = data
-		friend.save()		
-		return data	
+		friend.save()
+		return data
 		
 	def addFriend(self, friend):
 		data = friend.getFriendData()
@@ -93,8 +96,7 @@ class network(object):
 		if otherNw.friend.has_key(selfroleid):
 			del otherNw.friend[str(selfroleid)]			
 			otherNw.save()
-			return {'friend_delete':friend.roleid}
-		
+			return {'friend_delete':friend.roleid}		
 			
 	def getFriend(self, friendRoleid):
 		if self.friends.has_key(str(friendRoleid)):
@@ -124,19 +126,22 @@ class network(object):
 		now = currentTime()
 		gameConf = config.getConfig('game')
 		expire = gameConf['message_expiry_period']
-		self.message = dict((k, v) for k,v in self.message.items() if (v['send_time'] + expire) > now)
-		
+		self.message = dict((k, v) for k,v in self.message.items() if (v['send_time'] + expire) > now)		
 		
 	def sendMail(self, toUser, mail):
-		toUserNw = toUser.getNetwork()		
-		msgData = self.user.getFriendData()	
+		toUserNw = toUser.getNetwork()					
+		ntInfo = self.user.getNtInfoData()	
 		requestid = str(toUserNw.sequenceid)
 		toUserNw.sequenceid = toUserNw.sequenceid + 1
-		msgData.update({'mail':mail, 'send_time': currentTime(), 'id':requestid})		
-		toUserNw.mail[requestid] = msgData
+		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid, 'roleid':toUser.roleid}
+		fromUserId = str(self.user.roleid)
+		if not toUserNw.mail.has_key(self.user.roleid):
+			toUserNw.mail[requestid] = [fromUserId]
+		toUserNw.mail[fromUserId].append(msgData)
+		toUserNw.nt_info[str(toUser.roleid)] = ntInfo
 		if not toUser.notify.has_key('notify_mail'):
 			toUser.notify['notify_mail'] = {}
-		toUser.notify['notify_mail'][requestid] = msgData
+		toUser.notify['notify_mail'][requestid] = dict(msgData, **ntInfo)
 		toUser.save()
 		toUserNw.save()
 		
@@ -175,8 +180,7 @@ class network(object):
 			strRoleid = str(self.roleid)
 			if fNw.friend.has_key(strRoleid):
 				fNw.friend[strRoleid] = self.user.getFriendData()
-				fNw.save()
-			
+				fNw.save()			
 		
 	def emailAnswerFriendRequest(self, email, option):
 		if option == 'yes':
@@ -218,7 +222,6 @@ class network(object):
 		self.save()
 		return self.email[emailid]		
 		
-		
 	def emailDelete(self, emailid):
 		if self.email.has_key(emailid):
 			del self.email[emailid]
@@ -231,5 +234,3 @@ class network(object):
 		qt = self.user.getQuest()		
 		qt.updateFinishYellQuest()
 		return ms.yell(self.roleid, name, msg)
-		
-		

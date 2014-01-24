@@ -140,6 +140,15 @@ def tower_markup(request):
 def tower_award(request):
 	return generalConfigRequestProcess(request, 'tower_award')
 	
+def medal(request):
+	return generalConfigRequestProcess(request, 'medal')
+	
+def medal_loot(request):
+	return generalConfigRequestProcess(request, 'medal_loot')
+	
+def medal_level(request):
+	return generalConfigRequestProcess(request, 'medal_level')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -263,3 +272,12 @@ def tower_markup_import(request):
 	
 def tower_award_import(request):
 	return excel_import.tower_award_import(request)
+	
+def medal_import(request):
+	return excel_import.medal_import(request)
+	
+def medal_loot_import(request):
+	return excel_import.medal_loot_import(request)
+	
+def medal_level_import(request):
+	return excel_import.medal_level_import(request)

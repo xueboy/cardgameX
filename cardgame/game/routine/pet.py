@@ -305,3 +305,41 @@ class pet:
 			else: 
 				return pb['star']
 		return 0
+		
+		
+	@staticmethod
+	def pvpProperty(card, petConf):
+		
+		petInfo = petConf[card['cardid']]
+		
+		ppData = {}
+		ppData['attack'] = petInfo['attack'] + petInfo['attackgrowth'] * (card['level'] + card['star']* 5)  * 0.5		
+		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + card['star'] * 5) * 0.5		
+		ppData['pd'] = 0
+		ppData['md'] = 0
+		ppData['pt'] = 0
+		ppData['mt'] = 0
+		ppData['pr'] = petInfo['pr'] + card['star'] * petInfo['prgrowth']
+		ppData['mr'] = petInfo['mr'] + card['star'] * petInfo['mrgrowth']
+		ppData['critical'] = petInfo['critical']
+		ppData['tenacity'] = petInfo['tenacity']
+		ppData['block'] = petInfo['block']
+		ppData['wreck'] = petInfo['wreck']
+		ppData['hit'] = petInfo['hit']
+		ppData['dodge'] = petInfo['dodge']
+		ppData['pa'] = petInfo['pa']
+		ppData['ma'] = petInfo['ma']
+		ppData['strength'] = petInfo['strength']
+		ppData['intelligence'] = petInfo['intelligence']
+		ppData['artifice'] = petInfo['artifice']
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * petInfo['star']
+		ppData['ma'] = petInfo['ma'] + petInfo['magrowth'] * petInfo['star']
+		ppData['id'] = card['id']
+		ppData['cardid'] = card['cardid']
+		
+		
+		
+		
+		

@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.user import user as gcuser
+from gclib.cache import cache
 #from game.models.account import account
 from game.models.dungeon import dungeon
 from game.models.inventory import inventory
@@ -19,6 +20,7 @@ from game.routine.signin import signin
 from game.routine.levelup import levelup
 from game.routine.arena import arena
 from game.routine.tower import tower
+from game.routine.medal import medal
 
 
 class user(gcuser):
@@ -66,6 +68,7 @@ class user(gcuser):
 		self.longitude = 0.0
 		self.latitude = 0.0
 		self.tower = tower.make()
+		self.medal = medal.make()
 		
 	
 	def init(self, acc = None):
@@ -119,6 +122,7 @@ class user(gcuser):
 		data['longitude'] = self.longitude
 		data['latitude'] = self.latitude
 		data['tower'] = self.tower
+		data['medal'] = self.medal
 		return data
 		
 	def getClientData(self):
@@ -150,8 +154,19 @@ class user(gcuser):
 		data['educate'] = educate.getClientData(self, gameConf)
 		data['avatar'] = self.avatar
 		data['levelup'] = self.levelup['record']
-		data['tower'] = tower.getClientData(self)	
-		return data		
+		data['tower'] = tower.getClientData(self)
+		data['medal'] = medal.getClientData(self)
+		return data
+		
+	def getNtInfoData(self):
+		ntInfo = {}
+		ntInfo['name'] = self.name
+		ntInfo['level'] = self.level
+		ntInfo['sex'] = self.gender
+		ntInfo['avatar_id'] = self.avatar_id		
+		ntInfo['last_login'] = self.last_login
+		return ntInfo
+		
 		
 	def getFriendData(self):
 		data = {}
@@ -166,8 +181,6 @@ class user(gcuser):
 			data['sex'] = 1
 		else:
 			data['sex'] = 0		
-		data['longitude'] = self.longitude
-		data['latitude'] = self.latitude
 		if self.luckycat:
 			data['luckycat_level'] = self.luckycat['level']
 		#teamCardid = []
@@ -259,6 +272,7 @@ class user(gcuser):
 		self.longitude = data['longitude']
 		self.latitude = data['latitude']
 		self.tower = data['tower']
+		self.medal = data['medal']
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
@@ -347,6 +361,8 @@ class user(gcuser):
 		"""
 		gain exp
 		"""
+		if exp <= 0:
+			return
 		self.exp = self.exp + exp
 		levelConf = config.getConfig('level')
 		isLevelup = False
@@ -444,4 +460,9 @@ class user(gcuser):
 		self.getAlmanac().delete()
 		self.delete()
 		
-	
+	def pvpProperty(self):
+		
+		data = {}
+		
+		return data
+		

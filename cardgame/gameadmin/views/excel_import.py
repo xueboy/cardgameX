@@ -1852,8 +1852,64 @@ class excel_import:
 				return HttpResponse('勋章战利品设定xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_loot_file.read())
-			sheet = wb.sheet_by_index(0)
+			sheet = wb.sheet_by_index(1)
+			
+			conf = []
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)					
+				
+				level = int(row[0])
+				gold = int(row[1])
+				exp = int(row[2])
+				skillid = row[3]
+				skilllevel = int(row[4])
+				cardid = row[5]
+				cardlevel = int(row[6])				
+				
+				while len(conf) < level:
+					conf.append({})
+					
+				medalLootConf = {}
+				medalLootConf['gold'] = gold
+				medalLootConf['exp'] = exp
+				medalLootConf['skillid'] = skillid
+				medalLootConf['skilllevel'] = skilllevel
+				medalLootConf['cardid'] = cardid
+				medalLootConf['cardlevel'] = cardlevel				
+				conf[level - 1] = medalLootConf
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))			
+		return HttpResponse('arena_loot_import')
+		
+	@staticmethod
+	def medal_level_import(request):
+		if request.method == 'POST':
+			medal_level_file = request.FILES.get('medal_level_file')
+			if not medal_level_file:
+				return HttpResponse('勋章等级设定xlsx文件未上传')
+			
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_level_file.read())
+			sheet = wb.sheet_by_index(2)
 			
 			conf = {}
-			for rownum in range(4,sheet.nrows):
-				row = sheet.row_values(rownum)
+			
+			medalid = sheet.row_values(0)[1:]
+			
+			conf = dict.fromkeys(medalid, [])
+			
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)					
+			
+				level = int(row[0])
+				for i in range(1, len(row) - 1):
+					if not row[i]:
+						continue
+					if row:
+						while len(conf[medalid[i]]) < level:
+							conf[medalid[i]].append(0)
+					
+					conf[medalid[i]][level - 1] = int(row[i])
+					
+		
+			return HttpResponse(json.dumps(conf, sort_keys=True))			
+		return HttpResponse('medal_level_import')

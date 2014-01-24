@@ -1,3 +1,4 @@
 ﻿ 
 
-class Assertion(Exception):pass
+class Assertion(Exception):
+	pass

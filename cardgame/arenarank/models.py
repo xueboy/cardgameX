@@ -287,4 +287,65 @@ class tower_ladder(facility):
 		roleid = rank[position]		
 		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position}
 		
+class medal_arena(facility):	
 		
+	def __init__(self):
+		facility.__init__(self)
+		self.medal_hold = {}
+		self.medal_level = {}
+	
+	def win_medal(self, roleid, level, medalid, chipnum):
+		
+			
+		self.medal_level[roleid] = level
+			
+		if not self.medal_hold.has_key(medalid):
+			medalConf = config.getConfig('medal')			
+			self.medal_hold[medalid] = [] * medalConf['chip']			
+			self.medal_hold[medalid][chipnum].append(roleid)
+		else:
+			if roleid not in self.medal_hold[medalid][chipnum]:
+				medal_hold[medalid][chipnum].append(roleid)
+		return {}
+				
+	def lose_medal(self, roleid, medalid, chipnum):		
+		if roleid in self.medal_hold[medalid][chipnum]:
+			self.medal_hold[medalid][chipnum].remove(roleid)
+			return 1
+		return 0			
+		
+	def role_level(self, roleid, level):
+		self.medal_level[roleid] = level	
+		
+	def seek_holder(self, level, medalid, chipnum):
+		holder = []
+		
+		gameConf = config.getConfig('game')
+		
+		if not self.medal_hold.has_key(medalid):
+			return {'msg':'medal_holder_exhaust'}
+		
+		levelBase = level - gameConf['medal_holder_level_at_last']
+		
+		if levelBase < 1:
+			levelBase = 1
+		
+		self.medal_hold[chipnum] = random.shuffle(self.medal_hold[chipnum])			
+		for r in self.medal_hold:
+			if self.medal_level[r] <= levelBase:
+				continue
+			if r not in holder:
+				holder.append(m)
+				if len(holder) >= gameConf['medal_holder_count']:
+					break					
+		return {'holder':holder}
+			
+	def medal_levelup(self, roleid, medalid):
+		medalConf = config.getConfig('medal')
+		medalInfo = medalConf[medalid]
+		
+		for cp in range(medalInfo['chip']):
+			if roleid in self.medal_hold[medalid][cp]:
+			 self.medal_hold[medalid][cp].remove(roleid)
+		
+		return {}

@@ -4,7 +4,7 @@
 from django.http import HttpResponse
 from gclib.cache import cache
 from gclib.json import json
-from arenarank.models import ladder, tower_ladder
+from arenarank.models import ladder, tower_ladder, medal_arena
 
 def show_ladder(request):	
 			
@@ -69,3 +69,46 @@ def tower_show(request):
 	
 	ld = tower_ladder.instance()
 	return HttpResponse(json.dumps(ld.show_ladder(level)))
+	
+	
+def grab_medal(request):
+	
+	offenceRoleid = request.REQUEST['offenceRoleid']
+	deffenceRoleid = request.REQUEST['deffenceRoleid']
+	
+	level = int(request.REQUEST['level'])
+	medalid = request.REQUEST['medalid']
+	chipnum = int(request.REQUEST['chipnum'])
+	
+	ld = medal_arena.instance()
+	if ld.lose_medal(offenceRoleid, medalid, chipnum) == 0:
+		return HttpResponse(json.dumps({'msg':'medal_not_exist'}))
+	
+	return HttpResponse(json.dumps(ld.win_medal(roleid, level, medalid, chipnum)))
+	
+	
+def lose_medal(request):
+	
+	roleid = request.REQUEST['roleid']
+	medalid = request.REQUEST['medalid']
+	chipnum = int(request.REQUEST['chipnum'])
+	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.lose_medal(roleid, medalid, chipnum)))
+	
+def seek_holder(request):
+	
+	level = int(request.REQUEST['level'])
+	medalid = request.REQUEST['medalid']
+	chipnum = int(request.REQUEST['chipnum'])
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.seek_holder(level, medalid, chipnum)))
+	
+	
+def medal_levelup(request):
+	
+	roleid = request.REQUEST['roleid']
+	medalid = request.request['medalid']
+	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.seek_holder(roleid, medalid)))

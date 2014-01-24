@@ -3,8 +3,6 @@
 
 cachekey_usr_session_profix = 'usr_session_'#roleid
 
-
-
 class cache:
 
 	@staticmethod

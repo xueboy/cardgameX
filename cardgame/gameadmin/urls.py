@@ -102,7 +102,10 @@ urlpatterns = patterns('',
     url(r'^tower_markup_import/$', gameadmin.views.main.tower_markup_import),
     url(r'^tower_award/$', gameadmin.views.main.tower_award),
     url(r'^tower_award_import/$', gameadmin.views.main.tower_award_import),
-    
-    
-    
+    url(r'^medal/$', gameadmin.views.main.medal),
+    url(r'^medal_import/$', gameadmin.views.main.medal_import),
+    url(r'^medal_loot/$', gameadmin.views.main.medal_loot),
+    url(r'^medal_loot_import/$', gameadmin.views.main.medal_loot_import),
+    url(r'^medal_level/$', gameadmin.views.main.medal_level),
+    url(r'^medal_level_import/$', gameadmin.views.main.medal_level_import),    
 )

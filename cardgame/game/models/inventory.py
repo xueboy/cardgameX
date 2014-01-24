@@ -25,6 +25,7 @@ class inventory(object):
 		self.user = None
 		self.skill = []
 		self.skill_chip = {}
+		self.medal = {}
 		
 	def init(self):		
 		return		
@@ -43,6 +44,7 @@ class inventory(object):
 		data['stone'] = self.stone
 		data['skill'] = self.skill
 		data['skill_chip'] = self.skill_chip
+		data['medal'] = self.medal
 		return data
 		
 		
@@ -113,6 +115,7 @@ class inventory(object):
 		data['sk_slot'] = self.getSkSlots()
 		data['stone'] = stone
 		data['skill'] = skill
+		data['medal'] = self.medal
 		return data
 		
 	def load(self, roleid, data):
@@ -126,6 +129,7 @@ class inventory(object):
 		self.stone = data['stone']
 		self.skill = data['skill']
 		self.skill_chip = data['skill_chip']
+		self.medal = data['medal']
 		
 	def addCard(self, cardid, level = 1):
 		cardConf = config.getConfig('pet')				
@@ -576,4 +580,19 @@ class inventory(object):
 			if it['id'] == id:
 				return it
 		return None
+		
+	def addMedalChip(self, medalid, chipnum):
+		
+		medalConfig = config.getConfig('medal')		
+		medalInfo = medalConfig[medalid]		
+		if not self.medal.has_key(medalid):
+			self.medal[medalid] = {'level':0, 'chip': [0] * medalInfo['chip'], id:medalid, 'gravel':0}			
+		self.medal[medalid][chip][chipnum] = self.medal[medalid][chip][chipnum] + 1		
+		return medal[medalid]
+		
+	def delMedalChip(self, medalid, chipnum):
+		
+		self.medal[medalid][chipnum] = self.medal[medalid][chipnum] - 1
+		return medal[medalid]
+
 		

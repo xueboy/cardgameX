@@ -225,8 +225,7 @@ class drop:
 			if (not awd.has_key('add_item_array')) and newIt:
 				awd['add_item_array'] = []
 			if (not awd.has_key('update_item_array')) and updateIt:
-				awd['update_item_array'] = []
-			
+				awd['update_item_array'] = []			
 			if newIt:
 				awd['add_item_array'].extend(newIt)
 			if updateIt:
