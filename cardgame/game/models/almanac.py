@@ -102,7 +102,7 @@ class almanac(object):
 			
 		data = {}
 		
-		self.combinaion.append(cmbid)			
+		self.combine.append(cmbid)			
 		if combinationInfo['dropid']:			
 			drop.open(self.user, combinationInfo['dropid'], data)			
 		data['add_almanac_combine'] = cmbid
