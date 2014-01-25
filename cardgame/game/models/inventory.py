@@ -539,7 +539,7 @@ class inventory(object):
 				else:
 					it['count'] = it['count'] + itemCount
 					itemCount = 0
-					its.append(its)
+					its.append(it)
 					break
 		
 		item = []
