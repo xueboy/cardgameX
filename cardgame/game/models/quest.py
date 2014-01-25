@@ -86,7 +86,7 @@ class quest(object):
 				if self.commonIsAvailable(usr, qid, questConf[qid]):					
 					newQuest.append(qid)
 			elif questConf[qid]['type'] == 2:
-				if self.dayIsAvailable(usr, qid, questConf[qid]):			
+				if self.dayIsAvailable(usr, qid, questConf[qid], questConf):			
 					newQuest.append(qid)							
 		return newQuest		
 		
@@ -118,7 +118,7 @@ class quest(object):
 			return True
 		return False
 					
-	def dayIsAvailable(self, usr, qid, questInfo):				
+	def dayIsAvailable(self, usr, qid, questInfo, questConf):				
 		if questInfo['level'] > usr.level:
 			return False
 		
@@ -127,8 +127,9 @@ class quest(object):
 		alreadyFinishPre = questInfo['isFirst']			
 			
 		if not alreadyFinishPre:
-			for qid in self.finish:
-				if questInfo['nextId'] == questid:
+			for fqid in self.finish:
+				finishQuestInfo = questConf[fqid]
+				if finishQuestInfo['nextId'] == qid:
 					if not is_same_day(self.finish[qid]['create_time'], currentTime()):
 						return True
 		return False 
