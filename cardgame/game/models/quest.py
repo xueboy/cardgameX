@@ -254,8 +254,9 @@ class quest(object):
 		data = {}
 		data['finish_quest'] = questid
 		if newQuest:
-			data['accept_quest'] = newQuest		
-		data = drop.open(usr, questInfo['dropid'], data)		
+			data['accept_quest'] = newQuest
+		if questInfo['dropid']:
+			data = drop.open(usr, questInfo['dropid'], data)		
 		self.save()
 		return data
 	

@@ -36,7 +36,13 @@ class tower:
 			data['tower_strength'] = usr.tower['current']['strength']
 			data['tower_intelligence'] = usr.tower['current']['intelligence']
 			data['tower_artifice'] = usr.tower['current']['artifice']
-		
+		else:
+			data['tower_floor'] = 0
+			data['tower_point'] = 0
+			data['tower_energy'] = 0
+			data['tower_strength'] = 0
+			data['tower_intelligence'] = 0
+			data['tower_artifice'] = 0
 		if usr.tower.has_key('ladder_position'):
 			data['tower_ladder_position'] = usr.tower['ladder_position']
 		else:
@@ -206,7 +212,7 @@ class tower:
 		usr.tower['record'].append(usr.tower['current'])
 		usr.tower['current'] = {}
 		usr.save()
-		return {'max_floor': usr.tower['max_floor']}	
+		return {'tower_max_floow': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point']}	
 		
 	@staticmethod
 	def make_enhance_list():
