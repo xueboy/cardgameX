@@ -36,8 +36,7 @@ class tower:
 			data['tower_strength'] = usr.tower['current']['strength']
 			data['tower_intelligence'] = usr.tower['current']['intelligence']
 			data['tower_artifice'] = usr.tower['current']['artifice']
-		else:
-			data['tower_floor'] = 0
+		else:			
 			data['tower_point'] = 0
 			data['tower_energy'] = 0
 			data['tower_strength'] = 0
