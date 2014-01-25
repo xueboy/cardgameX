@@ -50,7 +50,7 @@ class tower:
 		data['tower_max_point'] = usr.tower['max_point']
 		data['tower_max_floor'] = usr.tower['max_floor']
 		data['tower_last_max_floor'] = usr.tower['last_max_floor']
-		data['tower_last_max_point'] = usr.tower['last_max_point']
+		#data['tower_last_max_point'] = usr.tower['last_max_point']
 		
 		data['tower_times'] = tower.times(usr, gameConf)
 		if usr.tower['current'].has_key('enhance'):
@@ -167,7 +167,7 @@ class tower:
 		data['tower_artifice'] = usr.tower['current']['artifice']
 		data['tower_floor'] = usr.tower['current']['floor']
 		data['tower_max_floow'] = usr.tower['max_floor']
-		
+		data['tower_max_point'] = usr.tower['max_point']
 		return data		
 		
 	@staticmethod
