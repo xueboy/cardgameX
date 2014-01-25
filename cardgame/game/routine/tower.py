@@ -173,7 +173,7 @@ class tower:
 		data['tower_intelligence'] = usr.tower['current']['intelligence']
 		data['tower_artifice'] = usr.tower['current']['artifice']
 		data['tower_floor'] = usr.tower['current']['floor']
-		data['tower_max_floow'] = usr.tower['max_floor']
+		data['tower_max_floor'] = usr.tower['max_floor']
 		data['tower_max_point'] = usr.tower['max_point']
 		return data		
 		
@@ -213,7 +213,7 @@ class tower:
 		usr.tower['record'].append(usr.tower['current'])
 		usr.tower['current'] = {}
 		usr.save()
-		return {'tower_max_floow': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point']}	
+		return {'tower_max_floor': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point']}	
 		
 	@staticmethod
 	def make_enhance_list():
