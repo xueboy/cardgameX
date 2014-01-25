@@ -236,6 +236,39 @@ class drop:
 		if save_inv:
 			inv.save()
 		return None
-	     
-	
+		
+		
+	@staticmethod
+	def makeData(awd):		
+		dropData = []
+		if awd.has_key('st'):
+			dropData.append({'type':11, 'count':awd['st']})
+		if awd.has_key('gem'):
+			dropData.append({'type':6, 'count':awd['gem']})
+		if awd.has_key('gold'):
+			dropData.append({'type':10, 'count':awd['gold']})
+		if awd.has_key('sp'):
+			dropData.append({'type':8, 'count':awd['sp']})	  	
+		if awd.has_key('exp'):
+			dropData.append({'type':9, 'count':awd['exp']})
+			dropData.append({'type':12, 'count':awd['level']})
+		if awd.has_key('add_stone_array'):
+			for st in awd['add_stone_array']:
+				dropData.append({'type':5, 'count':1, 'insId':st['id'], 'id':st['stoneid']})	  				
+		if awd.has_key('add_equipment_array'):
+			for eq in awd['add_equipment_array']:
+				dropData.append({'type':3, 'count':1, 'insId':eq['id'], 'id':eq['equipmentid']})
+		if awd.has_key('add_card_array'):
+			for card in awd['add_card_array']:
+				dropData.append({'type':1, 'count':1, 'insId':card['id'], 'id':card['cardid']})
+		if awd.has_key('add_skill_array'):
+			for sk in awd['add_skill_array']:
+				dropData.append({'type':2, 'count':1, 'insId':sk['id'], 'id':sk['skillid']})
+		if awd.has_key('add_item_array'):
+			for it in awd['add_item_array']:
+				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})
+		if awd.has_key('update_item_array'):
+			for it in awd['update_item_array']:
+				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})		
+		return {'drop':dropData}
 		

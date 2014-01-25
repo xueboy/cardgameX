@@ -6,6 +6,7 @@ from gclib.utility import is_same_day, currentTime
 from gclib.json import json
 from gclib.curl import curl
 from game.utility.config import config
+from game.routine.drop import drop
 
 from cardgame.settings import ARENE_SERVER
 
@@ -120,14 +121,14 @@ class tower:
 			usr.tower['floor_point'].append(0)
 		
 		newPoint = False
-		if usr.tower['floor_point'] < usr.tower['current']['point']:
-			newRecord = True
-			usr.tower['floor_point'] = usr.tower['current']['point']
+		if usr.tower['floor_point'][usr.tower['current']['floor'] - 1] < usr.tower['current']['point']:
+			newPoint = True
+			usr.tower['floor_point'][usr.tower['current']['floor'] - 1] = usr.tower['current']['point']
 		
 		newScore = False
-		if usr.tower['floor_score'] < usr.tower['current']['score']:
+		if usr.tower['floor_score'][usr.tower['current']['floor'] - 1] < usr.tower['current']['score']:
 			newScore = True
-			usr.tower['floor_score'].append(usr.tower['current']['score'])
+			usr.tower['floor_score'][usr.tower['current']['floor'] - 1] = usr.tower['current']['score']
 					
 		if ehc != -1:
 			if not usr.tower['current'].has_key('enhance'):
@@ -142,13 +143,15 @@ class tower:
 		data = {}		
 			
 		if usr.tower['current']['floor'] % gameConf['tower_award_interval_floor'] == 0:
+			print usr.tower['floor_point']
+			print usr.tower['floor_score']
 			towerAwardInfo = towerAwardConf[str(usr.tower['current']['floor'])]
 			if newPoint:
 				data = drop.open(usr, towerAwardInfo[1], data)
 			if newScore:				
-				if usr.tower['current']['award_score'] > 45:
+				if usr.tower['current']['score'] > 45:
 					data = drop.open(usr, towerAwardInfo[3], data)
-				if usr.tower['current']['award_score'] > 30:
+				if usr.tower['current']['score'] > 30:
 					data = drop.open(usr, towerAwardInfo[2], data)				
 			usr.tower['current']['score'] = 0
 
@@ -157,6 +160,9 @@ class tower:
 
 		if dp:
 			data = drop.open(usr, towerMonster[usr.tower['current']['floor']]['dropid'], data)
+		
+		if data:	
+			data = drop.makeData(data)
 		
 		res = tower.stand(usr)
 		if not res.has_key('msg'):
@@ -219,12 +225,11 @@ class tower:
 	def make_enhance_list():
 		
 		point = []
-		for i in range(3):
-			item = {}
+		for i in range(3):			
 			point.extend(random.sample([2, 10, 30], 1))
 		
 		if 2 not in point:
-			idx = random.randint(1, 2)
+			idx = random.randint(0, 2)
 			point[idx] = 2
 		return point		
 		
