@@ -60,15 +60,16 @@ def tower_stand(request):
 	level = request.REQUEST['level']
 	point = request.REQUEST['point']
 	name = request.REQUEST['name']
+	floor = request.REQUEST['floor']
 	ld = tower_ladder.instance()
-	return HttpResponse(json.dumps(ld.stand(roleid, name, int(level), int(point))))
+	return HttpResponse(json.dumps(ld.stand(roleid, name, int(level), int(point), int(floor))))
 	
 def tower_show(request):
 	
 	level = request.REQUEST['level']
 	
 	ld = tower_ladder.instance()
-	return HttpResponse(json.dumps(ld.show_ladder(level)))
+	return HttpResponse(json.dumps(ld.show_ladder(int(level))))
 	
 	
 def grab_medal(request):
@@ -108,7 +109,16 @@ def seek_holder(request):
 def medal_levelup(request):
 	
 	roleid = request.REQUEST['roleid']
-	medalid = request.request['medalid']
-	
+	medalid = request.REQUEST['medalid']	
 	ld = medal_arena.instance()
 	return HttpResponse(json.dumps(ld.seek_holder(roleid, medalid)))
+	
+def new_medal(request):
+	roleid = request.REQUEST['roleid']
+	medalid = request.REQUEST['medalid']
+	chipnum = request.REQUEST['chipnum']
+	level = request.REQUEST['level']
+	cnt = request.REQUEST['count']
+	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.new_holder(roleid, level, medalid, chipnum, cnt)))

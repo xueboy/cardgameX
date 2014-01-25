@@ -3,7 +3,7 @@
 
 from django.db import models
 from gclib.facility import facility
-from gclib.utility import currentTime
+from gclib.utility import currentTime, day_diff
 from game.models.user import user
 from game.utility.config import config
 
@@ -212,20 +212,34 @@ class tower_ladder(facility):
 		self.rank50 = data['rank50']		
 		self.item = data['item']
 		
-	def stand(self, roleid, name, level, point):
+	@staticmethod
+	def position_in_rank(rank, roleid):
+		for (i, r) in enumerate(rank):
+			if r['roleid'] == roleid:
+				return i
+		return -1
+		
+		
+	def stand(self, roleid, name, level, point, floor):
 		
 		gameConf = config.getConfig('game')
-		
-		if roleid in self.rank20:
-			self.rank20.remove(roleid)
-		if roleid in self.rank30:
-			self.rank30.remove(roleid)
-		if roleid in self.rank40:
-			self.rank40.remove(roleid)
-		if roleid in self.rank50:
-			self.rank50.remove(roleid)
-		
+				
+		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
+			self.rank20 = filter(lambda x:x['roleid']!=roleid, self.rank20)					
+		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
+			self.rank30 = filter(lambda x:x['roleid']!=roleid, self.rank30)		
+		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
+			self.rank40 = filter(lambda x:x['roleid']!=roleid, self.rank40)		
+		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
+			self.rank50 = filter(lambda x:x['roleid']!=roleid, self.rank50)
+			
+		now = currentTime()
+		inLadderDayCount = 1		
+		lastStandTime = now
 		if roleid in self.item:
+			inLadderDayCount = self.item[roleid]['in_ladder_day_count']
+			lastStandTime = self.item[roleid]['last_stand_time']
+			
 			del self.item[roleid]
 		
 		if len(self.rank20) > gameConf['tower_ladder_size']:
@@ -236,56 +250,100 @@ class tower_ladder(facility):
 			self.rank40 = self.rank40[0:19]				
 		if len(self.rank50) > gameConf['tower_ladder_size']:
 			self.rank50 = self.rank50[0:19]		
+				
 		
-		if level < 20:			
-			for (rk, i) in enumerate(self.rank20):
+		dayCount = day_diff(now, lastStandTime)
+		if dayCount == 1:
+			inLadderDayCount = inLadderDayCount + 1
+		elif dayCount > 1:
+			inLadderDayCount = 1
+		
+		lastStandTime = now
+		
+		if level < 20:						
+			for (i, rk) in enumerate(self.rank20):
 				if point > rk['point']:
 					self.rank20.insert(i, {'point':point, 'roleid':roleid})
-					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+					self.save()
 					return {'position': i, 'rank_level':20}
+			if len(self.rank20) < gameConf['tower_ladder_size']:
+				self.rank20.append({'point':point, 'roleid':roleid})
+				self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+				self.save()
+				return {'position': len(self.rank20), 'rank_level':20}	
 		elif level < 30:
-			for (rk, i) in enumerate(self.rank30):
+			for (i, rk) in enumerate(self.rank30):
 				if point > rk['point']:
 					self.rank30.insert(i, {'point':point, 'roleid':roleid})
-					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+					self.save()
 					return {'position':i, 'rank_level':30}
+			if len(self.rank30) < gameConf['tower_ladder_size']:
+				self.rank30.append({'point':point, 'roleid':roleid})
+				self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+				self.save()
+				return {'position': len(self.rank30), 'rank_level':20}	
 		elif level < 40:
-			for (rk, i) in enumerate(self.rank40):
-				 if point > rk['point']:
-				 	self.rank40.insert(i, {'point': point, 'roleid':roleid})
-				 	self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
-				 	return {'position':i, 'rank_level':40}
+			for (i, rk) in enumerate(self.rank40):
+				if point > rk['point']:
+					self.rank40.insert(i, {'point': point, 'roleid':roleid})
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+					self.save()
+					return {'position':i, 'rank_level':40}
+			if len(self.rank40) < gameConf['tower_ladder_size']:
+				self.rank40.append({'point':point, 'roleid':roleid})
+				self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+				self.save()
+				return {'position': len(self.rank40), 'rank_level':20}	
 		else:
-			for (rk, i) in enumerate(self.rank50):
+			for (i, rk) in enumerate(self.rank50):
 				if point > rk['point']:
 					self.rank50.insert(i, {'point':point, 'roleid':roleid})
-					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name}
-					return {'position':i, 'rank_level':50}		
+					self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+					self.save()
+					return {'position':i, 'rank_level':50}
+			if len(self.rank50) < gameConf['tower_ladder_size']:
+				self.rank50.append({'point':point, 'roleid':roleid})
+				self.item[roleid] = {'roleid':roleid, 'level':level, 'point':point, 'name':name, 'in_ladder_day_count':inLadderDayCount, 'last_stand_time' : lastStandTime, 'floor':floor}
+				self.save()
+				return {'position': len(self.rank50), 'rank_level':20}	
 		return {'msg':'tower_ladder_not_stand'}
 			
 	def show_ladder(self, level):
 		rank = None
 		
-		if level < 20:
-			rank = self.rank20
-		elif level < 30:
-			rank = self.rank30
-		elif level < 40:
-			rank = self.rank40
-		else:
-			rank = self.rank50
-			
+		
+		listLd = {}
 		ls = []
-			
-		for i in range(len(rank)):
-			ls.append(tower_ladder.show_position(rank, self.item, i))
-		return ls
+		for i in range(len(self.rank20)):
+			 ls.append(tower_ladder.show_position(self.rank20, self.item, i))
+		listLd['20'] = ls
+		ls = []
+		
+		for i in range(len(self.rank30)):
+			 ls.append(tower_ladder.show_position(self.rank30, self.item, i))
+		listLd['30'] = ls
+		
+		ls = []
+		for i in range(len(self.rank40)):
+			 ls.append(tower_ladder.show_position(self.rank40, self.item, i))
+		listLd['40'] = ls
+		
+		ls = []
+		for i in range(len(self.rank50)):
+			 ls.append(tower_ladder.show_position(self.rank50, self.item, i))
+		listLd['50'] = ls
+		
+		
+		return listLd
 			
 		
 	@staticmethod
 	def show_position(rank, item, position):
-		roleid = rank[position]		
-		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position}
+		roleid = rank[position]['roleid']		
+		print item, position, roleid
+		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
 		
 class medal_arena(facility):	
 		
@@ -349,3 +407,7 @@ class medal_arena(facility):
 			 self.medal_hold[medalid][cp].remove(roleid)
 		
 		return {}
+		
+		
+	def new_holder(self, roleid, level, medalid, chipnum, cnt):
+		pass

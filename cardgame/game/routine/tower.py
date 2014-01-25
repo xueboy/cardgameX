@@ -15,7 +15,7 @@ class tower:
 		
 	@staticmethod
 	def make():
-		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0, 'last_max_point':0}
+		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0, 'last_max_point':0, 'ladder_position':0, 'ladder_rank_level':0}
 
 	@staticmethod			
 	def make_data():
@@ -164,13 +164,7 @@ class tower:
 		if data:	
 			data = drop.makeData(data)
 		
-		res = tower.stand(usr)
-		if not res.has_key('msg'):
-			if self.tower['ladder_position'] < res['position']:
-				self.tower['ladder_position'] = res['position']
-			if self.tower['ladder_rank_level'] < res['rank_level']:
-				self.tower['ladder_rank_level'] = res['rank_level']
-		
+
 		if enhance:
 			data['tower_enhance'] = enhance
 		data['tower_point'] = usr.tower['current']['point']
@@ -214,11 +208,22 @@ class tower:
 	def fail(usr):
 		if not usr.tower['current']:
 			return {'msg':'tower_not_start'}		
+				
+		res = tower.stand(usr)
 		if usr.tower['max_floor'] < usr.tower['current']['floor']:
 			 usr.tower['max_floor'] = usr.tower['current']['floor']
 		usr.tower['record'].append(usr.tower['current'])
 		usr.tower['current'] = {}
 		usr.save()
+		
+		
+		if not res.has_key('msg'):
+			if usr.tower['ladder_position'] < res['position']:
+				usr.tower['ladder_position'] = res['position']
+			if usr.tower['ladder_rank_level'] < res['rank_level']:
+				usr.tower['ladder_rank_level'] = res['rank_level']
+		
+		
 		return {'tower_max_floor': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point']}	
 		
 	@staticmethod
@@ -232,6 +237,12 @@ class tower:
 			idx = random.randint(0, 2)
 			point[idx] = 2
 		return point		
+		
+	@staticmethod
+	def current_floor(usr):
+		if usr.tower['current']:
+			return usr.tower['current']['floor']
+		return 0
 		
 	@staticmethod
 	def dayUpdate(usr, now):
@@ -254,8 +265,8 @@ class tower:
 			usr.tower['floor_point'] = []
 			
 	@staticmethod
-	def stand(usr):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/tower_stand/', None, {'roleid': usr.roleid, 'level': usr.level, 'point':  usr.tower['current']['point'], 'name':usr.name}))
+	def stand(usr):		
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/tower_stand/', None, {'roleid': usr.roleid, 'level': usr.level, 'point':  usr.tower['current']['point'], 'name':usr.name, 'floor':tower.current_floor(usr)}))
 			
 	@staticmethod
 	def show_ladder(usr):

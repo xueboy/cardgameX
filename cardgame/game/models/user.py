@@ -133,6 +133,7 @@ class user(gcuser):
 		usrData['stamina'] = self.stamina
 		usrData['gem'] = self.gem
 		usrData['gold'] = self.gold
+		usrData['sp'] = self.sp
 		usrData['exp'] = self.exp
 		usrData['vip'] = self.vip
 		usrData['gender'] = self.gender
