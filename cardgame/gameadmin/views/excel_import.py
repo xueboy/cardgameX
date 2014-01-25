@@ -1825,6 +1825,19 @@ class excel_import:
 				gravel = int(row[9])
 				chip = int(row[10])
 				desc = row[11]
+				chipicon = []
+				if row[12]:
+					chipicon.append(row[12])
+				if row[13]:
+					chipicon.append(row[13])
+				if row[14]:
+					chipicon.append(row[14])
+				if row[15]:
+					chipicon.append(row[15])
+				if row[16]:
+					chipicon.append(row[16])
+				if row[17]:
+					chipicon.append(row[17])
 				
 				medalConf = {}
 				medalConf['modelid'] = modelid
@@ -1837,6 +1850,7 @@ class excel_import:
 				medalConf['gravel'] = gravel
 				medalConf['chip'] = chip
 				medalConf['desc'] = desc
+				medalConf['chipicon'] = chipicon
 				
 				conf[modelid] = medalConf
 				
