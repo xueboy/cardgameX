@@ -14,7 +14,7 @@ class tower:
 		
 	@staticmethod
 	def make():
-		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0}
+		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0, 'last_max_point':0}
 
 	@staticmethod			
 	def make_data():
@@ -50,6 +50,7 @@ class tower:
 		data['tower_max_point'] = usr.tower['max_point']
 		data['tower_max_floor'] = usr.tower['max_floor']
 		data['tower_last_max_floor'] = usr.tower['last_max_floor']
+		data['tower_last_max_point'] = usr.tower['last_max_point']
 		
 		data['tower_times'] = tower.times(usr, gameConf)
 		if usr.tower['current'].has_key('enhance'):
@@ -100,9 +101,12 @@ class tower:
 						
 		usr.tower['current']['point'] = usr.tower['current']['point'] + star * difficulty
 		usr.tower['current']['energy'] = usr.tower['current']['energy'] + star * difficulty
-		usr.tower['current']['score'] = usr.tower['current']['score'] + star * difficulty
-		
+		usr.tower['current']['score'] = usr.tower['current']['score'] + star * difficulty		
 		usr.tower['current']['floor'] = usr.tower['current']['floor'] + 1
+		
+		if usr.tower['max_point'] < usr.tower['current']['point']:
+			usr.tower['max_point'] = usr.tower['current']['point']
+		
 		while len(usr.tower['floor_score']) < usr.tower['current']['floor']:
 			usr.tower['floor_score'].append(0)
 		while len(usr.tower['floor_point']) < usr.tower['current']['floor']:
@@ -229,7 +233,7 @@ class tower:
 				if rd['floor'] > floor:
 					usr.tower['last_max_floor'] = rd['floor']
 				if rd['point'] > point:
-					usr.tower['last_max_floor'] = rd['point']
+					usr.tower['last_max_point'] = rd['point']
 			usr.tower['current'] = {}
 			usr.tower['record'] = []				
 			usr.tower['times'] = 0
