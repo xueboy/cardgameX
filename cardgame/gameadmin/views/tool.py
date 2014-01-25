@@ -326,3 +326,34 @@ def gm_tool_set_item(request):
 			data = gm.show_profile(acc, usr)
 		return render(request, 'profile.html', data)
 	return HttpResponse('未知命令')
+	
+def gm_tool_set_medal(request):
+	data = {}
+	if request.method == 'POST':
+		medalopt = request.POST['medalopt']
+		roleid = request.POST['roleid']
+		
+		usr = user.get(roleid)
+		if not usr:
+			return HttpResponse('玩家不存在')
+		acc = usr.getAccount()
+			
+		if medalopt == 'add':
+			medalid = request.POST['medalSelect']
+			chipnum = int(request.POST['chipSelect'])
+			cnt = int(request.POST['tfChipCount'])
+			inv = usr.getInventory()
+			mc = inv.addMedalChip(medalid, chipnum)				
+			if not mc:
+				return HttpResponse('删除失败')
+			inv.save()
+			data = gm.show_profile(acc, usr)
+		return render(request, 'profile.html', data)
+	return HttpResponse('未知命令')
+				
+				
+				
+		
+		
+		
+	

@@ -371,6 +371,66 @@
         </table>
 	    </div>
 	   </form>
-	    {% endif %}
+	   	<hr />
+		{% endif %}
+	    <div align="center">
+
+	  
+		  {% if roleid %}
+		     <form id="form7" name="form7" action="/admin/gm_tool_set_medal/" method="post">{% csrf_token %}
+ 		    <input id="medalopt" name="medalopt" type="hidden" />
+		    <input id="medalid" name="medalid" type="hidden" />
+		     <input id="roleid" name="roleid" type="hidden" value="{{ roleid }}" />
+			       <script language="javascript" type="text/javascript">
+				  function setMedalOpt(opt, medalid)
+				  {
+					document.getElementById("medalopt").value = opt;
+					document.getElementById("medalid").value = medalid;
+				  }
+			      </script>
+		  <table width="830" border="1">
+		    <tr>
+		      <td colspan="4"><div align="center">勋章</div></td>
+      </tr>
+		    <tr>
+		      <td colspan="4"><label>
+		        <select name="medalSelect" id="medalSelect">
+				  {% for medalid, medal in medalConf.items %}
+        		<option value="{{ medalid }}"> {{ medal.name }}</option>        
+				{% endfor %}
+	            </select>
+		      </label>
+	          <label>
+	          <select name="chipSelect" id="chipSelect">
+			    <option value="0"> 0</option>
+         		<option value="1"> 1</option>
+         		<option value="2"> 2</option>
+         		<option value="3"> 3</option>
+         		<option value="4"> 4</option>
+         		<option value="5"> 5</option>
+
+              </select>
+	          <input name="tfChipCount" type="text" id="tfChipCount" value="1" />
+	          <input type="submit" name="Submit10" value="提交" onclick="setMedalOpt('add', '')" />
+	          </label></td>
+	        </tr>
+		    <tr>
+		      <td width="189">id</td>
+      <td width="138">名字</td>
+      <td width="142">等级</td>
+      <td width="333">碎片</td>
+    </tr>
+		{% for mid, m in medalDict.items %}
+		    <tr>
+		      <td>{{ m.id }}</td>
+      <td>&nbsp;</td>
+      <td>{{ m.level }}</td>
+      <td>{{ m.chip }}</td>
+    </tr>
+		{% endfor %}
+          </table>
+		  </form>
+		  {% endif %}
+        </div>
 </body>
 </html>

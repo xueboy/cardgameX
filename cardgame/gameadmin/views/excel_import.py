@@ -1908,8 +1908,7 @@ class excel_import:
 						while len(conf[medalid[i]]) < level:
 							conf[medalid[i]].append(0)
 					
-					conf[medalid[i]][level - 1] = int(row[i])
-					
+					conf[medalid[i]][level - 1] = int(row[i])					
 		
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('medal_level_import')
