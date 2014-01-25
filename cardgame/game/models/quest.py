@@ -128,7 +128,7 @@ class quest(object):
 			
 		if not alreadyFinishPre:
 			for qid in self.finish:
-				if self.finish[qid]['nextId'] == questid:
+				if questInfo['nextId'] == questid:
 					if not is_same_day(self.finish[qid]['create_time'], currentTime()):
 						return True
 		return False 
