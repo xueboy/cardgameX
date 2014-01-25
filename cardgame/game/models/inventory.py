@@ -105,7 +105,13 @@ class inventory(object):
 		item = {}		
 		for  it in self.item:
 			item[it['id']] = it
-		
+			
+		medal = {}
+		for (mid, m) in self.medal.items:
+			d = m.copy()
+			del d['id']
+			medal[mid] = d
+					
 		data['card'] = card
 		data['team'] = self.team
 		data['item'] = item
@@ -115,7 +121,7 @@ class inventory(object):
 		data['sk_slot'] = self.getSkSlots()
 		data['stone'] = stone
 		data['skill'] = skill
-		data['medal'] = self.medal
+		data['medal'] = medal
 		return data
 		
 	def load(self, roleid, data):
@@ -581,14 +587,14 @@ class inventory(object):
 				return it
 		return None
 		
-	def addMedalChip(self, medalid, chipnum):
+	def addMedalChip(self, medalid, chipnum, cnt = 1):
 		
 		medalConfig = config.getConfig('medal')		
 		medalInfo = medalConfig[medalid]		
 		if not self.medal.has_key(medalid):
-			self.medal[medalid] = {'level':0, 'chip': [0] * medalInfo['chip'], id:medalid, 'gravel':0}			
-		self.medal[medalid][chip][chipnum] = self.medal[medalid][chip][chipnum] + 1		
-		return medal[medalid]
+			self.medal[medalid] = {'level':0, 'chip': [0] * medalInfo['chip'], 'id':medalid, 'gravel':0}			
+		self.medal[medalid]['chip'][chipnum] = self.medal[medalid]['chip'][chipnum] + cnt		
+		return self.medal[medalid]
 		
 	def delMedalChip(self, medalid, chipnum):
 		
