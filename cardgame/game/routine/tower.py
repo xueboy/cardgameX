@@ -61,6 +61,8 @@ class tower:
 		data['tower_times'] = tower.times(usr, gameConf)
 		if usr.tower['current'].has_key('enhance'):
 			data['tower_enhance'] = usr.tower['current']['enhance']
+		else:
+			data['tower_enhance'] = []
 				
 		return data
 			
