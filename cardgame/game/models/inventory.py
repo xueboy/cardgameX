@@ -107,7 +107,7 @@ class inventory(object):
 			item[it['id']] = it
 			
 		medal = {}
-		for (mid, m) in self.medal.items:
+		for (mid, m) in self.medal.items():
 			d = m.copy()
 			del d['id']
 			medal[mid] = d
@@ -594,6 +594,7 @@ class inventory(object):
 		if not self.medal.has_key(medalid):
 			self.medal[medalid] = {'level':0, 'chip': [0] * medalInfo['chip'], 'id':medalid, 'gravel':0}			
 		self.medal[medalid]['chip'][chipnum] = self.medal[medalid]['chip'][chipnum] + cnt		
+
 		return self.medal[medalid]
 		
 	def delMedalChip(self, medalid, chipnum):
