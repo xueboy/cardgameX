@@ -68,7 +68,7 @@ class almanac(object):
 	def addEquipment(self, equipmentid):
 		if equipmentid in self.equipment:
 			return
-		self.card.add(equipmentid)
+		self.equipment.add(equipmentid)
 		self.notifyEquipment(equipmentid)
 		self.save()
 		return
