@@ -65,7 +65,7 @@ class almanac(object):
 		self.save()
 		return
 		
-	def addEquipment(self, eqiupmentid):
+	def addEquipment(self, equipmentid):
 		if equipmentid in self.equipment:
 			return
 		self.card.add(equipmentid)
