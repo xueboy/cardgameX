@@ -65,13 +65,33 @@ class equipment:
 		inv.save()		
 		usr.save()
 		data = {}
-		data['equipment_strength'] = equipment
+		data['equipment_strength_level'] = equipment['strengthLevel']
 		data['equipment_strength_cooldown'] = usr.equipment_strength_cooldown
 		if goldCost:
 			data['gold'] = usr.gold
 		if gemCost:
 			data['gem'] = usr.gem
 		return data
+		
+	@staticmethod
+	def strengthen_reset(usr):
+		
+		if usr.equipment_strength_cooldown <= 0:
+			return {'msg':'equipment_strength_not_in_cooldown'}
+		
+		
+		gameConf = config.getConfig('game')
+		
+		gemCost = int(usr.equipment_strength_cooldown * gameConf['equipment_strength_cooldown_reset_price_N'])
+		
+		if usr.gem < gemCost:
+			return {'msg':'gem_not_enough'}
+				
+		usr.gem = usr.gem - gemCost
+		usr.equipment_strength_cooldown = 0
+		return {'equipment_strength_cooldown':usr.equipment_strength_cooldown, 'gem':usr.gem}
+		
+		
 					
 	@staticmethod		
 	def currentStrengthCurrentProbability():
@@ -110,8 +130,7 @@ class equipment:
 					equipment = equip
 					break			
 		else:
-			equipment = inv.getEquipment(equipmentid)
-			
+			equipment = inv.getEquipment(equipmentid)			
 			
 		if not equipment:
 			return {'msg':'equipment_not_exist'}		
