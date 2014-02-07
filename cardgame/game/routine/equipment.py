@@ -90,8 +90,7 @@ class equipment:
 		usr.gem = usr.gem - gemCost
 		usr.equipment_strength_cooldown = 0
 		return {'equipment_strength_cooldown':usr.equipment_strength_cooldown, 'gem':usr.gem}
-		
-		
+				
 					
 	@staticmethod		
 	def currentStrengthCurrentProbability():
