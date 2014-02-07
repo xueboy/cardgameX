@@ -139,3 +139,14 @@ def continue_award(request):
 def draw_award(request):
 	usr = request.user	
 	return signin.draw_award(usr)
+	
+def detail(request):
+	
+	roleid = request.GET['role_id']
+	
+	other = user.get(roleid)
+	if not other:
+		return {'msg':'user_not_exist'}
+	
+	return other.getBattleData()
+	
