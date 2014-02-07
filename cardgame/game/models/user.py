@@ -196,7 +196,7 @@ class user(gcuser):
 		#if inv.team[4]:
 		#	teamCardid.append(inv.getCard(inv.team[4])['cardid'])
 		#if inv.team[5]:
-		#	teamCardid.append(inv.getCard(inv.team[5])['cardid'])		
+		#	teamCardid.append(inv.getCard(inv.gteam[5])['cardid'])		
 		#data['member'] = teamCardid
 		return data
 		
@@ -368,7 +368,7 @@ class user(gcuser):
 		levelConf = config.getConfig('level')
 		isLevelup = False
 		while self.exp > levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp']:
-			self.exp = self.exp - levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp']		
+			self.exp = self.exp - (levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp'])
 			self.level = self.level + 1
 			isLevelup = True
 		if isLevelup:
