@@ -190,7 +190,7 @@ class pet:
 				return {'msg':'card_not_exist'}
 			trp = trpConfig[card['level'] - 1]['card']
 			total_trp = total_trp + trp
-			if inv.delCard(cardid) == 1:
+			if inv.delCard(cardid) != 1:
 				return {'msg':'decompose_faild'}
 			
 		usr.trp = usr.trp + total_trp
