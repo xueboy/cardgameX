@@ -20,7 +20,7 @@ class DBConnection:
 		
 		
 	def query(self, sql, param):
-		self.cursor = self.myconnection.cursor()
+		self.updateCursor()		
 		self.cursor.execute(sql, param)
 		return self.cursor.fetchall()
 		
@@ -34,10 +34,34 @@ class DBConnection:
 		
 		
 	def excute(self, sql,param):
-		cursor = self.myconnection.cursor()
-		cursor.execute(sql, param)
-		self.last_id = cursor.lastrowid
-		transaction.commit_unless_managed()		
+		self.updateCursor()		
+		row_count = self.cursor.execute(sql, param)
+		self.last_id = self.cursor.lastrowid
+		#transaction.commit_unless_managed()
+		self.myconnection.commit()
+		return row_count
 		
 	def insert_id(self):	
 		return self.last_id
+		
+	def star_transaction(self):
+		self.myconnection.set_autocommit(False)
+		
+	def excute_no_commit(self, sql, param):
+		
+		self.updateCursor()		
+		row_count = self.cursor.execute(sql, param)
+		self.last_id = self.cursor.lastrowid		
+		return row_count
+		
+	def commit(self):
+		self.myconnection.commit()
+		self.myconnection.set_autocommit(True)
+		
+	def rollback(self):
+		self.myconnection.rollback()
+		self.myconnection.set_autocommit(True)
+		
+	def updateCursor(self):
+		if not self.cursor:
+			self.cursor = self.myconnection.cursor()

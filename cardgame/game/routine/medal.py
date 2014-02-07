@@ -22,7 +22,7 @@ class medal:
 		
 	@staticmethod
 	def seek_holder(usr, medalid, chipnum):		
-		res = json.loads(curl.url(ARENE_SERVER +  '/arena/seek_holder/', None, {'level':usr.level, 'medalid':medalid, 'chipnum':chipnum}))
+		res = json.loads(curl.url(ARENE_SERVER +  '/arena/seek_holder/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum}))
 		
 		if res.has_key('holder'):
 		
@@ -31,7 +31,7 @@ class medal:
 			holder = []
 		
 			for h in res['holder']:
-				usrh = user.get(h)
+				usrh = usr.__class__.get(h)
 				holder.append(medal.getHolderData(usrh, gameConf))
 			usr.medal['grabmedalid'] = medalid
 			usr.medal['chipnum'] = chipnum
@@ -45,7 +45,7 @@ class medal:
 		member = []
 		for i in range(len(gameConf['medal_holder_appear_member_position'])):
 			if gameConf['medal_holder_appear_member_position']:
-				invh = h.getIinventory()
+				invh = h.getInventory()
 				if invh.team[i]:
 					ch = invh.getCard(invh.team[i])
 					member.append(invh.getClientCard(ch))
@@ -65,7 +65,9 @@ class medal:
 		if not inv.medal.has_key(medalid):
 			return {'msg':'medal_not_exist'}		
 				
-		medal.levelupMedal(usr.roleid, medalid)				
+		res = medal.levelupMedal(usr.roleid, medalid)
+		if res.has_key('msg'):
+			return res
 				
 		medalLevel = inv.medal[medalid]['level']
 		medalLevelMax = len(medalLevelConfig[medalid])
@@ -81,10 +83,12 @@ class medal:
 			
 		inv.medal[medalid]['gravel'] = inv.medal[medalid]['gravel'] + medalInfo['gravel']
 		
-		while medalLevelConfig[medalid][medalLevel - 1] <= inv.medal[medalid]['gravel'] and medalLevelMax > medalLevel:
+		while medalLevelConfig[medalid][medalLevel] <= inv.medal[medalid]['gravel'] and medalLevelMax > medalLevel:
 			medalLevel = medalLevel + 1
+			
 		
 		inv.medal[medalid]['level'] = medalLevel
+		inv.save()
 		return inv.medal[medalid]
 		
 	@staticmethod
@@ -99,8 +103,11 @@ class medal:
 			
 	@staticmethod
 	def grabMedal(offenceRoleid, defenceRoleid, level, medalid, chipnum):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/grab_medal/', None, {'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'offenceRoleid': offenceRoleid, 'deffenceRoleid': defenceRoleid}))
-	
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/grab_medal/', None, {'level':level, 'medalid':medalid, 'chipnum':chipnum, 'offenceRoleid': offenceRoleid, 'deffenceRoleid': defenceRoleid}))	
+			
+	@staticmethod
+	def newMedal(usr, medalid, chipnum, cnt):
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/new_medal/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'count':cnt}))	
 			
 	@staticmethod
 	def levelupMedal(roleid, medalid):
@@ -135,6 +142,9 @@ class medal:
 			return {'update_medal_chip':medalchip}			
 		return {}
 			
+	@staticmethod
+	def grab(usr, grabRoleid):
+		return {}
 	@staticmethod
 	def grab_fail(usr, defenceRoleid):
 		return {}

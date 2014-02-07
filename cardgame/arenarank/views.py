@@ -99,11 +99,12 @@ def lose_medal(request):
 	
 def seek_holder(request):
 	
+	roleid = int(request.REQUEST['roleid'])
 	level = int(request.REQUEST['level'])
 	medalid = request.REQUEST['medalid']
 	chipnum = int(request.REQUEST['chipnum'])
 	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.seek_holder(level, medalid, chipnum)))
+	return HttpResponse(json.dumps(ld.seek_holder(roleid, level, medalid, chipnum)))
 	
 	
 def medal_levelup(request):
@@ -111,7 +112,7 @@ def medal_levelup(request):
 	roleid = request.REQUEST['roleid']
 	medalid = request.REQUEST['medalid']	
 	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.seek_holder(roleid, medalid)))
+	return HttpResponse(json.dumps(ld.medal_levelup(roleid, medalid)))
 	
 def new_medal(request):
 	roleid = request.REQUEST['roleid']
@@ -121,4 +122,4 @@ def new_medal(request):
 	cnt = request.REQUEST['count']
 	
 	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.new_holder(roleid, level, medalid, chipnum, cnt)))
+	return HttpResponse(json.dumps(ld.new_holder(roleid, int(level), medalid, int(chipnum), int(cnt))))

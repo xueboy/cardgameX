@@ -12,8 +12,9 @@ def seek_holder(request):
 	return medal.seek_holder(usr, medalid, chipnum)
 	
 
-def grab():
+def grab(request):
 	grabRoleid = request.GET['grab_roleid']
+	usr = request.user
 	
 	return medal.grab(usr, grabRoleid)
 	
