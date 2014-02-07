@@ -25,3 +25,9 @@ def sell(request):
 	equipmentid = request.GET['id']	
 	usr = request.user
 	return equipment.sell(usr, equipmentid)
+	
+	
+def degradation(request):
+	equipmentid = request.GET['id']
+	usr = request.user
+	return equipment.degradation(usr, equipmentid)

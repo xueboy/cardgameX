@@ -193,3 +193,78 @@ class equipment:
 			fromCard['slot'] = toSlot
 		return []		
 			
+			
+			
+	@staticmethod
+	def pvpProperty(card, slot, equipmentConf):
+		
+		equipment = card['slot'][slot]
+		if not equipment:
+			return {}
+		
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		
+		ppData = {}
+		ppData['attack'] = 0
+		if equipment.has_key('strengthLevel'):
+			ppData['hp'] = equipmentInfo['hp'] + equipmentInfo['hpgrowth'] * equipment['strengthLevel']			
+			ppData['pa'] = equipmentInfo['pa'] + equipmentInfo['pagrowth'] * equipment['strengthLevel']
+			ppData['ma'] = equipmentInfo['ma'] + equipmentInfo['magrowth'] * equipment['strengthLevel']
+			ppData['pd'] = equipmentInfo['pd'] + equipmentInfo['pdgrowth'] * equipment['strengthLevel']
+			ppData['md'] = equipmentInfo['md'] + equipmentInfo['mdgrowth'] * equipment['strengthLevel']
+			ppData['pt'] = equipmentInfo['pt'] + equipmentInfo['ptgrowth'] * equipment['strengthLevel']
+			ppData['mt'] = equipmentInfo['mt'] + equipmentInfo['mtgrowth'] * equipment['strengthLevel']
+		else:
+			ppData['hp'] = equipmentInfo['hp']
+			ppData['pa'] = equipmentInfo['pa']
+			ppData['ma'] = equipmentInfo['ma']
+			ppData['pd'] = equipmentInfo['pd']
+			ppData['md'] = equipmentInfo['md']
+			ppData['pt'] = equipmentInfo['pt']
+			ppData['mt'] = equipmentInfo['mt']
+					
+		ppData['pr'] = 0
+		ppData['mr'] = 0
+		ppData['critical'] = 0
+		ppData['tenacity'] = 0
+		ppData['block'] = 0
+		ppData['wreck'] = 0
+		ppData['hit'] = 0
+		ppData['dodge'] = 0				
+		ppData['strength'] = 0
+		ppData['intelligence'] = 0
+		ppData['artifice'] = 0
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		return data
+		
+	@staticmethod
+	def degradation(usr, equipmentid):
+		inv = usr.getInventory()
+		equipment = inv.getEquipment(equipmentid)
+		
+		if not equipment:
+			return {'msg':'equipment_not_exist'}
+		
+		if not equipment.has_key('strengthLevel'):
+			return {'msg':'strength_level_required'}
+				
+		gameConf = config.getConfig('game')
+		strengthenPriceConf = config.getConfig('strength_price')
+		equipmentConf = config.getConfig('equipment')
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		equipmentQuality = equipmentInfo['quality']		
+		goldGain = int(strengthenPriceConf[str(equipmentQuality)][equipment['strengthLevel']]['price'] * gameConf['equipment_degradation_price_rate'])
+		
+		equipment['strengthLevel'] = equipment['strengthLevel'] - 1
+		if equipment['strengthLevel'] <= 0:
+			del equipment['strengthLevel']
+		
+		usr.gold = usr.gold + goldGain
+		
+		inv.save()
+		usr.save()
+		
+		return {'gold':usr.gold, 'equipment_degradation':equipment}
+		
+		
