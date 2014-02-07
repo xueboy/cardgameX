@@ -10,6 +10,7 @@ from game.routine.arena import arena
 from gclib.json import json
 from gameadmin.routine.gm import gm
 from game.routine.signin import signin
+from game.routine.medal import medal
 	
 def tool_create_player(request):
 	if request.method == 'POST':
@@ -165,12 +166,7 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		elif operator == 'delete_role':
-			usr = user.get(roleid)
-			if not usr:
-				return HttpResponse('玩家不存在')
-			usr.clear()
-			return gm_tool(request)
+		
 			
 	return render(request, 'profile.html', data)
 			
@@ -343,7 +339,8 @@ def gm_tool_set_medal(request):
 			chipnum = int(request.POST['chipSelect'])
 			cnt = int(request.POST['tfChipCount'])
 			inv = usr.getInventory()
-			mc = inv.addMedalChip(medalid, chipnum)				
+			mc = inv.addMedalChip(medalid, chipnum, cnt)
+			medal.newMedal(usr, medalid, chipnum, cnt)				
 			if not mc:
 				return HttpResponse('删除失败')
 			inv.save()
