@@ -153,6 +153,7 @@ class quest(object):
 			dun = usr.getDungeon()			
 			dun.setLastDungeon(questInfo['finishValue'][0], questInfo['finishValue'][1])
 			dun.notify_allow_dungeon(questInfo['finishValue'][0], questInfo['finishValue'][1])
+			dun.save()
 		self.current[questid] = q
 		if isNotify:
 			quest.notify_add_quest(usr, questid, q)
