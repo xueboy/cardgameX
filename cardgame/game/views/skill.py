@@ -31,3 +31,29 @@ def install(request):
 	stoneid = request.GET['skill']
 	
 	return skill.install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid)
+	
+def decompose(request):
+	usr = request.user
+	skilids = []
+	
+	skilids.append(request.GET['skill_id1'])
+	if request.GET.has_key('skill_id2'):
+		skilids.append(request.GET['skill_id2'])
+	if request.GET.has_key('skill_id3'):
+		skilids.append(request.GET['skill_id3'])
+	if request.GET.has_key('skill_id4'):
+		skilids.append(request.GET['skill_id4'])
+	if request.GET.has_key('skill_id5'):
+		skilids.append(request.GET['skill_id5'])
+	if request.GET.has_key('skill_id6'):
+		skilids.append(request.GET['skill_id6'])
+	if request.GET.has_key('skill_id7'):
+		skilids.append(request.GET['skill_id7'])
+	if request.GET.has_key('skill_id8'):
+		skilids.append(request.GET['skill_id8'])
+	if request.GET.has_key('skill_id9'):
+		skilids.append(request.GET['skill_id9'])
+	if request.GET.has_key('skill_id10'):
+		skilids.append(request.GET['skill_id10'])
+
+	return skill.decompose(usr, skilids)

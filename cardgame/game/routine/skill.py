@@ -136,4 +136,26 @@ class skill:
 			fromCard['sk_slot'] = toSlot		
 		return dst	
 		
-	
+	@staticmethod		
+	def decompose(usr, skillids):
+		
+		cards = []
+		inv = usr.getInventory()
+		trpConfig = config.getConfig('trp')
+		
+		total_trp = 0		
+		for skillid in skillids:
+			sk = inv.getSkill(skillid)
+			if not sk:
+				return {'msg':'skill_not_exist'}
+			trp = trpConfig[sk['level'] - 1]['skill']
+			total_trp = total_trp + trp
+			if inv.delSkill(skillid) != 1:
+				return {'msg':'decompose_faild'}
+			
+		usr.trp = usr.trp + total_trp
+		
+		usr.save()
+		inv.save()
+		return {'trp':usr.trp, 'delete_skill_array':skillids}
+			
