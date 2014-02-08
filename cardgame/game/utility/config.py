@@ -9,8 +9,7 @@ class config(gcconfig):
 	def getClientConfig(confname):
 		conf = config.getConfig(confname)
 		if confname == 'dungeon':
-			#return config.dungeonFilter(conf)			
-			return conf
+			return config.dungeonFilter(conf)						
 		if confname == 'game':
 			return config.gameFilter(conf)
 		if confname == 'pet':
@@ -126,6 +125,9 @@ class config(gcconfig):
 				f['fieldName'] = field['fieldName']
 				f['stamina'] = field['stamina']				
 				f['difficult'] = field['difficult']
+				f['exp'] = field['exp']
+				f['mydrop'] = field['mydrop']
+				f['waveCount'] = len(field['wave'])
 				b['field'].append(f)
 			data.append(b)			
 		return data
