@@ -104,8 +104,7 @@ class config(gcconfig):
 		del data['medal_holder_relate_level_at_last']
 		del data['medal_holder_count']
 		del data['medal_holder_appear_member_position']
-		del data['medal_grab_probablity']
-		
+		del data['medal_grab_probablity']		
 		return data
 	
 			
@@ -125,7 +124,7 @@ class config(gcconfig):
 				f['fieldName'] = field['fieldName']
 				f['stamina'] = field['stamina']				
 				f['exp'] = field['exp']
-				f['maydrop'] = field['maydrop']
+				f['mayDrop'] = field['mayDrop']
 				f['waveCount'] = len(field['wave'])
 				b['field'].append(f)
 			data.append(b)			
