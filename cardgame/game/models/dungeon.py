@@ -210,5 +210,5 @@ class dungeon(object):
 			usr.notify['dungeon_allow'] = {}
 		if not usr.notify['dungeon_allow'].has_key(dungeonid):
 			usr.notify['dungeon_allow'][dungeonid] = []
-		usr.notify['dungeon_allow'][dungeonid].append(field_id)
+		usr.notify['dungeon_allow'][dungeonid].append(fieldid)
 		usr.save()
