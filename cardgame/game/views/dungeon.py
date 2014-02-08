@@ -101,8 +101,8 @@ def end(request):
 					data['exp'] = usr.exp
 					data['level'] = usr.level
 					data['gold'] = usr.gold					
-					if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
-						dun.nextField()
+					#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
+					#	dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}
 					data['last_dungeon'] = dun.last_dungeon
 					qt = usr.getQuest()
@@ -113,12 +113,3 @@ def end(request):
 	return {'msg':'field_not_exist'}
 		
 		
-def notify_allow_dungeon(self, dungeonid, fieldid):
-	usr = self.user
-	
-	if not usr.notify.has_key('dungeon_allow'):
-		usr.notify['dungeon_allow'] = {}
-	if not usr.notify['dungeon_allow'].has_key(dungeonid):
-		usr.notify['dungeon_allow'][dungeonid] = []
-	usr.notify['dungeon_allow'][dungeonid].append(field_id)
-	usr.save()
