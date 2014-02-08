@@ -61,7 +61,7 @@ class dungeon(object):
 		
 	def getClientData(self):
 		data = {}
-		data['last_dungeon'] = self.last_dungeon
+		#data['last_dungeon'] = self.last_dungeon
 		#data['curren_field_waves'] = self.curren_field_waves
 		data['allow_list'] = self.allow_list
 		return data
