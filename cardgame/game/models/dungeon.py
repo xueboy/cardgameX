@@ -30,8 +30,8 @@ class dungeon(object):
 		
 	def init(self):		
 		conf = config.getConfig('dungeon')
-		self.last_dungeon['battleid'] = conf[0]['battleId']
-		self.last_dungeon['fieldid'] = conf[0]['field'][0]['fieldId']
+		self.last_dungeon['battleid'] = ''
+		self.last_dungeon['fieldid'] = ''
 	
 	def install(self, roleid):
 		object.install(self, roleid)
@@ -87,7 +87,11 @@ class dungeon(object):
 	
 	def canEnterNormal(self, conf, battleid, fieldid):
 		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
-			return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
+			return False
+		if not self.last_dungeon['battleid']:
+			return False
+		if not self.last_dungeon['fieldid']:
+			return False
 		
 		for battle in conf:
 			for field in battle['field']:
