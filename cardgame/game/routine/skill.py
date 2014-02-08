@@ -40,6 +40,7 @@ class skill:
 		if not card:
 			return {'msg': 'card_not_exist'}
 		
+		gameConf = config.getConfig('game')
 		if usr.level < gameConf['skill_slot_level'][slotpos]:
 			return {'msg':'level_required'}
 		
@@ -134,3 +135,5 @@ class skill:
 		if toSlot:
 			fromCard['sk_slot'] = toSlot		
 		return dst	
+		
+	
