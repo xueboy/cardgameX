@@ -124,7 +124,6 @@ class config(gcconfig):
 				f['fieldId'] = field['fieldId']
 				f['fieldName'] = field['fieldName']
 				f['stamina'] = field['stamina']				
-				f['difficult'] = field['difficult']
 				f['exp'] = field['exp']
 				f['mydrop'] = field['mydrop']
 				f['waveCount'] = len(field['wave'])
