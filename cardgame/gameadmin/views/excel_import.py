@@ -531,6 +531,7 @@ class excel_import:
 				imageId = row[5]
 				fieldId = row[7]
 				fieldName = row[8]
+				dayCount = int(row[10])
 				stamina = int(row[11])
 				exp = int(row[13])
 				difficult = int(row[14])
@@ -551,6 +552,7 @@ class excel_import:
 				fieldConf['fieldName'] = fieldName
 				fieldConf['stamina'] = stamina
 				fieldConf['exp'] = exp
+				fieldConf['dayCount'] = dayCount
 				#fieldConf['difficult'] = difficult
 				fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
 				fieldConf['dropid'] = dropId

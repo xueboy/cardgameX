@@ -143,16 +143,17 @@ class tower:
 		data = {}		
 			
 		if usr.tower['current']['floor'] % gameConf['tower_award_interval_floor'] == 0:
-			print usr.tower['floor_point']
-			print usr.tower['floor_score']
 			towerAwardInfo = towerAwardConf[str(usr.tower['current']['floor'])]
 			if newPoint:
 				data = drop.open(usr, towerAwardInfo[1], data)
+				data = drop.makeData(data,'top_drop')
 			if newScore:				
 				if usr.tower['current']['score'] > 45:
 					data = drop.open(usr, towerAwardInfo[3], data)
+					data = drop.makeData(data,'record_drop')
 				if usr.tower['current']['score'] > 30:
-					data = drop.open(usr, towerAwardInfo[2], data)				
+					data = drop.open(usr, towerAwardInfo[2], data)
+					data = drop.makeData(data,'record_drop')
 			usr.tower['current']['score'] = 0
 
 		if usr.tower['max_floor'] < usr.tower['current']['floor']:

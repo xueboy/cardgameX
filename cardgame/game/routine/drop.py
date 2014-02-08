@@ -251,7 +251,7 @@ class drop:
 		
 		
 	@staticmethod
-	def makeData(awd):		
+	def makeData(awd, kayname = 'drop'):		
 		dropData = []
 		if awd.has_key('st'):
 			dropData.append({'type':11, 'count':awd['st']})
@@ -282,5 +282,5 @@ class drop:
 		if awd.has_key('update_item_array'):
 			for it in awd['update_item_array']:
 				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})		
-		return {'drop':dropData}
+		return {kayname:dropData}
 		
