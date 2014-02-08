@@ -125,7 +125,7 @@ class config(gcconfig):
 				f['fieldName'] = field['fieldName']
 				f['stamina'] = field['stamina']				
 				f['exp'] = field['exp']
-				f['mydrop'] = field['mydrop']
+				f['maydrop'] = field['maydrop']
 				f['waveCount'] = len(field['wave'])
 				b['field'].append(f)
 			data.append(b)			
