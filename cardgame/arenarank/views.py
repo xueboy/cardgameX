@@ -65,11 +65,9 @@ def tower_stand(request):
 	return HttpResponse(json.dumps(ld.stand(roleid, name, int(level), int(point), int(floor))))
 	
 def tower_show(request):
-	
-	level = request.REQUEST['level']
-	
+		
 	ld = tower_ladder.instance()
-	return HttpResponse(json.dumps(ld.show_ladder(int(level))))
+	return HttpResponse(json.dumps(ld.show_ladder()))
 	
 	
 def grab_medal(request):
@@ -122,4 +120,14 @@ def new_medal(request):
 	cnt = request.REQUEST['count']
 	
 	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.new_holder(roleid, int(level), medalid, int(chipnum), int(cnt))))
+	return HttpResponse(json.dumps(ld.new_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))
+	
+def delete_medal(request):
+	roleid = request.REQUEST['roleid']
+	medalid = request.REQUEST['medalid']
+	level = request.REQUEST['level']
+	chipnum = request.REQUEST['chipnum']
+	cnt = request.REQUEST['count']
+	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.delete_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))

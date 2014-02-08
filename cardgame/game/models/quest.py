@@ -139,7 +139,7 @@ class quest(object):
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]
 		if not self.canAccept(questid, questInfo, questConf):
-			return {'msg':'quest_can_not_accept'}
+			return None
 		
 		q = None
 		if self.finish.has_key(questid):
@@ -149,6 +149,10 @@ class quest(object):
 			q = quest.makeQuest(questid)			
 		
 		usr = self.user
+		if questInfo['finishType'] == 'dungeon_id':
+			dun = usr.getDungeon()			
+			dun.allowEnter(questInfo['finishValue'][0], questInfo['finishValue'][1])
+			dun.notify_allow_dungeon(questInfo['finishValue'][0], questInfo['finishValue'][1])
 		self.current[questid] = q
 		if isNotify:
 			quest.notify_add_quest(usr, questid, q)
@@ -156,26 +160,16 @@ class quest(object):
 			quest.notify_finish_quest(usr, questid)
 			
 		self.save()
-		return {'accept_quest':q}
+		return q
 		
 	def acceptNextQuest(self, questid, questInfo, questConf):
 		nextQuestid = questInfo['nextId']
 		if not nextQuestid:
 			return None
 		if not  questConf.has_key(nextQuestid):
-			return None.s
-		nextQuestInfo = questConf[nextQuestid]
+			return None
+		return self.acceptQuest(nextQuestid)
 		
-		if not self.canAccept(nextQuestid, nextQuestInfo, questConf):
-			return None.s
-		q = quest.makeQuest(nextQuestid)
-		usr = self.user
-		self.current[nextQuestid] = q
-		quest.notify_add_quest(usr,nextQuestid, q)
-		if quest.isFinish(nextQuestid, q):
-			quest.notify_finish_quest(usr, nextQuestid)
-		self.save()
-		return q
 	
 	@staticmethod
 	def notify_add_quest(usr, questid, q):

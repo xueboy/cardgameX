@@ -6,6 +6,7 @@ from random import sample
 from gclib.DBConnection import DBConnection
 from game.utility.config import config
 from gclib.utility import randint, currentTime, hit
+from game.routine.drop import drop
 import time
 import random
 
@@ -24,6 +25,7 @@ class dungeon(object):
 		self.curren_field = {'battleid':'', 'fieldid':''}
 		self.reinforces = None
 		self.curren_field_waves = []
+		self.allow_list = {}
 		self.user = None
 		
 	def init(self):		
@@ -43,6 +45,7 @@ class dungeon(object):
 		data['curren_field'] = self.curren_field
 		data['reinforces'] = self.reinforces
 		data['curren_field_waves'] = self.curren_field_waves
+		data['allow_list'] = self.allow_list
 		return data
 		
 	def load(self, roleid, data):
@@ -53,15 +56,14 @@ class dungeon(object):
 		self.last_reinforce_time = data['last_reinforce_time']
 		self.curren_field = data['curren_field']
 		self.reinforces = data['reinforces']
-		if data.has_key('curren_field_waves'):
-			self.curren_field_waves = data['curren_field_waves']
-		else:
-			self.curren_field_waves = []
+		self.allow_list = data['allow_list']
+		self.curren_field_waves = data['curren_field_waves']				
 		
 	def getClientData(self):
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
 		#data['curren_field_waves'] = self.curren_field_waves
+		data['allow_list'] = self.allow_list
 		return data
 		
 	def updateReinforce(self):
@@ -71,18 +73,30 @@ class dungeon(object):
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
 			self.reinforced_list = []
 			last_reinforce_time = currentTime()
-		
+	
+	def allowEnter(self, battleid, fieldid):
+		if not self.allow_list.has_key(battleid):
+			self.allow_list[battleid] = []
+		if fieldid not in self.allow_list[battleid]:
+			self.allow_list[battleid].append(fieldid)
+			self.save()
+	
 	def canEnterNormal(self, conf, battleid, fieldid):
-		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
-			return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
+		#if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
+		#	return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
 		
-		for battle in conf:
-			for field in battle['field']:
-				if battle['battleId'] == battleid and field['fieldId'] == fieldid:
-					return True
-				if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
-					return False
-		return False	
+		#for battle in conf:
+		#	for field in battle['field']:
+		#		if battle['battleId'] == battleid and field['fieldId'] == fieldid:
+		#			return True
+		#		if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
+		#			return False
+		#return False	
+		if not self.allow_list.has_key(battleid):
+			return False
+		if fieldid not in self.allow_list[battleid]:
+			return False
+		return True	
 		
 	def getVolunteer(self):		
 		usr = self.user
@@ -141,42 +155,18 @@ class dungeon(object):
 			cnt = 0
 			if sum(wave['count_prob']) != 0 and sum(wave['count']):
 				cnt = wave['count'][hit(wave['count_prob'])]			
-			monsters = random.sample(wave['monster'].keys(), cnt)
+			monsters = random.sample(wave['monster'], cnt)
 			
-			monsters.extend(wave['boss'].keys())
+			monsters.extend(wave['boss'])
 			
-			waveData = {}
+			waveData = []
 			for monsterid in monsters:				
-				rd = randint()
 				dropData = {}
-				dropData['money'] = wave['monster'][monsterid]['money']
+				dropid =  wave['drop'][monsterid]
 				
-				cardData = wave['monster'][monsterid]['card']
-				drop = 0
-				if cardData.has_key('drop'):
-					drop = cardData['drop']
-					if rd < drop:
-						dropData['card'] = {}
-						dropData['card']['cardid'] =  cardData['id']
-						dropData['card']['level'] = cardData['level']
-					else:					
-						rd = rd - cardData['drop']
-						itemData = wave['monster'][monsterid]['item']
-						if itemData.has_key('drop'):
-							drop = itemData['drop']
-							if rd < drop:
-								dropData['item'] = {}
-								dropData['item']['itemid'] = itemData['id']
-							else:
-								rd = rd - drop
-								equipData = monsters[monsterid]['equipment']
-								if equipData.has_key('drop'):
-									drop = equipData['drop']
-									if rd < drop:
-										dropData['equipment'] = {}
-										dropData['equipment'] = equipData['id']				
-				waveData[monsterid] = {}
-				waveData[monsterid]['drop'] = dropData
+				if dropid:					
+					dropData = drop.roll(dropid, dropData)				
+				waveData.append({'monsterid':monsterid, 'drop':dropData})
 			waves.append(waveData)
 		self.curren_field_waves = waves
 		self.save()
@@ -190,21 +180,17 @@ class dungeon(object):
 		awardItem = []
 		awardEquipment = []
 		waves = self.curren_field_waves
+		awd = {}
 		for wave in waves:
-			for monsterid in wave:
-				dropData = wave[monsterid]['drop']
-				awardMoney = dropData['money']
-				if awardMoney != 0:
-					usr.gold = usr.gold + awardMoney
-				if dropData.has_key('card'):
-					cardid = dropData['card']['cardid']
-					cardleve = dropData['card']['level']
-					awardCard.append(inv.addCard(cardid, cardleve))	
+			for monsterDrop in wave:
+				dropData = monsterDrop['drop']				
+				drop.do_award(usr, dropData, awd)				
 					
 		self.curren_field_waves = []
 		usr.save()
 		inv.save()
-		return awardCard
+		awd = drop.makeData(awd)
+		return awd
 	
 	def nextField(self):
 		dunConf = config.getConfig('dungeon')

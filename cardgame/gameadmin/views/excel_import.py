@@ -513,32 +513,8 @@ class excel_import:
 				monsterId = str(row[0])
 				if monsterId == '' or monsterId == '0.0':
 					continue
-				dropCard = row[18]
-				dropCardLevel = row[19]
-				dropCardProb = row[21]
-				dropItem = row[22]
-				dropItemProb = row[23]
-				dropEquipment = row[24]
-				dropEquipmentProb = row[27]
-				dropMoney = int(row[29])
-				dropConf[str(monsterId)] = {}
-				cardConf = {}
-				if dropCard != '':
-					cardConf['id'] = dropCard
-					cardConf['level'] = int(dropCardLevel)
-					cardConf['drop'] = int(dropCardProb)
-				itemConf = {}
-				if dropItem != '':
-					itemConf['id'] = dropItem
-					itemConf['drop'] = int(dropItemProb)
-				equipmentConf = {}
-				if dropEquipment != '':
-					equipmentConf['id'] = dropEquipment
-					equipmentConf['drop'] = int(dropEquipmentProb)
-				dropConf[str(monsterId)]['money'] = dropMoney
-				dropConf[str(monsterId)]['card'] = cardConf
-				dropConf[str(monsterId)]['item'] = itemConf
-				dropConf[str(monsterId)]['equipment'] = equipmentConf			
+				dropid = row[40]				
+				dropConf[str(monsterId)] = dropid				
 			
 			Conf = []
 			dunConf = {'battleId':''}
@@ -575,7 +551,7 @@ class excel_import:
 				fieldConf['fieldName'] = fieldName
 				fieldConf['stamina'] = stamina
 				fieldConf['exp'] = exp
-				fieldConf['difficult'] = difficult
+				#fieldConf['difficult'] = difficult
 				fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
 				fieldConf['dropid'] = dropId
 				fieldConf['wave'] = excel_import.read_waves(row, dropConf)
@@ -586,129 +562,125 @@ class excel_import:
 		
 	@staticmethod
 	def read_waves(row, dropConf):	
-		waveConf = []	
+		waveConf = []			
 		wave = excel_import.read_wave(row, 20, dropConf)
 		if wave:
 			waveConf.append(wave)	
-			wave = excel_import.read_wave(row, 34, dropConf)
+			wave = excel_import.read_wave(row, 35, dropConf)
 			if wave:
 				waveConf.append(wave)
-				wave = excel_import.read_wave(row, 48, dropConf)
+				wave = excel_import.read_wave(row, 50, dropConf)
 				if wave:
 					waveConf.append(wave)
-					wave = excel_import.read_wave(row, 62, dropConf)	
-					if wave:
-						waveConf.append(wave)
-						wave = excel_import.read_wave(row, 76, dropConf)
-						if wave:
-							waveConf.append(wave)
-							wave = excel_import.read_wave(row, 90, dropConf)
-							if wave:
-								waveConf.append(wave)
-								wave = excel_import.read_wave(row, 104, dropConf)
-								if wave:
-									waveConf.append(wave)
-									wave = excel_import.read_wave(row, 118, dropConf)
-									if wave:
-										waveConf.append(wave)	
+			#		wave = excel_import.read_wave(row, 65, dropConf)	
+			#		if wave:
+			#			waveConf.append(wave)
+			#			wave = excel_import.read_wave(row, 80, dropConf)
+			#			if wave:
+			#				waveConf.append(wave)
+			#				wave = excel_import.read_wave(row, 95, dropConf)
+			#				if wave:
+			#					waveConf.append(wave)
+			#					wave = excel_import.read_wave(row, 110, dropConf)
+			#					if wave:
+			#						waveConf.append(wave)
+			#						wave = excel_import.read_wave(row, 125, dropConf)
+			#						if wave:
+			#							waveConf.append(wave)	
 		return waveConf
 		
 	@staticmethod
 	def read_wave(row, idx, dropConf):
 		wave = {}
-		wave['monster'] = {}
+		wave['monster'] = []
+		wave['drop'] = {}
 		monster1 = str(row[idx + 0])
 		monster2 = str(row[idx + 1])
 		monster3 = str(row[idx + 2])
 		monster4 = str(row[idx + 3])
 		monster5 = str(row[idx + 4])
-		if dropConf.has_key(str(monster1)):
-			wave['monster'][monster1] = dropConf[str(monster1)]
-		else:
-			if monster1 != '' and monster1 != '0.0':
-				wave['monster'][monster1] = {}
+		monster6 = str(row[idx + 5])
 		
-		if dropConf.has_key(str(monster2)):
-			wave['monster'][monster2] = dropConf[str(monster2)]
-		else:
-			if monster2 != '' and monster2 != '0.0':
-				wave['monster'][monster2] = {}
-			
-		if dropConf.has_key(str(monster3)):
-			wave['monster'][monster3] = dropConf[str(monster3)]
-		else: 
-			if monster3 != '' and monster3 != '0.0':
-				wave['monster'][monster3] = {}
-			
-		if dropConf.has_key(str(monster4)):
-			wave['monster'][monster4] = dropConf[str(monster4)]
-		else:
-			if monster4 != '' and monster4 != '0.0':
-				wave['monster'][monster4] = {}
-			
-		if dropConf.has_key(str(monster5)):
-			wave['monster'][monster5] = dropConf[str(monster5)]
-		else:
-			if monster5 != '' and monster5 != '0.0':
-				wave['monster'][monster5] = {}
-				
-		wave['boss'] = {}
-				
-		boss1 = str(row[idx + 5])
-		boss2 = str(row[idx + 6])
-		boss3 = str(row[idx + 7])
-		boss4 = str(row[idx + 8])
-		boss5 = str(row[idx + 9])
-		boss6 = str(row[idx + 10])
-		
-		if dropConf.has_key(str(boss1)):
-			wave['boss'][boss1] = dropConf[str(boss1)]
-		else:
-			if boss1 != '' and boss1 != '0.0':
-				wave['boss'][boss1] = {}
-			
-		if dropConf.has_key(str(boss2)):
-			wave['boss'][boss2] = dropConf[str(boss2)]
-		else:
-			if boss2 != '' and boss2 != '0.0':
-				wave['boss'][boss2] = {}
-			
-		if dropConf.has_key(str(boss3)):
-			wave['boss'][boss3] = dropConf[str(boss3)]
-		else:
-			if boss3 != '' and boss3 != '0.0':
-				wave['boss'][boss3] = {}
-			
-		if dropConf.has_key(str(boss4)):
-			wave['boss'][boss4] = dropConf[str(boss4)]
-		else: 
-			if boss4 != '' and boss4 != '0.0':
-				wave['boss'][boss4] = {}
-			
-		if dropConf.has_key(str(boss5)):
-			wave['boss'][boss5] = dropConf[str(boss5)]
-		else: 
-			if boss5 != '' and boss5 != '0.0':
-				wave['boss'][boss5] = {}
-			
-		if dropConf.has_key(str(boss6)):
-			wave['boss'][boss6] = dropConf[str(boss6)]
-		else:
-			if boss6 != '' and boss6 != '0.0':
-				wave['boss'][boss6] = {}
+		boss1 = str(row[idx + 6])
+		boss2 = str(row[idx + 7])
+		boss3 = str(row[idx + 8])
+		boss4 = str(row[idx + 9])
+		boss5 = str(row[idx + 10])
+		boss6 = str(row[idx + 11])
 		
 		if (monster1 == '' or monster1 == '0' or monster1 == '0.0') and (boss1 == '' or boss1 == '0' or boss1 == '0.0'):		
 			return None	
 		
-		ls = str(row[idx + 11]).split(',')
-		wave['count'] =  [ int( eval(x) ) for x in ls if x ]
-		if sum(wave['count']) == 0:
-			return None
+		
+		if monster1 != '' and monster1 != '0.0':
+			if dropConf.has_key(monster1):				
+				wave['drop'][monster1] = dropConf[monster1]
+			wave['monster'].append(monster1)		
+		
+		if monster2 != '' and monster2 != '0.0':
+			if dropConf.has_key(monster2):
+				wave['drop'][monster2] = dropConf[monster2]				
+			wave['monster'].append(monster2)
+			
+		if monster3 != '' and monster3 != '0.0':
+			if dropConf.has_key(monster3):
+				wave['drop'][monster3] = dropConf[monster3]
+			wave['monster'].append(monster3)		
+			
+		if monster4 != '' and monster4 != '0.0':
+			if dropConf.has_key(monster4):
+				wave['drop'][monster4] = dropConf[monster4]
+			wave['monster'].append(monster4)
+					
+		if monster5 != '' and monster5 != '0.0':
+			if dropConf.has_key(monster5):
+				wave['drop'][monster5] = dropConf[monster5]
+			wave['monster'].append(monster5)
+		
+		if monster6 != '' and monster6 != '0.0':
+			if dropConf.has_key(monster6):
+				wave['drop'][monster6] = dropConf[monster6]
+			wave['monster'].append(monster6)
+			
+				
+		wave['boss'] = []
+		
+		if boss1 != '' and boss1 != '0.0':
+			if dropConf.has_key(boss1):
+				wave['drop'][boss1] = dropConf[boss1]
+			wave['boss'].append(boss1)
+		
+		if boss2 != '' and boss2 != '0.0':
+			if dropConf.has_key(boss2):
+				wave['drop'][boss2] = dropConf[boss2]
+			wave['boss'].append(boss2)
+		
+		if boss3 != '' and boss3 != '0.0':
+			if dropConf.has_key(boss3):
+				wave['drop'][boss3] = dropConf[boss3]
+			wave['boss'].append(boss3)
+			
+		if boss4 != '' and boss4 != '0.0':
+			if dropConf.has_key(boss4):
+				wave['drop'][boss4] = dropConf[boss4]
+			wave['boss'].append(boss4)
+			
+		if boss5 != '' and boss5 != '0.0':
+			if dropConf.has_key(boss5):
+				wave['drop'][boss5] = dropConf[boss5]
+			wave['boss'].append(boss5)
+			
+		if boss6 != '' and boss6 != '0.0':
+			if dropConf.has_key(boss6):
+				wave['drop'][boss6] = dropConf[boss6]
+			wave['boss'].append(boss6)
+		
 		ls = str(row[idx + 12]).split(',')
-		wave['count_prob'] = [ int( eval(x) ) for x in ls if x ]
-		if sum(wave['count_prob']) == 0:
-			return None
-		wave['more'] = int(row[idx + 13])
+		wave['count'] =  [ int( eval(x) ) for x in ls if x ]		
+		ls = str(row[idx + 13]).split(',')
+		wave['count_prob'] = [ int( eval(x) ) for x in ls if x ]		
+		wave['more'] = int(row[idx + 14])
+		
 		return wave
 		
 	@staticmethod

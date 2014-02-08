@@ -311,7 +311,7 @@ class tower_ladder(facility):
 				return {'position': len(self.rank50), 'rank_level':20}	
 		return {'msg':'tower_ladder_not_stand'}
 			
-	def show_ladder(self, level):
+	def show_ladder(self):
 		rank = None
 				
 		listLd = {}
@@ -339,8 +339,7 @@ class tower_ladder(facility):
 		
 	@staticmethod
 	def show_position(rank, item, position):
-		roleid = rank[position]['roleid']		
-		print item, position, roleid
+		roleid = rank[position]['roleid']				
 		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
 		
 class medal_arena(facility):	
@@ -385,8 +384,13 @@ class medal_arena(facility):
 		medal_arena.db_medal_levelup(roleid, medalid, medalInfo['chip'])			
 		return {}	
 		
-	def new_holder(self, roleid, level, medalid, chipnum, cnt):		
-		medal_arena.db_add_medal(roleid, level, medalid, chipnum, cnt)		
+	def new_medal(self, roleid, level, medalid, chipnum, cnt):		
+		if medal_arena.db_add_medal(roleid, level, medalid, chipnum, cnt)	== 0:
+			return {'msg':'medal_chip_not_enough'}
+		return {}
+	
+	def delete_medal(self, roleid, level, medalid, chipnum, cnt):
+		return medal_arena.db_delete_medal(roleid, level, medalid, chipnum, cnt)
 		
 	@staticmethod
 	def db_add_medal(roleid, level, medalid, chipnum, cnt):
@@ -403,13 +407,22 @@ class medal_arena(facility):
 	def db_remove_medal(roleid, medalid, chipnum):
 		conn = DBConnection.getConnection()		
 		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT 1"		
-		row_count = conn.excute(sql, [roleid, medalid, chipnum])
-		print row_count
+		row_count = conn.excute(sql, [roleid, medalid, chipnum])		
 		if row_count == 1:
 			return 1
 		return row_count
 		
-					
+	@staticmethod
+	def db_delete_medal(roleid, medalid, chipnum, cnt):
+		conn = DBConnection.getConnection()		
+		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT %s"		
+		row_count = conn.excute(sql, [roleid, medalid, chipnum, cnt])		
+		if row_count == cnt:
+			conn.commit()
+			return row_count
+		conn.rollback()
+		return 0
+
 	@staticmethod		
 	def db_set_level(roleid, level):
 		conn = DBConnection.getConnection()
@@ -420,8 +433,7 @@ class medal_arena(facility):
 	def db_seek_medal_holder(roleid, medalid, chipnum, baseLevel, cnt):
 		conn = DBConnection.getConnection()
 		sql = "SELECT distinct(medal_holder.roleid) FROM medal_holder INNER JOIN medal_level ON medal_holder.roleid = medal_level.roleid WHERE medal_level.level >= %s AND medal_holder.medalid = %s AND medal_holder.chipnum = %s AND medal_holder.roleid <> %s ORDER BY rand() LIMIT %s"
-		res = conn.query(sql, [baseLevel, medalid, chipnum, roleid, cnt])
-		print 'res=', res
+		res = conn.query(sql, [baseLevel, medalid, chipnum, roleid, cnt])		
 		if len(res) > 0:
 			return res[0]
 		return []	

@@ -39,13 +39,13 @@ class drop:
 			probablity = d['probability']			
 			msg = None
 			if probablity == 1000000:
-				msg = drop.award(usr, d, awd)
+				msg = drop.make_award(d, awd)
 				if msg:				
 					break
 			elif probablity < rd:
 				rd = rd - probablity				
 			else:
-				msg = drop.award(usr, d, awd)				
+				msg = drop.make_award(d, awd)				
 				break
 		return awd
 		
@@ -84,30 +84,30 @@ class drop:
 		return awd
 		
 	@staticmethod
-	def do_award(usr, awd):
+	def do_award(usr, awd, data):
 		save_user = False
 		save_inv = False
 		inv = None
 		if awd.has_key('st'):
 			usr.chargeStamina(awd['st'])
-			awd['st'] = usr.stamina
+			data['st'] = usr.stamina
 			save_user = True
 		if awd.has_key('gem'):
 			usr.gem = usr.gem + awd['gem']
-			awd['gem'] = usr.gem
+			data['gem'] = usr.gem
 			save_user = True
 		if awd.has_key('gold'):
 			usr.gold = usr.gold + awd['gold']
-			awd['gold'] = usr.gold
+			data['gold'] = usr.gold
 			save_user = True
 		if awd.has_key('sp'):
 			usr.sp = usr.sp + awd['sp']
-			awd['sp'] = usr.sp
+			data['sp'] = usr.sp
 			save_user = True
 		if awd.has_key('exp'):
 			usr.gainExp(awd['exp'])
-			awd['level'] = usr.level
-			awd['exp'] = awd.exp
+			data['level'] = usr.level
+			data['exp'] = awd.exp
 			save_user = True
 		if awd.has_key('stone'):
 			if not inv:
@@ -115,7 +115,9 @@ class drop:
 			stone = []
 			for a in awd['add_stone_array']:
 				stone.extend(inv.addStoneCount(a['id'], a['count']))
-			awd['add_stone_array'] = stone
+			if not data.has_key('add_stone_array'):
+				data['add_stone_array'] = []
+			data['add_stone_array'].extend(stone)
 			save_inv = True
 		if awd.has_key('eq'):
 			if not inv:
@@ -123,7 +125,9 @@ class drop:
 			equipment = []
 			for a in awd['add_equipment_array']:
 				equipment.extend(inv.addEquipmentCount(a['id'], a['count']))
-			awd['add_equipment_array'] = equipment
+			if not data.has_key('add_equipment_array'):
+				data['add_equipment_array'] = []
+			data['add_equipment_array'].extend(equipment)			
 			save_inv = True
 		if awd.has_key('add_card_array'):
 			if not inv:
@@ -131,7 +135,9 @@ class drop:
 			card = []
 			for a in awd['add_card_array']:
 				card.extend(inv.addCardCount(a['id'], a['count']))
-			awd['add_card_array'] = card
+			if not data.has_key('add_card_array'):
+				data['add_card_array'] = []
+			data['add_card_array'].extend(card)
 			save_inv = True
 		if awd.has_key('add_skill_array'):
 			if not inv:
@@ -139,7 +145,9 @@ class drop:
 			skill = []
 			for a in awd['add_skill_array']:
 				skill.extend(inv.addSkillCount(a['id'], a['count']))
-			awd['add_skill_array'] = skill
+			if not data.has_key('add_skill_array'):
+				data['add_card_array'] = []
+			data['add_card_array'].extend(skill)
 			save_inv = True
 		if awd.has_key('add_item_array'):
 			if not inv:
@@ -150,14 +158,18 @@ class drop:
 				updateIt , newIt = inv.addItemCount(a['id'], a['count'])
 				updateItem.extend(updateIt)
 				newItem.extend(newIt)
-			awd['add_item_array'] = newItem
-			awd['update_item_array'] = updateItem
+			if not data.has_key('add_item_array'):
+				data['add_card_array'] = []
+			if not data.has_key('update_item_array'):
+				data['update_item_array'] = []
+			data['add_item_array'].extend(newItem)
+			data['update_item_array'].extend(updateItem)			
 			save_inv = True
 		if save_user:
 			usr.save()
 		if save_inv:
 			inv.save()
-		return awd
+		return data
 			
 	
 	@staticmethod

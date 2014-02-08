@@ -12,7 +12,7 @@ class medal:
 		
 	@staticmethod
 	def make():
-		return {'protect':0, 'grabmedalid':'', 'grabmedalchip':-1}
+		return {'protect':0, 'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0}
 			
 	@staticmethod
 	def getClientData(usr):
@@ -109,22 +109,35 @@ class medal:
 	def newMedal(usr, medalid, chipnum, cnt):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/new_medal/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'count':cnt}))	
 			
+	def deleteMedal(usr, medalid, chipnum, cnt):
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/delete_medal/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'count':cnt}))	
+			
 	@staticmethod
 	def levelupMedal(roleid, medalid):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/medal_levelup/', None, { 'medalid':medalid, 'roleid': roleid, 'medalid': medalid}))
 			
-	def grab(usr, defenceRoleid):		
+	def grab(usr, defenceRoleid):
+		gameConf = config.getConfig('game')
+		
+		if usr.sp < gameConf['medal_grab_sp']:
+			return {'msg':'sp_not_enough'}				
+		usr.sp = usr.sp - gameConf['medal_grab_sp']
+		usr.medal['grabmedalroleid'] = defenceRoleid		
 		return {'sp':usr.sp}
 	
 	@staticmethod
-	def win(usr, defenceRoleid):
+	def win(usr):
 		
 		gameConf = config.getConfig('game')
 		
+		if usr.medal['grabmedalroleid'] == 0:
+			return {'msg':'medal_grab_shoulb_before'}		
+		
 		now = currentTime()
-		defenceUsr = usr.__class__.get(defenceRoleid)
-		#if defenceUsr.medal['protect'] > now:
-		#	return {'msg':'medal_grab_fail_by_protect'}
+		defenceUsr = usr.__class__.get(usr.medal['grabmedalroleid'])
+		
+		if not defenceUsr:
+			return {'msg':'usr_not_exist'}
 		
 		if randrop(gameConf['medal_grab_probablity']):
 			res = medal.grabMedal(usr.roleid, defenceRoleid, usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
