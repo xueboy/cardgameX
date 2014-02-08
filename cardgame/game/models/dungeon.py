@@ -174,11 +174,7 @@ class dungeon(object):
 		
 	def award(self):
 		usr = self.user
-		inv = usr.getInventory()
-		awardMoney = 0
-		awardCard = []
-		awardItem = []
-		awardEquipment = []
+		inv = usr.getInventory()		
 		waves = self.curren_field_waves
 		awd = {}
 		for wave in waves:
@@ -206,3 +202,13 @@ class dungeon(object):
 							if len(dunConf) > (i + 1):
 								self.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
 								self.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
+
+	def notify_allow_dungeon(self, dungeonid, fieldid):
+		usr = self.user
+	
+		if not usr.notify.has_key('dungeon_allow'):
+			usr.notify['dungeon_allow'] = {}
+		if not usr.notify['dungeon_allow'].has_key(dungeonid):
+			usr.notify['dungeon_allow'][dungeonid] = []
+		usr.notify['dungeon_allow'][dungeonid].append(field_id)
+		usr.save()

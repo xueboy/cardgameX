@@ -109,8 +109,7 @@ def end(request):
 					qt.updateDungeonCountQuest()
 					qt.updateFinishDungeonQuest(battleId, fieldId)
 					dun.save()
-					return data
-					
+					return data					
 	return {'msg':'field_not_exist'}
 		
 		
