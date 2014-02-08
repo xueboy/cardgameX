@@ -38,9 +38,10 @@ class item:
 								break
 						if inv.delItem(key['id']) == None:
 							data['delete_item_array'].append(key['id'])
-							key = None						
+							key = None											
 							
 					data = drop.open(usr, dropid, data)					
+					data = drop.makeData(data)					
 					itemCount = itemCount - 1					
 				if key:					
 					data['update_item_array'].append(key)
@@ -76,6 +77,7 @@ class item:
 							break
 					dropid = treasureInfo['fun']['treasure'][0]
 					data = drop.open(usr, dropid, data)
+					data = drop.makeData(data)					
 					if inv.delItem(treasure['id']) == None:						
 						data['delete_item_array'].append(treasure['id'])
 						treasure = None
