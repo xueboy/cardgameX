@@ -25,7 +25,7 @@ class dungeon(object):
 		self.curren_field = {'battleid':'', 'fieldid':''}
 		self.reinforces = None
 		self.curren_field_waves = []
-		self.allow_list = {}
+		#self.allow_list = {}
 		self.user = None
 		
 	def init(self):		
@@ -45,7 +45,7 @@ class dungeon(object):
 		data['curren_field'] = self.curren_field
 		data['reinforces'] = self.reinforces
 		data['curren_field_waves'] = self.curren_field_waves
-		data['allow_list'] = self.allow_list
+		#data['allow_list'] = self.allow_list
 		return data
 		
 	def load(self, roleid, data):
@@ -56,14 +56,14 @@ class dungeon(object):
 		self.last_reinforce_time = data['last_reinforce_time']
 		self.curren_field = data['curren_field']
 		self.reinforces = data['reinforces']
-		self.allow_list = data['allow_list']
+		#self.allow_list = data['allow_list']
 		self.curren_field_waves = data['curren_field_waves']				
 		
 	def getClientData(self):
 		data = {}
-		#data['last_dungeon'] = self.last_dungeon
+		data['last_dungeon'] = self.last_dungeon
 		#data['curren_field_waves'] = self.curren_field_waves
-		data['allow_list'] = self.allow_list
+		#data['allow_list'] = self.allow_list
 		return data
 		
 	def updateReinforce(self):
@@ -81,22 +81,26 @@ class dungeon(object):
 			self.allow_list[battleid].append(fieldid)
 			self.save()
 	
+	def setLastDungeon(self, battleid, fieldid):
+		self.last_dungeon['battleid'] = battleid
+		self.last_dungeon['fieldid'] = fieldid
+	
 	def canEnterNormal(self, conf, battleid, fieldid):
-		#if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
-		#	return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
+		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
+			return conf[0]['battleId'] == battleid and conf[0]['field'][0]['fieldId'] == fieldid
 		
-		#for battle in conf:
-		#	for field in battle['field']:
-		#		if battle['battleId'] == battleid and field['fieldId'] == fieldid:
-		#			return True
-		#		if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
-		#			return False
-		#return False	
-		if not self.allow_list.has_key(battleid):
-			return False
-		if fieldid not in self.allow_list[battleid]:
-			return False
-		return True	
+		for battle in conf:
+			for field in battle['field']:
+				if battle['battleId'] == battleid and field['fieldId'] == fieldid:
+					return True
+				if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
+					return False
+		return False	
+		#if not self.allow_list.has_key(battleid):
+		#	return False
+		#if fieldid not in self.allow_list[battleid]:
+		#	return False
+		#return True	
 		
 	def getVolunteer(self):		
 		usr = self.user

@@ -26,7 +26,14 @@ def equip(request):
 	return equipment.equip(usr, teamPosition, ownerTeamPosition, equipmentid)
 	
 def sell(request):
-	equipmentid = request.GET['id']	
+	
+	equipmentid = []
+	for i in range(50):
+		keyname = 'equipment_id' + str(i)
+		if request.GET.has_key(keyname):
+			equipmentid.append(request.GET[keyname])
+		else:
+			break
 	usr = request.user
 	return equipment.sell(usr, equipmentid)
 	

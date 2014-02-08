@@ -151,7 +151,7 @@ class quest(object):
 		usr = self.user
 		if questInfo['finishType'] == 'dungeon_id':
 			dun = usr.getDungeon()			
-			dun.allowEnter(questInfo['finishValue'][0], questInfo['finishValue'][1])
+			dun.setLastDungeon(questInfo['finishValue'][0], questInfo['finishValue'][1])
 			dun.notify_allow_dungeon(questInfo['finishValue'][0], questInfo['finishValue'][1])
 		self.current[questid] = q
 		if isNotify:
