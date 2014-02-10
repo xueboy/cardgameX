@@ -71,7 +71,8 @@ class dungeon(object):
 	def getClientData(self):
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
-		data['fatigue'] = self.fatigue
+		#data['fatigue'] = self.fatigue
+		data['daily_recored'] = self.daily_recored
 		#data['curren_field_waves'] = self.curren_field_waves
 		#data['allow_list'] = self.allow_list
 		return data
@@ -149,8 +150,9 @@ class dungeon(object):
 			self.daily_recored[dungeonid][fieldid] = 0
 		self.daily_recored[dungeonid][fieldid] = self.daily_recored[dungeonid][fieldid] + 1
 		self.daily_recored_last_time = currentTime()
+		return self.daily_recored[dungeonid][fieldid]
 		
-	def getField(self, battleid, fieldid):
+	def getFieldConf(self, battleid, fieldid):
 		for battle in conf:
 			if battle['battleId'] == dungeonid:
 				for field in battle['field']:

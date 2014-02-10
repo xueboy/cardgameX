@@ -22,7 +22,8 @@ def enter(request):
 	usr = request.user
 	dun = usr.getDungeon()
 	battleid = request.GET['battle_id']
-	fieldid = request.GET['field_id']	
+	fieldid = request.GET['field_id']
+	dayCountGem = int(request.GET['dayCountGem'])
 	dunConf = config.getConfig('dungeon')
 	
 	if dun.canEnterNormal(dunConf, battleid, fieldid) == True:
@@ -71,8 +72,17 @@ def enter(request):
 		#				usr.gold = usr.gold - goldCost
 		#				reinforce.gold = reinforce.gold + goldCast
 		#				reinforce.save()
-					dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
+					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
+					genCost = 0
+					if fieldConf['dayCount'] <= cnt:
+						gemCost = int(10 * (1 + dun.fatigue / 2))
+					if gemCost != dayCountGem:
+						return {'msg':'bad_parameter'}
+					if usr.gem < gemCost:
+						return {'msg':'gem_not_enougth'}
+					usr.gem = usr.gem - gemCost						
 						
+					dun.save()	
 					usr.save()												
 					data = {}
 					data['wave_arrages'] = waves
