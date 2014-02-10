@@ -67,7 +67,7 @@ class signin:
 		
 		awd = {}
 		awd = drop.open(usr, signinAward['dropid'], awd)
-		awd = drop.makeData(awd)
+		awd = drop.makeData(awd, {})
 		usr.signin['last_signin_time'] = now
 		usr.save()
 		return awd		
