@@ -116,7 +116,7 @@ def end(request):
 					#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
 					#	dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}
-					data['last_dungeon'] = dun.last_dungeon
+					#data['last_dungeon'] = dun.last_dungeon
 					qt = usr.getQuest()
 					qt.updateDungeonCountQuest()
 					qt.updateFinishDungeonQuest(battleId, fieldId)
