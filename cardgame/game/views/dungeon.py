@@ -75,7 +75,7 @@ def enter(request):
 		#				reinforce.save()
 					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
 					gemCost = 0
-					if fieldConf['dayCount'] <= cnt:						
+					if fieldConf['dayCount'] < cnt:
 						gemCost = int(10 * (1 + float(cnt - fieldConf['dayCount']) / 2))
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
