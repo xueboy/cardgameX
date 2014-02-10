@@ -73,7 +73,7 @@ def enter(request):
 		#				reinforce.gold = reinforce.gold + goldCast
 		#				reinforce.save()
 					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
-					genCost = 0
+					gemCost = 0
 					if fieldConf['dayCount'] <= cnt:
 						gemCost = int(10 * (1 + dun.fatigue / 2))
 					if gemCost != dayCountGem:
