@@ -270,9 +270,9 @@ class drop:
 		if awd.has_key('add_equipment_array'):
 			for eq in awd['add_equipment_array']:
 				dropData.append({'type':3, 'count':1, 'insId':eq['id'], 'id':eq['equipmentid']})
-		if awd.has_key('add_card_array'):
+		if awd.has_key('add_card_array'):		
 			for card in awd['add_card_array']:
-				dropData.append({'type':1, 'count':1, 'insId':card['id'], 'id':card['cardid']})
+				dropData.append({'type':1, 'count':1, 'insId':card['id'], 'id':card['cardid']})			
 		if awd.has_key('add_skill_array'):
 			for sk in awd['add_skill_array']:
 				dropData.append({'type':2, 'count':1, 'insId':sk['id'], 'id':sk['skillid']})
@@ -282,8 +282,15 @@ class drop:
 		if awd.has_key('update_item_array'):
 			for it in awd['update_item_array']:
 				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})	
-					
-		retData = {kayname:dropData}
+			
+		retData = {}		
+		retData[kayname] = dropData
+		
+		if data.has_key(kayname):			
+			dp = data[kayname]
+			retData[kayname].extend(dp)
+			del data[kayname]
+		
 		retData.update(data)
 		return retData
 		

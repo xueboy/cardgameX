@@ -132,7 +132,7 @@ def gm_tool_set_profile(request):
 			usr = user.get(roleid)
 			if not usr:
 				return HttpResponse('玩家不存在')
-			usr.chargeStamina(value)
+			usr.chargeStamina(int(value))
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)

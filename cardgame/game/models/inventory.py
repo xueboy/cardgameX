@@ -148,6 +148,21 @@ class inventory(object):
 			return card
 		return None
 	
+	def addCardCount(self, cardid, cnt, level = 1):
+		cardConf = config.getConfig('pet')
+		if cardConf.has_key(cardid):
+			usr = self.user
+			al = usr.getAlmanac()
+			al.addCard(cardid)
+			c = []
+			for i in range(cnt):
+				card = pet.make_pet(self, cardid, level, cardConf)
+				self.card.append(card)
+				c.append(card)
+			return c
+		return None
+				
+	
 	def addAllCard(self, cardid):
 		newCard = []
 		for cid in cardid:

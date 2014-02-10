@@ -5,6 +5,7 @@
 from game.utility.config import config
 from gclib.json import json
 from game.models.user import user
+from game.routine.drop import drop
 import time
 
 
@@ -75,16 +76,16 @@ def enter(request):
 					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
 					gemCost = 0
 					if fieldConf['dayCount'] <= cnt:
-						gemCost = int(10 * (1 + dun.fatigue / 2))
+						gemCost = int(10 * (1 + (cnt - fieldConf['dayCount']) / 2))
+						print gemCost
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
 						return {'msg':'gem_not_enougth'}
-					usr.gem = usr.gem - gemCost						
-						
+					usr.gem = usr.gem - gemCost					
+					data = {}					
 					dun.save()	
-					usr.save()												
-					data = {}
+					usr.save()																	
 					data['wave_arrages'] = waves
 					data['gold'] = usr.gold
 					data['stamina'] = usr.stamina
@@ -108,11 +109,18 @@ def end(request):
 			for fieldConf in battleConf['field']:
 				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 					exp = fieldConf['exp']					
-					usr.gainExp(exp)					
+					usr.gainExp(exp)
+					awd1 = {}
+					awd1 = drop.open(usr, fieldConf['dropid'], awd1)					
+					
 					data = dun.award()
+					
+					print awd1
+					data = drop.makeData(awd1, data)
+					print data				
 					data['exp'] = usr.exp
 					data['level'] = usr.level
-					data['gold'] = usr.gold					
+					data['gold'] = usr.gold	
 					#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
 					#	dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}
