@@ -87,6 +87,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'medal_level':
 			return conf
+		if confname == 'mall_price':
+			return conf
 		return None
 	
 	

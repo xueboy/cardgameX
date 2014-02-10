@@ -117,6 +117,7 @@ def info(request):
 	info['medal_md5'] = conf.getClientConfigMd5('medal')
 	info['medal_loot_md5'] = conf.getClientConfigMd5('medal_loot')
 	info['medal_level_md5'] = conf.getClientConfigMd5('medal_level')
+	info['mall_price_md5'] = conf.getClientConfigMd5('mall_price')
 	return HttpResponse(json.dumps({'info':info}))
 
 

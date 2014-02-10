@@ -333,5 +333,52 @@ class stone:
 		
 		st = card['st_slot'][slot]
 		
+		if st['typestr'] == 'strenghth':
+			ppData['strenghth'] = st['value']
+		elif st['typestr'] == 'intelligence':
+			ppData['intelligence'] = st['value']
+		elif st['typestr'] == 'artifice':
+			ppData['artifice'] = st['value']
+		elif st['typestr'] == 'attack':
+			ppData['attack'] = st['value']
+		elif st['typestr'] == 'hp':
+			ppData['hp'] = st['value']
+		elif st['typestr'] == 'critical':
+			ppData['critical'] = st['value']
+		elif st['typestr'] == 'tenacity':
+			ppData['tenacity'] = st['value']
+		elif st['typestr'] == 'dodge':
+			ppData['dodge'] = st['value']
+		elif st['typestr'] == 'hit':
+			ppData['hit'] = st['value']
+		elif st['typestr'] == 'block':
+			ppData['block'] = st['value']
+		elif st['typestr'] == 'wreck':
+			ppData['wreck'] = st['value']
+		elif st['typestr'] == 'pt':
+			ppData['pt'] = st['value']
+		elif st['typestr'] == 'mt':
+			ppData['mt'] = st['value']
+		elif st['typestr'] == 'pd':
+			ppData['pd'] = st['value']
+		elif st['typestr'] == 'md':
+			ppData['md'] = st['value']
+		elif st['typestr'] == 'criticallv':
+			ppData['criticallv'] = st['value']
+		elif st['typestr'] == 'tenacitylv':
+			ppData['tenacity'] = st['value']
+		elif st['typestr'] == 'dodgelv':
+			ppData['dodgelv'] = st['value']
+		elif st['typestr'] == 'hitlv':
+			ppData['hitlv'] = st['value']
+		elif st['typestr'] == 'blocklv':
+			ppData['blocklv'] = st['value']
+		elif st['typestr'] == 'wrecklv':
+			ppData['wrecklv'] = st['value']
+		elif st['typestr'] == 'speed':
+			ppData['speed'] = st['value']
+			
+		return ppData
+
 		
 		
