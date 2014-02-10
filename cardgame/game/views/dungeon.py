@@ -79,7 +79,7 @@ def enter(request):
 						cnt = cnt - fieldConf['dayCount']
 						if cnt > 9:
 							cnt = 9
-						gemCost = int(10 * (1 + float(cnt) / 2))						
+						gemCost = int(10 * (0.5 + float(cnt) / 2))						
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
