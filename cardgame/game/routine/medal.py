@@ -12,12 +12,13 @@ class medal:
 		
 	@staticmethod
 	def make():
-		return {'protect':0, 'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0}
+		return {'protect':0, 'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0}
 			
 	@staticmethod
 	def getClientData(usr):
 		data = {}
 		data['medal_protect'] = usr.medal['protect']
+		data['medal_levelup_last_time'] = usr.medal['levelup_last_time']
 		return data
 		
 	@staticmethod
@@ -84,10 +85,12 @@ class medal:
 		inv.medal[medalid]['gravel'] = inv.medal[medalid]['gravel'] + medalInfo['gravel']
 		
 		while medalLevelConfig[medalid][medalLevel] <= inv.medal[medalid]['gravel'] and medalLevelMax > medalLevel:
-			medalLevel = medalLevel + 1
-			
+			medalLevel = medalLevel + 1			
 		
 		inv.medal[medalid]['level'] = medalLevel
+		
+		usr.medal['levelup_last_time'] = currentTime()
+		
 		inv.save()
 		return inv.medal[medalid]
 		
