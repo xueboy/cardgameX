@@ -79,7 +79,7 @@ def enter(request):
 						cnt = cnt - fieldConf['dayCount']
 						if cnt > 9:
 							cnt = 9
-						gemCost = int(10 * (1 + float(cnt) / 2))
+						gemCost = int(10 * (1 + float(cnt) / 2))						
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
@@ -115,8 +115,7 @@ def end(request):
 					awd = {}
 					awd = drop.open(usr, fieldConf['dropid'], awd)
 					
-					data = dun.award()
-					
+					data = dun.award()				
 
 					data = drop.makeData(awd, data)
 					data['exp'] = usr.exp

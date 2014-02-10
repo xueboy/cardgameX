@@ -148,6 +148,9 @@ def medal_loot(request):
 	
 def medal_level(request):
 	return generalConfigRequestProcess(request, 'medal_level')
+
+def mall_price(request):
+	return generalConfigRequestProcess(request, 'mall_price')
 	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -281,3 +284,6 @@ def medal_loot_import(request):
 	
 def medal_level_import(request):
 	return excel_import.medal_level_import(request)
+	
+def mall_price_import(request):
+	return excel_import.mall_price_import(request)

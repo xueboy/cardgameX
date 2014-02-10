@@ -108,5 +108,7 @@ urlpatterns = patterns('',
     url(r'^medal_loot/$', gameadmin.views.main.medal_loot),
     url(r'^medal_loot_import/$', gameadmin.views.main.medal_loot_import),
     url(r'^medal_level/$', gameadmin.views.main.medal_level),
-    url(r'^medal_level_import/$', gameadmin.views.main.medal_level_import),    
+    url(r'^medal_level_import/$', gameadmin.views.main.medal_level_import),
+    url(r'mall_price/$', gameadmin.views.main.mall_price),
+    url(r'mall_price_import/$', gameadmin.views.main.mall_price_import),
 )

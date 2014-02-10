@@ -127,9 +127,6 @@ class tower:
 		newScore = False
 		if usr.tower['floor_score'][usr.tower['current']['floor'] - 1] < usr.tower['current']['score']:
 			newScore = True
-		print usr.tower
-		print 'newPoint', newPoint
-		print 'newScore', newScore
 		
 		data = {}		
 					

@@ -307,3 +307,31 @@ class stone:
 					dst.append(ts)
 					toCard['st_slot'][i] = {}		
 		return dst
+		
+	@staticmethod
+	def pvpProperty(card, slot, stoneConf):
+		ppData['hp'] = 0
+		ppData['pa'] = 0
+		ppData['ma'] = 0
+		ppData['pd'] = 0
+		ppData['md'] = 0
+		ppData['pt'] = 0
+		ppData['mt'] = 0					
+		ppData['pr'] = 0
+		ppData['mr'] = 0
+		ppData['critical'] = 0
+		ppData['tenacity'] = 0
+		ppData['block'] = 0
+		ppData['wreck'] = 0
+		ppData['hit'] = 0
+		ppData['dodge'] = 0				
+		ppData['strength'] = 0
+		ppData['intelligence'] = 0
+		ppData['artifice'] = 0
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		
+		st = card['st_slot'][slot]
+		
+		
+		

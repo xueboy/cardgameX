@@ -200,8 +200,9 @@ class dungeon(object):
 		return False
 		
 	def arrangeWaves(self, field):
-		waves = []		
+		waves = {}		
 		for wave in field['wave']:
+			i = 0
 			cnt = 0
 			if sum(wave['count_prob']) != 0 and sum(wave['count']):
 				cnt = wave['count'][hit(wave['count_prob'])]			
@@ -216,8 +217,9 @@ class dungeon(object):
 				
 				if dropid:					
 					dropData = drop.roll(dropid, dropData)				
-				waveData.append({'monsterid':monsterid, 'drop':dropData})
-			waves.append(waveData)
+					if dropData:
+						waveData.append({'monsterid':monsterid, 'drop':dropData})
+			waves['wave' + str(i)] = waveData
 		self.curren_field_waves = waves
 		self.save()
 		return waves
@@ -228,7 +230,7 @@ class dungeon(object):
 		waves = self.curren_field_waves
 		awd = {}
 		for wave in waves:
-			for monsterDrop in wave:
+			for monsterDrop in waves[wave]:
 				dropData = monsterDrop['drop']				
 				drop.do_award(usr, dropData, awd)				
 					

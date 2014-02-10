@@ -1900,3 +1900,40 @@ class excel_import:
 		
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('medal_level_import')
+		
+	@staticmethod
+	def mall_price_import(request):
+		if request.method == 'POST':
+			mall_price_file = request.FILES.get('mall_price_file')
+			if not mall_price_file:
+				return HttpResponse('商城价格设定xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, mall_price_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {}
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				mallPriceid = row[0]
+				itemid = row[1]
+				gemPrice = int(row[2])
+				gemPromote = int(row[3])
+				goldPrice = int(row[4])
+				goldPromote = int(row[5])
+				type = int(row[6])
+				order = int(row[7])
+				
+				mallPriceConf = {}
+				mallPriceConf['itemid'] = itemid
+				mallPriceConf['gemPrice'] = gemPrice
+				mallPriceConf['gemPromote'] = gemPromote
+				mallPriceConf['goldPrice'] = goldPrice
+				mallPriceConf['goldPromote'] = goldPromote
+				mallPriceConf['type'] = type
+				mallPriceConf['order'] = order
+				
+				conf[mallPriceid] = mallPriceConf
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('mall_price_import')
