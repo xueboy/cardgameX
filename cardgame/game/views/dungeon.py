@@ -23,7 +23,7 @@ def enter(request):
 	dun = usr.getDungeon()
 	battleid = request.GET['battle_id']
 	fieldid = request.GET['field_id']
-	dayCountGem = int(request.GET['dayCountGem'])
+	dayCountGem = int(request.GET['day_count_gem'])
 	dunConf = config.getConfig('dungeon')
 	
 	if dun.canEnterNormal(dunConf, battleid, fieldid) == True:
