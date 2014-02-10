@@ -235,7 +235,7 @@ class dungeon(object):
 		self.curren_field_waves = []
 		usr.save()
 		inv.save()
-		awd = drop.makeData(awd)
+		awd = drop.makeData(awd, {})
 		return awd
 	
 	def nextField(self):
