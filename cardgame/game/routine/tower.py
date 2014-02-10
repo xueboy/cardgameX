@@ -229,7 +229,7 @@ class tower:
 				usr.tower['ladder_rank_level'] = res['rank_level']
 		
 		
-		return {'tower_max_floor': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point']}	
+		return {'tower_max_floor': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point'], 'tower_times': usr.tower['times']}	
 		
 	@staticmethod
 	def make_enhance_list():

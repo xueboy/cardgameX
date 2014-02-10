@@ -27,6 +27,7 @@ import game.views.item
 import game.views.tower
 import game.views.almanac
 import game.views.medal
+import game.views.mall
 
 
 viewsmap = {
@@ -45,7 +46,8 @@ viewsmap = {
 	'item' : sys.modules['game.views.item'],
 	'tower': sys.modules['game.views.tower'],
 	'almanac': sys.modules['game.views.almanac'],
-	'medal': sys.modules['game.views.medal']
+	'medal': sys.modules['game.views.medal'],
+	'mall' : sys.modules['game.views.mall']
 }
 
 def index(request):
