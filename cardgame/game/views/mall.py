@@ -1,6 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
+from game.utility.config import config
 
 def purchase(request):
 	
@@ -12,12 +13,12 @@ def purchase(request):
 	if not mallPriceConf.has_key(purchaseid):
 		return {'msg':'puchaseid_not_exist'}
 			
-	mallPriceInfo = mallPriceConf[puchaseid]	
+	mallPriceInfo = mallPriceConf[purchaseid]	
 	data = {}
-	if mallPriceInfo['pricePromote'] > 0:
-		costGold = mallPriceInfo['pricePromote']
+	if mallPriceInfo['goldPromote'] > 0:
+		costGold = mallPriceInfo['goldPromote']
 		if costGold > usr.gold:
-			return {'msg':'gold_not_enough'}		
+			return {'msg':'gold_not_enough'}
 		usr.gold = usr.gold - costGold
 		data['gold'] = usr.gold
 	if mallPriceInfo['gemPromote'] >0:
@@ -34,6 +35,5 @@ def purchase(request):
 		data['update_item'] = upIt
 	
 	if newIt:
-		data['add_item'] = newIt
-		
+		data['add_item'] = newIt		
 	return data
