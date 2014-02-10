@@ -83,7 +83,7 @@ def enter(request):
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
-						return {'msg':'gem_not_enougth'}
+						return {'msg':'gem_not_enough'}
 					usr.gem = usr.gem - gemCost					
 					data = {}					
 					dun.save()	
