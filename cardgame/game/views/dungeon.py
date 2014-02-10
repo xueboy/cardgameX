@@ -112,12 +112,12 @@ def end(request):
 				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 					exp = fieldConf['exp']					
 					usr.gainExp(exp)
-					awd = {}
-					awd = drop.open(usr, fieldConf['dropid'], awd)
-					
-					data = dun.award()				
-
-					data = drop.makeData(awd, data)
+					if fieldConf['dropid']:
+						awd = {}					
+						awd = drop.open(usr, fieldConf['dropid'], awd)					
+						data = dun.award()
+						data = drop.makeData(awd, data)
+						
 					data['exp'] = usr.exp
 					data['level'] = usr.level
 					data['gold'] = usr.gold	

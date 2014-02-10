@@ -18,7 +18,9 @@ class medal:
 	def getClientData(usr):
 		data = {}
 		data['medal_protect'] = usr.medal['protect']
-		data['medal_levelup_last_time'] = usr.medal['levelup_last_time']
+		data['medal_levelup_countdown'] = gameConf['medal_levelup_cooldown'] - currentTime() - usr.medal['levelup_last_time']
+		if data['medal_levelup_countdown'] < 0:
+			data['medal_levelup_countdown'] = 0
 		return data
 		
 	@staticmethod
