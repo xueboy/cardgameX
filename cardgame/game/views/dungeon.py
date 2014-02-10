@@ -71,6 +71,8 @@ def enter(request):
 		#				usr.gold = usr.gold - goldCost
 		#				reinforce.gold = reinforce.gold + goldCast
 		#				reinforce.save()
+					dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
+						
 					usr.save()												
 					data = {}
 					data['wave_arrages'] = waves

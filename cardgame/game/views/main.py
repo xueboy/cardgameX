@@ -67,7 +67,6 @@ def index(request):
 		data = usr.getLoginData(gameConf)
 		data['login'] = loginData		
 		usr.save()
-		print request.session.session_key
 		return HttpResponse(json.dumps(data))
 	return HttpResponse(json.dumps({'msg':'account_name_not_exist'}))
 

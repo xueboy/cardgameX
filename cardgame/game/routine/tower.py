@@ -119,16 +119,19 @@ class tower:
 			usr.tower['floor_score'].append(0)
 		while len(usr.tower['floor_point']) < usr.tower['current']['floor']:
 			usr.tower['floor_point'].append(0)
-		
+				
 		newPoint = False
 		if usr.tower['floor_point'][usr.tower['current']['floor'] - 1] < usr.tower['current']['point']:
-			newPoint = True
-			usr.tower['floor_point'][usr.tower['current']['floor'] - 1] = usr.tower['current']['point']
+			newPoint = True			
 		
 		newScore = False
 		if usr.tower['floor_score'][usr.tower['current']['floor'] - 1] < usr.tower['current']['score']:
 			newScore = True
-			usr.tower['floor_score'][usr.tower['current']['floor'] - 1] = usr.tower['current']['score']
+		print usr.tower
+		print 'newPoint', newPoint
+		print 'newScore', newScore
+		
+		data = {}		
 					
 		if ehc != -1:
 			if not usr.tower['current'].has_key('enhance'):
@@ -140,32 +143,36 @@ class tower:
 			enhance = tower.make_enhance_list()
 			usr.tower['current']['enhance'] = enhance
 		
-		data = {}		
+		
 			
 		if usr.tower['current']['floor'] % gameConf['tower_award_interval_floor'] == 0:
 			towerAwardInfo = towerAwardConf[str(usr.tower['current']['floor'])]
 			if newPoint:
-				data = drop.open(usr, towerAwardInfo[1], data)
-				data = drop.makeData(data,'top_drop')
+				awd = {}
+				awd = drop.open(usr, towerAwardInfo[1], awd)
+				data = drop.makeData(awd, data,'top_drop')
+				usr.tower['floor_point'][usr.tower['current']['floor'] - 1] = usr.tower['current']['point']
 			if newScore:				
 				if usr.tower['current']['score'] > 45:
-					data = drop.open(usr, towerAwardInfo[3], data)
-					data = drop.makeData(data,'record_drop')
+					awd = {}
+					awd = drop.open(usr, towerAwardInfo[3], awd)
+					data = drop.makeData(awd, data, 'record_drop')
 				if usr.tower['current']['score'] > 30:
-					data = drop.open(usr, towerAwardInfo[2], data)
-					data = drop.makeData(data,'record_drop')
+					awd = {}
+					awd = drop.open(usr, towerAwardInfo[2], awd)
+					data = drop.makeData(awd, data, 'record_drop')
+				usr.tower['floor_score'][usr.tower['current']['floor'] - 1] = usr.tower['current']['score']
 			usr.tower['current']['score'] = 0
 
 		if usr.tower['max_floor'] < usr.tower['current']['floor']:
 			 usr.tower['max_floor'] = usr.tower['current']['floor']				
 
 		if dp:
-			data = drop.open(usr, towerMonster[usr.tower['current']['floor']]['dropid'], data)
+			awd = {}
+			awd = drop.open(usr, towerMonster[usr.tower['current']['floor']]['dropid'], awd)
+			data = drop.makeData(awd, data, 'random_drop')		
 		
-		if data:	
-			data = drop.makeData(data)
-		
-
+		usr.save()
 		if enhance:
 			data['tower_enhance'] = enhance
 		data['tower_point'] = usr.tower['current']['point']

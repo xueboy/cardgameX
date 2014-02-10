@@ -5,7 +5,7 @@ from gclib.object import object
 from random import sample
 from gclib.DBConnection import DBConnection
 from game.utility.config import config
-from gclib.utility import randint, currentTime, hit
+from gclib.utility import randint, currentTime, hit, is_same_day
 from game.routine.drop import drop
 import time
 import random
@@ -25,6 +25,9 @@ class dungeon(object):
 		self.curren_field = {'battleid':'', 'fieldid':''}
 		self.reinforces = None
 		self.curren_field_waves = []
+		self.daily_recored = {}
+		self.daily_recored_last_time = 0		
+		self.fatigue = 0
 		#self.allow_list = {}
 		self.user = None
 		
@@ -45,6 +48,9 @@ class dungeon(object):
 		data['curren_field'] = self.curren_field
 		data['reinforces'] = self.reinforces
 		data['curren_field_waves'] = self.curren_field_waves
+		data['daily_recored'] = self.daily_recored
+		data['daily_recored_last_time'] = self.daily_recored_last_time
+		data['fatigue'] = self.fatigue
 		#data['allow_list'] = self.allow_list
 		return data
 		
@@ -56,12 +62,16 @@ class dungeon(object):
 		self.last_reinforce_time = data['last_reinforce_time']
 		self.curren_field = data['curren_field']
 		self.reinforces = data['reinforces']
+		self.daily_recored = data['daily_recored']
+		self.daily_recored_last_time = data['daily_recored_last_time']
 		#self.allow_list = data['allow_list']
-		self.curren_field_waves = data['curren_field_waves']				
+		self.curren_field_waves = data['curren_field_waves']
+		self.fatigue = data['fatigue']
 		
 	def getClientData(self):
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
+		data['fatigue'] = self.fatigue
 		#data['curren_field_waves'] = self.curren_field_waves
 		#data['allow_list'] = self.allow_list
 		return data
@@ -125,6 +135,36 @@ class dungeon(object):
 			vol.load(record[0], gcjson.loads(record[2]))
 			data.append(vol.getFriendData())
 		return data
+		
+	def dailyRecored(self, dungeonid, fieldid):
+		
+		if not is_same_day(self.daily_recored_last_time, currentTime()):
+			self.daily_recored = {}
+			self.daily_recored_last_time = currentTime()
+			self.fatigue = 0
+		
+		if not self.daily_recored.has_key(dungeonid):
+			self.daily_recored[dungeonid] = {}
+		if not self.daily_recored[dungeonid].has_key(fieldid):
+			self.daily_recored[dungeonid][fieldid] = 0
+		self.daily_recored[dungeonid][fieldid] = self.daily_recored[dungeonid][fieldid] + 1
+		self.daily_recored_last_time = currentTime()
+		
+	def getField(self, battleid, fieldid):
+		for battle in conf:
+			if battle['battleId'] == dungeonid:
+				for field in battle['field']:
+					if field['fieldId'] == fieldid:
+						return field
+		return None
+		
+	def dailyCount(self, dungeonid, fieldid):
+		if not self.daily_recored.has_key(dungeonid):
+			return 0;
+		if not self.daily_recored[dungeonid].has_key(fieldid):
+			return 0;
+		return self.daily_recored[dungeonid][fieldid]
+		
 	
 	def getReinforcement(self):
 		usr = self.user
@@ -211,12 +251,12 @@ class dungeon(object):
 								self.last_dungeon['battleid'] = dunConf[i + 1]['battleId']
 								self.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
 
-	def notify_allow_dungeon(self, dungeonid, fieldid):
+	def notify_allow_dungeon(self, battleid, fieldid):
 		usr = self.user
 	
 		if not usr.notify.has_key('dungeon_allow'):
 			usr.notify['dungeon_allow'] = {}
 			
-		usr.notify['dungeon_allow']['dungeonid'] = dungeonid
+		usr.notify['dungeon_allow']['battleid'] = battleid
 		usr.notify['dungeon_allow']['fieldid'] = fieldid		
 		usr.save()
