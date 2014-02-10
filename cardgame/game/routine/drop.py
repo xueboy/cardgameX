@@ -51,15 +51,25 @@ class drop:
 		
 	@staticmethod
 	def make_award(dropItem, awd):
-		if dropItem['type'] == 'st':			
+		if dropItem['type'] == 'st':
+			if not awd.has_key('st'):
+				awd['st'] = 0
 			awd['st'] = awd['st'] + dropItem['count']			
-		elif dropItem['type'] == 'gem':			
+		elif dropItem['type'] == 'gem':
+			if not awd.has_key('gem'):
+				awd['gem'] = 0
 			awd['gem'] = awd['gem'] + dropItem['count']			
 		elif dropItem['type'] == 'gold':			
+			if not awd.has_key('gold'):
+				awd['gold'] = 0
 			awd['gold'] = awd['gold'] + dropItem['count']			
 		elif dropItem['type'] == 'sp':			
+			if not awd.has_key('sp'):
+				awd['sp'] = 0
 			awd['sp'] = awd['sp'] + dropItem['count']			
-		elif dropItem['type'] == 'exp':			
+		elif dropItem['type'] == 'exp':
+			if not awd.has_key('exp'):
+				awd['exp'] = 0
 			awd['exp'] = awd['exp'] + dropItem['count']			
 		elif dropItem['type'] == 'stone':			
 			if not awd.has_key('add_stone_array'):
@@ -146,8 +156,8 @@ class drop:
 			for a in awd['add_skill_array']:
 				skill.extend(inv.addSkillCount(a['id'], a['count']))
 			if not data.has_key('add_skill_array'):
-				data['add_card_array'] = []
-			data['add_card_array'].extend(skill)
+				data['add_skill_array'] = []
+			data['add_skill_array'].extend(skill)
 			save_inv = True
 		if awd.has_key('add_item_array'):
 			if not inv:

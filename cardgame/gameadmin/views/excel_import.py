@@ -513,7 +513,7 @@ class excel_import:
 				monsterId = str(row[0])
 				if monsterId == '' or monsterId == '0.0':
 					continue
-				dropid = row[40]				
+				dropid = row[41]				
 				dropConf[str(monsterId)] = dropid				
 			
 			Conf = []
