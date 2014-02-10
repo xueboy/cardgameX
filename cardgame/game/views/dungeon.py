@@ -75,9 +75,8 @@ def enter(request):
 		#				reinforce.save()
 					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
 					gemCost = 0
-					if fieldConf['dayCount'] <= cnt:
-						gemCost = int(10 * (1 + (cnt - fieldConf['dayCount']) / 2))
-						print gemCost
+					if fieldConf['dayCount'] <= cnt:						
+						gemCost = int(10 * (1 + float(cnt - fieldConf['dayCount']) / 2))
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
@@ -110,14 +109,13 @@ def end(request):
 				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 					exp = fieldConf['exp']					
 					usr.gainExp(exp)
-					awd1 = {}
-					awd1 = drop.open(usr, fieldConf['dropid'], awd1)					
+					awd = {}
+					awd = drop.open(usr, fieldConf['dropid'], awd)
 					
 					data = dun.award()
 					
-					print awd1
-					data = drop.makeData(awd1, data)
-					print data				
+
+					data = drop.makeData(awd, data)
 					data['exp'] = usr.exp
 					data['level'] = usr.level
 					data['gold'] = usr.gold	
