@@ -219,6 +219,7 @@ class dungeon(object):
 					dropData = drop.roll(dropid, dropData)				
 					
 				waveData.append({'monsterid':monsterid, 'drop':dropData})
+			i = i + 1
 			waves['wave' + str(i)] = waveData
 		self.curren_field_waves = waves
 		self.save()
