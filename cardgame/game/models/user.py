@@ -156,7 +156,7 @@ class user(gcuser):
 		data['avatar'] = self.avatar
 		data['levelup'] = self.levelup['record']
 		data['tower'] = tower.getClientData(self)
-		data['medal'] = medal.getClientData(self)
+		data['medal'] = medal.getClientData(self, gameConf)
 		return data
 		
 	def getNtInfoData(self):
