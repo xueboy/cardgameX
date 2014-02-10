@@ -76,7 +76,10 @@ def enter(request):
 					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
 					gemCost = 0
 					if fieldConf['dayCount'] < cnt:
-						gemCost = int(10 * (1 + float(cnt - fieldConf['dayCount']) / 2))
+						cnt = cnt - fieldConf['dayCount']
+						if cnt > 9:
+							cnt = 9
+						gemCost = int(10 * (1 + float(cnt) / 2))
 					if gemCost != dayCountGem:
 						return {'msg':'bad_parameter'}
 					if usr.gem < gemCost:
