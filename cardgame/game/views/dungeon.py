@@ -112,6 +112,7 @@ def end(request):
 				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
 					exp = fieldConf['exp']					
 					usr.gainExp(exp)
+					data = {}
 					if fieldConf['dropid']:
 						awd = {}					
 						awd = drop.open(usr, fieldConf['dropid'], awd)					
