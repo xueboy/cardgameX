@@ -161,7 +161,7 @@ class config(gcconfig):
 	@staticmethod
 	def getMaxStamina(level):
 		levelConf = config.getConfig('level')		
-		return levelConf[level - 1]['sp']
+		return levelConf[level - 1]['stamina']
 		return 0
 		
 

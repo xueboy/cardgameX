@@ -393,6 +393,9 @@ class user(gcuser):
 
 	def chargeStamina(self, point):
 		self.stamina = self.stamina + point
+		levelConf = config.getConfig('level')
+		if levelConf[self.level - 1]['stamina'] < self.stamina:
+			levelConf[self.level - 1]['stamina'] = self.stamina
 		
 	
 	def costStamina(self, point):

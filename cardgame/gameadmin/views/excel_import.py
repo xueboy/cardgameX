@@ -197,13 +197,13 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				level = int(row[0])
 				exp = int(row[1])
-				sp = int(row[2])
+				stamina = int(row[2])
 				leadership = int(row[3])
 				friend = int(row[4])
 				
 				levelConf = {}
 				levelConf['levelExp'] = exp
-				levelConf['sp'] = sp
+				levelConf['stamina'] = stamina
 				levelConf['leadership'] = leadership
 				levelConf['friend'] = friend
 				
