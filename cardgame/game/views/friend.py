@@ -102,11 +102,12 @@ def mail(request):
 	return {'msg':'friend_not_exist'}
 		
 def delete_mail(request):
+	friendid = request.GET['friend_id']
 	mailid = request.GET['mail_id']
 	usr = request.user
 	usrNw = usr.getNetwork()
-	usrNw.deleteMail(mailid)
-	return {'message_delete': messageid}
+	usrNw.deleteMail(friendid, mailid)
+	return {'mailid': mailid}
 
 
 def email_read(request):

@@ -18,6 +18,7 @@ class network(object):
 		self.jail = {}						#[{'roleid':'', 'name':'abc'}]
 		self.friend = {}
 		self.friend_request = {}
+		self.request_list = {}
 		self.blacklist = []
 		self.sequenceid = 1
 		self.nt_info = {}
@@ -36,6 +37,7 @@ class network(object):
 		data['blacklist'] = self.blacklist
 		data['sequenceid'] = self.sequenceid
 		data['nt_info'] = self.nt_info
+		data['request_list'] = self.request_list
 		return data			
 		
 	def getClientMailData(self):
@@ -68,7 +70,7 @@ class network(object):
 		data['message'] = self.message
 		data['mail'] = self.getClientMailData()
 		data['email'] = {}#self.email
-		data['friend_request'] = self.email
+		data['friend_request'] = self.email		
 		#data['nt_info'] = self.nt_info
 		return data			
 		
@@ -79,9 +81,16 @@ class network(object):
 		self.mail = data['mail']
 		self.email = data['email']
 		self.sequenceid = data['sequenceid']
-		self.nt_info = data['nt_info']		
+		self.nt_info = data['nt_info']
+		self.request_list = data['request_list']
 		
-	def addFriendRequest(self, friend):		
+	def addFriendRequest(self, friend):
+		
+		if self.request_list.has_key(friend.roleid):
+			if is_same_day(currentTime(), self.request_list):
+				return {'msg':'friend_already_request'}
+		self.request_list[friend.roleid] = currentTime()
+		
 		data = self.user.getFriendData()
 		friendNw = friend.getNetwork()
 		requestid = str(friendNw.sequenceid)
@@ -160,10 +169,13 @@ class network(object):
 		toUser.save()
 		toUserNw.save()
 		
-	def deleteMail(self, mailid):
-		if self.message.has_key(messageid):
-			del self.mail[mailid]
-			self.save()
+	def deleteMail(self, friendid, mailid):
+		
+		if not self.mail.has_key(friendid):
+			return {'msg':'mail_not_exist'}		
+		self.mail[friendid] = filter(lambda x : x['id'] != mailid, self.mail[friendid])		
+		self.save()
+		return {}
 		
 		
 	def ban(self, ben_roleid, ben_name):

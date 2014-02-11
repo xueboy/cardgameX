@@ -49,8 +49,11 @@ def show(request):
 	
 	otNw = other.getNetwork()
 	data = {}
+	data['roleid'] = other.roleid
 	data['name'] = other.name
-	data['level'] = other.level	
+	data['gender'] = other.gender	
+	data['level'] = other.level
+	data['vip'] = other.vip	
 	data['message'] = otNw.message	
 	return data
 	

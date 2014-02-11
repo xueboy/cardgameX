@@ -393,6 +393,7 @@ class user(gcuser):
 
 	def chargeStamina(self, point):
 		self.stamina = self.stamina + point
+		
 	
 	def costStamina(self, point):
 		maxStamina = config.getMaxStamina(sefl.level)
