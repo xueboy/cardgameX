@@ -65,6 +65,16 @@ def message(request):
 		return {}		
 	return {'msg':'friend_not_exist'}
 		
+def get_message(request):
+	friendid = request.GET['friend_id']
+	friend = user.get(friendid)
+	if not friend:
+		return {'msg':'friend_not_exist'}
+	friendNw = friend.getNetwork()
+	
+	return {'message':friendNw.message}
+	
+		
 def message_delete(request):
 	messageid = request.GET['message_id']
 	usr = request.user

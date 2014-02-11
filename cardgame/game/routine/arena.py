@@ -51,7 +51,7 @@ class arena:
 			
 		usr.arena['challenge_roleid'] = defenceRole.roleid
 		usr.save()
-		return {'defence':defenceRole.getBattleData(), 'arena_time':usr.arena['times']}
+		return {'defence':defenceRole.pvpProperty(), 'arena_time':usr.arena['times']}
 
 	@staticmethod
 	def arena_update(usr):		

@@ -219,9 +219,8 @@ class equipment:
 			
 			
 	@staticmethod
-	def pvpProperty(card, slot, equipmentConf):
-		
-		equipment = card['slot'][slot]
+	def pvpProperty(equipment, equipmentConf):
+				
 		if not equipment:
 			return {}
 		

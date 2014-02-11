@@ -309,7 +309,7 @@ class stone:
 		return dst
 		
 	@staticmethod
-	def pvpProperty(card, slot, stoneConf):
+	def pvpProperty(st, stoneConf):
 		ppData['hp'] = 0
 		ppData['pa'] = 0
 		ppData['ma'] = 0
@@ -331,7 +331,7 @@ class stone:
 		ppData['pi'] = 0
 		ppData['mi'] = 0
 		
-		st = card['st_slot'][slot]
+
 		
 		if st['typestr'] == 'strenghth':
 			ppData['strenghth'] = st['value']

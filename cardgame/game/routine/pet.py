@@ -312,15 +312,17 @@ class pet:
 		
 		petInfo = petConf[card['cardid']]
 		
+		star = card['init_start'] + int(card['level'] * 0.4)
+		
 		ppData = {}
-		ppData['attack'] = petInfo['attack'] + petInfo['attackgrowth'] * (card['level'] + card['star']* 5)  * 0.5		
-		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + card['star'] * 5) * 0.5		
+		ppData['attack'] = petInfo['attack'] + petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5		
+		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5		
 		ppData['pd'] = 0
 		ppData['md'] = 0
 		ppData['pt'] = 0
 		ppData['mt'] = 0
-		ppData['pr'] = petInfo['pr'] + card['star'] * petInfo['prgrowth']
-		ppData['mr'] = petInfo['mr'] + card['star'] * petInfo['mrgrowth']
+		ppData['pr'] = petInfo['pr'] + star * petInfo['prgrowth']
+		ppData['mr'] = petInfo['mr'] + star * petInfo['mrgrowth']
 		ppData['critical'] = petInfo['critical']
 		ppData['tenacity'] = petInfo['tenacity']
 		ppData['block'] = petInfo['block']
@@ -334,15 +336,16 @@ class pet:
 		ppData['artifice'] = petInfo['artifice']
 		ppData['pi'] = 0
 		ppData['mi'] = 0
-		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * petInfo['star']
-		ppData['ma'] = petInfo['ma'] + petInfo['magrowth'] * petInfo['star']
+		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * star
+		ppData['ma'] = petInfo['ma'] + petInfo['magrowth'] * star
 		ppData['id'] = card['id']
 		ppData['cardid'] = card['cardid']
 		return ppData
 		
+			
 	@staticmethod
 	def mergePvpProperty(p1, p2):
-		ppData = {}
+		ppData = p1.copy()
 		ppData['attack'] = p1['attack'] + p2['attack']
 		ppData['hp'] = p1['hp'] + p2['hp']
 		ppData['pd'] = p1['pd'] + p2['pd']
