@@ -36,7 +36,22 @@ class network(object):
 		data['blacklist'] = self.blacklist
 		data['sequenceid'] = self.sequenceid
 		data['nt_info'] = self.nt_info
-		return data		
+		return data			
+		
+	def getClientMailData(self):
+		
+		data = {}
+		for roleid in self.mail:
+			 m = {}
+			 m['name'] = self.nt_info[roleid]['name']
+			 m['level'] = self.nt_info[roleid]['level']
+			 m['sex'] = self.nt_info[roleid]['sex']
+			 m['avatar_id'] = self.nt_info[roleid]['avatar_id']
+			 m['last_login'] = self.nt_info[roleid]['last_login']
+			 m['mail'] = self.mail[roleid]
+			 data[roleid] = m
+		return data
+		
 	
 	def getClientData(self):	
 		
@@ -51,7 +66,7 @@ class network(object):
 		data = {}
 		data['friend'] = self.friend	
 		data['message'] = self.message
-		data['mail'] = self.mail
+		data['mail'] = self.getClientMailData()
 		data['email'] = {}#self.email
 		data['friend_request'] = self.email
 		#data['nt_info'] = self.nt_info
@@ -133,12 +148,12 @@ class network(object):
 		ntInfo = self.user.getNtInfoData()	
 		requestid = str(toUserNw.sequenceid)
 		toUserNw.sequenceid = toUserNw.sequenceid + 1
-		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid, 'roleid':toUser.roleid}
 		fromUserId = str(self.user.roleid)
-		if not toUserNw.mail.has_key(self.user.roleid):
-			toUserNw.mail[requestid] = [fromUserId]
+		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid}	
+		if not toUserNw.mail.has_key(fromUserId):
+			toUserNw.mail[fromUserId] = []
 		toUserNw.mail[fromUserId].append(msgData)
-		toUserNw.nt_info[str(toUser.roleid)] = ntInfo
+		toUserNw.nt_info[fromUserId] = ntInfo
 		if not toUser.notify.has_key('notify_mail'):
 			toUser.notify['notify_mail'] = {}
 		toUser.notify['notify_mail'][requestid] = dict(msgData, **ntInfo)
