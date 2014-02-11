@@ -55,7 +55,7 @@ def message(request):
 	if friendid == usr.roleid:
 		toUser = usr
 	else:
-		toUser = user.get(int(friendid))
+		toUser = user.get(friendid)
 	if toUser:	
 		usrNw = usr.getNetwork()
 		toUserNw = toUser.getNetwork()

@@ -152,6 +152,12 @@ def medal_level(request):
 def mall_price(request):
 	return generalConfigRequestProcess(request, 'mall_price')
 	
+def practice_property(request):
+	return generalConfigRequestProcess(request, 'practice_property')
+	
+def practice_level(request):
+	return generalConfigRequestProcess(request, 'practice_level')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -287,3 +293,9 @@ def medal_level_import(request):
 	
 def mall_price_import(request):
 	return excel_import.mall_price_import(request)
+	
+def practice_level_import(request):
+	return excel_import.practice_level_import(request)
+	
+def practice_property_import(request):
+	return excel_import.practice_property_import(request)

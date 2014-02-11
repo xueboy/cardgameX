@@ -1938,3 +1938,130 @@ class excel_import:
 				conf.append(mallPriceConf)
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('mall_price_import')
+		
+		
+	@staticmethod
+	def practice_property_import(request):
+		if request.method == 'POST':
+			practice_property_file = request.FILES.get('practice_property_file')
+			if not practice_property_file:
+				return HttpResponse('修练属性xlsx文件未上传')
+			
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, practice_property_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {}
+			
+			critical_property = []
+			tenacity_property = []
+			block_property = []
+			wreck_property = []
+			
+			for rownum in range(1):
+				row = sheet.row_values(rownum)
+				level = int(row[0])
+				critical = int(row[1])
+				tenacity = int(row[2])
+				block = int(row[3])
+				wreck = int(row[4])
+				
+				while len(critical_property) > level:
+					critical_property.append(0)
+				while len(critical_property) > level:
+					tenacity_property.append(0)
+				while len(block_property) > level:
+					block_property.append(0)
+				while len(wreck_property) > level:
+					wreck_property.append(0)
+				
+				critical_property[level] = critical
+				tenacity_property[level] = tenacity
+				block_property[level] = block
+				wreck_property[level] = wreck
+				
+			conf['critical_property'] = critical_property
+			conf['tenacity_property'] = tenacity_property
+			conf['block_property'] = block_property
+			conf['wreck_property'] = wreck_property
+			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('practice_level_import')
+		
+	@staticmethod
+	def practice_level_import(request):
+		if request.method == 'POST':
+			practice_level_file = request.FILES.get('practice_level_file')
+			if not practice_level_file:
+				return HttpResponse('修练等级xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, practice_level_file.read())
+			sheet = wb.sheet_by_index(1)
+			
+			conf = {}
+			
+			critical_level = []
+			tenacity_level = []
+			block_level = []
+			wreck_level = []
+			
+			for rownum in range(1, sheet.nrows):
+				row = sheet.row_values(rownum)
+				level = int(row[0])
+				critical = int(row[1])
+				tenacity = int(row[2])
+				block = int(row[3])
+				wreck = int(row[4])
+				
+				while len(critical_level) > level:
+					critical_level.append(0)
+				while len(tenacity_level) > level:
+					tenacity_level.append(0)
+				while len(block_level) > level:
+					block_level.append(0)
+				while len(wreck_level) > level:
+					wreck_level.append(0)
+				
+				critical_level[level - 1] = critical
+				tenacity_level[level - 1] = tenacity
+				block_level[level - 1] = block
+				wreck_level[level - 1] = wreck
+				
+			conf['critical_level'] = critical_level
+			conf['tenacity_level'] = tenacity_level
+			conf['block_level'] = block_level
+			conf['wreck_level'] = wreck_level
+			
+			card_chip_point = []			
+			
+			sheet = wb.sheet_by_index(2)
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				quality = int(row[0])
+				chip_point = int(row[1])
+				
+				while len(card_chip_point) < quality:
+					card_chip_point.append(0)
+				
+				card_chip_point[quality - 1] = chip_point
+				
+			conf['card_chip_point'] = card_chip_point
+			
+			skill_chip_point = []
+			
+			sheet = wb.sheet_by_index(3)
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				quality = int(row[0])
+				chip_point = int(row[1])
+				
+				while len(skill_chip_point) < quality:
+					skill_chip_point.append(0)
+				
+				skill_chip_point[quality - 1] = chip_point
+				
+			conf['skill_chip_point'] = skill_chip_point
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('practice_level_file')
+			
