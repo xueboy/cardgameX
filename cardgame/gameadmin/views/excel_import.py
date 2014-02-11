@@ -513,7 +513,7 @@ class excel_import:
 				monsterId = str(row[0])
 				if monsterId == '' or monsterId == '0.0':
 					continue
-				dropid = row[41]				
+				dropid = row[40]				
 				dropConf[str(monsterId)] = dropid				
 			
 			Conf = []
@@ -1911,7 +1911,7 @@ class excel_import:
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, mall_price_file.read())
 			sheet = wb.sheet_by_index(0)
 			
-			conf = {}
+			conf = []
 			
 			for rownum in range(3, sheet.nrows):
 				row = sheet.row_values(rownum)
@@ -1926,6 +1926,7 @@ class excel_import:
 				order = int(row[7])
 				
 				mallPriceConf = {}
+				mallPriceConf['mallPriceid'] = mallPriceid
 				mallPriceConf['itemid'] = itemid
 				mallPriceConf['gemPrice'] = gemPrice
 				mallPriceConf['gemPromote'] = gemPromote
@@ -1934,6 +1935,6 @@ class excel_import:
 				mallPriceConf['type'] = type
 				mallPriceConf['order'] = order
 				
-				conf[mallPriceid] = mallPriceConf
+				conf.append(mallPriceConf)
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('mall_price_import')

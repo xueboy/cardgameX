@@ -5,7 +5,7 @@ from game.utility.config import config
 
 def purchase(request):
 	
-	purchaseid = request.GET['purchase_id']
+	purchasenum = int(request.GET['purchase_num'])
 	
 	usr = request.user	
 	mallPriceConf = config.getConfig('mall_price')
@@ -13,7 +13,7 @@ def purchase(request):
 	if not mallPriceConf.has_key(purchaseid):
 		return {'msg':'puchaseid_not_exist'}
 			
-	mallPriceInfo = mallPriceConf[purchaseid]	
+	mallPriceInfo = mallPriceConf[purchasenum]	
 	data = {}
 	if mallPriceInfo['goldPromote'] > 0:
 		costGold = mallPriceInfo['goldPromote']
