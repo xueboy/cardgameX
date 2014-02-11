@@ -48,7 +48,7 @@ def delete(request):
 	return usrNw.deleteFriend(friend)	
 			
 def message(request):
-	friendid = request.GET['friend_id']
+	friendid = int(request.GET['friend_id'])
 	msg = request.GET['message']
 	usr = request.user
 	toUser = None
@@ -108,6 +108,13 @@ def delete_mail(request):
 	usrNw = usr.getNetwork()
 	usrNw.deleteMail(friendid, mailid)
 	return {'mailid': mailid}
+		
+def delete_friend_mail(request):
+	friendid = request.GET['friend_id']	
+	usr = request.user
+	usrNw = usr.getNetwork()
+	usrNw.deleteFriendMail(friendid)
+	return {}
 
 
 def email_read(request):

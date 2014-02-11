@@ -137,7 +137,7 @@ class network(object):
 		toUserNw.message[requestid] = msgData
 		if not toUser.notify.has_key('notify_message'):
 			toUser.notify['notify_message'] = {}
-		toUser.notify['notify_message'][requestid] = msgData
+		toUser.notify['notify_message'][requestid] = msgData		
 		toUser.save()
 		toUserNw.save()
 	
@@ -169,11 +169,22 @@ class network(object):
 		toUser.save()
 		toUserNw.save()
 		
-	def deleteMail(self, friendid, mailid):
-		
+	def deleteMail(self, friendid, mailid):		
 		if not self.mail.has_key(friendid):
 			return {'msg':'mail_not_exist'}		
-		self.mail[friendid] = filter(lambda x : x['id'] != mailid, self.mail[friendid])		
+		self.mail[friendid] = filter(lambda x : x['id'] != mailid, self.mail[friendid])
+		if not self.mail[friendid]:
+			del self.mail[friendid]
+			del self.nt_info[friendid]
+		self.save()
+		return {}
+		
+	def deleteFriendMail(self, friendid):
+		if not self.mail.has_key(friendid):
+			return {'msg':'mail_not_exist'}		
+		
+		del self.mail[friendid]
+		del self.nt_info[friendid]
 		self.save()
 		return {}
 		
