@@ -86,10 +86,11 @@ class pet:
 
 	@staticmethod	
 	def totalExp(card, petConf, petLevelConf, gameConf):	
-		total = 0
-		petInfo = petConf[card['cardid']]
-		quality = petInfo['quality']
-		return petLevelConf[str(card['level'])][quality - 1] + card['exp'] + gameConf['pet_star_base_exp'][quality - 1]
+		#total = 0
+		#petInfo = petConf[card['cardid']]
+		#quality = petInfo['quality']
+		#return petLevelConf[str(card['level'])][quality - 1] + card['exp'] + gameConf['pet_star_base_exp'][quality - 1]
+		return petLevelConf[str(card['level'])] * 0.5
 		
 
 	@staticmethod
