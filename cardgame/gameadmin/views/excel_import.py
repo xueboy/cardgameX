@@ -1957,7 +1957,7 @@ class excel_import:
 			block_property = []
 			wreck_property = []
 			
-			for rownum in range(1):
+			for rownum in range(1, sheet.nrows):
 				row = sheet.row_values(rownum)
 				level = int(row[0])
 				critical = int(row[1])
@@ -1965,13 +1965,13 @@ class excel_import:
 				block = int(row[3])
 				wreck = int(row[4])
 				
-				while len(critical_property) > level:
+				while len(critical_property) < (level + 1):
 					critical_property.append(0)
-				while len(critical_property) > level:
+				while len(tenacity_property) < (level + 1):
 					tenacity_property.append(0)
-				while len(block_property) > level:
+				while len(block_property) < (level + 1):
 					block_property.append(0)
-				while len(wreck_property) > level:
+				while len(wreck_property) < (level + 1):
 					wreck_property.append(0)
 				
 				critical_property[level] = critical
@@ -2012,19 +2012,19 @@ class excel_import:
 				block = int(row[3])
 				wreck = int(row[4])
 				
-				while len(critical_level) > level:
+				while len(critical_level) < (level + 1):
 					critical_level.append(0)
-				while len(tenacity_level) > level:
+				while len(tenacity_level) < (level + 1):
 					tenacity_level.append(0)
-				while len(block_level) > level:
+				while len(block_level) < (level + 1):
 					block_level.append(0)
-				while len(wreck_level) > level:
+				while len(wreck_level) < (level + 1):
 					wreck_level.append(0)
 				
-				critical_level[level - 1] = critical
-				tenacity_level[level - 1] = tenacity
-				block_level[level - 1] = block
-				wreck_level[level - 1] = wreck
+				critical_level[level] = critical
+				tenacity_level[level] = tenacity
+				block_level[level] = block
+				wreck_level[level] = wreck
 				
 			conf['critical_level'] = critical_level
 			conf['tenacity_level'] = tenacity_level
@@ -2045,7 +2045,7 @@ class excel_import:
 				
 				card_chip_point[quality - 1] = chip_point
 				
-			conf['card_chip_point'] = card_chip_point
+			conf['card_point'] = card_chip_point
 			
 			skill_chip_point = []
 			
@@ -2061,7 +2061,7 @@ class excel_import:
 				
 				skill_chip_point[quality - 1] = chip_point
 				
-			conf['skill_chip_point'] = skill_chip_point
+			conf['skill_point'] = skill_chip_point
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('practice_level_file')
 			

@@ -111,4 +111,8 @@ urlpatterns = patterns('',
     url(r'^medal_level_import/$', gameadmin.views.main.medal_level_import),
     url(r'mall_price/$', gameadmin.views.main.mall_price),
     url(r'mall_price_import/$', gameadmin.views.main.mall_price_import),
+    url(r'practice_property/$', gameadmin.views.main.practice_property),
+    url(r'practice_property_import/$', gameadmin.views.main.practice_property_import),
+    url(r'practice_level/$', gameadmin.views.main.practice_level),
+    url(r'practice_level_import/$', gameadmin.views.main.practice_level_import),
 )
