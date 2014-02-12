@@ -160,7 +160,7 @@ class network(object):
 		requestid = str(toUserNw.sequenceid)
 		toUserNw.sequenceid = toUserNw.sequenceid + 1
 		fromUserId = str(self.user.roleid)
-		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid}	
+		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid, 'roleid':fromUserId}	
 		if not toUserNw.mail.has_key(fromUserId):
 			toUserNw.mail[fromUserId] = []
 		toUserNw.mail[fromUserId].append(msgData)
@@ -170,6 +170,15 @@ class network(object):
 		toUser.notify['notify_mail'][requestid] = dict(msgData, **ntInfo)
 		toUser.save()
 		toUserNw.save()
+				
+		fromNw = self
+		toNtInfo = toUser.getNtInfoData()
+		toUserId = str(toUser.roleid)
+		fromNw.nt_info[toUserId] = toNtInfo
+		if not fromNw.mail.has_key(toUserId):
+			fromNw.mail[toUserId] = []
+		fromNw.mail[toUserId].append(msgData)
+		fromNw.save()
 		
 	def deleteMail(self, friendid, mailid):		
 		if not self.mail.has_key(friendid):
