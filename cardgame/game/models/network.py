@@ -1,5 +1,5 @@
 ﻿from gclib.object import object
-from gclib.utility import currentTime
+from gclib.utility import currentTime, is_same_day
 from game.utility.config import config
 from game.models.massyell import massyell
 
@@ -86,10 +86,11 @@ class network(object):
 		
 	def addFriendRequest(self, friend):
 		
-		if self.request_list.has_key(friend.roleid):
-			if is_same_day(currentTime(), self.request_list):
+		friendRoleid = str(friend.roleid)
+		if self.request_list.has_key(friendRoleid):
+			if is_same_day(currentTime(), self.request_list[friendRoleid]):
 				return {'msg':'friend_already_request'}
-		self.request_list[friend.roleid] = currentTime()
+		self.request_list[friendRoleid] = currentTime()
 		
 		data = self.user.getFriendData()
 		friendNw = friend.getNetwork()
@@ -102,6 +103,7 @@ class network(object):
 			friend.notify['notify_friend_request'] = {}
 		friend.notify['notify_friend_request'][requestid] = data
 		friend.save()
+		self.save()
 		return data
 		
 	def addFriend(self, friend):
