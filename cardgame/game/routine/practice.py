@@ -36,7 +36,7 @@ class practice:
 		inv.save()
 		usr.save()
 		
-		data = usr.practice.copy()
+		data = practice.practice_type(usr, tp)
 		data['delete_card_array'] = cardid
 		
 		return data
@@ -71,7 +71,7 @@ class practice:
 		inv.save()
 		usr.save()
 		
-		data = usr.practice.copy()
+		data = practice.practice_type(usr, tp)
 		data['delete_card_chip_dic'] = chipDic
 		return data
 		
@@ -103,7 +103,7 @@ class practice:
 		inv.save()
 		usr.save()
 		
-		data = usr.practice.copy()
+		data = practice.practice_type(usr, tp)
 		data['delete_skill_array'] = skillid
 		
 		return data
@@ -137,7 +137,7 @@ class practice:
 			return res	
 		inv.save()
 		usr.save()
-		data = usr.practice.copy()
+		data = practice.practice_type(usr, tp)
 		data['delete_skill_chip_dic'] = chipDic
 		return data
 		
@@ -182,4 +182,14 @@ class practice:
 		return {}
 		
 		
-		
+	@staticmethod
+	def practice_type(usr, tp):
+		if tp == 'critical':
+			return {'critical_exp':usr.practice['critical_exp'], 'critical_level': usr.practice['critical_level']}
+		elif tp == 'tenacity':
+			return {'tenacity_exp':usr.practice['tenacity_exp'], 'tenacity_level': usr.practice['tenacity_level']}
+		elif tp == 'block':
+			return {'block_exp': usr.practice['block_exp'], 'block_level': usr.practice['block_level']}
+		elif tp == 'wreck':
+			return {'wreck_exp': usr.practice['wreck_exp'], 'wreck_level': usr.practice['wreck_level']}
+		return {}
