@@ -147,7 +147,7 @@
           <td colspan="4">
             <select name="petSelect">       
 	  {% for petid, pet in petConf.items %}
-        <option value="{{ petid }}"> {{ pet.name }}</option>        
+        <option value="{{ petid }}">{{ petid }},{{ pet.name }}</option>        
 	  {% endfor %}      
       </select>
             <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add', '0')" />          </td>
@@ -176,7 +176,7 @@
                    
 	  {% for petid, pet in petConf.items %}
         
-            <option value="{{ petid }}"> {{ pet.name }}</option>
+            <option value="{{ petid }}">{{ petid }},{{ pet.name }}</option>
                     
 	  {% endfor %}      
       
@@ -228,7 +228,7 @@
           <td colspan="5"><label>
             <select name="stoneSelect">
 				{% for stoneid, stone in stoneConf.items %}
-        		<option value="{{ stoneid }}"> {{ stone.name }}</option>        
+        		<option value="{{ stoneid }}">{{ stoneid }},{{ stone.name }}</option>        
 				{% endfor %}      
 
             </select>
@@ -281,7 +281,7 @@
           <td colspan="4">
             <select name="equipmentSelect">
 				{% for equipmentid, equipment in equipmentConf.items %}
-        		<option value="{{ equipmentid }}"> {{ equipment.name }}</option>        
+        		<option value="{{ equipmentid }}">{{ equipmentid }},{{ equipment.name }}</option>        
 				{% endfor %}
 			</select>
             <input type="submit" name="Submit5" value="添加" onclick="setEquipmentOpt('add', '0')"/>		  </td>
@@ -329,7 +329,7 @@
           <td colspan="5">
             <select name="skillSelect">
 				{% for skillid, skill in skillConf.items %}
-        		<option value="{{ skillid }}"> {{ skill.name }}</option>        
+        		<option value="{{ skillid }}">{{ skillid }},{{ skill.name }}</option>        
 				{% endfor %}
             </select>
 			<input type="submit" name="Submit6" value="添加" onclick="setSkillOpt('add', '0')" /></td>
@@ -356,7 +356,7 @@
             
 				{% for skillid, skill in skillConf.items %}
         		
-            <option value="{{ skillid }}"> {{ skill.name }}</option>
+            <option value="{{ skillid }}">{{ skillid }}, {{ skill.name }}</option>
                     
 				{% endfor %}
             
@@ -409,7 +409,7 @@
 	        <td colspan="4"><label>
 	          <select name="itemSelect">
 			  {% for itemid, item in itemConf.items %}
-        		<option value="{{ itemid }}"> {{ item.name }}</option>        
+        		<option value="{{ itemid }}">{{ itemid }},{{ item.name }}</option>        
 				{% endfor %}
             </select>
 	          <input name="tfItemCount" type="text" value="1" size="8" />
@@ -459,7 +459,7 @@
 		      <td colspan="4"><label>
 		        <select name="medalSelect" id="medalSelect">
 				  {% for medalid, medal in medalConf.items %}
-        		<option value="{{ medalid }}"> {{ medal.name }}</option>        
+        		<option value="{{ medalid }}">{{ medalid }},{{ medal.name }}</option>        
 				{% endfor %}
 	            </select>
 		      </label>
