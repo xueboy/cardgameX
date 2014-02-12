@@ -80,8 +80,9 @@ class user(gcuser):
 			self.id = acc.roleid
 			self.roleid = acc.roleid
 			self.name = acc.nickname
-		self.level = 1
-		self.stamina = 100				
+		self.level = 1		
+		levelConf = config.getConfig('level')		
+		self.stamina = levelConf[0]['stamina']
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.last_card_no = 0

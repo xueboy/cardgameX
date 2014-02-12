@@ -61,7 +61,7 @@ class pet:
 			exp = pet.totalExp(card, petConf, petLevelConf, gameConf) + exp
 			inv.delCard(card['id'])
 		
-		exp = int(exp * 0.5)
+		
 		pet.gainExp(destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
 		return {'update_card':inv.getClientCard(destCard), 'delete_card':sourceCardid}
@@ -78,8 +78,8 @@ class pet:
 		card['exp'] = 0
 		while exp > needExp and levelLimit > level:			
 			exp = exp - needExp
-			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]
-			level = level + 1			
+			level = level + 1
+			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			
 			card['level'] = level			
 		card['exp'] = exp	
 	
@@ -90,7 +90,7 @@ class pet:
 		petInfo = petConf[card['cardid']]
 		quality = petInfo['quality']
 		#return petLevelConf[str(card['level'])][quality - 1] + card['exp'] + gameConf['pet_star_base_exp'][quality - 1]
-		return petLevelConf[str(card['level'])][quality - 1] * 0.5 + gameConf['pet_star_base_exp'][quality - 1]
+		return int(petLevelConf[str(card['level'])][quality - 1] * 0.5 + gameConf['pet_star_base_exp'][quality - 1])
 		
 
 	@staticmethod
