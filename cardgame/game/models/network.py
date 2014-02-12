@@ -171,6 +171,7 @@ class network(object):
 		toUser.save()
 		toUserNw.save()
 				
+		fromUser = self.user
 		fromNw = self
 		toNtInfo = toUser.getNtInfoData()
 		toUserId = str(toUser.roleid)
@@ -178,7 +179,11 @@ class network(object):
 		if not fromNw.mail.has_key(toUserId):
 			fromNw.mail[toUserId] = []
 		fromNw.mail[toUserId].append(msgData)
+		if not fromUser.notify.has_key('notify_mail'):
+			fromUser.notify['notify_mail'] = {}
+		fromUser.notify['notify_mail'][requestid] = dict(msgData, **ntInfo)
 		fromNw.save()
+		fromUser.save()
 		
 	def deleteMail(self, friendid, mailid):		
 		if not self.mail.has_key(friendid):
