@@ -89,6 +89,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'mall_price':
 			return conf
+		if confname == 'practice_property':
+			return conf
+		if confname == 'practice_level':
+			return conf
 		return None
 	
 	
