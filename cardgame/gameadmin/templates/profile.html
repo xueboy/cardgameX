@@ -300,7 +300,39 @@
       <td width="367">{% if dq.level %} {{ eq.level }} {% endif %}</td>
       <td width="80"><input type="submit" name="Submit722" value="删除" onclick="setEquipmentOpt('remove', '{{ eq.id }}')"/></td>  
    	 </tr>
-	{% endfor %}       
+	 	{% endfor %}  
+        <tr>
+          <td colspan="4"><div align="center">碎片</div></td>
+        </tr>
+        <tr>
+          <td colspan="4"><select name="equipmentChipSelect">
+            
+				{% for equipmentid, equipment in equipmentConf.items %}
+        		
+            <option value="{{ equipmentid }}">{{ equipmentid }},{{ equipment.name }}</option>
+                    
+				{% endfor %}
+			
+          </select>
+            <label>
+            <input name="tfEquipmentChipCount" type="text" value="1" size="4" />
+            </label>
+          <input type="submit" name="Submit52" value="添加" onclick="setEquipmentOpt('add_chip', '0')"/></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>名称</td>
+          <td>个数</td>
+          <td>&nbsp;</td>
+        </tr>
+		{% for equipmentid, cnt in equipmentChip.items %}
+        <tr>
+          <td>{{ equipmentid }}</td>
+          <td>{{ equipmentConf | dict_get:equipmentid | dict_get:'name' }}</td>
+          <td>{{ cnt }}</td>
+          <td>&nbsp;</td>
+        </tr>
+		{% endfor %}
       </table>
   </div>
 	</form>

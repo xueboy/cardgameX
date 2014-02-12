@@ -76,7 +76,7 @@ class pet:
 		levelLimit = gameConf['pet_level_limit'][quality - 1]
 		exp = exp + card['exp']
 		card['exp'] = 0
-		while exp > needExp and levelLimit > level:			
+		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
 			level = level + 1
 			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			

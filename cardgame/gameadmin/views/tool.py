@@ -265,7 +265,17 @@ def gm_tool_set_equipment(request):
 			inv = usr.getInventory()
 			if not inv.delEquipment(id):
 				return HttpResponse('删除失败')
-			inv.save()			
+			inv.save()
+		elif equipmentopt == 'add_chip':
+			id = request.POST['equipmentChipSelect']
+			cnt = int(request.POST['tfEquipmentChipCount'])
+			inv = usr.getInventory()
+			if inv.addEquipmentChip(id, cnt) < 0:
+				return HttpResponse('添加失败')
+			inv.save()
+		else:
+			return HttpResponse('无效功能')
+				
 		data = gm.show_profile(acc, usr)			
 		return render(request, 'profile.html', data)
 	return HttpResponse('未知命令')

@@ -117,6 +117,7 @@ class inventory(object):
 		data['team'] = self.team
 		data['item'] = item
 		data['equipment'] = equipment
+		data['equipment_chip'] = self.equipment_chip
 		data['slot'] = self.getSlots()
 		data['st_slot'] = self.getStSlots()
 		data['sk_slot'] = self.getSkSlots()
@@ -224,6 +225,15 @@ class inventory(object):
 				equipment.append(data)				
 				al.addEquipment(equipmentid)
 		return equipment
+		
+	def addEquipmentChip(self, equipmentid, cnt):
+		equipmentConf = config.getConfig('equipment')
+		if not equipmentConf.has_key(equipmentid):
+			return -1
+		if not self.equipment_chip.has_key(equipmentid):
+			self.equipment_chip[equipmentid] = 0
+		self.equipment_chip[equipmentid] = self.equipment_chip[equipmentid] + cnt
+		return self.equipment_chip[equipmentid]
 		
 	def depositEquipment(self, equipment):
 		self.equipment.append(equipment)

@@ -33,6 +33,7 @@ class gm:
 		data['stoneList'] = inv.stone
 		data['equipmentConf'] = config.getConfig('equipment')
 		data['equipmentList'] = inv.equipment
+		data['equipmentChip'] = inv.equipment_chip
 		data['skillConf'] = config.getConfig('skill')
 		data['skillList'] = inv.skill
 		data['skillChip'] = inv.skill_chip
