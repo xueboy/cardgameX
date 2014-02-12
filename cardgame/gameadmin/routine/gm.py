@@ -28,17 +28,20 @@ class gm:
 		
 		data['petConf'] = config.getConfig('pet')		
 		data['petList'] = inv.card
+		data['petChip'] = inv.card_chip
 		data['stoneConf'] = config.getConfig('stone')
 		data['stoneList'] = inv.stone
 		data['equipmentConf'] = config.getConfig('equipment')
 		data['equipmentList'] = inv.equipment
 		data['skillConf'] = config.getConfig('skill')
 		data['skillList'] = inv.skill
+		data['skillChip'] = inv.skill_chip
 		data['itemConf'] = config.getConfig('item')
 		data['itemList'] = inv.item
 		data['login_count'] = usr.signin['login_count']
 		data['medalConf'] = config.getConfig('medal')
 		data['medalDict'] = inv.medal
+		
 		
 		
 		return data

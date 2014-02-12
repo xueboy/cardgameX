@@ -34,7 +34,7 @@ class medal:
 			holder = []
 		
 			for h in res['holder']:
-				usrh = usr.__class__.get(h)
+				usrh = usr.__class__.get(h)				
 				holder.append(medal.getHolderData(usrh, gameConf))
 			usr.medal['grabmedalid'] = medalid
 			usr.medal['chipnum'] = chipnum

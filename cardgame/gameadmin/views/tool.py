@@ -195,7 +195,16 @@ def gm_tool_set_pet(request):
 			inv = usr.getInventory()
 			if not inv.delCard(id):
 				return HttpResponse('删除失败')		
-			inv.save()	
+			inv.save()
+		elif petopt == 'add_chip':
+			cardid = request.POST['petChipSelect']
+			cnt = int(request.POST['tfPetCount'])
+			inv = usr.getInventory()
+			if inv.addCardChip(cardid, cnt) < 0:
+				return HttpResponse('添加失败')				
+			inv.save()
+		else:
+			return HttpResponse('无效的功能')
 		data = gm.show_profile(acc, usr)
 		return render(request, 'profile.html', data)
 	return HttpResponse('未知命令')
@@ -287,7 +296,16 @@ def gm_tool_set_skill(request):
 			inv = usr.getInventory()
 			if not inv.delSkill(id):
 				return HttpResponse('删除失败')
+			inv.save()
+		elif skillopt == 'add_chip':
+			skillid = request.POST['skillChipSelect']
+			cnt = int(request.POST['tfSkillChipCount'])
+			inv = usr.getInventory()
+			if inv.addSkillChip(skillid, cnt) < 0:
+				return HttpResponse('添加失败')		
 			inv.save()		
+		else:
+			return HttpResponse('无效功能')
 		data = gm.show_profile(acc, usr)
 		return render(request, 'profile.html', data)
 	return HttpResponse('未知命令')

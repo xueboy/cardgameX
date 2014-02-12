@@ -113,6 +113,7 @@ class inventory(object):
 			medal[mid] = d
 					
 		data['card'] = card
+		data['card_chip'] = self.card_chip
 		data['team'] = self.team
 		data['item'] = item
 		data['equipment'] = equipment
@@ -121,6 +122,7 @@ class inventory(object):
 		data['sk_slot'] = self.getSkSlots()
 		data['stone'] = stone
 		data['skill'] = skill
+		data['skill_chip'] = self.skill_chip
 		data['medal'] = medal
 		return data
 		
@@ -171,6 +173,15 @@ class inventory(object):
 				if card:
 					newCard.append(card)
 		return newCard
+
+	def addCardChip(self, cardid, cnt):
+		cardConf = config.getConfig('pet')
+		if not cardConf.has_key(cardid):
+			return -1
+		if not self.card_chip.has_key(cardid):
+			self.card_chip[cardid] = 0
+		self.card_chip[cardid] = self.card_chip[cardid] + cnt
+		return self.card_chip[cardid]
 
 	def canDelCard(self, id):
 		if self.team.count (id) > 0:
@@ -494,6 +505,16 @@ class inventory(object):
 			skill.append(sk)
 			al.addSkill(skillid)
 		return skill
+		
+	def addSkillChip(self, skillid, cnt):
+		skillConf = config.getConfig('skill')
+		if not skillConf.has_key(skillid):
+			return -1
+		
+		if not self.skill_chip.has_key(skillid):
+			self.skill_chip[skillid] = 0
+		self.skill_chip[skillid] = self.skill_chip[skillid] + cnt
+		return self.skill_chip[skillid]
 	
 	def addAllSkill(self, skillid):
 		newSkill = []

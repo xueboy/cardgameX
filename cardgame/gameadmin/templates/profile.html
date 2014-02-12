@@ -166,8 +166,40 @@
       <td><label>
         <input type="submit" name="Submit7" value="删除" onclick="setPetOpt('remove', '{{ pet.id }}')"/>
       </label></td>
-    </tr>
-        {% endfor %}
+    </tr>  
+	   {% endfor %}
+        <tr>
+          <td colspan="4">影子</td>
+        </tr>
+        <tr>
+          <td colspan="4"><select name="petChipSelect">
+                   
+	  {% for petid, pet in petConf.items %}
+        
+            <option value="{{ petid }}"> {{ pet.name }}</option>
+                    
+	  {% endfor %}      
+      
+          </select>
+            <label>
+            <input name="tfPetCount" type="text" value="1" size="4" />
+            </label>
+            <input type="submit" name="Submit32" value="添加" onclick="setPetOpt('add_chip', '0')" /></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>名称</td>
+          <td>个数</td>
+          <td>&nbsp;</td>
+        </tr>
+		{% for petid, chipcnt in petChip.items %}
+        <tr>
+          <td>{{ petid }}</td>
+          <td>{{ petConf | dict_get:petid | dict_get:'name' }}</td>
+          <td>{{ chipcnt }}</td>
+          <td>&nbsp;</td>
+        </tr>
+			  {% endfor %}    
       </table>
     </div>
     <p>&nbsp;</p>
@@ -315,8 +347,39 @@
       <td>{{ skill.level }}</td>
       <td><input type="submit" name="Submit7222" value="删除" onclick="setSkillOpt('remove', '{{ skill.id }}')"/></td>  
    	 </tr>
-	{% endfor %}       
-       
+	 	{% endfor %} 
+        <tr>
+          <td colspan="4"><div align="center">碎片</div></td>
+        </tr>
+        <tr>
+          <td colspan="4"><select name="skillChipSelect">
+            
+				{% for skillid, skill in skillConf.items %}
+        		
+            <option value="{{ skillid }}"> {{ skill.name }}</option>
+                    
+				{% endfor %}
+            
+          </select>
+            <label>
+            <input name="tfSkillChipCount" type="text" value="1" size="4" />
+            </label>
+            <input type="submit" name="Submit63" value="添加" onclick="setSkillOpt('add_chip', '0')" /></td>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>名称</td>
+          <td>个数</td>
+          <td>&nbsp;</td>
+        </tr>
+			{% for skillid, chipcount in skillChip.items %}
+        <tr>
+          <td>{{ skillid }}</td>
+          <td>{{ skillConf | dict_get:skillid | dict_get:'name' }}</td>
+          <td>{{ chipcount }}</td>
+          <td>&nbsp;</td>
+        </tr>
+			{% endfor %}
       </table>
   </div>
 	  </form>

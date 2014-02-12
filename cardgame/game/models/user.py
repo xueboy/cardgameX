@@ -22,6 +22,7 @@ from game.routine.arena import arena
 from game.routine.tower import tower
 from game.routine.medal import medal
 from game.routine.pet import pet
+from game.routine.practice import practice
 
 
 class user(gcuser):
@@ -70,6 +71,7 @@ class user(gcuser):
 		self.latitude = 0.0
 		self.tower = tower.make()
 		self.medal = medal.make()
+		self.practice = practice.make()
 		
 	
 	def init(self, acc = None):
@@ -124,6 +126,7 @@ class user(gcuser):
 		data['latitude'] = self.latitude
 		data['tower'] = self.tower
 		data['medal'] = self.medal
+		data['practice'] = self.practice
 		return data
 		
 	def getClientData(self):
@@ -158,6 +161,7 @@ class user(gcuser):
 		data['levelup'] = self.levelup['record']
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)
+		data['practice'] = self.practice
 		return data
 		
 	def getNtInfoData(self):
@@ -275,6 +279,7 @@ class user(gcuser):
 		self.latitude = data['latitude']
 		self.tower = data['tower']
 		self.medal = data['medal']
+		self.practice = data['practice']
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1

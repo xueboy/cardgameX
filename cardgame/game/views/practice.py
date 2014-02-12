@@ -7,7 +7,10 @@ from game.routine.practice import practice
 def card_levelup(request):
 	
 	cardid = []
-	for i in range(1, 50):
+	
+	cardid.append(request.GET['cardid1'])
+	
+	for i in range(2, 50):
 		keyname = 'cardid' + str(i)
 		if request.GET.has_key(keyname):
 			cardid.append(request.GET[keyname])
@@ -20,12 +23,15 @@ def card_levelup(request):
 	
 def card_chip_levelup(request):
 	chipDic = {}
-	for i in range(1, 50):
-		chipkeyname = 'cardid' + str(i)
+	
+	chipDic[request.GET['card_id1']] = int(request.GET['chipnum1'])
+	
+	for i in range(2, 50):
+		chipkeyname = 'card_id' + str(i)
 		chipnumkeyname = 'chipnum' + str(i)
 		
 		if request.GET.has_key(chipkeyname):
-			chipDic[chipkeyname] = chipnumkeyname
+			chipDic[chipkeyname] = int(chipnumkeyname)
 		else:
 			break
 	tp = request.GET['type']
@@ -33,7 +39,33 @@ def card_chip_levelup(request):
 	return practice.card_chip_levelup(usr, tp, chipDic)
 	
 def skill_levelup(request):
-	pass
+	skillid = []
+	
+	skillid.append(request.GET['skillid1'])
+	
+	for i in range(2, 50):
+		keyname = 'skillid' + str(i)
+		if request.GET.has_key(keyname):
+			skillid.append(request.GET[keyname])
+		else:
+			break
+	tp = request.GET['type']
+	usr = request.user
+	return practice.skill_levelup(usr, tp, skillid)
 	
 def skill_chip_levelup(request):
-	pass
+	chipDic = {}
+	
+	chipDic[request.GET['skill_id1']] = int(request.GET['skillnum1'])
+	
+	for i in range(2, 50):
+		chipkeyname = 'skill_id' + str(i)
+		chipnumkeyname = 'chipnum' + str(i)
+		
+		if request.GET.has_key(chipkeyname):
+			chipDic[chipkeyname] = int(chipnumkeyname)
+		else:
+			break
+	tp = request.GET['type']
+	usr = request.user
+	return practice.skill_chip_levelup(usr, tp, chipDic)
