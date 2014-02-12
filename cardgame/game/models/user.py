@@ -482,6 +482,7 @@ class user(gcuser):
 		
 		ppAlmanacData = self.almanacPvpProperty()
 		ppMedalData = self.almanacPvpProperty()
+		ppPracticeData = self.practicePvpProperty()
 				
 		data = []
 		for tid in inv.team:
@@ -499,6 +500,7 @@ class user(gcuser):
 						ppData = pet.mergePvpProperty(ppData, data)	
 				ppData = pet.mergePvpProperty(ppData, ppAlmanacData)
 				ppData = pet.mergePvpProperty(ppData, ppMedalData)
+				ppData = pet.mergePvpProperty(ppData, ppPracticeData)
 				data.append(ppData)
 			else:
 				data.append({})
@@ -662,4 +664,43 @@ class user(gcuser):
 			elif medalConfig[medalid]['typestr'] == 'speed':
 				ppData['speed'] = ppData['speed'] + medalConfig[medalid]['val']		
 		
+		return ppData
+		
+	def practicePvpProperty(self):
+		ppData = {}
+		ppData['attack'] = 0
+		ppData['hp'] = 0
+		ppData['pd'] = 0
+		ppData['md'] = 0
+		ppData['pt'] = 0
+		ppData['mt'] = 0
+		ppData['pr'] = 0
+		ppData['mr'] = 0
+		ppData['critical'] = 0
+		ppData['tenacity'] = 0
+		ppData['block'] = 0
+		ppData['wreck'] = 0
+		ppData['hit'] = 0
+		ppData['dodge'] = 0
+		ppData['pa'] = 0
+		ppData['ma'] = 0
+		ppData['strength'] = 0
+		ppData['intelligence'] = 0
+		ppData['artifice'] = 0
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		ppData['pa'] = 0
+		ppData['ma'] = 0
+		
+		practicePropertyConf = config.getConfig('practice_property')
+		
+		if self.practice['critical_level'] > 0:
+			ppData[critical] = practicePropertyConf[self.practice['critical_level']]
+		if self.practice['tenacity_level'] > 0:
+			ppData[tenacity] = practicePropertyConf[self.practice['tenacity_level']]
+		if self.practice['block_level'] > 0:
+			ppData[block] = practicePropertyConf[self.practice['block_level']]
+		if self.practice['wreck_level'] > 0:
+			ppData[wreck] = practicePropertyConf[self.practice['wreck_level']]
+			
 		return ppData
