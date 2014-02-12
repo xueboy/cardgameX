@@ -120,8 +120,8 @@ def info(request):
 	info['medal_loot_md5'] = conf.getClientConfigMd5('medal_loot')
 	info['medal_level_md5'] = conf.getClientConfigMd5('medal_level')
 	info['mall_price_md5'] = conf.getClientConfigMd5('mall_price')
-	info['prictice_property_md5'] = conf.getClientConfigMd5('practice_property')
-	info['prictice_level_md5'] = conf.getClientConfigMd5('practice_level')
+	info['practice_property_md5'] = conf.getClientConfigMd5('practice_property')
+	info['practice_level_md5'] = conf.getClientConfigMd5('practice_level')
 	return HttpResponse(json.dumps({'info':info}))
 
 
