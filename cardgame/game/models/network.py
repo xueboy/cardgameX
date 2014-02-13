@@ -167,7 +167,7 @@ class network(object):
 		toUserNw.nt_info[fromUserId] = ntInfo
 		if not toUser.notify.has_key('notify_mail'):
 			toUser.notify['notify_mail'] = {}
-		toUser.notify['notify_mail'][requestid] = dict({'new_mail':ntInfo}, **msgData)
+		toUser.notify['notify_mail'][fromUserId] = dict({'new_mail':msgData}, **ntInfo)
 		toUser.save()
 		toUserNw.save()
 				
@@ -181,7 +181,7 @@ class network(object):
 		fromNw.mail[toUserId].append(msgData)
 		if not fromUser.notify.has_key('notify_mail'):
 			fromUser.notify['notify_mail'] = {}
-		fromUser.notify['notify_mail'][requestid] = dict({'new_mail':toNtInfo}, **msgData)
+		fromUser.notify['notify_mail'][toUserId] = dict({'new_mail':msgData}, **toNtInfo)
 		fromNw.save()
 		fromUser.save()
 		
