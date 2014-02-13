@@ -15,7 +15,8 @@ def show_ladder(request):
 def stand_ladder(request):
 	
 	roleid = request.REQUEST['roleid']
-	ld = ladder.instance()
+	ld = ladder.instance()	
+	
 	return HttpResponse(json.dumps(ld.stand(roleid)))
 	
 def defeat(request):

@@ -30,6 +30,10 @@ class ladder(facility):
 		
 		if not usr:
 			return {'msg':'user_not_exist'}	
+				
+		md = medal_arena.instance()
+		md.role_level(usr.roleid, usr.level)
+		md.save()
 		
 		if not self.item.has_key(roleid):			
 			rd = {}
