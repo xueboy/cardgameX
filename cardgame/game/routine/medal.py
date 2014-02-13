@@ -121,7 +121,8 @@ class medal:
 	@staticmethod
 	def levelupMedal(roleid, medalid):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/medal_levelup/', None, { 'medalid':medalid, 'roleid': roleid, 'medalid': medalid}))
-			
+	
+	@staticmethod		
 	def grab(usr, defenceRoleid):
 		gameConf = config.getConfig('game')
 						
@@ -159,10 +160,7 @@ class medal:
 			usr.medal['grabmedalchip'] = 0
 			return {'update_medal_chip':medalchip}			
 		return {}
-			
-	@staticmethod
-	def grab(usr, grabRoleid):
-		return {}
+	
 	@staticmethod
 	def grab_fail(usr, defenceRoleid):
 		return {}
