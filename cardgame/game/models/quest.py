@@ -225,8 +225,8 @@ class quest(object):
 	def isFinish(questid,q):
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]
-		if questInfo['finishType'] == 'talk_npc_id':
-			return True
+		#if questInfo['finishType'] == 'talk_npc_id':
+			#return True
 		elif q.	has_key('finish') and q['finish'] == 1:
 			return True
 		
@@ -235,16 +235,17 @@ class quest(object):
 		if not self.current.has_key(questid):
 			return {'msg':'quest_not_exist'}
 		q = self.current[questid]
-		usr = self.user		
-		if not quest.isFinish(questid, q):
+		usr = self.user				
+		questConf = config.getConfig('quest')
+		questInfo = questConf[questid]		
+		
+		if (not quest.isFinish(questid, q)) or (questInfo['finishType'] == 'talk_npc_id'):
 			return {'msg':'quest_not_finish'}
 		q['count'] = q['count'] + 1
 		
 		del self.current[questid]
-		self.finish[questid] = q
-		#quest.notify_finish_quest(usr, questid)		
-		questConf = config.getConfig('quest')
-		questInfo = questConf[questid]		
+		self.finish[questid] = q		
+
 		newQuest = self.acceptNextQuest(questid, questInfo, questConf)	
 		
 		data = {}
