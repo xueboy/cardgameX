@@ -26,7 +26,9 @@ def win(request):
 def grab_fail(request):
 	usr = request.user
 	grabRoleid = request.GET['grab_roleid']
-	return medal.grab_fail(usr, grabRoleid)
+	medalid = request.GET['medalid']
+	chipnum = request.GET['chipnum']
+	return medal.grab_fail(usr, grabRoleid, medalid, chipnum)
 	
 def levelup(request):
 	

@@ -123,12 +123,14 @@ class medal:
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/medal_levelup/', None, { 'medalid':medalid, 'roleid': roleid, 'medalid': medalid}))
 	
 	@staticmethod		
-	def grab(usr, defenceRoleid):
+	def grab(usr, defenceRoleid, medalid, chipnum):
 		gameConf = config.getConfig('game')
 						
 		if usr.costSp(gameConf['medal_grab_sp_cost'])	< 0:
 			return {'msg':'sp_not_enough'}
-		usr.medal['grabmedalroleid'] = defenceRoleid		
+		usr.medal['grabmedalroleid'] = defenceRoleid
+		usr.medal['grabmedalid'] = medalid
+		usr.medal['grabmedalchip'] = chipnum
 		return {'sp':usr.sp}
 	
 	@staticmethod
