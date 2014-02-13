@@ -156,7 +156,7 @@ def detail(request):
 	
 def scene(request):
 	
-	idx = request.GET['index']		
+	idx = int(request.GET['index'])
 	sql = 'SELECT roleid from account WHERE roleid <> 0 ORDER BY lastlogin, gender LIMIT %s, %s'	
 	conn = DBConnection.getConnection()
 	gameConf = config.getConfig('game')
@@ -165,9 +165,12 @@ def scene(request):
 	res = conn.query(sql, [idx, gameConf['scene_player_count']])
 	print res
 	for rid in res[0]:
-		u = user.get(rid)
-		if u:
-			data['player'].append(u.getSceneData())
+		try:
+			u = user.get(rid)
+			if u:
+				data['player'].append(u.getSceneData())
+		except:
+			pass
 	
 	return data
 			

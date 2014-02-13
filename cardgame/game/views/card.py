@@ -140,6 +140,14 @@ def decompose(request):
 def reborn(request):
 	usr = request.user
 	
+	cardid = request.GET['cardid']
+	
+	return pet.reborn(usr, cardid)
+	
+def assembly(request):
+	
+	usr = request.user
+	
 	card_id = request.GET['card']
 	
-	return pet.reborn(usr, card_id)
+	return pet.assembly(usr, card_id)

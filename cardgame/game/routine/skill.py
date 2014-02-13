@@ -159,3 +159,32 @@ class skill:
 		inv.save()
 		return {'trp':usr.trp, 'delete_skill_array':skillids}
 			
+	@staticmethod
+	def assembly(usr, skillid):
+		
+		inv = usr.getInventory()
+		
+		if not inv.skill_chip.has_key(skillid):
+			return {'msg':'skill_chip_not_enough'}
+		
+		skillConf = config.getConfig('skill')
+		
+		if not skillConf.has_key(skillid):
+			return {'msg':'skill_chip_not_exist'}
+		
+		skillInfo = skillConf[skillid]
+		
+		if inv.skill_chip[skillid] < skillInfo['chip']:
+			return {'msg':'skill_chip_not_enough'}
+				
+		inv.skill_chip[skillid] = inv.skill_chip[skillid] - skillInfo['chip']
+		if inv.skill_chip[skillid] == 0:
+			del inv.skill_chip[skillid]
+		skill = inv.addSkill(skillid)
+		inv.save()
+		
+		if inv.skill_chip.has_key(skillid):
+			return {'skill_chip':{skillid: inv.skill_chip[skillid]}, 'add_skill':skill}
+		else:
+			return {'skill_chip':{skillid: 0}, 'add_skill':skill}
+			

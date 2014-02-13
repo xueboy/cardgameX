@@ -31,8 +31,11 @@ class DBPersistent:
 		if len(res) == 1:
 			obj = tp()
 			obj.id = res[0][0]
-			obj.roleid = res[0][1]			
-			obj.load(roleid, json.loads(res[0][2]))
+			obj.roleid = res[0][1]
+			try:		
+				obj.load(roleid, json.loads(res[0][2]))
+			except:
+				pass
 			i = 0
 			for column in obj.extend_columns:
 				setattr(obj, column['name'], res[0][3 + i])

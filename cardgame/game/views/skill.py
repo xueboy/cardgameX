@@ -57,3 +57,11 @@ def decompose(request):
 		skilids.append(request.GET['skill_id10'])
 
 	return skill.decompose(usr, skilids)
+	
+def assembly(request):
+	
+	usr = request.user
+	
+	skillid = request.GET['skillid']
+	
+	return skill.assembly(usr, skillid)

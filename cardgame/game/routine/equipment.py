@@ -289,4 +289,32 @@ class equipment:
 		
 		return {'gold':usr.gold, 'equipment_degradation':equipment}
 		
+	@staticmethod
+	def assembly(usr, equipmentid):
 		
+		inv = usr.getInventory()
+		
+		if not inv.equipment_chip.has_key(equipmentid):
+			return {'msg':'equipment_chip_not_enough'}
+		
+		equipmentConf = config.getConfig('equipment')
+		
+		if not equipmentConf.has_key(equipmentid):
+			return {'msg':'equipment_chip_not_exist'}
+		
+		equipmentInfo = equipmentConf[equipmentid]
+		
+		if inv.equipment_chip[equipmentid] < equipmentInfo['chip']:
+			return {'msg':'equipment_chip_not_enough'}
+				
+		inv.equipment_chip[equipmentid] = inv.equipment_chip[equipmentid] - equipmentInfo['chip']
+		if inv.equipment_chip[equipmentid] == 0:
+			del inv.equipment_chip[equipmentid]
+		equipment = inv.addEquipment(equipmentid)
+		inv.save()
+		
+		if inv.equipment_chip.has_key(equipmentid):
+			return {'equipment_chip':{equipmentid: inv.equipment_chip[equipmentid]}, 'add_equipment':equipment}
+		else:
+			return {'equipment_chip':{equipmentid: 0}, 'add_equipment':equipmentid}
+			

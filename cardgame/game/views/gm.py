@@ -61,7 +61,7 @@ def gain_card_exp(request):
 	card = inv.getCard(cardid)
 	if not card:
 		return {'msg':'card_not_exist'}
-	pet.gainExp(card, exp, petConf, petLevelConf, gameConf)				
+	pet.gainExp(card, exp, petConf, petLevelConf, gameConf)
 	inv.save()
 	return {'update_card':card}
 			

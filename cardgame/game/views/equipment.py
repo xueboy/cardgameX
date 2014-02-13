@@ -42,3 +42,12 @@ def degradation(request):
 	equipmentid = request.GET['id']
 	usr = request.user
 	return equipment.degradation(usr, equipmentid)
+	
+
+def assembly(request):
+	
+	usr = request.user
+	
+	equipmentid = request.GET['equipmentid']
+	
+	return equipment.assembly(usr, equipmentid)

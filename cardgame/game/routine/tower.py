@@ -253,7 +253,7 @@ class tower:
 	def dayUpdate(usr, now):
 		if not is_same_day(usr.tower['last_update'], now):
 			if usr.tower['current']:
-				usr.tower['record'].append(usr.tower['current'])			
+				usr.tower['record'].append(usr.tower['current'])
 			usr.tower['max_floor'] = 0
 			floor = 0
 			point = 0

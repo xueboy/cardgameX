@@ -373,6 +373,39 @@ class pet:
 		return ppData
 		
 		
+	@staticmethod
+	def assembly(usr, cardid):
+		
+		inv = usr.getInventory()
+		
+		if not inv.card_chip.has_key(cardid):
+			return {'msg':'card_chip_not_enough'}
+		
+		petConf = config.getConfig('pet')
+		
+		if not petConf.has_key(cardid):
+			return {'msg':'card_chip_not_exist'}
+		
+		petInfo = petConf[cardid]
+		
+		if inv.card_chip[cardid] < petInfo['chip']:
+			return {'msg':'card_chip_not_enough'}
+				
+		inv.card_chip[cardid] = inv.card_chip[cardid] - petInfo['chip']
+		if inv.card_chip[cardid] == 0:
+			del inv.card_chip[cardid]
+		card = inv.addCard(cardid)
+		inv.save()
+		
+		if inv.card_chip.has_key(cardid):
+			return {'card_chip':{cardid: inv.card_chip[cardid]}, 'add_card':card}
+		else:
+			return {'card_chip':{cardid: 0}, 'add_card':card}
+			
+		
+		
+		
+		
 		
 		
 		
