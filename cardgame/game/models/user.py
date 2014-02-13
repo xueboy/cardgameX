@@ -241,6 +241,14 @@ class user(gcuser):
 		data.update(qt.getClientData())
 		return data
 		
+	def getSceneData(self):
+		data = {}
+		data['name'] = self.name
+		data['gender'] = self.gender
+		data['roleid'] = self.roleid
+		data['avatar'] = self.avatar
+		return data
+		
 	def getAccount(self):
 		return __import__('game.models.account', globals(), locals(), ['account']).account.get(self.accountid)		
 		
@@ -357,13 +365,17 @@ class user(gcuser):
 		"""
 		maxStamina = config.getMaxStamina(self.level)
 		stamina_recover_before = currentTime() - self.stamina_last_recover
-		stamina_recove_interval = config.getConfig('game')['statmina_recove_interval']
+		stamina_recove_interval = config.getConfig('game')['statmina_recover_interval']
 		if maxStamina > self.stamina and stamina_recover_before > stamina_recove_interval:
 			point = stamina_recover_before // stamina_recove_interval
 			self.stamina_last_recover += point * stamina_recove_interval
 			self.stamina += point
 			if self.stamina > maxStamina:
 				self.stamina = maxStamina
+				
+	def updateSp(self):
+		pass
+		
 				
 	def gainExp(self, exp):
 		"""
