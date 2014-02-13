@@ -6,6 +6,7 @@ import os
 import math
 from django.http import HttpResponse
 from gclib.utility import getAccountId
+from gclib.DBConnection import DBConnection
 from game.utility.config import config
 from game.models.account import account
 from game.routine.avatar import avatar
@@ -153,3 +154,21 @@ def detail(request):
 	
 	return other.getBattleData()
 	
+def scene(request):
+	
+	idx = request.GET['index']		
+	sql = 'SELECT roleid from account WHERE roleid <> 0 ORDER BY lastlogin, gender LIMIT %s, %s'	
+	conn = DBConnection.getConnection()
+	gameConf = config.getConfig('game')
+	data = {}
+	data['player'] = []
+	res = conn.query(sql, [idx, gameConf['scene_player_count']])
+	print res
+	for rid in res[0]:
+		u = user.get(rid)
+		if u:
+			data['player'].append(u.getSceneData())
+	
+	return data
+			
+			

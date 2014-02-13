@@ -123,10 +123,9 @@ class medal:
 			
 	def grab(usr, defenceRoleid):
 		gameConf = config.getConfig('game')
-		
-		if usr.sp < gameConf['medal_grab_sp']:
-			return {'msg':'sp_not_enough'}				
-		usr.sp = usr.sp - gameConf['medal_grab_sp']
+						
+		if usr.costSp(gameConf['medal_grab_sp_cost'])	< 0:
+			return {'msg':'sp_not_enough'}
 		usr.medal['grabmedalroleid'] = defenceRoleid		
 		return {'sp':usr.sp}
 	

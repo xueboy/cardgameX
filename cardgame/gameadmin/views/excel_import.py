@@ -198,13 +198,13 @@ class excel_import:
 				level = int(row[0])
 				exp = int(row[1])
 				stamina = int(row[2])
-				leadership = int(row[3])
+				sp = int(row[3])
 				friend = int(row[4])
 				
 				levelConf = {}
 				levelConf['levelExp'] = exp
 				levelConf['stamina'] = stamina
-				levelConf['leadership'] = leadership
+				levelConf['sp'] = sp
 				levelConf['friend'] = friend
 				
 				while len(conf) < level:

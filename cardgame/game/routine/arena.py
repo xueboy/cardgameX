@@ -45,6 +45,11 @@ class arena:
 		if usr.arena['times'] <= 0:
 			return {'msg':'arena_max_time'}
 				
+		gameConf = config.getConfig('game')
+				
+		if usr.costSp(gameConf['arena_sp_cost']) < 0:
+			return {'msg': 'sp_not_enough'}
+				
 		usr.arena['times'] = usr.arena['times'] - 1
 		usr.arena['last_chellage_time'] = currentTime()
 		

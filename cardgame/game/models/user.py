@@ -39,7 +39,8 @@ class user(gcuser):
 		self.exp = 0
 		self.vip = 0
 		self.sp = 0
-		self.stamina_last_recover = currentTime()
+		self.stamina_last_recover = 0
+		self.sp_last_recover = 0
 		self.last_card_no = 0
 		self.leader = ''		
 		self.last_login = currentTime()
@@ -85,6 +86,7 @@ class user(gcuser):
 		self.stamina = levelConf[0]['stamina']
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
+		self.sp_last_recover = currentTime()
 		self.last_card_no = 0
 		
 	def install(self, roleid):
@@ -102,6 +104,7 @@ class user(gcuser):
 		data['sp'] = self.sp
 		data['gender'] = self.gender
 		data['stamina_last_recover'] = self.stamina_last_recover
+		data['sp_last_recover'] = self.sp_last_recover
 		data['last_card_no'] = self.last_card_no
 		data['last_login'] = self.last_login		
 		data['leader'] = self.leader
@@ -131,6 +134,7 @@ class user(gcuser):
 		return data
 		
 	def getClientData(self):
+		now = currentTime()
 		usrData = {}
 		usrData['roleid'] = self.roleid
 		usrData['name'] = self.name
@@ -142,7 +146,8 @@ class user(gcuser):
 		usrData['exp'] = self.exp
 		usrData['vip'] = self.vip
 		usrData['gender'] = self.gender
-		usrData['stamina_last_recover_before'] = currentTime() - self.stamina_last_recover		
+		usrData['stamina_last_recover_before'] = now - self.stamina_last_recover		
+		usrData['sp_last_recover_before'] = now - self.sp_last_recover		
 		usrData['avatar_id'] = self.avatar_id
 		#if self.train_prd:
 			#usrData['train_prd'] = self.train_prd		
@@ -227,6 +232,7 @@ class user(gcuser):
 	def getLoginData(self, gameConf):
 		data = {}		
 		self.updateStamina()
+		self.updateSp()
 		data.update(self.getClientData())
 		dun = self.getDungeon()
 		data['dungeon'] = dun.getClientData()
@@ -262,7 +268,8 @@ class user(gcuser):
 		self.exp = data['exp']
 		self.vip = data['vip']
 		self.gender = data['gender']
-		self.stamina_last_recover = data['stamina_last_recover']		
+		self.stamina_last_recover = data['stamina_last_recover']
+		self.sp_last_recover = data['sp_last_recover']
 		self.last_card_no = data['last_card_no']		
 		self.last_login = data['last_login']		
 		self.leader = data['leader']		 
@@ -366,16 +373,24 @@ class user(gcuser):
 		maxStamina = config.getMaxStamina(self.level)
 		stamina_recover_before = currentTime() - self.stamina_last_recover
 		stamina_recove_interval = config.getConfig('game')['statmina_recover_interval']
-		if maxStamina > self.stamina and stamina_recover_before > stamina_recove_interval:
+		if stamina_recover_before > stamina_recove_interval:
 			point = stamina_recover_before // stamina_recove_interval
-			self.stamina_last_recover += point * stamina_recove_interval
-			self.stamina += point
+			self.stamina_last_recover = self.stamina_last_recover + (point * stamina_recove_interval)
+			self.stamina = self.stamina + point
 			if self.stamina > maxStamina:
 				self.stamina = maxStamina
 				
 	def updateSp(self):
-		pass
-		
+		levelConf = config.getConfig('level')
+		gameConf = config.getConfig('game')
+		maxSp = levelConf[self.level - 1]['sp']
+		sp_recover_before = currentTime() - self.sp_last_recover
+		if sp_recover_before > gameConf['sp_recover_interval']:
+			point = sp_recover_before // sp_recover_interval
+			self.sp_last_recover = self.sp_last_recover + (point * stamina_recove_interval)
+			self.sp = self.sp + point
+			if self.sp > maxSp:
+				self.stamina = maxSp	
 				
 	def gainExp(self, exp):
 		"""
@@ -417,10 +432,25 @@ class user(gcuser):
 		
 	
 	def costStamina(self, point):
+		if self.stamina < point:
+			return -1
+		self.updateStamina()
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:
 			self.stamina_last_recover = currentTime()
 		self.stamina -= point
+		return 0
+		
+	def costSp(self, point):
+		if sp < point:
+			return -1
+		self.updateSp()
+		levelConf = config.getConfig('level')
+		maxSp = levelConf[self.level - 1]
+		if maxSp == self.sp:
+			self.sp_last_recover = currentTime()
+		self.sp -= point
+		return 0
 			
 	def updateToFriend(self):
 		for key in self.friends:
