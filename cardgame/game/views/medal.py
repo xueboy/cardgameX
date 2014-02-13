@@ -19,11 +19,9 @@ def grab(request):
 	return medal.grab(usr, grabRoleid)
 	
 	
-def win(request):
-	
-	grabRoleid = request.GET['grab_roleid']
+def win(request):	
 	usr = request.user	
-	return medal.win(usr, grabRoleid)
+	return medal.win(usr)
 	
 def grab_fail(request):
 	usr = request.user
