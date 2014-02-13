@@ -172,11 +172,12 @@ class user(gcuser):
 		
 	def getNtInfoData(self):
 		ntInfo = {}
+		ntInfo['roleid'] = self.roleid
 		ntInfo['name'] = self.name
 		ntInfo['level'] = self.level
 		ntInfo['sex'] = self.gender
 		ntInfo['avatar_id'] = self.avatar_id		
-		ntInfo['last_login'] = self.last_login
+		#ntInfo['last_login'] = self.last_login
 		return ntInfo
 		
 		
