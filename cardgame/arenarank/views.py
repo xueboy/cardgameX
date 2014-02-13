@@ -84,7 +84,7 @@ def grab_medal(request):
 	if ld.lose_medal(offenceRoleid, medalid, chipnum) == 0:
 		return HttpResponse(json.dumps({'msg':'medal_not_exist'}))
 	
-	return HttpResponse(json.dumps(ld.win_medal(roleid, level, medalid, chipnum)))
+	return HttpResponse(json.dumps(ld.win_medal(deffenceRoleid, level, medalid, chipnum)))
 	
 	
 def lose_medal(request):
