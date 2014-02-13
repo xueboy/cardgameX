@@ -49,7 +49,7 @@ class network(object):
 			 m['level'] = self.nt_info[roleid]['level']
 			 m['sex'] = self.nt_info[roleid]['sex']
 			 m['avatar_id'] = self.nt_info[roleid]['avatar_id']
-			 m['last_login'] = self.nt_info[roleid]['last_login']
+			 #m['last_login'] = self.nt_info[roleid]['last_login']
 			 m['mail'] = self.mail[roleid]
 			 data[roleid] = m
 		return data
