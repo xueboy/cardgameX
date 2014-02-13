@@ -148,6 +148,6 @@ def assembly(request):
 	
 	usr = request.user
 	
-	card_id = request.GET['card']
+	card_id = request.GET['cardid']
 	
 	return pet.assembly(usr, card_id)
