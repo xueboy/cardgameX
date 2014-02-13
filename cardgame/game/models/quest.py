@@ -227,7 +227,7 @@ class quest(object):
 		questInfo = questConf[questid]
 		#if questInfo['finishType'] == 'talk_npc_id':
 			#return True
-		elif q.	has_key('finish') and q['finish'] == 1:
+		elif q.has_key('finish') and q['finish'] == 1:
 			return True
 		
 		
