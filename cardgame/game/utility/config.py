@@ -111,6 +111,7 @@ class config(gcconfig):
 		del data['medal_holder_count']
 		del data['medal_holder_appear_member_position']
 		del data['medal_grab_probablity']		
+		del data['scene_player_count']
 		return data
 	
 			
