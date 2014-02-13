@@ -386,8 +386,8 @@ class user(gcuser):
 		maxSp = levelConf[self.level - 1]['sp']
 		sp_recover_before = currentTime() - self.sp_last_recover
 		if sp_recover_before > gameConf['sp_recover_interval']:
-			point = sp_recover_before // sp_recover_interval
-			self.sp_last_recover = self.sp_last_recover + (point * stamina_recove_interval)
+			point = sp_recover_before // gameConf['sp_recover_interval']
+			self.sp_last_recover = self.sp_last_recover + (point * gameConf['sp_recover_interval'])
 			self.sp = self.sp + point
 			if self.sp > maxSp:
 				self.stamina = maxSp	
