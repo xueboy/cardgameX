@@ -443,7 +443,7 @@ class user(gcuser):
 		return 0
 		
 	def costSp(self, point):
-		if sp < point:
+		if self.sp < point:
 			return -1
 		self.updateSp()
 		levelConf = config.getConfig('level')
