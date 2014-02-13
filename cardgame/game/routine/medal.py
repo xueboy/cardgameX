@@ -152,7 +152,7 @@ class medal:
 			if res.has_key('msg'):
 				return res
 			
-			inv = usr.getIinventory()
+			inv = usr.getInventory()
 			medalchip = inv.addMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			
 			
