@@ -156,7 +156,7 @@ class medal:
 			medalchip = inv.addMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			
 			
-			defenceInv = defenceUsr.getIinventory()
+			defenceInv = defenceUsr.getInventory()
 			defenceInv.delMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			usr.medal['grabmedalid'] = ''
 			usr.medal['grabmedalchip'] = 0
