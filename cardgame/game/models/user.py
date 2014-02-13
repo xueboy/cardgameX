@@ -84,6 +84,7 @@ class user(gcuser):
 		self.level = 1		
 		levelConf = config.getConfig('level')		
 		self.stamina = levelConf[0]['stamina']
+		self.sp = levelConf[0]['sp']
 		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.sp_last_recover = currentTime()
@@ -391,7 +392,7 @@ class user(gcuser):
 			self.sp_last_recover = self.sp_last_recover + (point * gameConf['sp_recover_interval'])
 			self.sp = self.sp + point
 			if self.sp > maxSp:
-				self.stamina = maxSp	
+				self.sp = maxSp	
 				
 	def gainExp(self, exp):
 		"""
@@ -439,7 +440,7 @@ class user(gcuser):
 		maxStamina = config.getMaxStamina(sefl.level)
 		if maxStamina == self.stamina:
 			self.stamina_last_recover = currentTime()
-		self.stamina -= point
+		self.stamina = self.stamina - point
 		return 0
 		
 	def costSp(self, point):
@@ -450,7 +451,7 @@ class user(gcuser):
 		maxSp = levelConf[self.level - 1]
 		if maxSp == self.sp:
 			self.sp_last_recover = currentTime()
-		self.sp -= point
+		self.sp = self.sp - point
 		return 0
 			
 	def updateToFriend(self):
