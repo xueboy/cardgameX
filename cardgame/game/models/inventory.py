@@ -645,7 +645,13 @@ class inventory(object):
 		
 	def delMedalChip(self, medalid, chipnum):
 		
-		self.medal[medalid][chipnum] = self.medal[medalid][chipnum] - 1
-		return medal[medalid]
+		if not self.medal.has_key(medalid):
+			return -1
+		
+		if self.medal[medalid]['chip'][chipnum] < 1:
+			return -1
+		
+		self.medal[medalid]['chip'][chipnum] = self.medal[medalid]['chip'][chipnum] - 1
+		return self.medal[medalid]
 
 		

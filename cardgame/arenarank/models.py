@@ -439,10 +439,10 @@ class medal_arena(facility):
 		sql = "SELECT distinct(medal_holder.roleid) FROM medal_holder INNER JOIN medal_level ON medal_holder.roleid = medal_level.roleid WHERE medal_level.level >= %s AND medal_holder.medalid = %s AND medal_holder.chipnum = %s AND medal_holder.roleid <> %s ORDER BY rand() LIMIT %s"
 		res = conn.query(sql, [baseLevel, medalid, chipnum, roleid, cnt])						
 		if len(res) < cnt:
-			res1 = conn.query(sql, [0, medalid, chipnum, roleid, cnt - len(res)])			
+			res1 = conn.query(sql, [0, medalid, chipnum, roleid, cnt])			
 			if res1:					
 				res = res + res1
-		return [n[0] for n in res]
+		return list(set([n[0] for n in res]))
 		
 		
 	@staticmethod
