@@ -14,9 +14,11 @@ def seek_holder(request):
 
 def grab(request):
 	grabRoleid = request.GET['grab_roleid']
+	medalid = request.GET['medalid']
+	chipnum = int(request.GET['chipnum'])
 	usr = request.user
 	
-	return medal.grab(usr, grabRoleid)
+	return medal.grab(usr, grabRoleid, medalid, chipnum)
 	
 	
 def win(request):	
@@ -26,9 +28,8 @@ def win(request):
 def grab_fail(request):
 	usr = request.user
 	grabRoleid = request.GET['grab_roleid']
-	medalid = request.GET['medalid']
-	chipnum = request.GET['chipnum']
-	return medal.grab_fail(usr, grabRoleid, medalid, chipnum)
+
+	return medal.grab_fail(usr, grabRoleid)
 	
 def levelup(request):
 	
