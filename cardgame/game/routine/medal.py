@@ -146,7 +146,7 @@ class medal:
 			return {'msg':'usr_not_exist'}
 		
 		if randrop(gameConf['medal_grab_probablity']):
-			res = medal.grabMedal(usr.roleid, defenceRoleid, usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
+			res = medal.grabMedal(usr.roleid, usr.medal['grabmedalroleid'], usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			if res.has_key('msg'):
 				return res
 			
