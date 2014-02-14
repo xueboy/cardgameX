@@ -467,7 +467,7 @@ class user(gcuser):
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)
 		data = signin.login(self)
-		arena.arena_update(self)
+		arena.arena_update(self, gameConf)
 		return data
 		
 	def onLevelup(self):
