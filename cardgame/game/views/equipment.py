@@ -27,7 +27,7 @@ def equip(request):
 	
 def sell(request):
 	
-	equipmentid = [request.GET.has_key('equipment_id1')]
+	equipmentid = [request.GET['equipment_id1']]	
 	for i in range(2, 50):
 		keyname = 'equipment_id' + str(i)
 		if request.GET.has_key(keyname):
