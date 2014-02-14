@@ -191,7 +191,7 @@ class equipment:
 		inv.save()
 		usr.save()
 		
-		return {'gold':usr.gold, 'delete_equipment_array':equipid}		
+		return {'gold':usr.gold, 'delete_equipment_array':sellequipment}		
 		
 	@staticmethod
 	def takeoff(inv, card):
