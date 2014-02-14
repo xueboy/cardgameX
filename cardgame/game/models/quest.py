@@ -210,6 +210,10 @@ class quest(object):
 			return False.s
 		if not self.isActive(questInfo):
 			return False.s
+		for qid in self.current:
+			if qid == questid:
+				return False
+			
 		if not questInfo['isFirst']:
 			alreadyFinishPre = False
 			for qid in self.finish:
