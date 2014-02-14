@@ -91,6 +91,29 @@ class drop:
 			if not awd.has_key('add_item_array'):
 				awd['add_item_array'] = []
 			awd['add_item_array'].append({'id':dropItem['id'], 'count':dropItem['count']})
+		elif dropItem['type'] == 'skchip':
+			skllid = dropItem['id']
+			if not awd.has_key('add_skill_chip_dic'):
+				awd['add_skill_chip_dic'] = {}
+			if not awd['add_skill_chip_dic'].has_key(skllid):
+				awd['add_skill_chip_dic'][skllid] = 0
+			awd['add_skill_chip_dic'][skllid] = awd['add_skill_chip_dic'][skllid] + dropItem['count']
+		elif dropItem['type'] == 'eqchip':
+			equipmentid = dropItem['id']
+			if not awd.has_key('add_equipment_chip_dic'):
+				awd['add_equipment_chip_dic'] = {}
+			if not awd['add_equipment_chip_dic'].has_key(equipmentid):
+				awd['add_equipment_chip_dic'][equipmentid] = 0
+			awd['add_equipment_chip_dic'][equipmentid] = awd['add_equipment_chip_dic'][equipmentid] + dropItem['count']
+		elif dropItem['type'] == 'cardchip':
+			cardid = dropItem['id']
+			if not awd.has_key('add_card_chip_dic'):
+				awd['add_card_chip_dic'] = {}
+			if not awd['add_card_chip_dic'].has_key(cardid):
+				awd['add_card_chip_dic'] = {}
+			if not awd['add_card_chip_dic'].has_key(cardid):
+				awd['add_card_chip_dic'][cardid] = 0
+			awd['add_card_chip_dic'][cardid] = awd['add_card_chip_dic'][cardid] + dropItem['count']
 		return awd
 		
 	@staticmethod
@@ -173,7 +196,36 @@ class drop:
 			if not data.has_key('update_item_array'):
 				data['update_item_array'] = []
 			data['add_item_array'].extend(newItem)
-			data['update_item_array'].extend(updateItem)			
+			data['update_item_array'].extend(updateItem)		
+			save_inv = True
+		if awd.has_key('add_skill_chip_dic'):
+			if not inv:
+				inv = usr.getInventory()
+			if not data.has_key('add_skill_chip_dic'):
+				data['add_skill_chip_dic'] = {}
+			for (skillid, cnt) in awd['add_skill_chip_dic']:
+				chipCount = inv.addSkillChip(skillid, cnt)
+				if chipCount > 0:					
+					data['add_skill_chip_dic'][skillid] = chipCount
+			save_inv = True
+		if awd.has_key('add_equipment_chip_dic'):
+			if not inv:
+				inv = usr.getInventory()
+			if not data.has_key('update_equipment_chip_dic'):
+				data['update_equipment_chip_dic'] = {}
+			for (equipmentid, cnt) in awd['add_equipment_chip_dic']:				
+				chipCount = inv.addEquipmentChip(equipmentid, cnt)				
+				data['update_equipment_chip_dic'][equipmentid] = chipCount
+			save_inv = True
+		if awd.has_key('add_card_chip_dic'):
+			if not inv:
+				inv = usr.getInventory()
+			if not data.has_key('update_card_chip_dic'):
+				data['update_card_chip_dic'] = {}
+			for (cardid, cnt) in awd['add_card_chip_dic']:				
+				chipCount = inv.addCardChip(cardid, cnt)
+				if chipCount > 0:				
+					data['update_card_chip_dic'][cardid] = chipCount
 			save_inv = True
 		if save_user:
 			usr.save()
@@ -253,6 +305,30 @@ class drop:
 			if updateIt:
 				awd['update_item_array'].extend(updateIt)
 			save_inv = True
+		elif dropItem['type'] == 'skchip':
+			if not inv:
+				inv = usr.getInventory()
+			skillid = dropItem['id']
+			chipcnt = inv.addSkillChip(skillid, dropItem['count'])
+			if chipcnt > 0:
+				awd['update_skill_chip_dic'] = chipcnt
+			save_inv = True
+		elif dropItem['type']	== 'eqchip':
+			if not inv:
+				inv = usr.getInventory()
+			equipmentid = dropItem['id']
+			chipcnt = inv.addEquipmentChip(equipmentid, dropItem['count'])
+			if chipcnt > 0:
+				awd['update_equipment_chip_dic'] = chipcnt
+			save_inv = True
+		elif dropItem['type'] == 'cardchip':
+			if not inv:
+				inv = usr.getInventory()
+			cardid = dropItem['id']
+			chipcnt = inv.addCardChip(cardid, dropItem['count'])
+			if chipcnt > 0:
+				awd['update_card_chip_dic'] = chipcnt			
+			save_inv = True
 		if save_user:
 			usr.save()
 		if save_inv:
@@ -292,6 +368,15 @@ class drop:
 		if awd.has_key('update_item_array'):
 			for it in awd['update_item_array']:
 				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})	
+		if awd.has_key('update_skill_chip_dic'):
+			for (chipid, chipcount) in awd['update_skill_chip_dic']:
+				dropData.append({'type':13, 'count' : chipcount, 'insId': '', 'id':chipid})
+		if awd.has_key('update_equipment_chip_dic'):
+			for (chipid, chipcount) in awd['update_equipment_chip_dic']:
+				dropData.append({'type':14, 'count' : chipcount, 'insId':'', 'id':chipid})
+		if awd.has_key('update_card_chip_dic'):
+			for (chipid, chipcount) in awd['update_card_chip_dic']:
+				dropData.append({'type':16, 'count': chipcount, 'insId' : '', 'id': chipid})		
 			
 		retData = {}		
 		retData[kayname] = dropData

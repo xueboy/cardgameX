@@ -23,6 +23,7 @@ from game.routine.tower import tower
 from game.routine.medal import medal
 from game.routine.pet import pet
 from game.routine.practice import practice
+from game.routine.pvp import pvp
 
 
 class user(gcuser):
@@ -516,8 +517,7 @@ class user(gcuser):
 		self.getAlmanac().delete()
 		self.delete()
 		
-	def pvpProperty(self):
-		
+	def pvpProperty(self):		
 		
 		inv = self.getInventory()
 		
@@ -525,15 +525,15 @@ class user(gcuser):
 		equipmentConf = config.getConfig('equipment')
 		stoneConf = config.getConfig('stone')
 		
-		ppAlmanacData = self.almanacPvpProperty()
-		ppMedalData = self.almanacPvpProperty()
-		ppPracticeData = self.practicePvpProperty()
+		ppAlmanacData = pvp.almanacPvpProperty(self)
+		ppMedalData = pvp.almanacPvpProperty(self)
+		ppPracticeData = pvp.practicePvpProperty(self)
 				
 		data = []
 		for tid in inv.team:
 			if tid:
 				card = inv.getCard(tid)
-				ppData = pet.pvpProperty(card, petConf)								
+				ppData = pvp.pvpPetProperty(card, petConf)								
 				for equip in card['slot']:
 					if equip:
 						data = equipment.pvpProperty(equip, equipmentConf)
@@ -543,209 +543,14 @@ class user(gcuser):
 					if st:
 						data = stone.pvpProperty(st, stoneConf)
 						ppData = pet.mergePvpProperty(ppData, data)	
-				ppData = pet.mergePvpProperty(ppData, ppAlmanacData)
-				ppData = pet.mergePvpProperty(ppData, ppMedalData)
-				ppData = pet.mergePvpProperty(ppData, ppPracticeData)
+				ppLuckData = pvp.luckPvpProperty(self, card)
+				ppData = pvp.mergePvpProperty(ppData, ppLuckData)
+				ppData = pvp.mergePvpProperty(ppData, ppAlmanacData)
+				ppData = pvp.mergePvpProperty(ppData, ppMedalData)
+				ppData = pvp.mergePvpProperty(ppData, ppPracticeData)
 				data.append(ppData)
 			else:
 				data.append({})
 		
 		return data
 		
-	def almanacPvpProperty(self):
-		
-		al = self.getAlmanac()
-		
-		combinaionConf = config.getConfig('almanac_combination')
-		
-		ppData = {}
-		ppData['attack'] = 0
-		ppData['hp'] = 0
-		ppData['pd'] = 0
-		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
-		ppData['pr'] = 0
-		ppData['mr'] = 0
-		ppData['critical'] = 0
-		ppData['tenacity'] = 0
-		ppData['block'] = 0
-		ppData['wreck'] = 0
-		ppData['hit'] = 0
-		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-		ppData['strength'] = 0
-		ppData['intelligence'] = 0
-		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-		
-		for cb in al.combine:
-			if st['typestr'] == 'strenghth':
-				ppData['strenghth'] = ppData['strenghth'] + st['val']
-			elif st['typestr'] == 'intelligence':
-				ppData['intelligence'] = ppData['intelligence'] + st['val']
-			elif st['typestr'] == 'artifice':
-				ppData['artifice'] = ppData['artifice'] + st['val']
-			elif st['typestr'] == 'attack':
-				ppData['attack'] = ppData['attack'] + st['val']
-			elif st['typestr'] == 'hp':
-				ppData['hp'] = ppData['hp'] + st['val']
-			elif st['typestr'] == 'critical':
-				ppData['critical'] = ppData['critical'] + st['val']
-			elif st['typestr'] == 'tenacity':
-				ppData['tenacity'] = ppData['tenacity'] + st['val']
-			elif st['typestr'] == 'dodge':
-				ppData['dodge'] = ppData['dodge'] + st['val']
-			elif st['typestr'] == 'hit':
-				ppData['hit'] = ppData['hit'] + st['val']
-			elif st['typestr'] == 'block':
-				ppData['block'] = ppData['block'] + st['val']
-			elif st['typestr'] == 'wreck':
-				ppData['wreck'] = ppData['wreck'] + st['val']
-			elif st['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + st['val']
-			elif st['typestr'] == 'mt':
-				ppData['mt'] = ppData['mt'] + st['val']
-			elif st['typestr'] == 'pd':
-				ppData['pd'] = ppData['pd'] + st['val']
-			elif st['typestr'] == 'md':
-				ppData['md'] = ppData['md'] + st['val']
-			elif st['typestr'] == 'criticallv':
-				ppData['criticallv'] = ppData['criticallv'] + st['val']
-			elif st['typestr'] == 'tenacitylv':
-				ppData['tenacity'] = ppData['tenacity'] + st['val']
-			elif st['typestr'] == 'dodgelv':
-				ppData['dodgelv'] = ppData['dodgelv'] + st['val']
-			elif st['typestr'] == 'hitlv':
-				ppData['hitlv'] = ppData['hitlv'] + st['val']
-			elif st['typestr'] == 'blocklv':
-				ppData['blocklv'] = ppData['blocklv'] + st['val']
-			elif st['typestr'] == 'wrecklv':
-				ppData['wrecklv'] = ppData['wrecklv'] + st['val']
-			elif st['typestr'] == 'speed':
-				ppData['speed'] = ppData['speed'] + st['val']
-				
-		return ppData
-		
-	def medalPvpProperty(self):
-		
-		inv = self.getInventory()
-		
-		medalConfig = config.getConfig('medal')
-		
-		ppData = {}
-		ppData['attack'] = 0
-		ppData['hp'] = 0
-		ppData['pd'] = 0
-		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
-		ppData['pr'] = 0
-		ppData['mr'] = 0
-		ppData['critical'] = 0
-		ppData['tenacity'] = 0
-		ppData['block'] = 0
-		ppData['wreck'] = 0
-		ppData['hit'] = 0
-		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-		ppData['strength'] = 0
-		ppData['intelligence'] = 0
-		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-			
-		for medalid in inv.medal:
-			
-			if medalConfig[medalid]['typestr'] == 'strenghth':
-				ppData['strenghth'] = ppData['strenghth'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'intelligence':
-				ppData['intelligence'] = ppData['intelligence'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'artifice':
-				ppData['artifice'] = ppData['artifice'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'attack':
-				ppData['attack'] = ppData['attack'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hp':
-				ppData['hp'] = ppData['hp'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'critical':
-				ppData['critical'] = ppData['critical'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'tenacity':
-				ppData['tenacity'] = ppData['tenacity'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'dodge':
-				ppData['dodge'] = ppData['dodge'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hit':
-				ppData['hit'] = ppData['hit'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'block':
-				ppData['block'] = ppData['block'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'wreck':
-				ppData['wreck'] = ppData['wreck'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'mt':
-				ppData['mt'] = ppData['mt'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'pd':
-				ppData['pd'] = ppData['pd'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'md':
-				ppData['md'] = ppData['md'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'criticallv':
-				ppData['criticallv'] = ppData['criticallv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'tenacitylv':
-				ppData['tenacity'] = ppData['tenacity'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'dodgelv':
-				ppData['dodgelv'] = ppData['dodgelv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hitlv':
-				ppData['hitlv'] = ppData['hitlv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'blocklv':
-				ppData['blocklv'] = ppData['blocklv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'wrecklv':
-				ppData['wrecklv'] = ppData['wrecklv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'speed':
-				ppData['speed'] = ppData['speed'] + medalConfig[medalid]['val']		
-		
-		return ppData
-		
-	def practicePvpProperty(self):
-		ppData = {}
-		ppData['attack'] = 0
-		ppData['hp'] = 0
-		ppData['pd'] = 0
-		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
-		ppData['pr'] = 0
-		ppData['mr'] = 0
-		ppData['critical'] = 0
-		ppData['tenacity'] = 0
-		ppData['block'] = 0
-		ppData['wreck'] = 0
-		ppData['hit'] = 0
-		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-		ppData['strength'] = 0
-		ppData['intelligence'] = 0
-		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
-		
-		practicePropertyConf = config.getConfig('practice_property')
-		
-		if self.practice['critical_level'] > 0:
-			ppData[critical] = practicePropertyConf[self.practice['critical_level']]
-		if self.practice['tenacity_level'] > 0:
-			ppData[tenacity] = practicePropertyConf[self.practice['tenacity_level']]
-		if self.practice['block_level'] > 0:
-			ppData[block] = practicePropertyConf[self.practice['block_level']]
-		if self.practice['wreck_level'] > 0:
-			ppData[wreck] = practicePropertyConf[self.practice['wreck_level']]
-			
-		return ppData

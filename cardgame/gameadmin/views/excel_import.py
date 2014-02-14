@@ -1398,6 +1398,12 @@ class excel_import:
 				dic.append(excel_import.drop_exp(f))
 			elif f[0] == 'gold':
 				dic.append(excel_import.drop_gold(f))
+			elif f[0] == 'skchip':
+				dic.append(excel_import.drop_skill_chip(f))
+			elif f[0] == 'eqchip':
+				dic.append(excel_import.drop_equipment_chip(f))
+			elif f[0] == 'cardchip':
+				dic.append(excel_import.drop_card_chip(f))
 			else:
 				dic.append({'unknow':i})			
 			
@@ -1443,6 +1449,17 @@ class excel_import:
 	def drop_exp(arr):
 		return {'type':'exp','probability':int(arr[2]),'count':int(arr[3])}
 	
+	@staticmethod
+	def drop_skill_chip(arr):
+		return {'type':'skchip', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3])}
+			
+	@staticmethod
+	def drop_equipment_chip(arr):
+		return {'type':'eqchip', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3])}
+			
+	@staticmethod
+	def drop_card_chip(arr):
+		return {'type':'cardchip', 'id':arr[1], 'probability':int(arr[2]),'count':int(arr[3])}
 	
 	@staticmethod
 	def dialog_import(request):

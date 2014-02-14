@@ -197,6 +197,11 @@ class inventory(object):
 			return 0
 		self.card = filter(lambda c : c['id'] != id, self.card)		
 		return 1	
+
+	def CountCardChip(self, cardid):
+		if not self.card_chip.has_key(cardid):
+			return 0
+		return self.card_chip[cardid]
 	
 	def addEquipment(self, equipmentid):
 		equipmentconf = config.getConfig('equipment')
@@ -250,6 +255,11 @@ class inventory(object):
 	def delEquipment(self, id):
 		self.equipment = filter(lambda e : e['id'] != id, self.equipment)
 		return 1
+		
+	def CountEquipmentChip(self, equipmentid):
+		if not self.equipment_chip.has_key(equipmentid):
+			return 0
+		return self.equipment_chip[equipmentid]
 	
 	def generateCardName(self):
 		return self.generateName('C')
@@ -544,6 +554,12 @@ class inventory(object):
 	def delSkill(self, id):
 		self.skill = filter(lambda s : s['id'] != id, self.skill)
 		return 1
+		
+	def CountSkillChip(self, skillid):
+		if not self.skill_chip.has_key(skillid):
+			return 0
+		return self.skill_chip[skillid]
+			
 			
 	def depositSkill(self, sk):
 		self.skill.append(sk)

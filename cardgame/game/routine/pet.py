@@ -306,73 +306,7 @@ class pet:
 			else: 
 				return pb['star']
 		return 0
-		
-		
-	@staticmethod
-	def pvpProperty(card, petConf):
-		
-		petInfo = petConf[card['cardid']]
-		
-		star = card['init_start'] + int(card['level'] * 0.4)
-		
-		ppData = {}
-		ppData['attack'] = petInfo['attack'] + petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5		
-		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5		
-		ppData['pd'] = 0
-		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
-		ppData['pr'] = petInfo['pr'] + star * petInfo['prgrowth']
-		ppData['mr'] = petInfo['mr'] + star * petInfo['mrgrowth']
-		ppData['critical'] = petInfo['critical']
-		ppData['tenacity'] = petInfo['tenacity']
-		ppData['block'] = petInfo['block']
-		ppData['wreck'] = petInfo['wreck']
-		ppData['hit'] = petInfo['hit']
-		ppData['dodge'] = petInfo['dodge']
-		ppData['pa'] = petInfo['pa']
-		ppData['ma'] = petInfo['ma']
-		ppData['strength'] = petInfo['strength']
-		ppData['intelligence'] = petInfo['intelligence']
-		ppData['artifice'] = petInfo['artifice']
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * star
-		ppData['ma'] = petInfo['ma'] + petInfo['magrowth'] * star
-		ppData['id'] = card['id']
-		ppData['cardid'] = card['cardid']
-		return ppData
-		
-			
-	@staticmethod
-	def mergePvpProperty(p1, p2):
-		ppData = p1.copy()
-		ppData['attack'] = p1['attack'] + p2['attack']
-		ppData['hp'] = p1['hp'] + p2['hp']
-		ppData['pd'] = p1['pd'] + p2['pd']
-		ppData['md'] = p1['md'] + p2['md']
-		ppData['pt'] = p1['pt'] + p2['pt']
-		ppData['mt'] = p1['mt'] + p2['mt']
-		ppData['pr'] = p1['pr'] + p2['pr']
-		ppData['mr'] = p1['mr'] + p2['mr']
-		ppData['critical'] = p1['critical'] + p2['critical']
-		ppData['tenacity'] = p1['tenacity'] + p2['tenacity']
-		ppData['block'] = p1['block'] + p2['block']
-		ppData['wreck'] = p1['wreck'] + p2['wreck']
-		ppData['hit'] = p1['hit'] + p2['hit']
-		ppData['dodge'] = p1['dodge'] + p2['dodge']
-		ppData['pa'] = p1['pa'] + p2['pa']
-		ppData['ma'] = p1['ma'] + p2['ma']
-		ppData['strength'] = p1['strength'] + p2['strength']
-		ppData['intelligence'] = p1['intelligence'] + p2['intelligence']
-		ppData['artifice'] = p1['artifice'] + p2['artifice']
-		ppData['pi'] = p1['pi'] + p2['pi']
-		ppData['mi'] = p1['mi'] + p2['mi']
-		ppData['pa'] = p1['pa'] + p2['pa']
-		ppData['ma'] = p1['ma'] + p2['ma']
-		return ppData
-		
-		
+
 	@staticmethod
 	def assembly(usr, cardid):
 		
@@ -402,12 +336,7 @@ class pet:
 		else:
 			return {'card_chip':{cardid: 0}, 'add_card':card}
 			
-		
-		
-		
-		
-		
-		
+
 		
 		
 		
