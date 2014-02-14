@@ -176,8 +176,8 @@ class equipment:
 		sellequipment = []
 		
 		for equipid in equipmentid:
-			equipment = inv.getEquipment(equipmentid)
-		
+			equipment = inv.getEquipment(equipid)
+					
 			if not equipment:
 				return {'msg':'equipment_not_exist'}
 		
