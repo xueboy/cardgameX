@@ -369,5 +369,6 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0
 		ppData['mi'] = 0
+		ppData['pe'] = 0
 		return ppData
 		
