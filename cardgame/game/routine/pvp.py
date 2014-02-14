@@ -18,8 +18,7 @@ class pvp:
 		ppData['hp'] = 0
 		ppData['pd'] = 0
 		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
+		ppData['pt'] = 0		
 		ppData['pr'] = 0
 		ppData['mr'] = 0
 		ppData['critical'] = 0
@@ -28,15 +27,14 @@ class pvp:
 		ppData['wreck'] = 0
 		ppData['hit'] = 0
 		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pa'] = 0		
 		ppData['strength'] = 0
 		ppData['intelligence'] = 0
 		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pi'] = 0		
+		ppData['pe'] = 0
+		
+		
 		
 		for cb in al.combine:
 			if st['typestr'] == 'strenghth':
@@ -62,9 +60,7 @@ class pvp:
 			elif st['typestr'] == 'wreck':
 				ppData['wreck'] = ppData['wreck'] + st['val']
 			elif st['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + st['val']
-			elif st['typestr'] == 'mt':
-				ppData['mt'] = ppData['mt'] + st['val']
+				ppData['pt'] = ppData['pt'] + st['val']			
 			elif st['typestr'] == 'pd':
 				ppData['pd'] = ppData['pd'] + st['val']
 			elif st['typestr'] == 'md':
@@ -98,8 +94,7 @@ class pvp:
 		ppData['hp'] = 0
 		ppData['pd'] = 0
 		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
+		ppData['pt'] = 0		
 		ppData['pr'] = 0
 		ppData['mr'] = 0
 		ppData['critical'] = 0
@@ -108,15 +103,13 @@ class pvp:
 		ppData['wreck'] = 0
 		ppData['hit'] = 0
 		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pa'] = 0		
 		ppData['strength'] = 0
 		ppData['intelligence'] = 0
 		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pi'] = 0		
+		ppData['pe'] = 0
+		
 			
 		for medalid in inv.medal:
 			
@@ -143,9 +136,7 @@ class pvp:
 			elif medalConfig[medalid]['typestr'] == 'wreck':
 				ppData['wreck'] = ppData['wreck'] + medalConfig[medalid]['val']
 			elif medalConfig[medalid]['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'mt':
-				ppData['mt'] = ppData['mt'] + medalConfig[medalid]['val']
+				ppData['pt'] = ppData['pt'] + medalConfig[medalid]['val']			
 			elif medalConfig[medalid]['typestr'] == 'pd':
 				ppData['pd'] = ppData['pd'] + medalConfig[medalid]['val']
 			elif medalConfig[medalid]['typestr'] == 'md':
@@ -174,8 +165,7 @@ class pvp:
 		ppData['hp'] = 0
 		ppData['pd'] = 0
 		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
+		ppData['pt'] = 0		
 		ppData['pr'] = 0
 		ppData['mr'] = 0
 		ppData['critical'] = 0
@@ -184,15 +174,12 @@ class pvp:
 		ppData['wreck'] = 0
 		ppData['hit'] = 0
 		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pa'] = 0		
 		ppData['strength'] = 0
 		ppData['intelligence'] = 0
 		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pi'] = 0		
+		ppData['pe'] = 0		
 		
 		practicePropertyConf = config.getConfig('practice_property')
 		
@@ -214,8 +201,7 @@ class pvp:
 		ppData['hp'] = 0
 		ppData['pd'] = 0
 		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
+		ppData['pt'] = 0		
 		ppData['pr'] = 0
 		ppData['mr'] = 0
 		ppData['critical'] = 0
@@ -224,15 +210,12 @@ class pvp:
 		ppData['wreck'] = 0
 		ppData['hit'] = 0
 		ppData['dodge'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pa'] = 0		
 		ppData['strength'] = 0
 		ppData['intelligence'] = 0
 		ppData['artifice'] = 0
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = 0
-		ppData['ma'] = 0
+		ppData['pi'] = 0		
+		ppData['pe'] = 0		
 		
 		petConf = config.getConfig('pet')
 		luckConf = config.getConfig('luck')
@@ -266,9 +249,7 @@ class pvp:
 			elif luckInfo['typestr'] == 'wreck':
 				ppData['wreck'] = ppData['wreck'] + luckInfo['value']
 			elif luckInfo['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + luckInfo['value']
-			elif luckInfo['typestr'] == 'mt':
-				ppData['mt'] = ppData['mt'] + luckInfo['value']
+				ppData['pt'] = ppData['pt'] + luckInfo['value']			
 			elif luckInfo['typestr'] == 'pd':
 				ppData['pd'] = ppData['pd'] + luckInfo['value']
 			elif luckInfo['typestr'] == 'md':
@@ -298,8 +279,7 @@ class pvp:
 		ppData['hp'] = p1['hp'] + p2['hp']
 		ppData['pd'] = p1['pd'] + p2['pd']
 		ppData['md'] = p1['md'] + p2['md']
-		ppData['pt'] = p1['pt'] + p2['pt']
-		ppData['mt'] = p1['mt'] + p2['mt']
+		ppData['pt'] = p1['pt'] + p2['pt']		
 		ppData['pr'] = p1['pr'] + p2['pr']
 		ppData['mr'] = p1['mr'] + p2['mr']
 		ppData['critical'] = p1['critical'] + p2['critical']
@@ -308,15 +288,12 @@ class pvp:
 		ppData['wreck'] = p1['wreck'] + p2['wreck']
 		ppData['hit'] = p1['hit'] + p2['hit']
 		ppData['dodge'] = p1['dodge'] + p2['dodge']
-		ppData['pa'] = p1['pa'] + p2['pa']
-		ppData['ma'] = p1['ma'] + p2['ma']
+		ppData['pa'] = p1['pa'] + p2['pa']		
 		ppData['strength'] = p1['strength'] + p2['strength']
 		ppData['intelligence'] = p1['intelligence'] + p2['intelligence']
 		ppData['artifice'] = p1['artifice'] + p2['artifice']
-		ppData['pi'] = p1['pi'] + p2['pi']
-		ppData['mi'] = p1['mi'] + p2['mi']
-		ppData['pa'] = p1['pa'] + p2['pa']
-		ppData['ma'] = p1['ma'] + p2['ma']
+		ppData['pi'] = p1['pi'] + p2['pi']		
+		ppData['pe'] = p1['pe'] + p2['pe']
 		return ppData
 		
 		
@@ -332,8 +309,7 @@ class pvp:
 		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5		
 		ppData['pd'] = 0
 		ppData['md'] = 0
-		ppData['pt'] = 0
-		ppData['mt'] = 0
+		ppData['pt'] = 0		
 		ppData['pr'] = petInfo['pr'] + star * petInfo['prgrowth']
 		ppData['mr'] = petInfo['mr'] + star * petInfo['mrgrowth']
 		ppData['critical'] = petInfo['critical']
@@ -341,17 +317,14 @@ class pvp:
 		ppData['block'] = petInfo['block']
 		ppData['wreck'] = petInfo['wreck']
 		ppData['hit'] = petInfo['hit']
-		ppData['dodge'] = petInfo['dodge']
-		ppData['pa'] = petInfo['pa']
-		ppData['ma'] = petInfo['ma']
+		ppData['dodge'] = petInfo['dodge']		
 		ppData['strength'] = petInfo['strength']
 		ppData['intelligence'] = petInfo['intelligence']
 		ppData['artifice'] = petInfo['artifice']
-		ppData['pi'] = 0
-		ppData['mi'] = 0
-		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * star
-		ppData['ma'] = petInfo['ma'] + petInfo['magrowth'] * star
+		ppData['pi'] = 0		
+		ppData['pa'] = petInfo['pa'] + petInfo['pagrowth'] * star		
 		ppData['id'] = card['id']
 		ppData['cardid'] = card['cardid']
+		ppData['pe'] = 0
 		return ppData
 		
