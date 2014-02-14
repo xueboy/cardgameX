@@ -26,6 +26,7 @@ from game.routine.practice import practice
 from game.routine.pvp import pvp
 
 
+
 class user(gcuser):
 	
 	def __init__(self):
@@ -536,8 +537,8 @@ class user(gcuser):
 				ppData = pvp.pvpPetProperty(card, petConf)								
 				for equip in card['slot']:
 					if equip:
-						data = equipment.pvpProperty(equip, equipmentConf)
-						ppData = pet.mergePvpProperty(ppData, data)				
+						data = pvp.pvpEquipmentProperty(equip, equipmentConf)
+						ppData = pvp.mergePvpProperty(ppData, data)				
 				
 				for st in card['st_slot']:
 					if st:
@@ -554,3 +555,5 @@ class user(gcuser):
 		
 		return data
 		
+	def notify_gold(self, gold):
+		self.notify['gold'] = gold
