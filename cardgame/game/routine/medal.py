@@ -165,7 +165,7 @@ class medal:
 			usr.save()
 			inv.save()
 			defenceInv.save()
-			return {'update_medal_chip':medalchip}			
+			return {'update_medal':{usr.medal['grabmedalid']: inv.medal[usr.medal['grabmedalid']]}}
 		return {}
 	
 	@staticmethod
