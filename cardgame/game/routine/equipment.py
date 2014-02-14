@@ -214,10 +214,7 @@ class equipment:
 		del fromCard['slot']
 		if toSlot:
 			fromCard['slot'] = toSlot
-		return []		
-			
-			
-			
+		return []					
 
 	@staticmethod
 	def degradation(usr, equipmentid):
