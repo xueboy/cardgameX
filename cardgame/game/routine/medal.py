@@ -159,13 +159,14 @@ class medal:
 			defenceInv = defenceUsr.getInventory()
 			if defenceInv.delMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip']) < 0:
 				return {'msg':'medal_chip_not_enough'}
-			medalchip = inv.addMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
+			medalid = usr.medal['grabmedalid']			
+			medalchip = inv.addMedalChip(medalid, usr.medal['grabmedalchip'])
 			usr.medal['grabmedalid'] = ''
 			usr.medal['grabmedalchip'] = 0
 			usr.save()
 			inv.save()
 			defenceInv.save()
-			return {'update_medal':{usr.medal['grabmedalid']: inv.medal[usr.medal['grabmedalid']]}}
+			return {'update_medal':{medalid: inv.medal[medalid]}}
 		return {}
 	
 	@staticmethod
