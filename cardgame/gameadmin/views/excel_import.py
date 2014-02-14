@@ -48,11 +48,11 @@ class excel_import:
 				pr = int(row[24])
 				mr = int(row[25])
 				pa = int(row[26])
-				ma = int(row[27])
+				#ma = int(row[27])
 				pe = int(row[28])				#Pysical Extra
-				me = int(row[29])				#Magical Extra
+				#me = int(row[29])				#Magical Extra
 				pi = int(row[30])				#Pysical Immune
-				mi = int(row[31])				#Magical Immune
+				#mi = int(row[31])				#Magical Immune
 				
 				skill = []
 				if row[32] and row[36] and row[41]:
@@ -67,7 +67,7 @@ class excel_import:
 				dropid = row[40]
 				
 				pt = int(row[45])
-				mt = int(row[46])
+				#mt = int(row[46])
 				pd = int(row[47])
 				md = int(row[48])				
 				
@@ -97,11 +97,11 @@ class excel_import:
 				monsterConf['pr'] = pr
 				monsterConf['mr'] = mr
 				monsterConf['pa'] = pa
-				monsterConf['ma'] = ma
+				#monsterConf['ma'] = ma
 				monsterConf['pe'] = pe
-				monsterConf['me'] = me
+				#monsterConf['me'] = me
 				monsterConf['pi'] = pi
-				monsterConf['mi'] = mi
+				#monsterConf['mi'] = mi
 				monsterConf['level'] = level
 				monsterConf['hp'] = hp
 				monsterConf['attack'] = attack
@@ -115,7 +115,7 @@ class excel_import:
 				monsterConf['mi'] = mi				
 				monsterConf['skill'] = skill
 				monsterConf['pt'] = pt
-				monsterConf['mt'] = mt
+				#monsterConf['mt'] = mt
 				monsterConf['pd'] = pd
 				monsterConf['md'] = md
 				conf[monsterId] = monsterConf
@@ -396,8 +396,8 @@ class excel_import:
 				mrgrowth = int(row[35])	#Magical Resistance
 				pa = int(row[36])	#Physical Amplification
 				pagrowth = int(row[37])
-				ma = int(row[38])	#Magical Amplification
-				magrowth = int(row[39])			
+				#ma = int(row[38])	#Magical Amplification
+				#magrowth = int(row[39])			
 				skillid = [unicode(row[40])]
 				if unicode(row[41]):
 					skillid.append(unicode(row[41]))
@@ -459,8 +459,8 @@ class excel_import:
 				petConf['mrgrowth'] = mrgrowth
 				petConf['pa'] = pa
 				petConf['pagrowth'] = pagrowth
-				petConf['ma'] = ma
-				petConf['magrowth'] = magrowth			
+				#petConf['ma'] = ma
+				#petConf['magrowth'] = magrowth			
 				petConf['skillid'] = skillid
 				petConf['evoId'] = evoId
 				petConf['evoObjectId'] = evoObjectId
@@ -711,16 +711,16 @@ class excel_import:
 				hpgrowth = int(row[12])
 				pa = int(row[13])
 				pagrowth = int(row[14])
-				ma = int(row[15])
-				magrowth = int(row[16])
+				#ma = int(row[15])
+				#magrowth = int(row[16])
 				pd = int(row[17])
 				pdgrowth = int(row[18])
 				md = int(row[19])
 				mdgrowth = int(row[20])
 				pt = int(row[21])
 				ptgrowth = int(row[22])
-				mt = int(row[23])
-				mtgrowth = int(row[24])
+				#mt = int(row[23])
+				#mtgrowth = int(row[24])
 				chip = int(row[25])
 				price = int(row[28])
 				desc = row[29]				
@@ -739,16 +739,16 @@ class excel_import:
 				equipmentConf['hpgrowth'] = hpgrowth
 				equipmentConf['pa'] = pa
 				equipmentConf['pagrowth'] = pagrowth
-				equipmentConf['ma'] = ma
-				equipmentConf['magrowth'] = magrowth
+				#equipmentConf['ma'] = ma
+				#equipmentConf['magrowth'] = magrowth
 				equipmentConf['pd'] = pd
 				equipmentConf['pdgrowth'] = pdgrowth
 				equipmentConf['md'] = md
 				equipmentConf['mdgrowth'] = mdgrowth
 				equipmentConf['pt'] = pt
 				equipmentConf['ptgrowth'] = ptgrowth
-				equipmentConf['mt'] = mt
-				equipmentConf['mtgrowth'] = mtgrowth
+				#equipmentConf['mt'] = mt
+				#equipmentConf['mtgrowth'] = mtgrowth
 				equipmentConf['chip'] = chip
 				equipmentConf['price'] = price
 				equipmentConf['desc'] = desc			
@@ -788,37 +788,6 @@ class excel_import:
 		return HttpResponse('strength_price_import')
 		
 	@staticmethod
-	def luckycat_level_import(request):
-		if request.method == 'POST':
-			luckycat_level_file = request.FILES.get('luckycat_level_file')
-			if not luckycat_level_file:
-				return HttpResponse('招财猫等级xlsx文件未上传')			
-		
-			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_level_file.read())
-			sheet = wb.sheet_by_index(0)
-		
-			conf = []
-			for rownum in range(3,sheet.nrows):
-				row = sheet.row_values(rownum)
-				
-				level = int(row[0])
-				exp = int(row[1])
-				levelupgold = int(row[2])
-				luckygold = int(row[3])				
-				while(level >= len(conf)):
-					conf.append({})				
-				levelConf = {}
-				levelConf['level'] = level
-				levelConf['exp'] = exp
-				levelConf['levelupGold'] = levelupgold
-				levelConf['luckyGold'] = luckygold
-				
-				conf[level - 1] = levelConf
-				
-			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('luckycat_level_import')
-				
-	@staticmethod
 	def luckycat_bless_import(request):
 		if request.method == 'POST':
 			luckycat_bless_file = request.FILES.get('luckycat_bless_file')
@@ -826,7 +795,7 @@ class excel_import:
 				return HttpResponse('招财猫祝福xlsx文件未上传')			
 		
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_bless_file.read())
-			sheet = wb.sheet_by_index(2)
+			sheet = wb.sheet_by_index(1)
 		
 			conf = {}
 			for rownum in range(3,sheet.nrows):
@@ -849,6 +818,37 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('luckycat_bless_import')
+		
+	@staticmethod
+	def luckycat_profit_import(request):
+		if request.method == 'POST':
+			luckycat_profit_file = request.FILES.get('luckycat_profit_file')
+			if not luckycat_profit_file:
+				return HttpResponse('招财猫日常收益xlsx未上传')
+			
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, luckycat_profit_file.read())
+			sheet = wb.sheet_by_index(2)
+			
+			conf = []
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				level = int(row[0])
+				beckonProfit = int(row[1])
+				blessProfit = int(row[2])
+				agreeProfit = int(row[3])
+				
+				while len(conf) < level:
+					conf.append({})
+					
+				conf[level - 1]['beckonProfit']= beckonProfit
+				conf[level - 1]['blessProfit'] = blessProfit
+				conf[level - 1]['agreeProfit'] = agreeProfit
+			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('luckycat_profit')
+					
 		
 	@staticmethod
 	def luck_import(request):
@@ -880,7 +880,7 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('luck_import')
-				
+		
 	@staticmethod
 	def language_import(request):
 		if request.method == 'POST':
