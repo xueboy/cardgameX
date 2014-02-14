@@ -120,7 +120,7 @@ def nearby(request):
 		d['level'] = player.level
 		d['gender'] = player.gender
 		data.append(d)  	
-	return data
+	return {'player':data}
 	
 def sign_in(request):	
 	usr = request.user	
