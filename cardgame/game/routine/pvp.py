@@ -305,8 +305,8 @@ class pvp:
 		star = card['init_start'] + int(card['level'] * 0.4)
 		
 		ppData = {}
-		ppData['attack'] = petInfo['attack'] + petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5		
-		ppData['hp'] = petInfo['hp'] + petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5		
+		ppData['attack'] = petInfo['attack'] + int(petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5)
+		ppData['hp'] = petInfo['hp'] + int(petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5)
 		ppData['pd'] = 0
 		ppData['md'] = 0
 		ppData['pt'] = 0		
