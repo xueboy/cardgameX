@@ -39,10 +39,12 @@ class arena:
 		defenceRole = usr.get(defenceRoleid)
 		if not defenceRole:
 			return {'msg':'user_not_exist'}
+		
+		gameConf = config.getConfig('game')			
+		arena.arena_update(usr, gameConf)
+		
 				
-		arena.arena_update(usr)
-				
-		if usr.arena['times'] <= 0:
+		if usr.arena['times'] >= gameConf['arena_times']:
 			return {'msg':'arena_max_time'}
 				
 		gameConf = config.getConfig('game')
@@ -50,7 +52,7 @@ class arena:
 		if usr.costSp(gameConf['arena_sp_cost']) < 0:
 			return {'msg': 'sp_not_enough'}
 				
-		usr.arena['times'] = usr.arena['times'] - 1
+		usr.arena['times'] = usr.arena['times'] + 1
 		usr.arena['last_chellage_time'] = currentTime()
 		
 			
@@ -59,9 +61,9 @@ class arena:
 		return {'defence':defenceRole.pvpProperty(), 'arena_time':usr.arena['times']}
 
 	@staticmethod
-	def arena_update(usr):		
+	def arena_update(usr, gameConf):		
 		if not is_same_day(usr.arena['last_update_time'], currentTime()):
-			gameConf = config.getConfig('game')			
+		
 			usr.arena['times'] = gameConf['arena_times']
 		usr.arena['last_update_time'] = currentTime()
 		

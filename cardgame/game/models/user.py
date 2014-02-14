@@ -537,13 +537,13 @@ class user(gcuser):
 				ppData = pvp.pvpPetProperty(card, petConf)								
 				for equip in card['slot']:
 					if equip:
-						data = pvp.pvpEquipmentProperty(equip, equipmentConf)
-						ppData = pvp.mergePvpProperty(ppData, data)				
+						data1 = pvp.pvpEquipmentProperty(equip, equipmentConf)
+						ppData = pvp.mergePvpProperty(ppData, data1)	
 				
 				for st in card['st_slot']:
 					if st:
-						data = stone.pvpProperty(st, stoneConf)
-						ppData = pet.mergePvpProperty(ppData, data)	
+						data1 = stone.pvpProperty(st, stoneConf)
+						ppData = pet.mergePvpProperty(ppData, data1)	
 				ppLuckData = pvp.luckPvpProperty(self, card)
 				ppData = pvp.mergePvpProperty(ppData, ppLuckData)
 				ppData = pvp.mergePvpProperty(ppData, ppAlmanacData)
