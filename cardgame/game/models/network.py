@@ -160,14 +160,14 @@ class network(object):
 		requestid = str(toUserNw.sequenceid)
 		toUserNw.sequenceid = toUserNw.sequenceid + 1
 		fromUserId = str(self.user.roleid)
-		msgData = {'mail':mail, 'send_time': currentTime(), 'id': requestid, 'roleid':fromUserId}	
+		msgData = {'mail':mail, 'send_time': currentTime(), 'id': str(requestid) + str(fromUserId), 'roleid':fromUserId}	
 		if not toUserNw.mail.has_key(fromUserId):
 			toUserNw.mail[fromUserId] = []
 		toUserNw.mail[fromUserId].append(msgData)
 		toUserNw.nt_info[fromUserId] = ntInfo
 		if not toUser.notify.has_key('notify_mail'):
 			toUser.notify['notify_mail'] = {}
-		toUser.notify['notify_mail'][requestid] = dict({'new_mail':msgData}, **ntInfo)
+		toUser.notify['notify_mail'][str(requestid) + str(fromUserId)] = dict({'new_mail':msgData}, **ntInfo)
 		toUser.save()
 		toUserNw.save()
 				
@@ -181,7 +181,7 @@ class network(object):
 		fromNw.mail[toUserId].append(msgData)
 		if not fromUser.notify.has_key('notify_mail'):
 			fromUser.notify['notify_mail'] = {}
-		fromUser.notify['notify_mail'][requestid] = dict({'new_mail':msgData}, **toNtInfo)
+		fromUser.notify['notify_mail'][str(requestid) + str(fromUserId)] = dict({'new_mail':msgData}, **toNtInfo)
 		fromNw.save()
 		fromUser.save()
 		
