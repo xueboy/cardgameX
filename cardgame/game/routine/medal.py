@@ -8,6 +8,7 @@ from game.utility.config import config
 
 
 
+
 class medal:
 		
 	@staticmethod
@@ -131,7 +132,13 @@ class medal:
 		usr.medal['grabmedalroleid'] = defenceRoleid
 		usr.medal['grabmedalid'] = medalid
 		usr.medal['grabmedalchip'] = chipnum
-		return {'sp':usr.sp}
+		
+		defenceRole = usr.__class__.get(defenceRoleid)
+		if not defenceRole:
+			return {'msg':'user_not_exist'}
+		
+		usr.save()		
+		return {'sp':usr.sp, 'defence':defenceRole.pvpProperty()}
 	
 	@staticmethod
 	def win(usr):
@@ -167,7 +174,7 @@ class medal:
 			usr.save()
 			inv.save()
 			defenceInv.save()
-			return {'update_medal':{medalid: inv.medal[medalid]}, 'grabchipnum':chipnum}
+			return { 'grabchipnum':chipnum}
 		return {}
 	
 	@staticmethod
