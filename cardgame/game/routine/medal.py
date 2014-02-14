@@ -174,7 +174,7 @@ class medal:
 			usr.save()
 			inv.save()
 			defenceInv.save()
-			return { 'grabchipnum':chipnum}
+			return { 'grabchipnum':chipnum, 'chip':medalchip['chip'] }
 		return {}
 	
 	@staticmethod
