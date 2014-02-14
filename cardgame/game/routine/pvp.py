@@ -328,3 +328,46 @@ class pvp:
 		ppData['pe'] = 0
 		return ppData
 		
+		
+	@staticmethod
+	def pvpEquipmentProperty(equipment, equipmentConf):
+				
+		if not equipment:
+			return {}
+		
+		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		
+		ppData = {}
+		ppData['attack'] = 0
+		if equipment.has_key('strengthLevel'):
+			ppData['hp'] = equipmentInfo['hp'] + equipmentInfo['hpgrowth'] * equipment['strengthLevel']			
+			ppData['pa'] = equipmentInfo['pa'] + equipmentInfo['pagrowth'] * equipment['strengthLevel']
+			ppData['ma'] = equipmentInfo['ma'] + equipmentInfo['magrowth'] * equipment['strengthLevel']
+			ppData['pd'] = equipmentInfo['pd'] + equipmentInfo['pdgrowth'] * equipment['strengthLevel']
+			ppData['md'] = equipmentInfo['md'] + equipmentInfo['mdgrowth'] * equipment['strengthLevel']
+			ppData['pt'] = equipmentInfo['pt'] + equipmentInfo['ptgrowth'] * equipment['strengthLevel']
+			ppData['mt'] = equipmentInfo['mt'] + equipmentInfo['mtgrowth'] * equipment['strengthLevel']
+		else:
+			ppData['hp'] = equipmentInfo['hp']
+			ppData['pa'] = equipmentInfo['pa']
+			ppData['ma'] = equipmentInfo['ma']
+			ppData['pd'] = equipmentInfo['pd']
+			ppData['md'] = equipmentInfo['md']
+			ppData['pt'] = equipmentInfo['pt']
+			ppData['mt'] = equipmentInfo['mt']
+					
+		ppData['pr'] = 0
+		ppData['mr'] = 0
+		ppData['critical'] = 0
+		ppData['tenacity'] = 0
+		ppData['block'] = 0
+		ppData['wreck'] = 0
+		ppData['hit'] = 0
+		ppData['dodge'] = 0				
+		ppData['strength'] = 0
+		ppData['intelligence'] = 0
+		ppData['artifice'] = 0
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		return data
+		
