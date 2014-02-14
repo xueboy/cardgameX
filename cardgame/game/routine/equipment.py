@@ -186,12 +186,12 @@ class equipment:
 		
 			sellGold = equipmentInfo['price']		
 			usr.gold = usr.gold + sellGold		
-			inv.delEquipment(equipmentid)
-			sellequipment.append(equipmentid)
+			inv.delEquipment(equipid)
+			sellequipment.append(equipid)
 		inv.save()
 		usr.save()
 		
-		return {'gold':usr.gold, 'delete_equipment_array':sellequipment}		
+		return {'gold':usr.gold, 'delete_equipment_array':equipid}		
 		
 	@staticmethod
 	def takeoff(inv, card):
