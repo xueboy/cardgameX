@@ -50,7 +50,20 @@ class luckycat:
 			if usr.gem < costGem:
 				return {'msg':'gem_not_enough'}		
 		
-		beckonGold = luckycatProfitConf[usr.level - 1]['luckyGold']		
+		luckycatBlessConf = config.getConfig('luckycat_bless')
+		
+		beckonGold = luckycatProfitConf[usr.level - 1]['beckonProfit']
+		
+		blessid = []
+		for i in range(3):
+			bid = luckycat.rollBeckonBless(usr, luckycatBlessConf)
+			if bid:
+				blessid.append(bid)
+				
+		beckonGold, gem, beckonCount, beckonCD = luckycat.beckonBless(usr, beckonGold, blessid, luckycatBlessConf)
+		usr.luckycat['beckon_count'] = beckonCount
+		usr.luckycat['beckon_cooldown'] = beckonCD
+		
 		beckonGold = beckonGold * luckycat.currentLuckycatFortune()
 		beckonCritical = False
 		if luckycat.isCritical(usr):
@@ -58,6 +71,8 @@ class luckycat:
 			beckonCritical = True
 		usr.gold = usr.gold + beckonGold
 		usr.gem = usr.gem - costGem
+		usr.gem = usr.gem + gem
+		
 		if not useGem:
 			usr.luckycat['beckon_count'] = usr.luckycat['beckon_count'] + 1
 			usr.luckycat['fatigue'] = usr.luckycat['fatigue'] + 1
@@ -71,7 +86,32 @@ class luckycat:
 		rcd['income'] = {'gold':beckonGold, 'gem':-costGem}
 		usr.luckycat['record'].append(rcd)
 		usr.save()
-		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown'], 'beckon_critical':beckonCritical}	
+		return {'gold':usr.gold, 'luckycat_beckon_count':usr.luckycat['beckon_count'], 'luckycat_beckon_cooldown':usr.luckycat['beckon_cooldown'], 'beckon_critical':beckonCritical, 'gem':usr.gem, 'bless':blessid}	
+	
+	@staticmethod
+	def beckonBless(usr, beckonGold, blessid, luckycatBlessConf):
+		
+		gold = beckonGold
+		gem = 0
+		beckonCount = usr.luckycat['beckon_count']
+		beckonCD = usr.luckycat['beckon_cooldown']
+		
+		for b in blessid:
+			luckycatBlessInfo = luckycatBlessConf[b]
+			
+			if luckycatBlessInfo['blessTypeStr'] == 'rubyluck':
+				gem = gem + luckycatBlessInfo['value']
+			elif luckycatBlessInfo['blessTypeStr'] == 'freepc':
+				beckonCount = usr.luckycat['beckon_count'] - 1
+			elif luckycatBlessInfo['blessTypeStr'] == 'increase':
+				gold = gold * luckycatBlessInfo['value']
+			elif luckycatBlessInfo['blessTypeStr'] == 'reducecd':
+				beckonCD = beckonCD - luckycatBlessInfo['value']
+				
+		return gold, gem, beckonCount, beckonCD
+				
+		
+		
 	
 	@staticmethod
 	def beckon_reset(usr):
@@ -102,20 +142,6 @@ class luckycat:
 		if usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] > now:			
 			return usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] - currentTime()		
 		return 0
-		
-	@staticmethod
-	def feed_self_cooldown(usr, gameConf):
-		now = currentTime()
-		if usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] > now:
-			return  usr.luckycat['feed_self_last_time'] + gameConf['luckycat_feed_self_cooldown'] - currentTime()
-		return 0
-		
-	@staticmethod
-	def feed_other_cooldown(usr, gameConf):		
-		now = currentTime()
-		if usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] > now:
-			return usr.luckycat['feed_other_last_time'] + gameConf['luckycat_feed_other_cooldown'] - now
-		return 0
 	
 	@staticmethod
 	def beckonCooldownCleanup(usr):
@@ -141,9 +167,6 @@ class luckycat:
 		if requiredLevel > usr.level:
 			return {'msg':'luckycat_feed_level_required'}
 		
-		if feedLastTime + feedCooldown > now:
-			return {'msg':"luckycat_feed_in_cooldown"}
-				
 		if not (feedCount < feedCountMax):
 			return {'msg':'luckycat_feed_max_time'}					
 				
@@ -152,6 +175,8 @@ class luckycat:
 
 		if not target.luckycat:
 			return {'msg':'luckycat_not_available'}
+		if not usr.luckycat.has_key('feed_request_list'):
+			usr.luckycat['feed_request_list'] = []
 				
 		usr.luckycat['feed_request_list'].append(target.roleid)
 		target.luckycat['feed_candidate_list'].append(usr.roleid)
@@ -162,8 +187,8 @@ class luckycat:
 		
 		data = {}
 		data['luckycat'] = luckycat.getClientData(target, gameConf)
-		if awardGold:
-			data['gold'] = usr.gold
+
+		data['gold'] = usr.gold
 		
 		data['spread_bless'] = spreadBlessid	
 		return data
@@ -254,6 +279,26 @@ class luckycat:
 		usr.save()				
 		return {'delete_request':friendid}
 					
+	
+	@staticmethod
+	def rollBeckonBless(usr, luckycatBlessConf):
+		
+		#luckycat.updateBless(usr)
+		#luckycatBlessConf = config.getConfig('luckycat_bless')		
+		
+		roll = randint()
+		blessConf = {}
+		for blessid in luckycatBlessConf:
+			b = luckycatBlessConf[blessid] 
+			if b['probability'] < roll:
+				roll = roll - b['probability']
+			else:
+				if usr.luckycat['bless'].has_key(blessid):
+					return b
+				return None
+		return None
+		
+	
 	@staticmethod
 	def rollBless(usr):
 		if not usr.luckycat:
@@ -423,7 +468,7 @@ class luckycat:
 		usr.notify['delete_luckcat_request'].append(friendid)
 		
 	@staticmethod
-	def notify_candidate_list_add(usr, friendid):
+	def notify_candidate_add(usr, friendid):
 		if not usr.notify.has_key('add_luckycat_candidate'):
 			usr.notify['add_luckycat_candidate'] = []
 		usr.notify['add_luckycat_candidate'].append(friendid)

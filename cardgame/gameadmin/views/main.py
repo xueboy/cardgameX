@@ -53,14 +53,14 @@ def strength_probability(request):
 def strength_price(request):
 	return generalConfigRequestProcess(request, 'strength_price')
 
-def luckycat_level(request):
-	return generalConfigRequestProcess(request, 'luckycat_level')
-	
 def luckycat_bless(request):
 	return generalConfigRequestProcess(request, 'luckycat_bless')
 
 def luckycat_fortune(request):
 	return generalConfigRequestProcess(request, 'luckycat_fortune')
+	
+def luckycat_profit(request):
+	return generalConfigRequestProcess(request, 'luckycat_profit')
 	
 def luck(request):
 	return generalConfigRequestProcess(request, 'luck')
@@ -207,11 +207,11 @@ def equipment_import(request):
 def strength_price_import(request):
 	return excel_import.strength_price_import(request)
 	
-def luckycat_level_import(request):
-	return excel_import.luckycat_level_import(request)
-	
 def luckycat_bless_import(request):
 	return excel_import.luckycat_bless_import(request)
+	
+def luckycat_profit_import(request):
+	return excel_import.luckycat_profit_import(request)
 	
 def luck_import(request):
 	return excel_import.luck_import(request)

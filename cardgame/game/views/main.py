@@ -93,6 +93,8 @@ def info(request):
 	info['item_md5'] = conf.getClientConfigMd5('item')
 	info['strength_price_md5'] = conf.getClientConfigMd5('strength_price')
 	info['strength_probability_md5'] = conf.getClientConfigMd5('strength_probability')
+	info['luckycat_bless_md5'] = conf.getClientConfigMd5('luckycat_bless')
+	info['luckycat_profit_md5'] = conf.getClientConfigMd5('luckycat_profit')
 	info['luck_md5'] = conf.getClientConfigMd5('luck')
 	info['language_md5'] = conf.getClientConfigMd5('language')	
 	info['stone_md5'] = conf.getClientConfigMd5('stone')

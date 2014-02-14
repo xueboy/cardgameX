@@ -801,19 +801,21 @@ class excel_import:
 			for rownum in range(3,sheet.nrows):
 				row = sheet.row_values(rownum)
 				
-				blessid = row[0]
-				blessName = row[1]
-				icon = row[2]
-				desc = row[3]
-				probability = row[4]
-				price = row[5]				
+				blessid = row[0]				
+				icon = row[1]
+				desc = row[2]
+				probability = row[3]
+				triggerProbability = row[4]
+				blessTypeStr = row[5]
+				value = row[6]				
 				blessConf = {}
-				blessConf['blessid'] = blessid
-				blessConf['name'] = blessName
+				blessConf['blessid'] = blessid				
 				blessConf['icon'] = icon
 				blessConf['desc'] = desc
 				blessConf['probability'] = probability
-				blessConf['price'] = price
+				blessConf['triggerProbability'] = triggerProbability
+				blessConf['blessTypeStr'] = blessTypeStr
+				blessConf['value'] = value
 				conf[blessid] = blessConf
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
