@@ -549,7 +549,7 @@ class user(gcuser):
 				ppData = pvp.mergePvpProperty(ppData, ppAlmanacData)
 				ppData = pvp.mergePvpProperty(ppData, ppMedalData)
 				ppData = pvp.mergePvpProperty(ppData, ppPracticeData)
-				ppData['critical_lavel'] = self.practice['critical_lavel']
+				ppData['critical_level'] = self.practice['critical_level']
 				ppData['tenacity_level'] = self.practice['tenacity_level']
 				ppData['block_level'] = self.practice['block_level']
 				ppData['wreck_level'] = self.practice['wreck_level']
