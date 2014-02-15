@@ -40,7 +40,7 @@ class equipment:
 		else:
 			strengthenProbability = gameConf['equipment_strength_fix_probablity']
 		
-		goldCost = strengthenPriceConf[str(equipmentQuality)][strengthLevel]['price']
+		goldCost = strengthenPriceConf[str(equipmentQuality)][strengthLevel]
 		
 		if isUseGem:
 			gemCost = gemCost + gameConf['equipment_strength_extra_gem_price']
@@ -99,7 +99,7 @@ class equipment:
 		daysecond = dayTime()
 		
 		selItem = None
-		for item in strengthenPriceConf:
+		for item in strengthProbabilityConf:
 			if item[0] < daysecond:
 				selItem = item
 			else:
@@ -232,7 +232,7 @@ class equipment:
 		equipmentConf = config.getConfig('equipment')
 		equipmentInfo = equipmentConf[equipment['equipmentid']]
 		equipmentQuality = equipmentInfo['quality']		
-		goldGain = int(strengthenPriceConf[str(equipmentQuality)][equipment['strengthLevel']]['price'] * gameConf['equipment_degradation_price_rate'])
+		goldGain = int(strengthenPriceConf[str(equipmentQuality)][equipment['strengthLevel']] * gameConf['equipment_degradation_price_rate'])
 		
 		equipment['strengthLevel'] = equipment['strengthLevel'] - 1
 		if equipment['strengthLevel'] <= 0:

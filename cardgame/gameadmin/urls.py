@@ -116,5 +116,7 @@ urlpatterns = patterns('',
     url(r'practice_level/$', gameadmin.views.main.practice_level),
     url(r'practice_level_import/$', gameadmin.views.main.practice_level_import),
     url(r'slotmachine/$', gameadmin.views.main.slotmachine),
-    url(r'slotmachine_import/$', gameadmin.views.main.slotmachine_import)
+    url(r'slotmachine_import/$', gameadmin.views.main.slotmachine_import),
+    url(r'vip/$', gameadmin.views.main.vip),
+    url(r'vip_import/$', gameadmin.views.main.vip_import),
 )

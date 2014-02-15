@@ -768,7 +768,7 @@ class excel_import:
 			sheet = wb.sheet_by_index(1)
 		
 			conf = {}
-			for rownum in range(3,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 			
 				quality = row[1]
@@ -782,7 +782,7 @@ class excel_import:
 				priceConf = conf[quality]				
 				while len(priceConf) < level:
 					priceConf.append({})			
-				priceConf[level - 1] = {'price':price}
+				priceConf[level - 1] = price
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('strength_price_import')
@@ -2119,3 +2119,7 @@ class excel_import:
 			
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('slotmachine_import')
+		
+	@staticmethod
+	def vip_import(request):		
+		pass

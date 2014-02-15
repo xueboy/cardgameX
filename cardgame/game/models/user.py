@@ -25,6 +25,7 @@ from game.routine.pet import pet
 from game.routine.practice import practice
 from game.routine.pvp import pvp
 from game.routine.slotmachine import slotmachine
+from game.routine.vip import vip
 
 
 
@@ -40,7 +41,6 @@ class user(gcuser):
 		self.gem = 0
 		self.gold = 0
 		self.exp = 0
-		self.vip = 0
 		self.sp = 0
 		self.stamina_last_recover = 0
 		self.sp_last_recover = 0
@@ -77,6 +77,7 @@ class user(gcuser):
 		self.medal = medal.make()
 		self.practice = practice.make()
 		self.slotmachine = slotmachine.make()
+		self.vip = vip.make()
 		
 	
 	def init(self, acc = None):
@@ -89,7 +90,6 @@ class user(gcuser):
 		levelConf = config.getConfig('level')		
 		self.stamina = levelConf[0]['stamina']
 		self.sp = levelConf[0]['sp']
-		self.vip = 0
 		self.stamina_last_recover = currentTime()
 		self.sp_last_recover = currentTime()
 		self.last_card_no = 0
@@ -137,6 +137,7 @@ class user(gcuser):
 		data['medal'] = self.medal
 		data['practice'] = self.practice
 		data['slotmachine'] = self.slotmachine
+		data['vip'] = self.vip
 		return data
 		
 	def getClientData(self):
@@ -305,6 +306,7 @@ class user(gcuser):
 		self.medal = data['medal']
 		self.practice = data['practice']
 		self.slotmachine = data['slotmachine']
+		self.vip = data['vip']
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1

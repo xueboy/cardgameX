@@ -34,7 +34,7 @@ class config(gcconfig):
 		if confname == 'strength_price':
 			return conf
 		if confname == 'strength_probability':
-			return conf
+			return config.strengthProbabilityFilter(conf)
 		if confname == 'luckycat_bless':
 			return conf
 		if confname == 'luckycat_profit':
@@ -220,4 +220,11 @@ class config(gcconfig):
 			del m['typestr']			
 			del m['modelid']
 			data[madelid] = m
+		return data
+		
+	@staticmethod
+	def strengthProbabilityFilter(conf):
+		data = {}
+		for item in conf:
+			data[str(item[0])] = item[1]		
 		return data
