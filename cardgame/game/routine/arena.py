@@ -41,7 +41,7 @@ class arena:
 			return {'msg':'user_not_exist'}
 		
 		gameConf = config.getConfig('game')			
-		arena.arena_update(usr, gameConf)
+		arena.arena_update(usr)
 		
 				
 		if usr.arena['times'] >= gameConf['arena_times']:
@@ -61,9 +61,8 @@ class arena:
 		return {'defence':defenceRole.pvpProperty(), 'arena_time':usr.arena['times']}
 
 	@staticmethod
-	def arena_update(usr, gameConf):		
-		if not is_same_day(usr.arena['last_update_time'], currentTime()):
-		
-			usr.arena['times'] = gameConf['arena_times']
+	def arena_update(usr):		
+		if not is_same_day(usr.arena['last_update_time'], currentTime()):		
+			usr.arena['times'] = 0
 		usr.arena['last_update_time'] = currentTime()
 		
