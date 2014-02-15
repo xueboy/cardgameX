@@ -75,7 +75,7 @@ class arena:
 			if rd <= 0:
 				card = {'id':arenaLootInfo['cardid'], 'level':arenaLootInfo['cardlevel']}				
 			else:
-				skl = {'id':arenaLootInfo['skillid'], 'level':arenaLootConf['skilllevel']}				
+				skl = {'id':arenaLootInfo['skillid'], 'level':arenaLootInfo['skilllevel']}				
 		
 		if gold or card or skl:			
 			usr.arena['loot'] = {}
