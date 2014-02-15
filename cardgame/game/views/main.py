@@ -127,6 +127,7 @@ def info(request):
 	info['practice_property_md5'] = conf.getClientConfigMd5('practice_property')
 	info['practice_level_md5'] = conf.getClientConfigMd5('practice_level')
 	info['slotmachine_md5'] = conf.getClientConfigMd5('slotmachine')
+	info['vip_md5']= conf.getClientConfigMd5('vip')
 	return HttpResponse(json.dumps({'info':info}))
 
 

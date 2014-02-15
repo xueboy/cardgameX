@@ -99,6 +99,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'slotmachine':
 			return conf
+		if confname == 'vip':
+			return conf
 		return None
 	
 	

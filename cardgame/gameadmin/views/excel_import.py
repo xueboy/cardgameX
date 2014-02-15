@@ -2122,4 +2122,37 @@ class excel_import:
 		
 	@staticmethod
 	def vip_import(request):		
-		pass
+		if request.method == 'POST':
+			vip_file = request.FILES.get('vip_file')
+			if not vip_file:
+				return HttpResponse('老虎机xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, vip_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {}
+			
+			for rownum in range(2, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				name = row[1]
+				
+				vip1 = row[2]
+				vip2 = row[3]
+				vip3 = row[4]
+				vip4 = row[5]
+				vip5 = row[6]
+				vip6 = row[7]
+				vip7 = row[8]
+				vip8 = row[9]
+				vip9 = row[10]
+				vip10 = row[11]
+				
+				if name == 'gift':
+					conf[name] = [vip1, vip2, vip3, vip4, vip5, vip6, vip7, vip8, vip9, vip10]
+				elif name:
+					conf[name] = [int(vip1), int(vip2), int(vip3), int(vip4), int(vip5), int(vip6), int(vip7), int(vip8), int(vip9), int(vip10)]
+				
+			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('vip_import')
