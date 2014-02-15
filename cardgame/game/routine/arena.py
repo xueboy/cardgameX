@@ -3,7 +3,7 @@
 
 from gclib.curl import curl
 from gclib.json import json
-from gclib.utility import is_same_day, currentTime
+from gclib.utility import is_same_day, currentTime, randint
 from cardgame.settings import ARENE_SERVER
 from game.utility.config import config
 #from game.models.user import user
