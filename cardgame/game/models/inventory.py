@@ -300,8 +300,8 @@ class inventory(object):
 		return None
 		
 	def getEquipment(self, id):
-		for equipment in self.equipment:
-			if equipment['id'] == id:
+		for equipment in self.equipment:			
+			if equipment['id'] == id:				
 				return equipment
 		return None
 		

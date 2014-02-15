@@ -22,8 +22,29 @@ def feed(request):
 	
 def roll_bless(request):
 	usr = request.user
-	return luckycat.rollBless(usr)
+	isUseGem = (request.GET['use_gem'] == 'yes')
+	return luckycat.rollBless(usr, isUseGem)
 	
 def beckon_reset(request):
 	usr = request.user
 	return luckycat.beckon_reset(usr)
+	
+	
+def agree_request(request):
+	
+	usr = request.user
+	friendid = request.GET['friendid']	
+	return luckycat.agreeFeed(usr, int(friendid))
+	
+def disagree_request(request):
+	
+	usr = request.user
+	friendid = request.GET['friendid']
+	return luckycat.disagreeFeed(usr, int(friendid))
+	
+	
+def cancel_request(request):
+	
+	usr = request.user
+	friendid = request.GET['friendid']
+	return luckycat.cancelRequest(usr, int(friendid))

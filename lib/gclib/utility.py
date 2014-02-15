@@ -121,7 +121,7 @@ def is_expire(daytime, t):
 	now = currentTime()
 	tm = time.gmtime(now)	
 	exipre_time = calendar.timegm([tm.tm_year, tm.tm_mon, tm.tm_mday, daytime / 3600, (daytime % 3600) / 60, daytime % 60])
-	return exipre_time < t
+	return exipre_time > t
 	
 def is_same_day(t1, t2):
 	if not t1:
