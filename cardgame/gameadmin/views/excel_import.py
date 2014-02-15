@@ -2084,3 +2084,38 @@ class excel_import:
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('practice_level_file')
 			
+			
+	@staticmethod
+	def slotmachine_import(request):
+		if request.method == 'POST':
+			slotmachine_file = request.FILES.get('slotmachine_file')
+			if not slotmachine_file:
+				return HttpResponse('老虎机xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, slotmachine_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = {'rate':[], 'price':[]}
+			
+			for rownum in range(2, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				benefit = float(row[0])
+				probability = int(row[1])
+				conf['rate'].append({'benefit': benefit, 'probability': probability})
+					
+			sheet = wb.sheet_by_index(1)
+			
+			for rownum in range(1, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				num = int(row[0])
+				price = int(row[1])
+				
+				while len(conf['price']) < num:
+					conf['price'].append(0)
+					
+				conf['price'][num - 1] = price
+			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('slotmachine_import')

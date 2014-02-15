@@ -29,6 +29,7 @@ import game.views.almanac
 import game.views.medal
 import game.views.mall
 import game.views.practice
+import game.views.slotmachine
 
 
 viewsmap = {
@@ -49,7 +50,8 @@ viewsmap = {
 	'almanac': sys.modules['game.views.almanac'],
 	'medal': sys.modules['game.views.medal'],
 	'mall' : sys.modules['game.views.mall'],
-	'practice' : sys.modules['game.views.practice']
+	'practice' : sys.modules['game.views.practice'],
+	'slotmachine' : sys.modules['game.views.slotmachine']
 }
 
 def index(request):
@@ -124,6 +126,7 @@ def info(request):
 	info['mall_price_md5'] = conf.getClientConfigMd5('mall_price')
 	info['practice_property_md5'] = conf.getClientConfigMd5('practice_property')
 	info['practice_level_md5'] = conf.getClientConfigMd5('practice_level')
+	info['slotmachine_md5'] = conf.getClientConfigMd5('slotmachine_md5')
 	return HttpResponse(json.dumps({'info':info}))
 
 

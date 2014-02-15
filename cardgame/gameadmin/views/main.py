@@ -158,6 +158,9 @@ def practice_property(request):
 def practice_level(request):
 	return generalConfigRequestProcess(request, 'practice_level')
 	
+def slotmachine(request):
+	return generalConfigRequestProcess(request, 'slotmachine')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -299,3 +302,6 @@ def practice_level_import(request):
 	
 def practice_property_import(request):
 	return excel_import.practice_property_import(request)
+	
+def slotmachine_import(request):
+	return excel_import.slotmachine_import(request)

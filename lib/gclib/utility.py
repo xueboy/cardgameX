@@ -143,6 +143,9 @@ def str_to_time(s):
 	
 def str_to_day_time(s):
 	return datetime.datetime.strptime(s, '%H:%M:%S').time()
+
+def str_to_date_time(s):
+	return datetime.datetime.strptime(s, '%Y-%m-%d').time()
 	
 def time_to_str(t):
 	return datetime.strftime(t, '%Y-%m-%d %H:%M:%S')

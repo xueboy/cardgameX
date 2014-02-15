@@ -97,6 +97,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'practice_level':
 			return conf
+		if confname == 'slotmachine':
+			return conf
 		return None
 	
 	

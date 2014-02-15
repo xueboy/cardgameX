@@ -24,6 +24,7 @@ from game.routine.medal import medal
 from game.routine.pet import pet
 from game.routine.practice import practice
 from game.routine.pvp import pvp
+from game.routine.slotmachine import slotmachine
 
 
 
@@ -75,6 +76,7 @@ class user(gcuser):
 		self.tower = tower.make()
 		self.medal = medal.make()
 		self.practice = practice.make()
+		self.slotmachine = slotmachine.make()
 		
 	
 	def init(self, acc = None):
@@ -134,6 +136,7 @@ class user(gcuser):
 		data['tower'] = self.tower
 		data['medal'] = self.medal
 		data['practice'] = self.practice
+		data['slotmachine'] = self.slotmachine
 		return data
 		
 	def getClientData(self):
@@ -171,6 +174,7 @@ class user(gcuser):
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)
 		data['practice'] = self.practice
+		data['slotmachine'] = self.slotmachine
 		return data
 		
 	def getNtInfoData(self):
@@ -300,6 +304,7 @@ class user(gcuser):
 		self.tower = data['tower']
 		self.medal = data['medal']
 		self.practice = data['practice']
+		self.slotmachine = data['slotmachine']
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
