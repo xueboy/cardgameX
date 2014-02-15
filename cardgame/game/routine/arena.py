@@ -6,6 +6,7 @@ from gclib.json import json
 from gclib.utility import is_same_day, currentTime, randint
 from cardgame.settings import ARENE_SERVER
 from game.utility.config import config
+from game.routine.drop import drop
 #from game.models.user import user
 
 
@@ -63,38 +64,11 @@ class arena:
 		gameConf = config.getConfig('game')
 		arenaLootInfo = arenaLootConf[usr.level - 1]
 		del usr.arena['challenge_roleid']
-		card = None
-		gold = 0
-		skl = None
-		rd = randint()
-		rd = rd - gameConf['arena_loot_gold_probability']
-		if rd <= 0:
-			gold = arenaLootInfo['glod']
-		else:
-			rd = rd - gameConf['arena_loot_pet_probability']
-			if rd <= 0:
-				card = {'id':arenaLootInfo['cardid'], 'level':arenaLootInfo['cardlevel']}				
-			else:
-				skl = {'id':arenaLootInfo['skillid'], 'level':arenaLootInfo['skilllevel']}				
-		
-		if gold or card or skl:			
-			usr.arena['loot'] = {}
-			if gold:
-				usr.arena['loot']['glod'] = gold
-			if card:
-				usr.arena['loot']['card'] = card
-			if skl:
-				usr.arena['loot']['skill'] = skl
+
+		usr.arena['loot'] = drop.roll(arenaLootConf[usr.level - 1]['drop'], {})
 
 		data = {}
-		
-		
-		if gold:
-			data['gold'] = usr.gold
-		if card:
-			data['add_card'] = card			
-		if skl:
-			data['add_skill'] = skl
+		data['loot'] = usr.arena['loot']	
 		data['defence'] = defenceRole.pvpProperty()
 		data['arena_times'] = usr.arena['times']
 		
@@ -124,25 +98,8 @@ class arena:
 			
 			data = {}
 			if usr.arena.has_key('loot'):
-				if usr.arena.has_key('gold'):				
-					usr.gold = usr.gold + arenaLootInfo['glod']
-				if usr.arena.has_key('card'):					
-						inv = usr.getInventory()
-						card =inv.addCard( usr.arena['loot']['card']['id'], usr.arena['loot']['card']['level'])
-				if usr.arena.has_key('skill'):
-						inv = usr.getInventory()
-						skl = inv.addSkill( usr.arena['loot']['card']['id'], usr.arena['loot']['card']['level'])
-
-			
-				if gold:
-					data['gold'] = usr.gold
-
-				if card:
-					data['add_card'] = card
-					inv.save()
-				if skl:
-					data['add_skill'] = skl
-					inv.save()
+				drop.do_award(usr, usr.arena['loot'], data)
+				data = drop.makeData(data, {})
 			usr.save()
 			return data			
 		return {'msg':'arena_ladder_have_not_chellenge'}
