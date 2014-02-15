@@ -57,8 +57,49 @@ class arena:
 		
 			
 		usr.arena['challenge_roleid'] = defenceRole.roleid
+		
+		
+		arenaLootConf = config.getConfig('arena_loot')
+		gameConf = config.getConfig('game')
+		arenaLootInfo = arenaLootConf[usr.level - 1]
+		del usr.arena['challenge_roleid']
+		card = None
+		gold = 0
+		skl = None
+		rd = randint()
+		rd = rd - gameConf['arena_loot_gold_probability']
+		if rd <= 0:
+			gold = arenaLootInfo['glod']
+		else:
+			rd = rd - gameConf['arena_loot_pet_probability']
+			if rd <= 0:
+				card = {'id':arenaLootInfo['cardid'], 'level':arenaLootInfo['cardlevel']}				
+			else:
+				skl = {'id':arenaLootInfo['skillid'], 'level':arenaLootConf['skilllevel']}				
+		
+		if gold or card or skl:			
+			usr.arena['loot'] = {}
+			if gold:
+				usr.arena['loot']['glod'] = gold
+			if card:
+				usr.arena['loot']['card'] = card
+			if skl:
+				usr.arena['loot']['skill'] = skl
+
+		data = {}
+		
+		
+		if gold:
+			data['gold'] = usr.gold
+		if card:
+			data['add_card'] = card			
+		if skl:
+			data['add_skill'] = skl
+		data['defence'] = defenceRole.pvpProperty()
+		data['arena_times'] = usr.arena['times']
+		
 		usr.save()
-		return {'defence':defenceRole.pvpProperty(), 'arena_time':usr.arena['times']}
+		return data
 
 	@staticmethod
 	def arena_update(usr):		
@@ -66,3 +107,42 @@ class arena:
 			usr.arena['times'] = 0
 		usr.arena['last_update_time'] = currentTime()
 		
+
+	@staticmethod
+	def defeate(usr):
+		res = None
+		if usr.arena.has_key('challenge_roleid'):
+			res = curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']})
+		
+			arenaLootConf = config.getConfig('arena_loot')
+			gameConf = config.getConfig('game')
+			arenaLootInfo = arenaLootConf[usr.level - 1]
+			del usr.arena['challenge_roleid']
+			card = None
+			gold = 0
+			skl = None
+			
+			data = {}
+			if usr.arena.has_key('loot'):
+				if usr.arena.has_key('gold'):				
+					usr.gold = usr.gold + arenaLootInfo['glod']
+				if usr.arena.has_key('card'):					
+						inv = usr.getInventory()
+						card =inv.addCard( usr.arena['loot']['card']['id'], usr.arena['loot']['card']['level'])
+				if usr.arena.has_key('skill'):
+						inv = usr.getInventory()
+						skl = inv.addSkill( usr.arena['loot']['card']['id'], usr.arena['loot']['card']['level'])
+
+			
+				if gold:
+					data['gold'] = usr.gold
+
+				if card:
+					data['add_card'] = card
+					inv.save()
+				if skl:
+					data['add_skill'] = skl
+					inv.save()
+			usr.save()
+			return data			
+		return {'msg':'arena_ladder_have_not_chellenge'}

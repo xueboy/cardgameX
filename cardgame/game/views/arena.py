@@ -28,45 +28,7 @@ def challenge(request):
 
 def defeate(request):
 	usr = request.user
-	res = None
-	if usr.arena.has_key('challenge_roleid'):
-		res = curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']})
-		res = json.loads(res)
-		if isinstance(res, list):
-			arenaLootConf = config.getConfig('arena_loot')
-			gameConf = config.getConfig('game')
-			arenaLootInfo = arenaLootConf[usr.level - 1]
-			del usr.arena['challenge_roleid']
-			card = None
-			gold = 0
-			skl = None
-			rd = randint()
-			rd = rd - gameConf['arena_loot_gold_probability']
-			if rd <= 0:
-				usr.gold = usr.gold + arenaLootInfo['glod']
-			else:
-				rd = rd - gameConf['arena_loot_pet_probability']
-				if rd <= 0:
-					inv = usr.getInventory()
-					card =inv.addCard(arenaLootInfo['cardid'], arenaLootInfo['cardlevel'])
-				else:
-					inv = usr.getInventory()
-					skl = inv.addSkill(arenaLootInfo['skillid'], arenaLootConf['skilllevel'])
-
-			data = {}
-			if gold:
-				data['gold'] = usr.gold
-
-			if card:
-				data['add_card'] = card
-				inv.save()
-			if skl:
-				data['add_skill'] = skl
-				inv.save()
-			usr.save()
-			return data
-		return res
-	return {'msg':'arena_ladder_have_not_chellenge'}
+	return arena.defeate(usr)
 
 def convert(request):
 	mediumCount = request.GET['medium_count']
