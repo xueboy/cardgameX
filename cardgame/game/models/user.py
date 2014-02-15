@@ -61,7 +61,7 @@ class user(gcuser):
 		self.fatigue_last_time = 0		
 		self.yell_hear_id = 0
 		self.extend_columns.append({'name' :'avatar_id', 'value':''})
-		self.luckycat = {}
+		self.luckycat = luckycat.make()
 		self.educate = educate.make()
 		self.signin = signin.make()
 		self.levelup = levelup.make()
@@ -549,9 +549,14 @@ class user(gcuser):
 				ppData = pvp.mergePvpProperty(ppData, ppAlmanacData)
 				ppData = pvp.mergePvpProperty(ppData, ppMedalData)
 				ppData = pvp.mergePvpProperty(ppData, ppPracticeData)
+				ppData['critical_lavel'] = self.practice['critical_lavel']
+				ppData['tenacity_level'] = self.practice['tenacity_level']
+				ppData['block_level'] = self.practice['block_level']
+				ppData['wreck_level'] = self.practice['wreck_level']
 				data.append(ppData)
 			else:
 				data.append({})
+				
 		
 		return data
 		
