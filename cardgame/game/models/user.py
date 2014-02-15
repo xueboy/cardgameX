@@ -175,7 +175,7 @@ class user(gcuser):
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)
 		data['practice'] = self.practice
-		data['slotmachine'] = self.slotmachine
+		data['slotmachine'] = slotmachine.getClientData(self)
 		return data
 		
 	def getNtInfoData(self):

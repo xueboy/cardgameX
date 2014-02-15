@@ -62,7 +62,9 @@ class slotmachine:
 				
 		
 		
-		
+	@staticmethod
+	def getClientData(usr):
+		return {'times':len(usr.slotmachine['play_time'])}
 				
 				
 		
