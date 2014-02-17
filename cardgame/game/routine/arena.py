@@ -55,10 +55,8 @@ class arena:
 				
 		usr.arena['times'] = usr.arena['times'] + 1
 		usr.arena['last_chellage_time'] = currentTime()
-		
-			
-		usr.arena['challenge_roleid'] = defenceRole.roleid
-		
+					
+		usr.arena['challenge_roleid'] = defenceRole.roleid		
 		
 		arenaLootConf = config.getConfig('arena_loot')
 		gameConf = config.getConfig('game')
@@ -67,6 +65,7 @@ class arena:
 		usr.arena['loot'] = drop.roll(arenaLootConf[usr.level - 1]['drop'], {})		
 
 		data = {}
+		data['sp'] = usr.sp
 		data['loot'] = drop.makeAwardData(usr.arena['loot'], {})	
 		data['defence'] = defenceRole.pvpProperty()
 		data['arena_times'] = usr.arena['times']

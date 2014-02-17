@@ -56,8 +56,11 @@ class dungeon(object):
 		return data
 		
 	def load(self, roleid, data):
-		object.load(self, roleid, data)		
-		self.normal_recored = data['normal_recored']
+		object.load(self, roleid, data)
+		if isinstance(data['normal_recored'], list):
+			self.normal_recored = {}
+		else:
+			self.normal_recored = data['normal_recored']
 		self.last_dungeon = data['last_dungeon']
 		self.reinforced_list = data['reinforced_list']
 		self.last_reinforce_time = data['last_reinforce_time']
