@@ -311,7 +311,9 @@ class drop:
 			skillid = dropItem['id']
 			chipcnt = inv.addSkillChip(skillid, dropItem['count'])
 			if chipcnt > 0:
-				awd['update_skill_chip_dic'] = chipcnt
+				if not awd.has_key('update_skill_chip_dic'):
+					awd['update_skill_chip_dic'] = {}
+				awd['update_skill_chip_dic'][skillid] = chipcnt
 			save_inv = True
 		elif dropItem['type']	== 'eqchip':
 			if not inv:
@@ -319,7 +321,9 @@ class drop:
 			equipmentid = dropItem['id']
 			chipcnt = inv.addEquipmentChip(equipmentid, dropItem['count'])
 			if chipcnt > 0:
-				awd['update_equipment_chip_dic'] = chipcnt
+				if not awd.has_key('update_equipment_chip_dic'):
+					awd['update_equipment_chip_dic'] = {}
+				awd['update_equipment_chip_dic'][equipmentid] = chipcnt
 			save_inv = True
 		elif dropItem['type'] == 'cardchip':
 			if not inv:
@@ -327,7 +331,9 @@ class drop:
 			cardid = dropItem['id']
 			chipcnt = inv.addCardChip(cardid, dropItem['count'])
 			if chipcnt > 0:
-				awd['update_card_chip_dic'] = chipcnt			
+				if not awd.has_key('update_card_chip_dic'):
+					awd['update_card_chip_dic'] = {}
+				awd['update_card_chip_dic'][cardid] = chipcnt			
 			save_inv = True
 		if save_user:
 			usr.save()
@@ -422,13 +428,13 @@ class drop:
 			for it in awd['update_item_array']:
 				dropData.append({'type':4, 'count':it['count'], 'insId':it['id'], 'id':it['itemid']})	
 		if awd.has_key('update_skill_chip_dic'):
-			for (chipid, chipcount) in awd['update_skill_chip_dic']:
+			for (chipid, chipcount) in awd['update_skill_chip_dic'].items():
 				dropData.append({'type':13, 'count' : chipcount, 'insId': '', 'id':chipid})
 		if awd.has_key('update_equipment_chip_dic'):
-			for (chipid, chipcount) in awd['update_equipment_chip_dic']:
+			for (chipid, chipcount) in awd['update_equipment_chip_dic'].items():
 				dropData.append({'type':14, 'count' : chipcount, 'insId':'', 'id':chipid})
 		if awd.has_key('update_card_chip_dic'):
-			for (chipid, chipcount) in awd['update_card_chip_dic']:
+			for (chipid, chipcount) in awd['update_card_chip_dic'].items():
 				dropData.append({'type':16, 'count': chipcount, 'insId' : '', 'id': chipid})		
 			
 		retData = {}		

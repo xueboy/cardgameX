@@ -244,7 +244,7 @@ class quest(object):
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]		
 		
-		if (not quest.isFinish(questid, q)) or (questInfo['finishType'] == 'talk_npc_id'):
+		if (not quest.isFinish(questid, q)) and (questInfo['finishType'] != 'talk_npc_id'):
 			return {'msg':'quest_not_finish'}
 		q['count'] = q['count'] + 1
 		

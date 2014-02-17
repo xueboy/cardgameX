@@ -62,14 +62,12 @@ class arena:
 		
 		arenaLootConf = config.getConfig('arena_loot')
 		gameConf = config.getConfig('game')
-		arenaLootInfo = arenaLootConf[usr.level - 1]
-		del usr.arena['challenge_roleid']
+		arenaLootInfo = arenaLootConf[usr.level - 1]		
 
-		usr.arena['loot'] = drop.roll(arenaLootConf[usr.level - 1]['drop'], {})
-		usr.arena['loot'] = drop.makeAwardData(usr.arena['loot'], {})
+		usr.arena['loot'] = drop.roll(arenaLootConf[usr.level - 1]['drop'], {})		
 
 		data = {}
-		data['loot'] = usr.arena['loot']	
+		data['loot'] = drop.makeAwardData(usr.arena['loot'], {})	
 		data['defence'] = defenceRole.pvpProperty()
 		data['arena_times'] = usr.arena['times']
 		
@@ -86,7 +84,9 @@ class arena:
 	@staticmethod
 	def defeate(usr):
 		res = None
+		print usr.arena		
 		if usr.arena.has_key('challenge_roleid'):
+			
 			res = curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']})
 		
 			arenaLootConf = config.getConfig('arena_loot')
@@ -99,7 +99,7 @@ class arena:
 			
 			data = {}
 			if usr.arena.has_key('loot'):
-				drop.do_award(usr, usr.arena['loot'], data)
+				data = drop.do_award(usr, usr.arena['loot'], data)
 				data = drop.makeData(data, {})
 			usr.save()
 			return data			

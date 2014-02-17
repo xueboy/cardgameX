@@ -54,14 +54,17 @@ def enter(request):
 	#	leader = rei_inv.getCard(leaderid)
 	#	dun.reinforced_list.append(reinforceid)	
 	
+	battleid = dun.curren_field['battleid']
+	fieldid = dun.curren_field['fieldid']
+	
 	for battleConf in dunConf:
-		if battleConf['battleId'] == dun.curren_field['battleid']:
+		if battleConf['battleId'] == battleid:
 			for fieldConf in battleConf['field']:
-				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+				if fieldConf['fieldId'] == fieldid:
 					waves = dun.arrangeWaves(fieldConf)
 					staminaCost = fieldConf['stamina']
 					if usr.stamina < staminaCost:
-						return {'msg':'not_enught_stamina'}
+						return {'msg':'stamina_not_enough'}
 					usr.stamina = usr.stamina - staminaCost												
 		#			goldCast = 0
 		#			if leader != None:
@@ -73,7 +76,10 @@ def enter(request):
 		#				usr.gold = usr.gold - goldCost
 		#				reinforce.gold = reinforce.gold + goldCast
 		#				reinforce.save()
-					cnt = dun.dailyRecored(dun.curren_field['battleid'], dun.curren_field['fieldid'])
+					
+					
+					dun.normalRecordEnter(battleid, fieldid)
+					cnt = dun.dailyRecored(battleid, fieldid)
 					gemCost = 0
 					if fieldConf['dayCount'] < cnt:
 						cnt = cnt - fieldConf['dayCount']
@@ -98,7 +104,9 @@ def enter(request):
 			
 def end(request):
 	battleId = request.GET['battle_id']
-	fieldId = request.GET['field_id']	
+	fieldId = request.GET['field_id']
+	star = request.GET['star']
+	star = int(star)
 	usr = request.user
 	dun = usr.getDungeon()	
 	dunConf = config.getConfig('dungeon')
@@ -107,9 +115,9 @@ def end(request):
 		return {'msg':'dungeon_finished'}
 	
 	for battleConf in dunConf:
-		if battleConf['battleId'] == dun.curren_field['battleid']:
+		if battleConf['battleId'] == battleId:
 			for fieldConf in battleConf['field']:
-				if fieldConf['fieldId'] == dun.curren_field['fieldid']:
+				if fieldConf['fieldId'] == fieldId:
 					exp = fieldConf['exp']					
 					usr.gainExp(exp)
 					data = {}
@@ -125,6 +133,7 @@ def end(request):
 					#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
 					#	dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}
+					dun.normalRecordEnd(battleId, fieldId, star)
 					#data['last_dungeon'] = dun.last_dungeon
 					qt = usr.getQuest()
 					qt.updateDungeonCountQuest()
@@ -134,3 +143,11 @@ def end(request):
 	return {'msg':'field_not_exist'}
 		
 		
+def sweep(request):
+	battleId = request.GET['battle_id']
+	fieldId = request.GET['field_id']
+	cnt = int(request.GET['count'])
+	
+	usr = request.user
+	dun = usr.getDungeon()
+	return dun.sweep(battleId, fieldId, cnt)

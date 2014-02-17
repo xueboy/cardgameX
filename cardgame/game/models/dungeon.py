@@ -7,6 +7,7 @@ from gclib.DBConnection import DBConnection
 from game.utility.config import config
 from gclib.utility import randint, currentTime, hit, is_same_day
 from game.routine.drop import drop
+from game.routine.vip import vip
 import time
 import random
 
@@ -18,7 +19,7 @@ class dungeon(object):
 	def __init__(self):
 		object.__init__(self)
 		self.roleid = 0
-		self.normal_recored = []		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
+		self.normal_recored = {}		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
 		self.last_dungeon = {'battleid':'', 'fieldid':''}			#{battleid:'', fieldid:''}  last available dungeon
 		self.reinforced_list = []		#[roleid]	list
 		self.last_reinforce_time = 0
@@ -73,6 +74,7 @@ class dungeon(object):
 		data['last_dungeon'] = self.last_dungeon
 		#data['fatigue'] = self.fatigue
 		data['daily_recored'] = self.daily_recored
+		data['normal_recored'] = self.normal_recored
 		#data['curren_field_waves'] = self.curren_field_waves
 		#data['allow_list'] = self.allow_list
 		return data
@@ -84,13 +86,6 @@ class dungeon(object):
 		if tmLast.tm_year != tmNow.tm_year or tmLast.tm_mon != tmNow.tm_mon or tmLast.tm_mday != tmNow.tm_mday:
 			self.reinforced_list = []
 			last_reinforce_time = currentTime()
-	
-	def allowEnter(self, battleid, fieldid):
-		if not self.allow_list.has_key(battleid):
-			self.allow_list[battleid] = []
-		if fieldid not in self.allow_list[battleid]:
-			self.allow_list[battleid].append(fieldid)
-			self.save()
 	
 	def setLastDungeon(self, battleid, fieldid):
 		self.last_dungeon['battleid'] = battleid
@@ -106,11 +101,11 @@ class dungeon(object):
 		
 		for battle in conf:
 			for field in battle['field']:
-				if battle['battleId'] == battleid and field['fieldId'] == fieldid:
-					return True
+				#if battle['battleId'] == battleid and field['fieldId'] == fieldid:
+				#	return True
 				if battle['battleId'] == self.last_dungeon['battleid'] and field['fieldId'] == self.last_dungeon['fieldid']:
-					return False
-		return False	
+					return True
+		return False
 		#if not self.allow_list.has_key(battleid):
 		#	return False
 		#if fieldid not in self.allow_list[battleid]:
@@ -137,21 +132,38 @@ class dungeon(object):
 			data.append(vol.getFriendData())
 		return data
 		
-	def dailyRecored(self, dungeonid, fieldid):
+	def dailyRecored(self, battleid, fieldid):
 		
 		if not is_same_day(self.daily_recored_last_time, currentTime()):
 			self.daily_recored = {}
 			self.daily_recored_last_time = currentTime()
 			self.fatigue = 0
 		
-		if not self.daily_recored.has_key(dungeonid):
-			self.daily_recored[dungeonid] = {}
-		if not self.daily_recored[dungeonid].has_key(fieldid):
-			self.daily_recored[dungeonid][fieldid] = 0
-		self.daily_recored[dungeonid][fieldid] = self.daily_recored[dungeonid][fieldid] + 1
+		if not self.daily_recored.has_key(battleid):
+			self.daily_recored[battleid] = {}
+		if not self.daily_recored[battleid].has_key(fieldid):
+			self.daily_recored[battleid][fieldid] = 0
+		self.daily_recored[battleid][fieldid] = self.daily_recored[battleid][fieldid] + 1
 		self.daily_recored_last_time = currentTime()
-		return self.daily_recored[dungeonid][fieldid]
+		return self.daily_recored[battleid][fieldid]
+	
+	def normalRecordEnter(self, battleid, fieldid):
+		if not self.normal_recored.has_key(battleid):
+			self.normal_recored[battleid] = {}
+		if not self.normal_recored[battleid].has_key(fieldid):
+			self.normal_recored[battleid][fieldid] = dungeon.make_field_info()			
 		
+	@staticmethod
+	def make_field_info():
+		return {'finish':False, 'star':0}
+	
+	def normalRecordEnd(self, battleid, fieldid, star):		
+		print self.normal_recored
+		self.normal_recored[battleid][fieldid]['finish'] = True
+		if self.normal_recored[battleid][fieldid]['star'] < star:
+			self.normal_recored[battleid][fieldid]['star'] = star
+				
+	
 	def getFieldConf(self, battleid, fieldid):
 		for battle in conf:
 			if battle['battleId'] == dungeonid:
@@ -233,7 +245,7 @@ class dungeon(object):
 		for wave in waves:
 			for monsterDrop in waves[wave]:
 				dropData = monsterDrop['drop']				
-				drop.do_award(usr, dropData, awd)				
+				awd = drop.do_award(usr, dropData, awd)				
 					
 		self.curren_field_waves = []
 		usr.save()
@@ -265,3 +277,65 @@ class dungeon(object):
 		usr.notify['dungeon_allow']['battleid'] = battleid
 		usr.notify['dungeon_allow']['fieldid'] = fieldid		
 		usr.save()
+		
+		
+	def sweep(self, battleid, fieldid, cnt):
+		
+		if not self.normal_recored.has_key(battleid):
+			return {'msg' : 'dungeon_not_finished'}
+		if not self.normal_recored[battleid].has_key(fieldid):
+			return {'msg' : 'dungeon_not_finished'}
+		
+		usr = self.user
+		gameConf = config.getConfig('game')
+		if (not vip.canDungeonSweep(usr)) and (gameConf['dungeon_vip0_sweep_star'] > self.normal_recored[battleid][fieldid]):
+			return {'msg':'dungeon_sweep_not_allowed'}
+		self.curren_field = {'battleid':'', 'fieldid':''}	
+		dunConf = config.getConfig('dungeon')
+		resultData = {}
+		resultData['sweep'] = []
+		for battleConf in dunConf:
+			if battleConf['battleId'] == battleid:
+				for fieldConf in battleConf['field']:
+					if fieldConf['fieldId'] == fieldid:					
+						
+						staminaCost = fieldConf['stamina']
+						if usr.stamina < staminaCost:
+							return {'msg':'stamina_not_enough'}
+						if fieldConf['dayCount'] == self.daily_recored[battleid][fieldid]:
+							return {'msg':'dungeon_max_count'}
+						if fieldConf['dayCount'] < (self.daily_recored[battleid][fieldid] + cnt):
+							cnt = fieldConf['dayCount'] - self.daily_recored[battleid][fieldid]							
+						qt = usr.getQuest()
+						for i in range(cnt):
+							waves = self.arrangeWaves(fieldConf)
+							staminaCost = fieldConf['stamina']
+							if usr.stamina < staminaCost:
+								break
+							usr.stamina = usr.stamina - staminaCost
+							self.daily_recored[battleid][fieldid] = self.daily_recored[battleid][fieldid] + 1
+							waves = self.arrangeWaves(fieldConf)
+							exp = fieldConf['exp']					
+							usr.gainExp(exp)
+							data = {}
+							if fieldConf['dropid']:
+								awd = {}					
+								awd = drop.open(usr, fieldConf['dropid'], awd)					
+								data = self.award()
+								data = drop.makeData(awd, data)
+						
+							data['add_exp'] = exp							
+							
+							resultData['sweep'].append(data)
+							#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
+							#	dun.nextField()
+												
+							#data['last_dungeon'] = dun.last_dungeon							
+							qt.updateDungeonCountQuest()
+							qt.updateFinishDungeonQuest(battleid, fieldid)
+							
+		resultData['stamina'] = usr.stamina
+		resultData['exp'] = usr.exp
+		resultData['level'] = usr.level
+		resultData['gold'] = usr.gold
+		return resultData

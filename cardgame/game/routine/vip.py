@@ -57,4 +57,6 @@ class vip:
 	def canStrengthEquipmentCritical(usr):
 		return vip.value(usr, 'strength_equipment_critical') == 1
 	
-		
+	@staticmethod
+	def canDungeonSweep(usr):
+		return vip.value(usr, 'dungeon_sweep') == 1
