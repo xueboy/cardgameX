@@ -160,7 +160,7 @@ class user(gcuser):
 			#usrData['train_prd'] = self.train_prd		
 		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown - (now - self.equipment_strength_last_time)
 		if usrData['equipment_strength_cooldown'] < 0:
-			usrData[equipment_strength_cooldown] = 0
+			usrData['equipment_strength_cooldown'] = 0
 		usrData['fatigue_last_time'] = self.fatigue_last_time		
 		usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
