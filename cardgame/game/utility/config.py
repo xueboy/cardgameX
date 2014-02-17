@@ -120,6 +120,7 @@ class config(gcconfig):
 		del data['medal_holder_appear_member_position']
 		del data['medal_grab_probablity']		
 		del data['scene_player_count']
+		del data['equipment_strength_critical_probability']
 		return data
 	
 			
