@@ -335,6 +335,59 @@ class drop:
 			inv.save()
 		return None
 		
+	@staticmethod
+	def makeAwardData(awd, data, keyname = 'award'):
+		dropData = []
+		if awd.has_key('st'):
+			dropData.append({'type':11, 'count':awd['st']})
+		if awd.has_key('gem'):
+			dropData.append({'type':6, 'count':awd['gem']})
+		if awd.has_key('gold'):
+			dropData.append({'type':10, 'count':awd['gold']})
+		if awd.has_key('sp'):
+			dropData.append({'type':8, 'count':awd['sp']})	  	
+		if awd.has_key('exp'):
+			dropData.append({'type':9, 'count':awd['exp']})
+			dropData.append({'type':12, 'count':awd['level']})
+		if awd.has_key('add_stone_array'):
+			for st in awd['add_stone_array']:
+				dropData.append({'type':5, 'count':st['count'], 'insId':'', 'id':st['id']})	  				
+		if awd.has_key('add_equipment_array'):
+			for eq in awd['add_equipment_array']:
+				dropData.append({'type':3, 'count':eq['count'], 'insId':'', 'id':eq['id']})
+		if awd.has_key('add_card_array'):		
+			for card in awd['add_card_array']:
+				dropData.append({'type':1, 'count':card['count'], 'insId':'', 'id':card['id']})			
+		if awd.has_key('add_skill_array'):
+			for sk in awd['add_skill_array']:
+				dropData.append({'type':2, 'count':sk['count'], 'insId':'', 'id':sk['id']})
+		if awd.has_key('add_item_array'):
+			for it in awd['add_item_array']:
+				dropData.append({'type':4, 'count':it['count'], 'insId':'', 'id':it['id']})
+		if awd.has_key('update_item_array'):
+			for it in awd['update_item_array']:
+				dropData.append({'type':4, 'count':it['count'], 'insId':'', 'id':it['id']})	
+		if awd.has_key('update_skill_chip_dic'):
+			for (chipid, chipcount) in awd['update_skill_chip_dic']:
+				dropData.append({'type':13, 'count' : chipcount, 'insId': '', 'id':chipid})
+		if awd.has_key('update_equipment_chip_dic'):
+			for (chipid, chipcount) in awd['update_equipment_chip_dic']:
+				dropData.append({'type':14, 'count' : chipcount, 'insId':'', 'id':chipid})
+		if awd.has_key('update_card_chip_dic'):
+			for (chipid, chipcount) in awd['update_card_chip_dic']:
+				dropData.append({'type':16, 'count': chipcount, 'insId' : '', 'id': chipid})		
+			
+		retData = {}		
+		retData[keyname] = dropData
+		
+		if data.has_key(keyname):			
+			dp = data[keyname]
+			retData[keyname].extend(dp)
+			del data[keyname]
+		
+		retData.update(data)
+		return retData
+		
 		
 	@staticmethod
 	def makeData(awd, data, kayname = 'drop'):		
