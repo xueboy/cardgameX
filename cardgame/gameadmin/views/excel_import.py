@@ -1334,21 +1334,16 @@ class excel_import:
 				level = int(row[0])
 				gold = int(row[1])
 				exp = int(row[2])
-				skillid = row[3]
-				skilllevel = int(row[4])
-				cardid = row[5]
-				cardlevel = int(row[6])				
+				drop = row[3]
+				skillid = row[7]		
 				
 				while len(conf) < level:
 					conf.append({})
 					
 				arenaLootConf = {}
 				arenaLootConf['gold'] = gold
-				arenaLootConf['exp'] = exp
-				arenaLootConf['skillid'] = skillid
-				arenaLootConf['skilllevel'] = skilllevel
-				arenaLootConf['cardid'] = cardid
-				arenaLootConf['cardlevel'] = cardlevel				
+				arenaLootConf['exp'] = exp				
+				arenaLootConf['drop'] = drop				
 				conf[level - 1] = arenaLootConf
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))			

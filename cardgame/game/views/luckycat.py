@@ -10,6 +10,10 @@ def beckon(request):
 	useGem = (request.GET['use_gem'] == 'yes')	
 	return luckycat.beckon(request.user, useGem)
 	
+def beckon_clickonce(request):
+	usr = request.user
+	return luckycat.beckon_clickonce(usr)
+	
 def feed(request):
 	targetid = request.GET['target']
 	target = None
