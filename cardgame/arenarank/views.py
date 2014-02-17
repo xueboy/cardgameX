@@ -56,6 +56,12 @@ def score(request):
 	ld = ladder.instance()
 	return HttpResponse(json.dumps(ld.score(roleid)))
 	
+def award_score(request):
+	roleid = request.REQUEST['roleid']
+	awardScore = request.REQUEST['award_score']
+	ld = ladder.instance()
+	return HttpResponse(json.dumps(ld.award_score(roleid, int(awardScore))))
+	
 def tower_stand(request):
 	roleid = request.REQUEST['roleid']
 	level = request.REQUEST['level']

@@ -61,3 +61,9 @@ def convert(request):
 def score(request):
 	usr = request.user	
 	return arena.score(usr.roleid)
+
+def rank_award(request):
+	usr = request.user
+	rank = request.GET['rank_award']
+	#rank = int(rank)
+	return arena.rank_award(usr, rank)

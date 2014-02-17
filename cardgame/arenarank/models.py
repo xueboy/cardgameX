@@ -189,7 +189,19 @@ class ladder(facility):
 			return {'score':item['score']}
 		else:
 			return {'msg':'arena_ladder_not_stand'}
-				
+	
+	def award_score(self, roleid, awardScore):
+		if roleid in self.rank:
+			position = self.rank.index(roleid)
+			item = self.update(position, roleid, currentTime())			
+			if not item:
+				return {'msg':'arena_ladder_not_stand'}
+			item['score'] = item['score'] + awardScore
+			self.save()
+			return {'score':item['score']}
+		else:
+			return {'msg':'arena_ladder_not_stand'}
+		
 				
 class tower_ladder(facility):
 	def __init__(self):

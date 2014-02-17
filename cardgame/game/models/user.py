@@ -165,6 +165,7 @@ class user(gcuser):
 		usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
 		usrData['arena_time'] = self.arena['times']
+		usrData['arena_award'] = self.arena['rank_award']
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
@@ -296,7 +297,7 @@ class user(gcuser):
 		self.garcha = data['garcha']
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
-		self.arena = data['arena']
+		self.arena.update(data['arena'])
 		self.avatar = data['avatar']
 		self.signin = data['signin']
 		self.levelup = data['levelup']
@@ -567,5 +568,5 @@ class user(gcuser):
 		
 		return data
 		
-	def notify_gold(self, gold):
-		self.notify['gold'] = gold
+	def notify_gold(self):
+		self.notify['gold'] = self.gold

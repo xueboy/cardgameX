@@ -33,7 +33,11 @@ class arena:
 
 	@staticmethod
 	def make():
-		return {'times':0, 'last_chellage_time':0, 'last_update_time':0}
+		return {'times':0, 'last_chellage_time':0, 'last_update_time':0, 'rank_award':{}}
+			
+	@staticmethod
+	def award_score(roleid, awardScore):
+		return json.loads(curl.url(ARENE_SERVER +  '/arena/award_score/', None, {'roleid':roleid, 'award_score': awardScore}))
 
 	@staticmethod
 	def challenge(usr, defenceRoleid):
@@ -66,7 +70,7 @@ class arena:
 
 		data = {}
 		data['sp'] = usr.sp
-		data['loot'] = drop.makeAwardData(usr.arena['loot'], {})	
+		data.update(drop.makeAwardData(usr.arena['loot'], {}))
 		data['defence'] = defenceRole.pvpProperty()
 		data['arena_times'] = usr.arena['times']
 		
@@ -86,20 +90,64 @@ class arena:
 		print usr.arena		
 		if usr.arena.has_key('challenge_roleid'):
 			
-			res = curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']})
-		
+			res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']}))
+			
 			arenaLootConf = config.getConfig('arena_loot')
 			gameConf = config.getConfig('game')
+						
+			if res.has_key('msg'):
+				return res
+				
+			alreadyReach = False
+			for item in gameConf['arena_rank_award']:
+				if item['rank'] >= res['position'] and (not usr.arena['rank_award'].has_key(item['rank'])):
+					usr.arena['rank_award'][item['rank']] = True
+					
+				
 			arenaLootInfo = arenaLootConf[usr.level - 1]
+			challengeRole = usr.__class__.get(usr.arena['challenge_roleid'])
+			challengeRole.gold = challengeRole.gold - arenaLootInfo['gold']
+			if challengeRole.gold < 0:
+				challengeRole.gold = 0
+			challengeRole.notify_gold()
+			challengeRole.save()
 			del usr.arena['challenge_roleid']
 			card = None
 			gold = 0
-			skl = None
-			
+			skl = None			
 			data = {}
 			if usr.arena.has_key('loot'):
 				data = drop.do_award(usr, usr.arena['loot'], data)
 				data = drop.makeData(data, {})
+				
+			usr.gainExp(arenaLootInfo['exp'])
+			usr.gold = usr.gold + arenaLootInfo['gold']
+			data['exp'] = usr.exp
+			data['level'] = usr.level
+			data['gold'] = usr.gold
 			usr.save()
 			return data			
 		return {'msg':'arena_ladder_have_not_chellenge'}
+			
+	@staticmethod
+	def rank_award(usr, rk):
+		print usr.arena['rank_award']
+		print rk
+		if not usr.arena['rank_award'].has_key(rk):
+			return {'msg':'arena_rank_award_not_exist'}
+		if not usr.arena['rank_award'][rk]:
+			return {'msg':'arena_rank_award_already_have'}
+		
+		gameConf = config.getConfig('game')
+		
+		for item in gameConf['arena_rank_award']:
+			if item['rank'] == int(rk):
+				res = arena.award_score(usr.roleid, item['point'])
+				if not res.has_key('msg'):
+					usr.arena['rank_award'][rk] = False
+					print usr.arena
+					usr.save()
+				return res
+				
+		return {'msg':'arena_rank_award_not_exist'}
+		
