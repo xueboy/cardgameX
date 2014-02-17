@@ -158,9 +158,10 @@ class user(gcuser):
 		usrData['avatar_id'] = self.avatar_id
 		#if self.train_prd:
 			#usrData['train_prd'] = self.train_prd		
-		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown
-		usrData['fatigue_last_time'] = self.fatigue_last_time
-		usrData['equipment_strength_last_time'] = self.equipment_strength_last_time
+		usrData['equipment_strength_cooldown'] = self.equipment_strength_cooldown - (now - self.equipment_strength_last_time)
+		if usrData['equipment_strength_cooldown'] < 0:
+			usrData[equipment_strength_cooldown] = 0
+		usrData['fatigue_last_time'] = self.fatigue_last_time		
 		usrData['trp'] = self.trp
 		usrData['stv'] = self.stv
 		usrData['arena_time'] = self.arena['times']
