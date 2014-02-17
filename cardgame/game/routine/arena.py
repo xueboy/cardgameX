@@ -66,6 +66,7 @@ class arena:
 		del usr.arena['challenge_roleid']
 
 		usr.arena['loot'] = drop.roll(arenaLootConf[usr.level - 1]['drop'], {})
+		usr.arena['loot'] = drop.makeAwardData(usr.arena['loot'], {})
 
 		data = {}
 		data['loot'] = usr.arena['loot']	
