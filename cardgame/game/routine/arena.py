@@ -118,7 +118,7 @@ class arena:
 			data = {}
 			if usr.arena.has_key('loot'):
 				data = drop.do_award(usr, usr.arena['loot'], data)
-				data = drop.makeData(data, {})
+				data = drop.makeData(data, {}, 'award')
 				
 			usr.gainExp(arenaLootInfo['exp'])
 			usr.gold = usr.gold + arenaLootInfo['gold']
