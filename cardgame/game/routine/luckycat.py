@@ -209,7 +209,7 @@ class luckycat:
 		if gameConf['luckycat_feed_other_required_level'] > usr.level:
 			return {'msg':'luckycat_feed_level_required'}
 	
-		if usr.luckycat['feed_self_count'] >= gameConf['luckycat_feed_self_count_max']:
+		if usr.luckycat['feed_self_count'] >= (gameConf['luckycat_feed_self_count_max'] + vip.value(usr, 'feed_extra')):
 			return {'msg':'luckycat_feed_max_time'}	
 		
 		luckycat.updateFeed(usr)

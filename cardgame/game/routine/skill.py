@@ -9,14 +9,18 @@ class skill:
 	@staticmethod
 	def levelup(usr, destSkill_id, sourceSkill_id):
 		
-		inv = usr.getInventory()
-		skillConf = config.getConfig('skill')
-		skillLevelConf = config.getConfig('skill_level')
+		inv = usr.getInventory()		
 		
 		destSkill = inv.getSkill(destSkill_id)
 		if not destSkill:
-			return {'msg':'skill_not_exist'}
+			return {'msg':'skill_not_exist'}		
 		
+		skillConf = config.getConfig('skill')
+		skillLevelConf = config.getConfig('skill_level')
+		gameConf = config.getConfig('game')
+		goldCost = len(skillid) * gameConf['skill_levelup_gold_cost']
+		if usr.gold < goldCost:
+			return {'msg':'gold_not_exist'}
 		exp = 0		
 		
 		for skillid in sourceSkill_id:
@@ -27,8 +31,10 @@ class skill:
 			inv.delSkill(sk['id'])
 			
 		skill.gain_exp(destSkill, exp, skillConf, skillLevelConf)
+		
+		
 		inv.save()
-		return {'update_skill': destSkill, 'delete_skill_array': sourceSkill_id}
+		return {'update_skill': destSkill, 'delete_skill_array': sourceSkill_id, 'gold':usr.gold}
 			
 	@staticmethod
 	def install(usr, teamPosition, ownerTeamPosition, slotpos, skill_id):

@@ -23,6 +23,8 @@ class item:
 		data['delete_item_array'] = []
 		data['update_item_array'] = []		
 		itemCount = cnt
+		save_usr = False
+		save_inv = False
 		for (funkey, v) in itemInfo['fun'].items():			
 			if funkey == 'treasure':
 				key = None
@@ -44,19 +46,27 @@ class item:
 					data = drop.makeData(data)					
 					itemCount = itemCount - 1					
 				if key:					
-					data['update_item_array'].append(key)
+					data['update_item_array'].append(key)				
 			elif funkey == 'protect':
 				pass
 			elif funkey == 'stamina':
+				if not vip.canBuyStamina(usr):
+					return {'msg':'vip_required'}
 				stamina = int(v[0])
 				usr.chargeStamina(stamina * itemCount)
 				itemCount = 0
-				data['st'] = usr.stamina			
+				data['st'] = usr.stamina
+				usr.vip['buy_stamina_count'] = usr.vip['buy_stamina_count'] + 1
+				save_usr = True
 			elif funkey == 'sp':
+				if not vip.canBuyStamina(usr):
+					return {'msg':'vip_required'}
 				sp = int(v[0])
 				usr.sp = usr.sp + sp * itemCount
 				itemCount = 0
 				data['sp'] = usr.sp
+				usr.vip['buy_sp_count'] = usr.vip['buy_sp_count'] + 1
+				save_usr = True
 			elif funkey == 'arena_count':
 				pass
 			elif funkey == 'key':
@@ -91,11 +101,15 @@ class item:
 			data['delete_item_array'].append(it['id'])
 		else:
 			data['update_item_array'].append(it)
+		save_inv = True
 		if not data['delete_item_array']:
 			del data['delete_item_array']
 		if not data['update_item_array']:
 			del data['update_item_array']
-		inv.save()
+		if save_inv:
+			inv.save()
+		if save_usr:
+			usr.save()
 		return data			
 
 				

@@ -307,7 +307,7 @@ class user(gcuser):
 		self.medal = data['medal']
 		self.practice = data['practice']
 		self.slotmachine = data['slotmachine']
-		self.vip = data['vip']
+		self.vip.update(data['vip'])
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
