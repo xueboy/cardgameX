@@ -4,6 +4,8 @@
 from game.utility.config import config
 from gclib.utility import currentTime
 
+from game.routine.vip import vip
+
 class equipment:
 
 	@staticmethod
@@ -40,7 +42,7 @@ class equipment:
 		else:
 			strengthenProbability = gameConf['equipment_strength_fix_probablity']
 		
-		goldCost = strengthenPriceConf[str(equipmentQuality)][strengthLevel]
+		goldCost = strengthenPriceConf[str(equipmentQuality - 1)][strengthLevel]
 		
 		if isUseGem:
 			gemCost = gemCost + gameConf['equipment_strength_extra_gem_price']
@@ -57,7 +59,18 @@ class equipment:
 			usr.fatigue = gameConf['equipment_strength_fatigue_max']
 		usr.fatigue_last_time = currentTime()
 		
-		equipment['strengthLevel'] = strengthLevel + 1
+		point = 1
+		
+		if vip.canStrengthEquipmentCritical(usr):
+			rd = randint()
+			for (i, prob) in enumerate(gameConf['equipment_strength_critical_probability']):
+				if prob > rd:
+					rd = rd - prob
+				else:
+					point = i
+					break
+		
+		equipment['strengthLevel'] = strengthLevel + point
 		
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost

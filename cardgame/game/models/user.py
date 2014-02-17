@@ -275,8 +275,7 @@ class user(gcuser):
 		self.stamina = data['stamina']
 		self.gem = data['gem']
 		self.gold = data['gold']
-		self.exp = data['exp']
-		self.vip = data['vip']
+		self.exp = data['exp']		
 		self.gender = data['gender']
 		self.stamina_last_recover = data['stamina_last_recover']
 		self.sp_last_recover = data['sp_last_recover']
@@ -290,7 +289,7 @@ class user(gcuser):
 		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
-		self.luckycat = data['luckycat']
+		self.luckycat.update(data['luckycat'])
 		self.trp = data['trp']
 		self.sp = data['sp']
 		self.stv = data['stv']
@@ -306,7 +305,7 @@ class user(gcuser):
 		self.tower = data['tower']
 		self.medal = data['medal']
 		self.practice = data['practice']
-		self.slotmachine = data['slotmachine']
+		self.slotmachine = data['slotmachine']		
 		self.vip.update(data['vip'])
 
 	def getCardNo(self):

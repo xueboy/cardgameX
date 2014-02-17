@@ -1,13 +1,14 @@
 ﻿#coding:utf-8\
 #!/usr/bin/env python
 
+from gclib.utility import currentTime, is_same_day
 from game.utility.config import config
 
 class vip:
 	
 	@staticmethod
 	def make():
-		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'last_vip_update':0}
+		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0}
 			
 			
 	@staticmethod
@@ -38,10 +39,10 @@ class vip:
 	@staticmethod
 	def updateVip(usr):
 		now = currentTime()
-		if not is_same_day(usr.vip['last_vip_update'], now):
+		if not is_same_day(usr.vip['vip_last_update_time'], now):
 			usr.vip['buy_stamina_count'] = 0
 			usr.vip['buy_sp_count'] = 0
-			usr.vip['last_vip_update'] = now
+			usr.vip['vip_last_update_time'] = now
 			
 			
 	@staticmethod
@@ -51,5 +52,9 @@ class vip:
 	@staticmethod
 	def canBuyStamina(usr):
 		return vip.value(usr, 'buy_sp_extra') > usr.vip['buy_sp_count']	
+		
+	@staticmethod
+	def canStrengthEquipmentCritical(usr):
+		return vip.value(usr, 'strength_equipment_critical') == 1
 	
 		

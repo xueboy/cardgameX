@@ -220,9 +220,7 @@ class luckycat:
 		spreadBlessid = ''
 
 		if not target.luckycat:
-			return {'msg':'luckycat_not_available'}
-		if not usr.luckycat.has_key('feed_request_list'):
-			usr.luckycat['feed_request_list'] = []
+			return {'msg':'luckycat_not_available'}		
 						
 		usr.luckycat['feed_request_list'].append(int(target.roleid))
 		target.luckycat['feed_candidate_list'].append(int(usr.roleid))
@@ -422,11 +420,7 @@ class luckycat:
 		data['bless_roll_last_time'] = usr.luckycat['bless_roll_last_time']
 		data['bless_cycle_begin_time'] = usr.luckycat['bless_cycle_begin_time']
 		data['bless'] = usr.luckycat['bless']
-		#data['record'] = usr.luckycat['record']
-		if not usr.luckycat.has_key('feed_candidate_list'):
-			usr.luckycat['feed_candidate_list'] = []
-		if not usr.luckycat.has_key('feed_request_list'):
-			usr.luckycat['feed_request_list'] = []
+		#data['record'] = usr.luckycat['record']		
 		data['feed_candidate_list'] = usr.luckycat['feed_candidate_list']
 		data['feed_request_list'] = usr.luckycat['feed_request_list']
 		return data
