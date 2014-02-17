@@ -18,7 +18,7 @@ class skill:
 		skillConf = config.getConfig('skill')
 		skillLevelConf = config.getConfig('skill_level')
 		gameConf = config.getConfig('game')
-		goldCost = len(skillid) * gameConf['skill_levelup_gold_cost']
+		goldCost = len(sourceSkill_id) * gameConf['skill_levelup_gold_cost']
 		if usr.gold < goldCost:
 			return {'msg':'gold_not_exist'}
 		exp = 0		
@@ -27,7 +27,7 @@ class skill:
 			sk = inv.getSkill(skillid)
 			if not sk:
 				return {'msg':'skill_not_exist'}			
-			exp = exp + skill.get_exp(sk, skillLevelConf)
+			exp = exp + skill.get_exp(sk, skillConf[sk['skillid']], skillLevelConf, gameConf)
 			inv.delSkill(sk['id'])
 			
 		skill.gain_exp(destSkill, exp, skillConf, skillLevelConf)
@@ -92,8 +92,8 @@ class skill:
 	
 
 	@staticmethod
-	def get_exp(sk, skillLevelConf):
-		return skillLevelConf[sk['level'] - 1] + sk['exp']
+	def get_exp(sk, skillInfo, skillLevelConf, gameConf):
+		return (skillLevelConf[sk['level'] - 1] + sk['exp'] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75
 		
 	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
