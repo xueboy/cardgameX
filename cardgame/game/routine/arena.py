@@ -167,10 +167,11 @@ class arena:
 		gameConf = config.getConfig('game')
 		
 		for item in gameConf['arena_rank_award']:
-			if item['rank'] == int(rk):
-				data = arena.convert(usr, item['point'])
-				res = arena.award_score(usr.roleid, item['point'])
-				data.update(res)
+			if item['rank'] == int(rk):				
+				#res = arena.award_score(usr.roleid, item['point'])
+				data = {}
+				awd = drop.open(usr, item['drop'], {})
+				data = drop.makeData(awd, {})
 				usr.arena['rank_award'][rk] = False				
 				usr.save()
 				return data				
