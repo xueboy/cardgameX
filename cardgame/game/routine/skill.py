@@ -112,7 +112,7 @@ class skill:
 	
 	@staticmethod
 	def make_sk_slot():
-		return [{}, {}, {}, {}]		
+		return [{}, {}, {}]		
 	
 	@staticmethod
 	def getClientData():
