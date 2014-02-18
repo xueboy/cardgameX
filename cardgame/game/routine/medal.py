@@ -153,8 +153,12 @@ class medal:
 		
 		if not defenceUsr:
 			return {'msg':'usr_not_exist'}
+				
+		probablity = gameConf['medal_grab_probablity']
+		if vip.canMedalGrabProbabilityPromote(usr):
+			probablity = probablity + 1000
 		
-		if randrop(gameConf['medal_grab_probablity']):
+		if randrop(probablity):
 			res = medal.grabMedal(usr.roleid, usr.medal['grabmedalroleid'], usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			if res.has_key('msg'):
 				return res

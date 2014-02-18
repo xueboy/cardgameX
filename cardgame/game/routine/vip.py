@@ -107,5 +107,9 @@ class vip:
 		return vip.value(usr, 'dungeon_count_reset') > usr.vip['buy_dungeon_reset_count']
 		
 	@staticmethod
-	def arena_protect_times(usr):
+	def canBuyArenaProtectTimes(usr):
 		return vip.value(usr, 'arena_protect_times') > usr.vip['buy_arena_protect_times']
+		
+	@staticmethod
+	def canMedalGrabProbabilityPromote(usr):
+		return vip.value(usr, 'medal_grab_probability10') != 0

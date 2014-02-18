@@ -77,6 +77,8 @@ class item:
 				data['arena_times'] = usr.arena['times']
 				usr.vip['buy_arena_times'] = usr.vip['buy_arena_times'] + 1
 				save_usr = True
+			elif funkey == 'protect':
+				pass				
 			elif funkey == 'key':
 				treasure = None
 				while itemCount > 0:
