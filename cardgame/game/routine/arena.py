@@ -147,6 +147,12 @@ class arena:
 		inv.save()
 
 		data = res
+		
+		data['drop'] = []
+		if updateIt:
+			data['drop'].append(['id' :updateIt['id'], 'insId' : updateIt['id'], 'type': 4, 'count':updateIt['count']])
+		if newIt:
+			data['drop'].append(['id' :newIt['id'], 'insId' : newIt['id'], 'type': 4, 'count':newIt['count']])
 	
 		if updateIt:
 			data['update_item_array'] = updateIt
