@@ -33,6 +33,7 @@ def defeate(request):
 def convert(request):
 	mediumCount = request.GET['medium_count']
 	mediumCount = int(mediumCount)
+	usr = request.user
 
 	return arena.convert(usr, mediumCount)
 
