@@ -17,11 +17,12 @@ urlpatterns = patterns('',
  url(r'^tower_stand/$', 'arenarank.views.tower_stand'),
  url(r'^tower_show/$','arenarank.views.tower_show'), 
  url(r'^grab_medal/$', 'arenarank.views.grab_medal'),
- url(r'^lose_medal/$', 'arenarank.views.lose_medal'),
+ #url(r'^lose_medal/$', 'arenarank.views.lose_medal'),
  url(r'^seek_holder/$', 'arenarank.views.seek_holder'),
  url(r'^medal_levelup/$', 'arenarank.views.medal_levelup'), 
  url(r'^new_medal/$', 'arenarank.views.new_medal'),
  url(r'^delete_medal/$', 'arenarank.views.delete_medal'),
  url(r'^award_score/$', 'arenarank.views.award_score'),
  url(r'^try_grab/$', 'arenarank.views.try_grab'),
+ url(r'^add_protect_time/$', 'arenarank.views.add_protect_time')
 )

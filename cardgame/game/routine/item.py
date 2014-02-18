@@ -51,7 +51,11 @@ class item:
 			elif funkey == 'protect':
 				if not vip.canBuyArenaProtectTimes(usr):
 					return {'msg':'vip_required'}
-				
+				addProtectTime = v[0]
+				newProtectTime = medal.add_protect_time(usr, addProtectTime)
+				data['protect_time'] = newProtectTime
+				usr.vip['buy_arena_protect_times'] = usr.vip['buy_arena_protect_times'] + 1
+				save_usr = True
 			elif funkey == 'stamina':
 				if not vip.canBuyStamina(usr):
 					return {'msg':'vip_required'}

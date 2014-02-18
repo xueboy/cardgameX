@@ -14,7 +14,7 @@ class medal:
 		
 	@staticmethod
 	def make():
-		return {'protect':0, 'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0}
+		return {'protect_time':0, 'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0}
 			
 	@staticmethod
 	def getClientData(usr, gameConf):
@@ -124,6 +124,10 @@ class medal:
 	@staticmethod
 	def levelupMedal(roleid, medalid):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/medal_levelup/', None, { 'medalid':medalid, 'roleid': roleid, 'medalid': medalid}))
+			
+	@staticmethod
+	def addProtectTime(usr, second):
+		return json.loads(curl.url(ARENE_SERVER + '/arena/add_protect_time/', None, {'roleid': usr.roleid, 'add_second': second}))
 	
 	@staticmethod		
 	def grab(usr, defenceRoleid, medalid, chipnum):
@@ -150,7 +154,11 @@ class medal:
 		if usr.medal['grabmedalroleid'] == 0:
 			return {'msg':'medal_grab_shoulb_before'}		
 				
-		medal.tryGrab(usr.medal['grabmedalroleid']).s()
+		res = medal.tryGrab(usr.medal['grabmedalroleid'])
+		if res.has_key('msg'):
+			return res
+		if res['protect']:
+			return {'msg':'medal_player_in_protect'}
 		
 		now = currentTime()
 		defenceUsr = usr.__class__.get(usr.medal['grabmedalroleid'])
@@ -165,12 +173,8 @@ class medal:
 		if randrop(probablity):
 			res = medal.grabMedal(usr.roleid, usr.medal['grabmedalroleid'], usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			if res.has_key('msg'):
-				return res
-			
-			inv = usr.getInventory()
-			
-			
-			
+				return res			
+			inv = usr.getInventory()			
 			defenceInv = defenceUsr.getInventory()
 			if defenceInv.delMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip']) < 0:
 				return {'msg':'medal_chip_not_enough'}
@@ -188,3 +192,15 @@ class medal:
 	@staticmethod
 	def grab_fail(usr, defenceRoleid):
 		return {}
+		
+	@staticmethod
+	def add_protect_time(usr, second):
+		res = medal.addProtectTime(usr, second)
+		
+		if res.has_key('msg'):
+			return res
+		usr.medal['protect_time'] = res['protect_time']
+		return res['protect_time']
+			
+		
+		

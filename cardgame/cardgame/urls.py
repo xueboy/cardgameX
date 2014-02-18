@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^arena/', include('arenarank.urls')),
     url(r'^game/', include('game.urls')),
-    url(r'^admin/', include('gameadmin.urls')),
+    url(r'^admin/', include('gameadmin.urls')),    
    )
    

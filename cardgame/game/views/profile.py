@@ -162,11 +162,10 @@ def scene(request):
 	gameConf = config.getConfig('game')
 	data = {}
 	data['player'] = []
-	res = conn.query(sql, [idx, gameConf['scene_player_count']])
-	print res
-	for rid in res[0]:
+	res = conn.query(sql, [idx, gameConf['scene_player_count']])	
+	for rid in res:		
 		try:
-			u = user.get(rid)
+			u = user.get(rid[0])
 			if u:
 				data['player'].append(u.getSceneData())
 		except:

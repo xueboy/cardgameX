@@ -4,7 +4,7 @@
 from django.db import models
 from gclib.DBConnection import DBConnection
 from gclib.facility import facility
-from gclib.utility import currentTime, day_diff
+from gclib.utility import currentTime, day_diff, time_to_str
 from game.models.user import user
 from game.utility.config import config
 
@@ -411,9 +411,15 @@ class medal_arena(facility):
 	def is_protect(self, defenceRoleid):
 		pt = medal_arena.db_medal_select_protect_time(defenceRoleid)
 		if pt == None:
-			return {'protect':False}
-		return medal_arena.db_medal_select_protect_time(defenceRoleid) > currentTime()
+			return False
+		return pt > currentTime()
 		
+	def add_protect_time(self, roleid, addProtectTime):
+		if medal_arena.db_medal_set_protect_time(roleid, addProtectTime):
+			pt = medal_arena.db_medal_select_protect_time(roleid)			
+			return {'protect_time':time_to_str(pt)}
+		return {'msg':'parameter_bad'}
+					
 	@staticmethod
 	def db_add_medal(roleid, level, medalid, chipnum, cnt):
 		conn = DBConnection.getConnection()	
@@ -461,8 +467,7 @@ class medal_arena(facility):
 			if res1:					
 				res = res + res1
 		return list(set([n[0] for n in res]))
-		
-		
+				
 	@staticmethod
 	def db_medal_levelup( roleid, medalid, chipcnt):
 		conn = DBConnection.getConnection()
@@ -483,9 +488,18 @@ class medal_arena(facility):
 		res = conn.query(sql, [roleid])
 		print res
 		if len(res):
-			return res[0][0]
-			
-		return None
+			return res[0][0]			
+		return time_to_str(currentTime())
+		
+	@staticmethod
+	def db_medal_set_protect_time(roleid, addProtectTime):
+		conn = DBConnection.getConnection()
+		sql = "UPDATE medal_level SET shield_time = IFNULL(shield_time, NOW()) + INTERVAL %s SECOND WHERE roleid = %s"
+		row_count = conn.excute(sql, [roleid, addProtectTime])
+		if row_count == 1:
+			return True
+		return False
+		
 			
 		
 		

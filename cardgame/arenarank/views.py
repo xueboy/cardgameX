@@ -87,22 +87,22 @@ def grab_medal(request):
 	chipnum = int(request.REQUEST['chipnum'])
 	
 	ld = medal_arena.instance()
-	if ld.is_protect().s():
-		return {'msg':'arene_grab_in_protect'}
-	if ld.lose_medal(offenceRoleid, medalid, chipnum) == 0:
+	if ld.is_protect(deffenceRoleid):
+		return HttpResponse(json.dumps({'msg':'arene_grab_in_protect'}))
+	if ld.lose_medal(deffenceRoleid, medalid, chipnum) == 0:
 		return HttpResponse(json.dumps({'msg':'medal_not_exist'}))
 	
-	return HttpResponse(json.dumps(ld.win_medal(deffenceRoleid, level, medalid, chipnum)))
+	return HttpResponse(json.dumps(ld.win_medal(offenceRoleid, level, medalid, chipnum)))
 	
 	
-def lose_medal(request):
-	
-	roleid = request.REQUEST['roleid']
-	medalid = request.REQUEST['medalid']
-	chipnum = int(request.REQUEST['chipnum'])
-	
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.lose_medal(roleid, medalid, chipnum)))
+#def lose_medal(request):
+#	
+#	roleid = request.REQUEST['roleid']
+#	medalid = request.REQUEST['medalid']
+#	chipnum = int(request.REQUEST['chipnum'])
+#	
+#	ld = medal_arena.instance()
+#	return HttpResponse(json.dumps(ld.lose_medal(roleid, medalid, chipnum)))
 	
 def seek_holder(request):
 	
@@ -142,7 +142,12 @@ def delete_medal(request):
 	return HttpResponse(json.dumps(ld.delete_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))
 	
 def try_grab(request):
-	defenceRoleid = request.REQUEST['defence_roleid']
-	
+	defenceRoleid = request.REQUEST['defence_roleid']	
 	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.is_protect(defenceRoleid)))
+	return HttpResponse(json.dumps({'protect' : ld.is_protect(defenceRoleid)}))
+	
+def add_protect_time(request):	
+	roleid = request.REQUEST['roleid']
+	second = int(request.REQUEST['add_second'])	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.add_protect_time(roleid, second)))
