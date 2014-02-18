@@ -54,7 +54,7 @@ def show(request):
 	data['name'] = other.name
 	data['gender'] = other.gender	
 	data['level'] = other.level
-	data['vip'] = other.vip	
+	data['vip_level'] = other.vip['level']
 	data['message'] = otNw.message	
 	return data
 	
