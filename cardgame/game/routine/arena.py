@@ -151,10 +151,10 @@ class arena:
 		data['drop'] = []
 		if updateIt:
 			for it in updateIt:
-				data['drop'].append({'id' :it['id'], 'insId' : it['id'], 'type': 4, 'count':it['count']})
+				data['drop'].append({'id' :it['itemid'], 'insId' : it['id'], 'type': 4, 'count':it['count']})
 		if newIt:
 			for it in newIt:
-				data['drop'].append({'id' :it['id'], 'insId' : it['id'], 'type': 4, 'count':it['count']})
+				data['drop'].append({'id' :it['itemid'], 'insId' : it['id'], 'type': 4, 'count':it['count']})
 	
 		if updateIt:
 			data['update_item_array'] = updateIt
