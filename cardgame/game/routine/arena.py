@@ -116,7 +116,7 @@ class arena:
 			card = None
 			gold = 0
 			skl = None			
-			data = {}
+			data = res
 			if usr.arena.has_key('loot'):
 				data = drop.do_award(usr, usr.arena['loot'], data)
 				data = drop.makeData(data, {}, 'award')
