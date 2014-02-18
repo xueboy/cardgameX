@@ -170,8 +170,9 @@ class arena:
 			if item['rank'] == int(rk):
 				data = arena.convert(usr, item['point'])
 				res = arena.award_score(usr.roleid, item['point'])
+				data.update(res)
 				usr.arena['rank_award'][rk] = False				
 				usr.save()
-				return res				
+				return data				
 		return {'msg':'arena_rank_award_not_exist'}
 		
