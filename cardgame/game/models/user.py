@@ -150,7 +150,7 @@ class user(gcuser):
 		usrData['gem'] = self.gem
 		usrData['gold'] = self.gold
 		usrData['sp'] = self.sp
-		usrData['exp'] = self.exp
+		usrData['exp'] = int(self.exp)
 		usrData['vip'] = self.vip
 		usrData['gender'] = self.gender
 		usrData['stamina_last_recover_before'] = now - self.stamina_last_recover		
