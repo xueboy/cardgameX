@@ -129,6 +129,12 @@ class inventory(object):
 		
 	def load(self, roleid, data):
 		object.load(self, roleid, data)
+		
+		for c in data['card']:
+			if c.has_key('init_start'):
+				c['init_star'] = c['init_start']
+				del c['init_start']
+		
 		self.card = data['card']
 		self.card_chip = data['card_chip']
 		self.item = data['item']

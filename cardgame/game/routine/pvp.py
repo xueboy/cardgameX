@@ -294,6 +294,7 @@ class pvp:
 		ppData['artifice'] = p1['artifice'] + p2['artifice']
 		ppData['pi'] = p1['pi'] + p2['pi']		
 		ppData['pe'] = p1['pe'] + p2['pe']
+		ppData['init_star'] = p1['init_star']
 		return ppData
 		
 		
@@ -326,6 +327,7 @@ class pvp:
 		ppData['id'] = card['id']
 		ppData['cardid'] = card['cardid']
 		ppData['pe'] = 0
+		ppData['init_star'] = card['init_star']
 		return ppData
 		
 		

@@ -8,7 +8,7 @@ class vip:
 	
 	@staticmethod
 	def make():
-		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0, 'buy_arena_times':0, 'buy_dungeon_reset_count':0}
+		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0, 'buy_arena_times':0, 'buy_dungeon_reset_count':0, 'buy_arena_protect_times':0}
 			
 			
 	@staticmethod
@@ -105,3 +105,7 @@ class vip:
 	@staticmethod
 	def canBuyDungeonResetCount(usr):
 		return vip.value(usr, 'dungeon_count_reset') > usr.vip['buy_dungeon_reset_count']
+		
+	@staticmethod
+	def arena_protect_times(usr):
+		return vip.value(usr, 'arena_protect_times') > usr.vip['buy_arena_protect_times']
