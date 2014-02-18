@@ -318,7 +318,7 @@ class dungeon(object):
 							waves = self.arrangeWaves(fieldConf)
 							exp = fieldConf['exp']
 							if self.daily_recored[battleid][fieldid]['vip_reset']:
-								exp = exp * gameConf['dungeon_reset_benefit']
+								exp = int(exp * gameConf['dungeon_reset_benefit'])
 							usr.gainExp(exp)
 							data = {}
 							if fieldConf['dropid']:

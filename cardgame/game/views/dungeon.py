@@ -121,7 +121,7 @@ def end(request):
 					gameConf = config.getConfig('game')
 					exp = fieldConf['exp']
 					if dun.daily_recored[battleId][fieldId]['vip_reset']:
-						exp = exp * gameConf['dungeon_reset_benefit']
+						exp = int(exp * gameConf['dungeon_reset_benefit'])
 					usr.gainExp(exp)
 					data = {}
 					if fieldConf['dropid']:
