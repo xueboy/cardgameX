@@ -5,6 +5,7 @@ from gclib.json import json
 from gclib.utility import drop as randrop, currentTime
 from cardgame.settings import ARENE_SERVER
 from game.utility.config import config
+from game.routine.vip import vip
 
 
 
@@ -116,8 +117,9 @@ class medal:
 	def newMedal(usr, medalid, chipnum, cnt):
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/new_medal/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'count':cnt}))	
 			
-	def deleteMedal(usr, medalid, chipnum, cnt):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/delete_medal/', None, {'roleid':usr.roleid, 'level':usr.level, 'medalid':medalid, 'chipnum':chipnum, 'count':cnt}))	
+	@staticmethod
+	def tryGrab(defenceRoleid):
+		return json.loads(curl.url(ARENE_SERVER + '/arena/try_grab/', None, {'defence_roleid': defenceRoleid}))
 			
 	@staticmethod
 	def levelupMedal(roleid, medalid):
@@ -147,6 +149,8 @@ class medal:
 		
 		if usr.medal['grabmedalroleid'] == 0:
 			return {'msg':'medal_grab_shoulb_before'}		
+				
+		medal.tryGrab(usr.medal['grabmedalroleid']).s()
 		
 		now = currentTime()
 		defenceUsr = usr.__class__.get(usr.medal['grabmedalroleid'])

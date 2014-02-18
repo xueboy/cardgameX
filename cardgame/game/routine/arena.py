@@ -131,6 +131,31 @@ class arena:
 		return {'msg':'arena_ladder_have_not_chellenge'}
 			
 	@staticmethod
+	def convert(usr, mediumCount):
+		gameConf = config.getConfig('game')
+		pointConsume = mediumCount * gameConf['arena_medium_price']
+
+		res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
+		
+		res = json.loads(res)
+		if res.has_key('msg'):
+			return res
+
+		mediumId = gameConf['arena_medium_id']
+		inv = usr.getInventory()
+		updateIt, newIt = inv.addItemCount(mediumId, mediumCount)
+		inv.save()
+
+		data = res
+	
+		if updateIt:
+			data['update_item_array'] = updateIt
+		if newIt:
+			data['add_item_array'] = newIt
+		return data
+			
+			
+	@staticmethod
 	def rank_award(usr, rk):
 		print usr.arena['rank_award']
 		print rk
@@ -143,12 +168,10 @@ class arena:
 		
 		for item in gameConf['arena_rank_award']:
 			if item['rank'] == int(rk):
+				data = convert(usr, item['point'])
 				res = arena.award_score(usr.roleid, item['point'])
-				if not res.has_key('msg'):
-					usr.arena['rank_award'][rk] = False
-					print usr.arena
-					usr.save()
-				return res
-				
+				usr.arena['rank_award'][rk] = False				
+				usr.save()
+				return res				
 		return {'msg':'arena_rank_award_not_exist'}
 		

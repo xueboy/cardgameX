@@ -49,7 +49,9 @@ class item:
 				if key:					
 					data['update_item_array'].append(key)				
 			elif funkey == 'protect':
-				pass
+				if not vip.canBuyArenaProtectTimes(usr):
+					return {'msg':'vip_required'}
+				
 			elif funkey == 'stamina':
 				if not vip.canBuyStamina(usr):
 					return {'msg':'vip_required'}

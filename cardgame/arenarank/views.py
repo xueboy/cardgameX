@@ -87,6 +87,8 @@ def grab_medal(request):
 	chipnum = int(request.REQUEST['chipnum'])
 	
 	ld = medal_arena.instance()
+	if ld.is_protect().s():
+		return {'msg':'arene_grab_in_protect'}
 	if ld.lose_medal(offenceRoleid, medalid, chipnum) == 0:
 		return HttpResponse(json.dumps({'msg':'medal_not_exist'}))
 	
@@ -138,3 +140,9 @@ def delete_medal(request):
 	
 	ld = medal_arena.instance()
 	return HttpResponse(json.dumps(ld.delete_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))
+	
+def try_grab(request):
+	defenceRoleid = request.REQUEST['defence_roleid']
+	
+	ld = medal_arena.instance()
+	return HttpResponse(json.dumps(ld.is_protect(defenceRoleid)))

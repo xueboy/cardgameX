@@ -34,29 +34,7 @@ def convert(request):
 	mediumCount = request.GET['medium_count']
 	mediumCount = int(mediumCount)
 
-	usr = request.user
-	gameConf = config.getConfig('game')
-
-	pointConsume = mediumCount * gameConf['arena_medium_price']
-
-	res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
-	from django.http import HttpResponse
-	res = json.loads(res)
-
-	if res.has_key('msg'):
-		return res
-
-	mediumId = gameConf['arena_medium_id']
-	inv = usr.getInventory()
-	updateIt, newIt = inv.addItemCount(mediumId, mediumCount)
-	inv.save()
-
-	data = {}
-	if updateIt:
-		data['update_item_array'] = updateIt
-	if newIt:
-		data['add_item_array'] = newIt
-	return data
+	return arena.convert(usr, mediumCount)
 
 def score(request):
 	usr = request.user	

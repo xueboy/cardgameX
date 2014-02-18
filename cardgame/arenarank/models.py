@@ -408,6 +408,12 @@ class medal_arena(facility):
 	def delete_medal(self, roleid, level, medalid, chipnum, cnt):
 		return medal_arena.db_delete_medal(roleid, level, medalid, chipnum, cnt)
 		
+	def is_protect(self, defenceRoleid):
+		pt = medal_arena.db_medal_select_protect_time(defenceRoleid)
+		if pt == None:
+			return {'protect':False}
+		return medal_arena.db_medal_select_protect_time(defenceRoleid) > currentTime()
+		
 	@staticmethod
 	def db_add_medal(roleid, level, medalid, chipnum, cnt):
 		conn = DBConnection.getConnection()	
@@ -468,6 +474,18 @@ class medal_arena(facility):
 				conn.rollback()				
 				return
 		conn.commit()
+		
+	@staticmethod
+	def db_medal_select_protect_time(roleid):
+		conn = DBConnection.getConnection()
+		sql = "SELECT shield_time FROM medal_level WHERE roleid = %s"
+		
+		res = conn.query(sql, [roleid])
+		print res
+		if len(res):
+			return res[0][0]
+			
+		return None
 			
 		
 		
