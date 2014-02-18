@@ -3,6 +3,7 @@
 
 from game.utility.config import config
 from game.routine.drop import drop
+from game.routine.vip import vip
 
 class item:
 	@staticmethod
@@ -68,7 +69,14 @@ class item:
 				usr.vip['buy_sp_count'] = usr.vip['buy_sp_count'] + 1
 				save_usr = True
 			elif funkey == 'arena_count':
-				pass
+				if not vip.canBuyArenaTimes(usr):
+					return {'msg' : 'vip_required'}
+				times = int(v[0])
+				usr.arena['times'] = usr.arena['times'] - times * itemCount
+				itemCount = 0
+				data['arena_times'] = usr.arena['times']
+				usr.vip['buy_arena_times'] = usr.vip['buy_arena_times'] + 1
+				save_usr = True
 			elif funkey == 'key':
 				treasure = None
 				while itemCount > 0:

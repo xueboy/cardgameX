@@ -145,10 +145,10 @@ class dungeon(object):
 		if not self.daily_recored.has_key(battleid):
 			self.daily_recored[battleid] = {}
 		if not self.daily_recored[battleid].has_key(fieldid):
-			self.daily_recored[battleid][fieldid] = 0
-		self.daily_recored[battleid][fieldid] = self.daily_recored[battleid][fieldid] + 1
+			self.daily_recored[battleid][fieldid] = {'count':0, 'vip_reset':False}
+		self.daily_recored[battleid][fieldid]['count'] = self.daily_recored[battleid][fieldid]['count'] + 1
 		self.daily_recored_last_time = currentTime()
-		return self.daily_recored[battleid][fieldid]
+		return self.daily_recored[battleid][fieldid]['count']
 	
 	def normalRecordEnter(self, battleid, fieldid):
 		if not self.normal_recored.has_key(battleid):
@@ -180,7 +180,7 @@ class dungeon(object):
 			return 0;
 		if not self.daily_recored[dungeonid].has_key(fieldid):
 			return 0;
-		return self.daily_recored[dungeonid][fieldid]
+		return self.daily_recored[dungeonid][fieldid]['count']
 		
 	
 	def getReinforcement(self):
@@ -251,8 +251,6 @@ class dungeon(object):
 				awd = drop.do_award(usr, dropData, awd)				
 					
 		self.curren_field_waves = []
-		usr.save()
-		inv.save()
 		awd = drop.makeData(awd, {})
 		return awd
 	
@@ -305,10 +303,10 @@ class dungeon(object):
 						staminaCost = fieldConf['stamina']
 						if usr.stamina < staminaCost:
 							return {'msg':'stamina_not_enough'}
-						if fieldConf['dayCount'] == self.daily_recored[battleid][fieldid]:
+						if fieldConf['dayCount'] == self.daily_recored[battleid][fieldid]['count']:
 							return {'msg':'dungeon_max_count'}
-						if fieldConf['dayCount'] < (self.daily_recored[battleid][fieldid] + cnt):
-							cnt = fieldConf['dayCount'] - self.daily_recored[battleid][fieldid]							
+						if fieldConf['dayCount'] < (self.daily_recored[battleid][fieldid]['count'] + cnt):
+							cnt = fieldConf['dayCount'] - self.daily_recored[battleid][fieldid]['count']
 						qt = usr.getQuest()
 						for i in range(cnt):
 							waves = self.arrangeWaves(fieldConf)
@@ -316,7 +314,7 @@ class dungeon(object):
 							if usr.stamina < staminaCost:
 								break
 							usr.stamina = usr.stamina - staminaCost
-							self.daily_recored[battleid][fieldid] = self.daily_recored[battleid][fieldid] + 1
+							self.daily_recored[battleid][fieldid]['count'] = self.daily_recored[battleid][fieldid]['count'] + 1
 							waves = self.arrangeWaves(fieldConf)
 							exp = fieldConf['exp']					
 							usr.gainExp(exp)
@@ -336,7 +334,8 @@ class dungeon(object):
 							#data['last_dungeon'] = dun.last_dungeon							
 							qt.updateDungeonCountQuest()
 							qt.updateFinishDungeonQuest(battleid, fieldid)
-							
+							self.save()
+							usr.save()
 		resultData['stamina'] = usr.stamina
 		resultData['exp'] = usr.exp
 		resultData['level'] = usr.level

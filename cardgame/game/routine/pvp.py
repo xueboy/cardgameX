@@ -302,7 +302,7 @@ class pvp:
 		
 		petInfo = petConf[card['cardid']]
 		
-		star = card['init_start'] + int(card['level'] * 0.4)
+		star = card['init_star'] + int(card['level'] * 0.4)
 		
 		ppData = {}
 		ppData['attack'] = petInfo['attack'] + int(petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5)

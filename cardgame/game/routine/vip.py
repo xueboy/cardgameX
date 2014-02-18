@@ -8,7 +8,7 @@ class vip:
 	
 	@staticmethod
 	def make():
-		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0}
+		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0, 'buy_arena_times':0, 'buy_dungeon_reset_count':0}
 			
 			
 	@staticmethod
@@ -42,6 +42,7 @@ class vip:
 		if not is_same_day(usr.vip['vip_last_update_time'], now):
 			usr.vip['buy_stamina_count'] = 0
 			usr.vip['buy_sp_count'] = 0
+			usr.vip['buy_arena_times'] = 0
 			usr.vip['vip_last_update_time'] = now
 			
 			
@@ -96,3 +97,11 @@ class vip:
 	@staticmethod
 	def arenaTimes(usr):
 		return vip.value(usr, 'arena_times_extra')
+		
+	@staticmethod
+	def canBuyArenaTimes(usr):
+		return vip.value(usr, 'arena_times_buy') > usr.vip['buy_arena_times']
+		
+	@staticmethod
+	def canBuyDungeonResetCount(usr):
+		return vip.value(usr, 'dungeon_count_reset') > usr.vip['buy_dungeon_reset_count']

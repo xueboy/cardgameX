@@ -20,7 +20,7 @@ class pet:
 		data['strength'] = cardConf[cardid]['strength']
 		data['intelligence'] = cardConf[cardid]['intelligence']
 		data['artifice'] = cardConf[cardid]['artifice']		
-		data['init_start'] = 1
+		data['init_star'] = 1
 		return data
 	
 	@staticmethod
@@ -274,7 +274,7 @@ class pet:
 		
 		rebornInfo = None
 		for r in rebornConf:
-			if r['star_max'] > card['init_start']:
+			if r['star_max'] > card['init_star']:
 				rebornInfo = r
 				break
 			if not card.has_key('reborn_level'):
@@ -294,7 +294,7 @@ class pet:
 		if not card.has_key('reborn_count'):
 			card['reborn_count'] = 0
 				
-		card['init_start'] = card['init_start'] = pet.reborn_inc_star(rebornInfo)
+		card['init_star'] = card['init_star'] = pet.reborn_inc_star(rebornInfo)
 		card['reborn_level'] = rebornInfo['level']
 		card['reborn_count'] = card['reborn_count'] + 1
 		usr.gold = usr.gold - costGold

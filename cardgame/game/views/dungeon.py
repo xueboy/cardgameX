@@ -151,3 +151,11 @@ def sweep(request):
 	usr = request.user
 	dun = usr.getDungeon()
 	return dun.sweep(battleId, fieldId, cnt)
+	
+def reset(request):
+	battleId = request.GET['battle_id']
+	fieldId = request.GET['field_id']
+	
+	
+	
+	return {}
