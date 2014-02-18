@@ -118,7 +118,10 @@ def end(request):
 		if battleConf['battleId'] == battleId:
 			for fieldConf in battleConf['field']:
 				if fieldConf['fieldId'] == fieldId:
-					exp = fieldConf['exp']					
+					gameConf = config.getConfig('game')
+					exp = fieldConf['exp']
+					if dun.daily_recored[battleId][fieldId]['vip_reset']:
+						exp = exp * gameConf['dungeon_reset_benefit']
 					usr.gainExp(exp)
 					data = {}
 					if fieldConf['dropid']:
@@ -155,7 +158,6 @@ def sweep(request):
 def reset(request):
 	battleId = request.GET['battle_id']
 	fieldId = request.GET['field_id']
-	
-	
-	
-	return {}
+	usr = request.user
+	dun = usr.getDungeon()	
+	return dun.reset(battleId, fieldId)

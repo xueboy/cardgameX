@@ -304,7 +304,7 @@ class user(gcuser):
 		self.longitude = data['longitude']
 		self.latitude = data['latitude']
 		self.tower = data['tower']
-		self.medal = data['medal']
+		self.medal.update(data['medal'])
 		self.practice = data['practice']
 		self.slotmachine = data['slotmachine']		
 		self.vip.update(data['vip'])

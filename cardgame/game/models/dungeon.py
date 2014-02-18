@@ -316,7 +316,9 @@ class dungeon(object):
 							usr.stamina = usr.stamina - staminaCost
 							self.daily_recored[battleid][fieldid]['count'] = self.daily_recored[battleid][fieldid]['count'] + 1
 							waves = self.arrangeWaves(fieldConf)
-							exp = fieldConf['exp']					
+							exp = fieldConf['exp']
+							if self.daily_recored[battleid][fieldid]['vip_reset']:
+								exp = exp * gameConf['dungeon_reset_benefit']
 							usr.gainExp(exp)
 							data = {}
 							if fieldConf['dropid']:
@@ -341,3 +343,31 @@ class dungeon(object):
 		resultData['level'] = usr.level
 		resultData['gold'] = usr.gold
 		return resultData
+		
+	def reset(self, battleid, fieldid):
+		
+		usr = self.user
+		#if not vip.canBuyDungeonResetCount(usr):
+		#	return {'msg': 'vip_required'}
+				
+		if not self.daily_recored.has_key(battleid):
+			return {'msg': 'dungeon_count_is_full'}
+		if not self.daily_recored[battleid].has_key(fieldid):
+			return {'msg': 'dungeon_count_is_full'}
+				
+		gemCost = int(10 * 0.5 + float(usr.vip['buy_dungeon_reset_count']) / 2)
+		
+		if usr.gem < gemCost:
+			return {'msg':'gem_not_enough'}
+		usr.vip['buy_dungeon_reset_count'] = usr.vip['buy_dungeon_reset_count'] + 1
+		self.daily_recored[battleid][fieldid]['vip_reset'] = True
+		self.daily_recored[battleid][fieldid]['count'] = 0
+		
+		data = {}
+		data['battleid'] = battleid
+		data['fieldid'] = fieldid
+		data['record'] = self.daily_recored[battleid][fieldid]
+		
+		self.save()
+		
+		return data
