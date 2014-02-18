@@ -5,7 +5,7 @@ import copy
 from gclib.utility import currentTime, drop
 from game.utility.config import config
 from game.routine.pet import pet
-
+from game.routine.vip import vip
 class educate:
 	
 	@staticmethod
@@ -73,13 +73,20 @@ class educate:
 		probability = educateGradeConf[edt]['probability']	
 		
 		if drop(probability):
-			edt = edt + 1
+			edt = edt + 1			
 			if edt > (len(educateGradeConf) - 1):
 				edt = len(educateGradeConf) - 1
 		else:
 			edt = 0
+			
+		if edt == 2 and (not vip.canEducateLevel2(usr)):
+			return {'msg':'vip_required'}
+		if edt == 3 and (not vip.canEducateLevel3(usr)):
+			return {'msg':'vip_required'}
+		if edt == 4 and (not vip.canEducateLevel4(usr)):
+			return {'msg':'vip_required'}
 		usr.educate['edt'] = edt			
-		
+		usr.save()
 		return {'gold':usr.gold, 'gem':usr.gem, 'edu_edt':edt}				
 	
 	@staticmethod
@@ -87,6 +94,15 @@ class educate:
 		
 		gameConf = config.getConfig('game')
 		gemCost = 0
+		
+		cnt = 0
+		for solt in usr.educate:
+			if solt:
+				cnt = cnt + 1
+				
+		if vip.openEducateSlot(usr) < cnt:
+			return {'msg':'vip_required'}		
+				
 		for i, solt in enumerate(usr.educate['edu_slot']):
 			if not solt:
 				gemCost = gameConf['educate_open_gem'][i]

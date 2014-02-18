@@ -7,6 +7,7 @@ from gclib.utility import is_same_day, currentTime, randint
 from cardgame.settings import ARENE_SERVER
 from game.utility.config import config
 from game.routine.drop import drop
+from game.routine.vip import vip
 #from game.models.user import user
 
 
@@ -49,7 +50,7 @@ class arena:
 		arena.arena_update(usr)
 		
 				
-		if usr.arena['times'] >= gameConf['arena_times']:
+		if usr.arena['times'] >= vip.arenaTimes(usr):
 			return {'msg':'arena_max_time'}
 				
 		gameConf = config.getConfig('game')

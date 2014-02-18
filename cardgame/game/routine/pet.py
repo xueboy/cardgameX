@@ -5,6 +5,7 @@ import random
 import math
 from gclib.utility import randint
 from game.utility.config import config
+from game.routine.vip import vip
 
 class pet:
 	
@@ -100,7 +101,13 @@ class pet:
 		card = inv.getCard(cardid)
 		if not card:
 			return {'msg':'card_not_exist'}
+				
+		if trainlevel == '2' and (not vip.canTrainLevel2(usr)):
+			return {'msg': 'vip_required'}
 			
+		if trainlevel == '3' and (not vip.canTrainLevel3(usr)):
+			return {'msg': 'vip_required'}
+					
 		cost = {}	
 		gameConf = config.getConfig('game')
 		if trainlevel == '0':

@@ -55,8 +55,44 @@ class vip:
 		
 	@staticmethod
 	def canStrengthEquipmentCritical(usr):
-		return vip.value(usr, 'strength_equipment_critical') == 1
+		return vip.value(usr, 'strength_equipment_critical') != 0
 	
 	@staticmethod
 	def canDungeonSweep(usr):
-		return vip.value(usr, 'dungeon_sweep') == 1
+		return vip.value(usr, 'dungeon_sweep') != 0
+		
+	@staticmethod
+	def canBuyLuckycatBless(usr):
+		return vip.value(usr, 'buy_bless') != 0
+		
+	@staticmethod
+	def canTrainLevel2(usr):
+		return vip.value(usr, 'train_level2') != 0
+		
+	@staticmethod
+	def canTrainLevel3(usr):
+		return vip.value(usr, 'train_level3') != 0
+		
+	@staticmethod
+	def canEducateLevel2(usr):
+		return vip.value(usr, 'educate_level2') != 0
+	
+	@staticmethod
+	def canEducateLevel3(usr):
+		return vip.value(usr, 'educate_level3') != 0
+		
+	@staticmethod
+	def canEducateLevel4(usr):
+		return vip.value(usr, 'educate_level4') != 0
+		
+	@staticmethod
+	def canEducateLevel5(usr):
+		return vip.value(usr, 'educate_level5') != 0
+		
+	@staticmethod
+	def openEducateSlot(usr):
+		return vip.value(usr, 'educate_slot_extra')
+		
+	@staticmethod
+	def arenaTimes(usr):
+		return vip.value(usr, 'arena_times_extra')

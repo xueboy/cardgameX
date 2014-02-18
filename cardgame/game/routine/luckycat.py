@@ -361,6 +361,10 @@ class luckycat:
 	def rollBless(usr, isUseGem):
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
+		
+		if isUseGem and (not vip.canBuyLuckycatBless(usr)):
+			return {'msg':'luckycat_vip_required'}
+						
 		luckycat.updateBless(usr)
 		luckycatBlessConf = config.getConfig('luckycat_bless')
 		now = currentTime()		
