@@ -168,7 +168,7 @@ class arena:
 		
 		for item in gameConf['arena_rank_award']:
 			if item['rank'] == int(rk):
-				data = convert(usr, item['point'])
+				data = arena.convert(usr, item['point'])
 				res = arena.award_score(usr.roleid, item['point'])
 				usr.arena['rank_award'][rk] = False				
 				usr.save()
