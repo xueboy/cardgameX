@@ -460,7 +460,7 @@ class medal_arena(facility):
 	@staticmethod	
 	def db_seek_medal_holder(roleid, medalid, chipnum, baseLevel, cnt):
 		conn = DBConnection.getConnection()
-		sql = "SELECT distinct(medal_holder.roleid) FROM medal_holder INNER JOIN medal_level ON medal_holder.roleid = medal_level.roleid WHERE medal_level.level >= %s AND medal_holder.medalid = %s AND medal_holder.chipnum = %s AND medal_holder.roleid <> %s AND medal_holder.shield_time < NOW()  ORDER BY rand() LIMIT %s"
+		sql = "SELECT distinct(medal_holder.roleid) FROM medal_holder INNER JOIN medal_level ON medal_holder.roleid = medal_level.roleid WHERE medal_level.level >= %s AND medal_holder.medalid = %s AND medal_holder.chipnum = %s AND medal_holder.roleid <> %s AND medal_level.shield_time < NOW()  ORDER BY rand() LIMIT %s"
 		res = conn.query(sql, [baseLevel, medalid, chipnum, roleid, cnt])						
 		if len(res) < cnt:
 			res1 = conn.query(sql, [0, medalid, chipnum, roleid, cnt])			
