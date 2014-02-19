@@ -161,7 +161,6 @@ class dungeon(object):
 		return {'finish':False, 'star':0}
 	
 	def normalRecordEnd(self, battleid, fieldid, star):		
-		print self.normal_recored
 		self.normal_recored[battleid][fieldid]['finish'] = True
 		if self.normal_recored[battleid][fieldid]['star'] < star:
 			self.normal_recored[battleid][fieldid]['star'] = star

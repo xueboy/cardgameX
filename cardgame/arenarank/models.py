@@ -486,7 +486,6 @@ class medal_arena(facility):
 		sql = "SELECT shield_time FROM medal_level WHERE roleid = %s"
 		
 		res = conn.query(sql, [roleid])
-		print res
 		if len(res):
 			return res[0][0]			
 		return time_to_str(currentTime())

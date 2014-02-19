@@ -10,16 +10,10 @@ def levelup(request):
 	dest_skillid = request.GET['dest_skill']
 	source_skillid = []
 	source_skillid.append(request.GET['source_skill1'])
-	if request.GET.has_key('source_skill2'):
-		source_skillid.append(request.GET['source_skill2'])
-	if request.GET.has_key('source_skill3'):
-		source_skillid.append(request.GET['source_skill3'])
-	if request.GET.has_key('source_skill4'):
-		source_skillid.append(request.GET['source_skill4'])
-	if request.GET.has_key('source_skill5'):
-		source_skillid.append(request.GET['source_skill5'])
-	if request.GET.has_key('source_skill6'):
-		source_skillid.append(request.GET['source_skill6'])
+	for i in range(2, 50):
+		keyname = source_skill + str(i)	
+		if request.GET.has_key(keyname):
+			source_skillid.append(request.GET[keyname])
 		
 	return skill.levelup(usr, dest_skillid, source_skillid)
 	

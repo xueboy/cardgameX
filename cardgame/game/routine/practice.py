@@ -143,8 +143,7 @@ class practice:
 		
 						
 	@staticmethod
-	def levelup(usr, tp, point, practiceLevelConf):
-		print usr.practice
+	def levelup(usr, tp, point, practiceLevelConf):		
 		if tp == 'critical':
 			usr.practice['critical_exp'] = usr.practice['critical_exp'] + point
 			level = usr.practice['critical_level']

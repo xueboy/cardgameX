@@ -88,7 +88,6 @@ class arena:
 	@staticmethod
 	def defeate(usr):
 		res = None
-		print usr.arena		
 		if usr.arena.has_key('challenge_roleid'):
 			
 			res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']}))
@@ -165,8 +164,6 @@ class arena:
 			
 	@staticmethod
 	def rank_award(usr, rk):
-		print usr.arena['rank_award']
-		print rk
 		if not usr.arena['rank_award'].has_key(rk):
 			return {'msg':'arena_rank_award_not_exist'}
 		if not usr.arena['rank_award'][rk]:
