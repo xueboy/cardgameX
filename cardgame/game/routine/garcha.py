@@ -87,7 +87,10 @@ class garcha:
 				garchaDropid3 = gameConf['garcha_100_dropid3']
 				time_score = garchaConf[vip.level(usr)]['garcha_100_free_time_score']
 				luck_score = garchaConf[vip.level(usr)]['garcha_100_free_luck_score']
-				
+				if not garchaInfo.has_key('time_score'):
+					garchaInfo['time_score'] = 0
+				if not garchaInfo.has_key('luck_score'):
+					garchaInfo['luck_score'] = 0				
 			elif garchaAmount == 10000:
 				garchaCostGold = gameConf['garcha_10000_price']['gold']
 				garchaCostGem = gameConf['garcha_10000_price']['gem']
@@ -96,6 +99,10 @@ class garcha:
 				garchaDropid3 = gameConf['garcha_10000_dropid3']
 				time_score = garchaConf[vip.level(usr)]['garcha_10000_free_time_score']
 				luck_score = garchaConf[vip.level(usr)]['garcha_10000_free_luck_score']
+				if not garchaInfo.has_key('time_score'):
+					garchaInfo['time_score'] = 0
+				if not garchaInfo.has_key('luck_score'):
+					garchaInfo['luck_score'] = 0
 				garchaType = 'garcha_10000'
 		else:
 			if garchaAmount == 10:
@@ -108,6 +115,10 @@ class garcha:
 				garchaDropid3 = gameConf['garcha_100_dropid3']
 				time_score = garchaConf[vip.level(usr)]['garcha_100_time_score']
 				luck_score = garchaConf[vip.level(usr)]['garcha_100_luck_score']
+				if not garchaInfo.has_key('time_score'):
+					garchaInfo['time_score'] = 0
+				if not garchaInfo.has_key('luck_score'):
+					garchaInfo['luck_score'] = 0
 			elif garchaAmount == 10000:
 				garchaType = 'garcha_10000_free'
 				garchaDropid1 = gameConf['garcha_10000_dropid1']
@@ -115,6 +126,10 @@ class garcha:
 				garchaDropid3 = gameConf['garcha_10000_dropid3']
 				time_score = garchaConf[vip.level(usr)]['garcha_10000_time_score']
 				luck_score = garchaConf[vip.level(usr)]['garcha_10000_luck_score']
+				if not garchaInfo.has_key('time_score'):
+					garchaInfo['time_score'] = 0
+				if not garchaInfo.has_key('luck_score'):
+					garchaInfo['luck_score'] = 0
 		if usr.gold < garchaCostGold:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < garchaCostGem:
@@ -172,10 +187,6 @@ class garcha:
 			garchaInfo['count'] = garchaInfo['count'] + 1
 		
 		if time_score or luck_score:
-			if not garchaInfo.has_key('time_score'):
-				garchaInfo['time_score'] = 0
-			if not garchaInfo.has_key('luck_score'):
-				garchaInfo['luck_score'] = 0
 			garchaInfo['time_score'] = garchaInfo['time_score'] + time_score
 			garchaInfo['luck_score'] = garchaInfo['luck_score'] + luck_score
 			
