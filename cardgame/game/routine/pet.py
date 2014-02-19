@@ -23,7 +23,7 @@ class pet:
 		data['artifice'] = petConf[cardid]['artifice']		
 		data['init_star'] = 1
 		for i in range(level):
-			potential.onEveryPetLevelup(data, petConf)
+			potential.onEveryPetLevelup(inv.user, data, petConf)
 		return data
 	
 	@staticmethod
@@ -66,13 +66,13 @@ class pet:
 			inv.delCard(card['id'])
 		
 		
-		pet.gainExp(destCard, exp, petConf, petLevelConf, gameConf)
+		pet.gainExp(usr, destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
 		return {'update_card':inv.getClientCard(destCard), 'delete_card':sourceCardid}
 
 
 	@staticmethod
-	def gainExp(card, exp, petConf, petLevelConf, gameConf):
+	def gainExp(usr, card, exp, petConf, petLevelConf, gameConf):
 		level = card['level']
 		id = card['cardid']
 		quality = petConf[id]['quality']
@@ -83,7 +83,7 @@ class pet:
 		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
 			level = level + 1
-			protential.onEveryPetLevelup(card, petConf)
+			protential.onEveryPetLevelup(usr, card, petConf)
 			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			
 			card['level'] = level			
 		card['exp'] = exp	

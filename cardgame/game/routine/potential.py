@@ -14,11 +14,11 @@ class potential:
 		potentialConf = config.getConfig('potential')
 		
 		if not card.has_key('pt_potential'):
-			card['potential'] = 0
+			card['pt_potential'] = 0
 		if not card.has_key('pd_potential'):
-			card['potential'] = 0
+			card['pd_potential'] = 0
 		if not card.has_key('md_potential'):
-			card['potential'] = 0
+			card['md_potential'] = 0
 		potential = potentialConf['point'][petInfo['quality'] - 1]
 		card['pt_potential'] = card['pt_potential'] + potential
 		card['pd_potential'] = card['pd_potential'] + potential
