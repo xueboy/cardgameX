@@ -103,6 +103,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'vip':
 			return conf
+		if confname == 'potential_price':
+			return conf
 		return None
 	
 	
@@ -123,6 +125,17 @@ class config(gcconfig):
 		del data['medal_grab_probablity']		
 		del data['scene_player_count']
 		del data['equipment_strength_critical_probability']
+		del data['garcha_10_dropid1']
+		del data['garcha_100_dropid1']
+		del data['garcha_100_dropid2']
+		del data['garcha_100_dropid3']
+		del data['garcha_10000_dropid1']
+		del data['garcha_10000_dropid2']
+		del data['garcha_10000_dropid3']
+		del data['garcha_skill_10_dropid1']
+		del data['garcha_skill_10_dropid2']
+		del data['garcha_skill_dropid']
+		
 		return data
 	
 			
