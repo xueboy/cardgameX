@@ -164,6 +164,9 @@ def slotmachine(request):
 def vip(request):
 	return generalConfigRequestProcess(request, 'vip')
 	
+def protential(request):
+	return generalConfigRequestProcess(request, 'protential')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
