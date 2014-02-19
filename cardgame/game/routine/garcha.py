@@ -258,7 +258,7 @@ class garcha:
 		for i in range(9):
 			awd = drop.open(usr, gameConf['garcha_skill_10_dropid2'], awd)
 			
-		awd.s()
+		
 			
 		data = drop.makeData(awd, {})
 		

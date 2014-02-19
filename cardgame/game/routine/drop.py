@@ -238,8 +238,7 @@ class drop:
 	def award(usr, dropItem, awd):
 		save_user = False
 		save_inv = False
-		inv = None
-		inv.s()
+		inv = None		
 		if dropItem['type'] == 'st':
 			usr.chargeStamina(dropItem['count'])
 			awd['st'] = usr.stamina
