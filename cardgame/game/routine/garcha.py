@@ -5,6 +5,7 @@ import random
 from gclib.utility import randint, currentTime, is_same_day
 from game.utility.config import config
 from game.routine.drop import drop
+from game.routine.vip import vip
 
 
 garcha_prob_table = {
