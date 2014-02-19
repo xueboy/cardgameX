@@ -89,6 +89,7 @@ def info(request):
 	info['monster_md5'] = conf.getClientConfigMd5('monster')
 	info['skill_md5'] = conf.getClientConfigMd5('skill')
 	info['skill_effect_md5'] = conf.getClientConfigMd5('skill_effect')
+	info['skill_level_md5'] = conf.getClientConfigMd5('skill_level')
 	info['pet_level_md5'] = conf.getClientConfigMd5('pet_level')
 	info['prompt_md5'] = conf.getClientConfigMd5('prompt')
 	info['equipment_md5'] = conf.getClientConfigMd5('equipment')

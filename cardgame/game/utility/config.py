@@ -21,6 +21,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'skill_effect':
 			return conf
+		if confname == 'skill_level':
+			return conf
 		if confname == 'pet_level':
 			return conf
 		if confname == 'level':
