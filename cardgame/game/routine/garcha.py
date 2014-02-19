@@ -150,6 +150,10 @@ class garcha:
 						awd = drop.open(usr, garchaDropid2)
 					else:
 						awd = drop.open(usr, garchaDropid3)
+						garchaInfo['time_score'] = 0
+						garchaInfo['luck_score'] = 0
+						time_score = 0
+						luck_score = 0
 			else: 
 				awd = drop.open(usr, garchaDropid1, awd)	
 					
