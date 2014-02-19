@@ -542,7 +542,7 @@ class user(gcuser):
 		for tid in inv.team:
 			if tid:
 				card = inv.getCard(tid)
-				ppData = pvp.pvpPetProperty(card, petConf)								
+				ppData = pvp.pvpPetProperty(self, card, petConf)								
 				for equip in card['slot']:
 					if equip:
 						data1 = pvp.pvpEquipmentProperty(equip, equipmentConf)

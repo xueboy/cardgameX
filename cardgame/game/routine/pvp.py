@@ -296,16 +296,18 @@ class pvp:
 		ppData['pe'] = p1['pe'] + p2['pe']
 		ppData['init_star'] = p1['init_star']
 		ppData['level'] = p1['level']
+		ppData['sk_slot'] = p1['sk_slot']
 		return ppData
 		
 		
 	@staticmethod
-	def pvpPetProperty(card, petConf):
+	def pvpPetProperty(usr, card, petConf):
 		
 		petInfo = petConf[card['cardid']]
 		
 		star = card['init_star'] + int(card['level'] * 0.4)
 		
+		inv = usr.getInventory()
 		ppData = {}
 		ppData['attack'] = petInfo['attack'] + int(petInfo['attackgrowth'] * (card['level'] + star * 5)  * 0.5)
 		ppData['hp'] = petInfo['hp'] + int(petInfo['hpgrowth'] * (card['level'] + star * 5) * 0.5)
@@ -330,6 +332,7 @@ class pvp:
 		ppData['pe'] = 0
 		ppData['init_star'] = card['init_star']
 		ppData['level'] = card['level']
+		ppData['sk_slot'] = inv.getSkSlots()
 		return ppData
 		
 		
