@@ -108,11 +108,7 @@ class excel_import:
 				monsterConf['pr'] = pr
 				monsterConf['mr'] = mr
 				monsterConf['pa'] = pa
-				monsterConf['ma'] = ma
-				monsterConf['pe'] = pe
-				monsterConf['me'] = me
-				monsterConf['pi'] = pi
-				monsterConf['mi'] = mi				
+				#monsterConf['ma'] = ma
 				monsterConf['skill'] = skill
 				monsterConf['pt'] = pt
 				#monsterConf['mt'] = mt
