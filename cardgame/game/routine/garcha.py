@@ -140,7 +140,7 @@ class garcha:
 #				break;
 		awd = {}
 		if garchaAmount == 10:			
-			awd = drop.open(usr, garchaDropid1, awd)			
+			awd = drop.open(usr, garchaDropid1, awd)
 		else:
 			awd = {}
 			if garchaInfo['time_score'] >= 800:
@@ -150,8 +150,8 @@ class garcha:
 						awd = drop.open(usr, garchaDropid2)
 					else:
 						awd = drop.open(usr, garchaDropid3)
-				else: 
-					awd = drop.open(usr, garchaDropid1, awd)			
+			else: 
+				awd = drop.open(usr, garchaDropid1, awd)	
 					
 		data = drop.makeData(awd, {})
 							
@@ -257,9 +257,7 @@ class garcha:
 		
 		for i in range(9):
 			awd = drop.open(usr, gameConf['garcha_skill_10_dropid2'], awd)
-			
-		
-			
+					
 		data = drop.makeData(awd, {})
 		
 		usr.gold = usr.gold - goldCost

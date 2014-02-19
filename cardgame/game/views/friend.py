@@ -14,7 +14,9 @@ def request(request):
 	friend = user.get(int(friendid))
 	if friend != None:		
 		usrNw = usr.getNetwork()
-		data = usrNw.addFriendRequest(friend)		
+		data = usrNw.addFriendRequest(friend)
+		if data.has_key('msg'):
+			return data
 		return {'friend':data}
 	return {'msg':'friend_not_exist'}
 		
