@@ -11,7 +11,7 @@ def levelup(request):
 	source_skillid = []
 	source_skillid.append(request.GET['source_skill1'])
 	for i in range(2, 50):
-		keyname = source_skill + str(i)	
+		keyname = 'source_skill' + str(i)	
 		if request.GET.has_key(keyname):
 			source_skillid.append(request.GET[keyname])
 		
@@ -23,34 +23,18 @@ def install(request):
 	teamPosition = int(request.GET['team_position'])
 	ownerTeamPosition = int(request.GET['owner_team_position'])
 	slotpos = int(request.GET['sk_slot_pos'])
-	stoneid = request.GET['skill']
-	
+	stoneid = request.GET['skill']	
 	return skill.install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid)
 	
 def decompose(request):
 	usr = request.user
 	skilids = []
 	
-	skilids.append(request.GET['skill_id1'])
-	if request.GET.has_key('skill_id2'):
-		skilids.append(request.GET['skill_id2'])
-	if request.GET.has_key('skill_id3'):
-		skilids.append(request.GET['skill_id3'])
-	if request.GET.has_key('skill_id4'):
-		skilids.append(request.GET['skill_id4'])
-	if request.GET.has_key('skill_id5'):
-		skilids.append(request.GET['skill_id5'])
-	if request.GET.has_key('skill_id6'):
-		skilids.append(request.GET['skill_id6'])
-	if request.GET.has_key('skill_id7'):
-		skilids.append(request.GET['skill_id7'])
-	if request.GET.has_key('skill_id8'):
-		skilids.append(request.GET['skill_id8'])
-	if request.GET.has_key('skill_id9'):
-		skilids.append(request.GET['skill_id9'])
-	if request.GET.has_key('skill_id10'):
-		skilids.append(request.GET['skill_id10'])
-
+	skilids.append(request.GET['source_skill1'])
+	for i in range(2, 50):
+		keyname = 'skill_id' + str(i)	
+		if request.GET.has_key(keyname):
+			skilids.append(request.GET[keyname])
 	return skill.decompose(usr, skilids)
 	
 def assembly(request):	
