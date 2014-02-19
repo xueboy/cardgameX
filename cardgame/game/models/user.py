@@ -294,7 +294,7 @@ class user(gcuser):
 		self.trp = data['trp']
 		self.sp = data['sp']
 		self.stv = data['stv']
-		self.garcha = data['garcha']
+		self.garcha.update(data['garcha'])
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
 		self.arena.update(data['arena'])

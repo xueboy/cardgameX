@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from game.routine.skill import skill
+from game.routine.garcha import garcha as garchaR
 
 def levelup(request):
 	usr = request.user
@@ -58,10 +59,16 @@ def decompose(request):
 
 	return skill.decompose(usr, skilids)
 	
-def assembly(request):
-	
-	usr = request.user
-	
-	skillid = request.GET['skillid']
-	
+def assembly(request):	
+	usr = request.user	
+	skillid = request.GET['skillid']	
 	return skill.assembly(usr, skillid)
+	
+def garcha_skill10(request):
+	usr = request.user	
+	return garchaR.garcha_skill10(usr)
+	
+def garcha_skill(request):
+	usr = request.user
+	nature = int(request.GET['nature'])	
+	return garchaR.garcha_skill(usr, nature)

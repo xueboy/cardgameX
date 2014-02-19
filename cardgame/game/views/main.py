@@ -80,8 +80,7 @@ def index(request):
 def info(request):
 	
 	info = {}	
-	info[u'status'] = 'OK'
-	#info['greet'] = u'你好'
+	info[u'status'] = 'OK'	
 	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
 	info['level_md5'] = conf.getClientConfigMd5('level')
 	info['game_md5'] = conf.getClientConfigMd5('game')
@@ -129,6 +128,7 @@ def info(request):
 	info['practice_level_md5'] = conf.getClientConfigMd5('practice_level')
 	info['slotmachine_md5'] = conf.getClientConfigMd5('slotmachine')
 	info['vip_md5']= conf.getClientConfigMd5('vip')
+	info['potential_price_md5'] = conf.getClientConfigMd5('potential_price')
 	return HttpResponse(json.dumps({'info':info}))
 
 

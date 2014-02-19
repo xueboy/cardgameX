@@ -119,4 +119,7 @@ urlpatterns = patterns('',
     url(r'slotmachine_import/$', gameadmin.views.main.slotmachine_import),
     url(r'vip/$', gameadmin.views.main.vip),
     url(r'vip_import/$', gameadmin.views.main.vip_import),
+    url(r'potential/$', gameadmin.views.main.potential),
+    url(r'potential_price/$', gameadmin.views.main.potential_price),
+    url(r'potential_price_import/$', gameadmin.views.main.potential_price_import),
 )

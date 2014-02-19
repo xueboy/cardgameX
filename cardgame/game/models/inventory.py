@@ -203,6 +203,14 @@ class inventory(object):
 			return 0
 		self.card = filter(lambda c : c['id'] != id, self.card)		
 		return 1	
+	
+	def CountCardByQuality(self, quality, petConf):
+		cnt = 0
+		for card in self.card:
+			petInfo = petConf[card['cardid']]
+			if petInfo['quality'] == quality:
+				cnt = cnt + 1
+		return cnt
 
 	def CountCardChip(self, cardid):
 		if not self.card_chip.has_key(cardid):
@@ -652,6 +660,12 @@ class inventory(object):
 	def getItem(self, id):
 		for it in self.item:
 			if it['id'] == id:
+				return it
+		return None
+		
+	def getItemByType(self, itemid):
+		for it in self.item:
+			if it['itemid'] == itemid:
 				return it
 		return None
 		

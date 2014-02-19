@@ -164,8 +164,11 @@ def slotmachine(request):
 def vip(request):
 	return generalConfigRequestProcess(request, 'vip')
 	
-def protential(request):
-	return generalConfigRequestProcess(request, 'protential')
+def potential(request):
+	return generalConfigRequestProcess(request, 'potential')
+	
+def potential_price(request):
+	return generalConfigRequestProcess(request, 'potential_price')
 	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
@@ -314,3 +317,6 @@ def slotmachine_import(request):
 	
 def vip_import(request):
 	return excel_import.vip_import(request)
+	
+def potential_price_import(request):
+	return excel_import.potential_price_import(request)

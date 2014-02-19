@@ -6,21 +6,24 @@ import math
 from gclib.utility import randint
 from game.utility.config import config
 from game.routine.vip import vip
+from game.routine.potential import potential
 
 class pet:
 	
 	
 	@staticmethod
-	def make_pet(inv, cardid, level, cardConf):
+	def make_pet(inv, cardid, level, petConf):
 		data = {}
 		data['cardid'] = cardid
 		data['id'] = inv.generateCardName()
 		data['level'] = level
 		data['exp'] = 0	
-		data['strength'] = cardConf[cardid]['strength']
-		data['intelligence'] = cardConf[cardid]['intelligence']
-		data['artifice'] = cardConf[cardid]['artifice']		
+		data['strength'] = petConf[cardid]['strength']
+		data['intelligence'] = petConf[cardid]['intelligence']
+		data['artifice'] = petConf[cardid]['artifice']		
 		data['init_star'] = 1
+		for i in range(level):
+			potential.onEveryPetLevelup(data, petConf)
 		return data
 	
 	@staticmethod
@@ -80,6 +83,7 @@ class pet:
 		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
 			level = level + 1
+			protential.onEveryPetLevelup(card, petConf)
 			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			
 			card['level'] = level			
 		card['exp'] = exp	

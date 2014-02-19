@@ -126,37 +126,72 @@ class excel_import:
 				return HttpResponse('抽奖武将xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, garcha_file.read())
-			sheets = []
-			sheets.append(wb.sheet_by_index(0))
-			sheets.append(wb.sheet_by_index(1))
-			sheets.append(wb.sheet_by_index(2))
-			sheets.append(wb.sheet_by_index(3))
-			sheets.append(wb.sheet_by_index(4))
+			sheet = wb.sheet_by_index(0)
 			
 			conf = []
-			for sheet in sheets:
-				garchaCataConf = {}
-				cardConf = []
-				total_prob = 0
-				for rownum in range(4, sheet.nrows):
-					row = sheet.row_values(rownum)
-					cardid = row[0]
-					name = row[1]				
-					level = row[2]				
-					prob = row[3]					
-					key = int(prob)
-					garchaConf = {}
-					garchaConf['cardId'] = cardid
-					garchaConf['name'] = name				
-					garchaConf['level'] = level
-					garchaConf['prob'] = prob
-					total_prob = total_prob + prob
-					cardConf.append(garchaConf)				
-				garchaCataConf['card'] = cardConf
-				garchaCataConf['totalProb'] = total_prob
-				conf.append(garchaCataConf)
-			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('garcha_import')
+			for rownum in range(1,sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				vip_level = int(row[0])
+				garcha_10000_free_time_score = int(row[1])
+				garcha_10000_time_score = int(row[2])
+				garcha_10000_free_luck_score = int(row[3])
+				garcha_10000_luck_score = int(row[4])
+				garcha_100_free_time_score = int(row[5])
+				garcha_100_time_score = int(row[6])
+				garcha_100_free_luck_score = int(row[7])
+				garcha_100_luck_score = int(row[8])
+				
+				garchaConf = {}
+				garchaConf['garcha_10000_free_time_score'] = garcha_10000_free_time_score
+				garchaConf['garcha_10000_time_score'] = garcha_10000_time_score
+				garchaConf['garcha_10000_free_luck_score'] = garcha_10000_free_luck_score
+				garchaConf['garcha_10000_luck_score'] = garcha_10000_luck_score
+				garchaConf['garcha_100_free_time_score'] = garcha_100_free_time_score
+				garchaConf['garcha_100_time_score'] = garcha_100_time_score
+				garchaConf['garcha_100_free_luck_score'] = garcha_100_free_luck_score
+				garchaConf['garcha_100_luck_score'] = garcha_100_luck_score
+				
+				while len(conf) < vip_level + 1:
+					conf.append({})
+				
+				conf[vip_level]	= garchaConf
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('garcha_import')	
+		
+				
+				
+#			sheets = []
+#			sheets.append(wb.sheet_by_index(0))
+#			sheets.append(wb.sheet_by_index(1))
+#			sheets.append(wb.sheet_by_index(2))
+#			sheets.append(wb.sheet_by_index(3))
+#			sheets.append(wb.sheet_by_index(4))
+#			
+#			conf = []
+#			for sheet in sheets:
+#				garchaCataConf = {}
+#				cardConf = []
+#				total_prob = 0
+#				for rownum in range(4, sheet.nrows):
+#					row = sheet.row_values(rownum)
+#					cardid = row[0]
+#					name = row[1]				
+#					level = row[2]				
+#					prob = row[3]					
+#					key = int(prob)
+#					garchaConf = {}
+#					garchaConf['cardId'] = cardid
+#					garchaConf['name'] = name				
+#					garchaConf['level'] = level
+#					garchaConf['prob'] = prob
+#					total_prob = total_prob + prob
+#					cardConf.append(garchaConf)				
+#				garchaCataConf['card'] = cardConf
+#				garchaCataConf['totalProb'] = total_prob
+#				conf.append(garchaCataConf)
+#			return HttpResponse(json.dumps(conf, sort_keys=True))
+#		return HttpResponse('garcha_import')
 	
 	@staticmethod
 	def prompt_import(request):
@@ -2147,3 +2182,28 @@ class excel_import:
 			
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('vip_import')
+		
+	@staticmethod
+	def potential_price_import(request):
+		if request.method == 'POST':
+			potential_price_file = request.FILES.get('potential_price_file')
+			if not potential_price_file:
+				return HttpResponse('潜力激发价格xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, potential_price_file.read())
+			sheet = wb.sheet_by_index(0)
+			
+			conf = []
+			
+			for rownum in range(1, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				level = int(row[0])
+				price = int(row[1])
+				
+				while len(conf) < level:
+					conf.append(0)
+				conf[level - 1] = price
+				
+			return HttpResponse(json.dumps(conf, sort_keys = True))	
+		return HttpResponse('protential_price_import')

@@ -3,9 +3,9 @@
 
 from gclib.json import json
 from game.routine.pet import pet
-from game.routine.garcha import garcha as garchaR
 from game.models.inventory import inventory
-
+from game.routine.garcha import garcha as garchaR
+from game.routine.potential import potential
 def set_team(request):
 	usr = request.user
 	inv = usr.getInventory()
@@ -133,21 +133,20 @@ def decompose(request):
 		cardids.append(request.GET['card_id9'])
 	if request.GET.has_key('card_id10'):
 		cardids.append(request.GET['card_id10'])
-
 	return pet.decompose(usr, cardids)
-
 
 def reborn(request):
 	usr = request.user
-	
-	cardid = request.GET['cardid']
-	
+	cardid = request.GET['cardid']	
 	return pet.reborn(usr, cardid)
 	
-def assembly(request):
-	
-	usr = request.user
-	
-	card_id = request.GET['cardid']
-	
+def assembly(request):	
+	usr = request.user	
+	card_id = request.GET['cardid']	
 	return pet.assembly(usr, card_id)
+	
+def fire_potential(request):
+	usr = request.user
+	id = request.GET['card']
+	useGem = (request.GET['is_use_gem'] == 'yes')
+	return potential.fire(usr, id, useGem)
