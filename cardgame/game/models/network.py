@@ -289,7 +289,7 @@ class network(object):
 		awd = {}
 		awd = drop.open(usr, emailInfo['dropid'], awd)
 		awd = drop.makeData(awd, {})
-		self.email[id]['open'] = False
+		self.email[id]['open'] = True
 		
 		self.save()
 		

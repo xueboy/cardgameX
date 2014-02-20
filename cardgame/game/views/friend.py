@@ -120,7 +120,7 @@ def delete_friend_mail(request):
 
 
 def email_read(request):
-	emailid = request.GET['email_id']
+	emailid = request.GET['id']
 	
 	usr = request.user
 	usrNw = usr.getNetwork()	
@@ -128,14 +128,14 @@ def email_read(request):
 	return {'update_email':ret}
 
 def email_open(request):
-	emailid = request.GET['email_id']
+	emailid = request.GET['id']
 	
 	usr = request.user
 	usrNw = usr.getNetwork()
 	return usrNw.emailOpen(emailid)
 
 def email_delete(request):
-	emailid = request.GET['email_id']
+	emailid = request.GET['id']
 	
 	usr = request.user
 	usrNw = usr.getNetwork()
