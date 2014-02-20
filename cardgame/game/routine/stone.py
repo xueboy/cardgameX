@@ -187,13 +187,13 @@ class stone:
 	def add_exp(st, exp, stoneInfo):
 		stoneLevelConf = config.getConfig('stone_level')		
 		
-		expdeff = stoneLevelConf[unicode(st['level'] + 1)][stoneInfo['quality'] - 1] - stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
+		expdeff = stoneLevelConf[str(stoneInfo['quality'])][st['level']]['exp'] - stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
 		exp = exp + st['exp']
 		st['exp'] = 0
 		while expdeff < exp:
 			st['level'] = st['level'] + 1
 			exp = exp - expdeff
-			expdeff = stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1] - stoneLevelConf[unicode(st['level'] - 1)][stoneInfo['quality'] - 1]
+			expdeff = stoneLevelConf[str(stoneInfo['quality'])][st['level']]['exp'] - stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
 			
 		st['exp'] = exp
 			
@@ -201,7 +201,7 @@ class stone:
 	def get_exp(st, stoneInfo):
 		stoneLevelConf = config.getConfig('stone_level')
 		exp = st['exp']
-		exp = exp + stoneLevelConf[unicode(st['level'])][stoneInfo['quality'] - 1]
+		exp = exp + stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
 		exp = exp + stoneInfo['gravel']
 		return exp
 		

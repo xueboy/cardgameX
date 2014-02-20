@@ -169,7 +169,7 @@ class excel_import:
 #			sheets.append(wb.sheet_by_index(4))
 #			
 #			conf = []
-#			for sheet in sheets:
+#			for sheet in sheets:s
 #				garchaCataConf = {}
 #				cardConf = []
 #				total_prob = 0
@@ -1060,13 +1060,39 @@ class excel_import:
 				return HttpResponse('宝石等级xlsx文件未上传')			
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_level_file.read())
-			sheet = wb.sheet_by_index(0)
+			sheet = wb.sheet_by_index(1)
 					
 			conf = {}
 			
-			for rownum in range(2,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
-				conf[str(rownum - 1)] = row[1:6]
+				
+				quality = int(row[0])
+				level = int(row[1])
+				strength = int(row[2])
+				intelligence = int(row[3])
+				artifice = int(row[4])
+				pt = int(row[5])				
+				pd = int(row[6])
+				md = int(row[7])
+				exp = int(row[8])
+				
+				levelConf = {}
+				levelConf['strength'] = strength
+				levelConf['intelligence'] = intelligence
+				levelConf['artifice'] = artifice
+				levelConf['pt'] = pt
+				levelConf['pd'] = pd
+				levelConf['md'] = md
+				levelConf['exp'] = exp
+				
+				if not conf.has_key(str(quality)):
+					conf[str(quality)] = []
+				while len(conf[str(quality)]) < level:
+					conf[str(quality)].append({})
+			
+				conf[str(quality)][level - 1] = levelConf
+				
 					
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_level_import')
