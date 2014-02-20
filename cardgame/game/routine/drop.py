@@ -383,13 +383,16 @@ class drop:
 			for (chipid, chipcount) in awd['update_card_chip_dic']:
 				dropData.append({'type':16, 'count': chipcount, 'insId' : '', 'id': chipid})		
 			
-		retData = {}		
+		retData = {}
 		retData[keyname] = dropData
 		
 		if data.has_key(keyname):			
 			dp = data[keyname]
 			retData[keyname].extend(dp)
 			del data[keyname]
+		
+		if not retData[keyname]:
+			del retData[keyname]
 		
 		retData.update(data)
 		return retData
@@ -438,12 +441,15 @@ class drop:
 				dropData.append({'type':16, 'count': chipcount, 'insId' : '', 'id': chipid})		
 			
 		retData = {}		
-		retData[kayname] = dropData
+		retData[keyname] = dropData
 		
-		if data.has_key(kayname):			
-			dp = data[kayname]
-			retData[kayname].extend(dp)
-			del data[kayname]
+		if data.has_key(keyname):			
+			dp = data[keyname]
+			retData[keyname].extend(dp)
+			del data[keyname]
+		
+		if not retData[keyname]:
+			del retData[keyname]
 		
 		retData.update(data)
 		return retData

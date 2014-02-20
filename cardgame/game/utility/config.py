@@ -64,7 +64,7 @@ class config(gcconfig):
 		if confname == 'language':
 			return conf
 		if confname == 'drop':
-			return conf
+			return config.dropFilter(conf)
 		if confname == 'dialog':
 			return conf
 		if confname == 'drama':
@@ -245,4 +245,13 @@ class config(gcconfig):
 		data = {}
 		for item in conf:
 			data[str(item[0])] = item[1]		
+		return data
+		
+	@staticmethod
+	def dropFilter(conf):
+		data = {}
+		
+		for (dropid, d) in conf.items():
+			if d['isClient']:
+				data[dropid] = d['drop']
 		return data
