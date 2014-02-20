@@ -163,13 +163,15 @@ class garcha:
 				rd = randint()
 				if rd <= 300:
 					if garchaInfo['luck_score'] < 96:
-						awd = drop.open(usr, garchaDropid2)
+						awd = drop.open(usr, garchaDropid2, awd)
 					else:
-						awd = drop.open(usr, garchaDropid3)
+						awd = drop.open(usr, garchaDropid3, awd)
 						garchaInfo['time_score'] = 0
 						garchaInfo['luck_score'] = 0
 						time_score = 0
 						luck_score = 0
+				else:
+					awd = drop.open(usr, garchaDropid1, awd)
 			else: 
 				awd = drop.open(usr, garchaDropid1, awd)	
 					
