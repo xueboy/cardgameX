@@ -198,9 +198,7 @@ class garcha:
 		if time_score or luck_score:
 			garchaInfo['time_score'] = garchaInfo['time_score'] + time_score
 			garchaInfo['luck_score'] = garchaInfo['luck_score'] + luck_score
-			
-			 
-			
+					
 		duration = now - garchaInfo['last_time']
 		cooldown = cooldownConf - duration		
 		data['gold'] = usr.gold
