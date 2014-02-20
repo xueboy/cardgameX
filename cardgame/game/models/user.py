@@ -550,7 +550,7 @@ class user(gcuser):
 				
 				for st in card['st_slot']:
 					if st:
-						data1 = stone.pvpProperty(st, stoneConf)
+						data1 = pvp.pvpStoneProperty(st, stoneConf)
 						ppData = pet.mergePvpProperty(ppData, data1)	
 				ppLuckData = pvp.luckPvpProperty(self, card)
 				ppData = pvp.mergePvpProperty(ppData, ppLuckData)

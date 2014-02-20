@@ -379,3 +379,48 @@ class pvp:
 		ppData['pe'] = 0
 		return ppData
 		
+	@staticmethod
+	def pvpStoneProperty(st, stoneConf):
+		ppData['hp'] = 0
+		ppData['pa'] = 0
+		ppData['ma'] = 0
+		ppData['pd'] = 0
+		ppData['md'] = 0
+		ppData['pt'] = 0
+		ppData['mt'] = 0					
+		ppData['pr'] = 0
+		ppData['mr'] = 0
+		ppData['critical'] = 0
+		ppData['tenacity'] = 0
+		ppData['block'] = 0
+		ppData['wreck'] = 0
+		ppData['hit'] = 0
+		ppData['dodge'] = 0				
+		ppData['strength'] = 0
+		ppData['intelligence'] = 0
+		ppData['artifice'] = 0
+		ppData['pi'] = 0
+		ppData['mi'] = 0
+		
+
+		quality = stoneConf[st['stoneid']]['quality']
+		stoneLevelConf = config.getConfig('stone')
+		stoneLevelInfo = stoneLevelConf[str(quality)][st['level'] - 1]
+				
+		if st['typestr'] == 'strenghth':
+			ppData['strenghth'] = stoneLevelInfo['strenghth']
+		elif st['typestr'] == 'intelligence':
+			ppData['intelligence'] = stoneLevelInfo['intelligence']
+		elif st['typestr'] == 'artifice':
+			ppData['artifice'] = stoneLevelInfo['artifice']		
+		elif st['typestr'] == 'pt':
+			ppData['pt'] = stoneLevelInfo['pt']		
+		elif st['typestr'] == 'pd':
+			ppData['pd'] = stoneLevelInfo['pd']
+		elif st['typestr'] == 'md':
+			ppData['md'] = stoneLevelInfo['md']		
+			
+		return ppData
+
+		
+		
