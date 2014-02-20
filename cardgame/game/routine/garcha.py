@@ -163,6 +163,7 @@ class garcha:
 #			else:
 #				garchaCard = inv.addCard(card['cardId'], card['level'])
 #				break;
+
 		awd = {}
 		if garchaAmount == 10:			
 			awd = drop.open(usr, garchaDropid1, awd)
@@ -170,7 +171,7 @@ class garcha:
 			awd = {}
 			if garchaInfo['time_score'] >= 800:
 				rd = randint()
-				if rd <= 300:
+				if (rd <= 300) or (garchaInfo['time_score'] >= 1200):
 					if garchaInfo['luck_score'] < 96:
 						awd = drop.open(usr, garchaDropid2, awd)
 					else:
@@ -179,10 +180,10 @@ class garcha:
 							awd = drop.open(usr, garchaDropid3, awd)
 						else:
 							awd = drop.open(usr, garchaDropid2, awd)	
-						garchaInfo['time_score'] = 0
-						garchaInfo['luck_score'] = 0
-						time_score = 0
-						luck_score = 0
+					garchaInfo['time_score'] = 0
+					garchaInfo['luck_score'] = 0
+					time_score = 0
+					luck_score = 0
 				else:
 					awd = drop.open(usr, garchaDropid1, awd)
 			else: 
@@ -202,7 +203,7 @@ class garcha:
 		if time_score or luck_score:
 			garchaInfo['time_score'] = garchaInfo['time_score'] + time_score
 			garchaInfo['luck_score'] = garchaInfo['luck_score'] + luck_score
-					
+			
 		duration = now - garchaInfo['last_time']
 		cooldown = cooldownConf - duration		
 		data['gold'] = usr.gold
