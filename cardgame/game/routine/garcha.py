@@ -72,6 +72,8 @@ class garcha:
 		garchaDropid3 = ''
 		time_score = 0
 		luck_score = 0
+		petConf = config.getConfig('pet')
+		
 		if not isFree:
 			if garchaAmount == 10:
 				garchaCostGold = gameConf['garcha_10_price']['gold']
@@ -90,7 +92,8 @@ class garcha:
 				if not garchaInfo.has_key('time_score'):
 					garchaInfo['time_score'] = 0
 				if not garchaInfo.has_key('luck_score'):
-					garchaInfo['luck_score'] = 0				
+					garchaInfo['luck_score'] = 0					
+				
 			elif garchaAmount == 10000:
 				garchaCostGold = gameConf['garcha_10000_price']['gold']
 				garchaCostGem = gameConf['garcha_10000_price']['gem']
@@ -104,6 +107,8 @@ class garcha:
 				if not garchaInfo.has_key('luck_score'):
 					garchaInfo['luck_score'] = 0
 				garchaType = 'garcha_10000'
+			if inv.CountCardByQuality(5, petConf) > 0:			 
+					time_score = int(time_score / 2)
 		else:
 			if garchaAmount == 10:
 				garchaType = 'garcha_10_free'
@@ -130,6 +135,10 @@ class garcha:
 					garchaInfo['time_score'] = 0
 				if not garchaInfo.has_key('luck_score'):
 					garchaInfo['luck_score'] = 0
+			fatigue = inv.CountCardByQuality(5, petConf)
+			if fatigue > 5:
+				fatigue = 5
+			time_score = int(time_score / (1 + fatigue))
 		if usr.gold < garchaCostGold:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < garchaCostGem:
@@ -176,9 +185,7 @@ class garcha:
 				awd = drop.open(usr, garchaDropid1, awd)	
 					
 		data = drop.makeData(awd, {})
-							
-		
-		
+				
 		#if not garchaCard:
 		#	return {'msg': 'card_not_exist'}
 		
