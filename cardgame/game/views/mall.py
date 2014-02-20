@@ -10,7 +10,7 @@ def purchase(request):
 	usr = request.user	
 	mallPriceConf = config.getConfig('mall_price')
 	
-	if len(mallPriceConf) > int(purchasenum):
+	if len(mallPriceConf) <= int(purchasenum):
 		return {'msg':'puchaseid_not_exist'}
 			
 	mallPriceInfo = mallPriceConf[purchasenum]	
