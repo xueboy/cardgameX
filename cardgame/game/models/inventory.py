@@ -95,6 +95,7 @@ class inventory(object):
 		skill = {}
 		for sk in self.skill:
 			skill[sk['id']]	= sk
+			skill[sk['id']]['exp'] = int(skill[sk['id']]['exp'])
 			
 		for m in team:
 			if m and m.has_key('sk_slot'):
