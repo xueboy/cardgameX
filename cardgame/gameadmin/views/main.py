@@ -170,6 +170,9 @@ def potential(request):
 def potential_price(request):
 	return generalConfigRequestProcess(request, 'potential_price')
 	
+def email(request):
+	return generalConfigRequestProcess(request, 'email')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -320,3 +323,6 @@ def vip_import(request):
 	
 def potential_price_import(request):
 	return excel_import.potential_price_import(request)
+	
+def email_import(request):
+	return excel_import.email_import(request)

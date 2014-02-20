@@ -42,7 +42,7 @@ class gm:
 		data['login_count'] = usr.signin['login_count']
 		data['medalConf'] = config.getConfig('medal')
 		data['medalDict'] = inv.medal
-		
+		data['emailConf'] = config.getConfig('email')
 		
 		
 		return data

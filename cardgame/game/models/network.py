@@ -2,6 +2,7 @@
 from gclib.utility import currentTime, is_same_day
 from game.utility.config import config
 from game.models.massyell import massyell
+from game.routine.drop import drop
 
 class network(object):
 	
@@ -33,7 +34,7 @@ class network(object):
 		data['message'] = self.message
 		data['mail'] = self.mail
 		data['email'] = self.email
-		data['friend_request'] = self.email
+		data['friend_request'] = self.friend_request
 		data['blacklist'] = self.blacklist
 		data['sequenceid'] = self.sequenceid
 		data['nt_info'] = self.nt_info
@@ -69,8 +70,8 @@ class network(object):
 		data['friend'] = self.friend	
 		data['message'] = self.message
 		data['mail'] = self.getClientMailData()
-		data['email'] = {}#self.email
-		data['friend_request'] = self.email		
+		data['email'] = self.email
+		data['friend_request'] = self.friend_request		
 		#data['nt_info'] = self.nt_info
 		return data			
 		
@@ -97,7 +98,7 @@ class network(object):
 		requestid = str(friendNw.sequenceid)
 		friendNw.sequenceid = friendNw.sequenceid + 1
 		data.update({'id':requestid})		
-		friendNw.email[requestid] = data		
+		friendNw.friend_request[requestid] = data		
 		friendNw.save()
 		if not friend.notify.has_key('notify_friend_request'):
 			friend.notify['notify_friend_request'] = {}
@@ -203,8 +204,7 @@ class network(object):
 		del self.nt_info[friendid]
 		self.save()
 		return {}
-		
-		
+			
 	def ban(self, ben_roleid, ben_name):
 		self.blacklist.append({'roleid':ben_roleid, 'name':ben_name, 'create_time':currentTime()})
 			
@@ -220,14 +220,7 @@ class network(object):
 			if ban['roleid'] == ban_roleid:
 				return True
 		return False
-		
-	def emailAnswer(self, id, option):
-		if not self.email.has_key(id):
-			return {'msg':'request_not_exist'}
-		email = self.email[id]
-		#if email['type'] == 'firend_request':
-		return self.emailAnswerFriendRequest(email, option)
-			
+				
 	def updateFriendData(self):
 		for friendid in self.friend:
 			fNw = network.get(friendid)
@@ -236,9 +229,12 @@ class network(object):
 				fNw.friend[strRoleid] = self.user.getFriendData()
 				fNw.save()			
 		
-	def emailAnswerFriendRequest(self, email, option):
+	def friendRequestAnswer(self, requestid, option):
+		if not self.friend_request.has_key(requestid):
+			return {'msg':'request_not_exist'}
+		friendRequest = self.friend_request[requestid]
 		if option == 'yes':
-			friendid = email['roleid']
+			friendid = friendRequest['roleid']
 			if self.friend.has_key(friendid):
 				return {'msg':'friend_not_exist'}
 			friend = self.user.get(friendid)
@@ -253,28 +249,54 @@ class network(object):
 			friendQt.udpateFinishFriendQuest(friendNw)
 			friendNw.addFriend(self.user)
 			
-			emailid = [email['id']]
-			del self.email[email['id']]
+			requestid = [friendRequest['id']]
+			del self.friend_request[friendRequest['id']]
 			
-			for key, val in self.email.items():
+			for key, val in self.friend_request.items():
 				if val['roleid'] == friendid:
-					del self.email[key]
-					emailid.append(key)				
+					del self.friend_request[key]
+					requestid.append(key)				
 			self.save()
 			friendNw.save()
-			return {'friend_request_delete':emailid, 'friend_new':friendData}
+			return {'friend_request_delete':requestid, 'friend_new':friendData}
 		elif option == 'no':
 			del self.email[email['id']]		
 			self.save()
 			return {'friend_request_delete':[email['id']]}
 		return {}
 	
-	def emailMarkReaded(self, emailid):
-		if not self.email.has_key(emailid):
+	def emailMarkReaded(self, id):
+		if not self.email.has_key(id):
 			return {'msg':'email_not_exist'}
-		self.email[emailid]['readed'] = True
+		if not self.email.has_key(id):
+			return {'msg':'email_not_exist'}
+		self.email[id]['read'] = True
 		self.save()
-		return self.email[emailid]		
+		self.email[id]['read'] = True
+		return self.email[id]
+		
+	def emailOpen(self, id):
+		
+		if not self.email.has_key(id):
+			return {'msg':'email_not_exist'}
+		
+		if self.email[id]['open']:
+			return {'msg':'email_already_open'}
+		
+		usr = self.user
+		emailConf = config.getConfig('email')
+		emailInfo = emailConf[self.email[id]['emailid']]
+		awd = {}
+		awd = drop.open(usr, emailInfo['dropid'], awd)
+		awd = drop.makeData(awd, {})
+		self.email[id]['open'] = False
+		
+		self.save()
+		
+		data = awd
+		data['email_update'] = self.email[id]
+		return data
+		
 		
 	def emailDelete(self, emailid):
 		if self.email.has_key(emailid):
@@ -288,3 +310,12 @@ class network(object):
 		qt = self.user.getQuest()		
 		qt.updateFinishYellQuest()
 		return ms.yell(self.roleid, name, msg)
+
+	def appendEmail(self, emailid):
+		usr = self.user
+		requestid = str(self.sequenceid)		
+		self.email[requestid] = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid}
+		self.sequenceid = self.sequenceid + 1		
+		self.save()
+		
+	

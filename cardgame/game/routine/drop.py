@@ -10,7 +10,7 @@ class drop:
 		dropConf = config.getConfig('drop')
 		
 		rd = randbigint()
-		dropInfo = dropConf[dropid]			
+		dropInfo = dropConf[dropid]['drop']
 		
 		for d in dropInfo:
 			probablity = d['probability']			
@@ -31,7 +31,7 @@ class drop:
 		dropConf = config.getConfig('drop')
 		
 		rd = randbigint()
-		dropInfo = dropConf[dropid]
+		dropInfo = dropConf[dropid]['drop']
 		
 		awd = {}		
 		
@@ -399,7 +399,7 @@ class drop:
 		
 		
 	@staticmethod
-	def makeData(awd, data, kayname = 'drop'):		
+	def makeData(awd, data, keyname = 'drop'):		
 		dropData = []
 		if awd.has_key('st'):
 			dropData.append({'type':11, 'count':awd['st']})

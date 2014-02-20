@@ -302,11 +302,14 @@ class garcha:
 	def garcha_skill(usr, nature):
 		gameConf = config.getConfig('game')
 		
-		if nature > len(gameConf['garcha_skill_dropid']):
+		if (nature > len(gameConf['garcha_skill_dropid'])) or (nature < 0):
 			return {'msg':'parameter_bad'}
-		
+				
 		goldCost = gameConf['garcha_skill_price'][nature - 1]['gold']
 		gemCost = gameConf['garcha_skill_price'][nature - 1]['gem']
+		
+		if int(goldCost) == 0 and int(gemCost) == 0:
+			return {'msg':'parameter_bad'}
 		
 		if usr.gold < goldCost:
 			return {'msg':'gold_not_enough'}

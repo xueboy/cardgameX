@@ -92,7 +92,16 @@
       <td>钻石</td>
       <td><input name="tfGem" type="text" value="{{ gem }}" size="8" />
         <input type="submit" name="Submit222" value="设置钻石" onclick="setOperator('gem');" /></td>
-      <td>&nbsp;</td>
+      <td><label>
+        <select name="emailSselect">
+	 {% for emailid, email in emailConf.items %}
+        <option value="{{ emailid }}">{{ emailid }},{{ email.email_title }}</option>        
+	 {% endfor %}   
+        </select>
+      </label>
+        <label>
+        <input type="submit" name="Submit11" value="发送" onclick="setOperator('email');"/>
+        </label></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
@@ -468,10 +477,8 @@
 	   </form>
 	   	<hr />
 		{% endif %}
-	    <div align="center">
-
-	  
 		  {% if roleid %}
+		  	    <div align="center">
 		     <form id="form7" name="form7" action="/admin/gm_tool_set_medal/" method="post">{% csrf_token %}
  		    <input id="medalopt" name="medalopt" type="hidden" />
 		    <input id="medalid" name="medalid" type="hidden" />
@@ -525,7 +532,7 @@
 		{% endfor %}
           </table>
 		  </form>
-		  {% endif %}
-        </div>
+         </div>
+	  {% endif %}
 </body>
 </html>

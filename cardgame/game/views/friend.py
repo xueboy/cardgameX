@@ -22,10 +22,10 @@ def request(request):
 		
 def friend_anwser(request):
 	usr = request.user
-	mailid = request.GET['request_id']
+	request_id = request.GET['request_id']
 	option = request.GET['option']	
 	usrNw = usr.getNetwork()
-	return usrNw.emailAnswer(mailid, option)
+	return usrNw.friendRequestAnswer(request_id, option)
 
 def search(request):
 	usr = request.user	
@@ -126,6 +126,13 @@ def email_read(request):
 	usrNw = usr.getNetwork()	
 	ret = usrNw.emailMarkReaded(emailid)
 	return {'update_email':ret}
+
+def email_open(request):
+	emailid = request.GET['email_id']
+	
+	usr = request.user
+	usrNw = usr.getNetwork()
+	return usrNw.emailOpen(emailid)
 
 def email_delete(request):
 	emailid = request.GET['email_id']

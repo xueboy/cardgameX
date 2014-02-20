@@ -122,4 +122,6 @@ urlpatterns = patterns('',
     url(r'potential/$', gameadmin.views.main.potential),
     url(r'potential_price/$', gameadmin.views.main.potential_price),
     url(r'potential_price_import/$', gameadmin.views.main.potential_price_import),
+    url(r'email/$', gameadmin.views.main.email),
+    url(r'email_import/$', gameadmin.views.main.email_import),
 )

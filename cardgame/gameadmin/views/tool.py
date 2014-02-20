@@ -166,7 +166,18 @@ def gm_tool_set_profile(request):
 			usr.save()
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
-		
+		elif operator == 'email':
+			value = request.POST['emailSselect']
+			if value == '':
+				return HttpResponse('email不能为空')
+			usr = user.get(roleid)
+			if not usr:
+				return HttpResponse('玩家不存在')
+			
+			nw = usr.getNetwork()
+			nw.appendEmail(value)	
+			acc = usr.getAccount()
+			data = gm.show_profile(acc, usr)
 			
 	return render(request, 'profile.html', data)
 			

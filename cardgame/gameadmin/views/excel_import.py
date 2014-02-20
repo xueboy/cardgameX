@@ -1420,8 +1420,9 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				dropid = row[0]
 				dropstr = row[1]
+				isClient = int(row[2])
 				
-				conf[dropid] = excel_import.make_drop_dic(dropstr)
+				conf[dropid] = {'drop':excel_import.make_drop_dic(dropstr), 'isClient':isClient}
 			
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('drop_import')
@@ -2233,3 +2234,32 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys = True))	
 		return HttpResponse('protential_price_import')
+		
+	@staticmethod
+	def email_import(request):
+		if request.method == 'POST':
+			email_file = request.FILES.get('email_file')
+			if not email_file:
+				return HttpResponse('邮件xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, email_file.read())
+			sheet = wb.sheet_by_index(0)			
+			conf = {}			
+			for rownum in range(1, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				emailid = row[0]
+				email_title = row[3]
+				email_text = row[4]
+				dropid = row[5]
+				
+				emailConf = {}
+				emailConf['email_title'] = email_title
+				emailConf['email_text'] = email_text
+				emailConf['dropid'] = dropid
+				
+				conf[emailid] = emailConf
+				
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('email_import')
+		
