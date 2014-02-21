@@ -173,4 +173,11 @@ def scene(request):
 	
 	return data
 			
-			
+def pk(request):
+	
+	roleid = request.GET['roleid']
+	other = user.get(roleid)
+	if not other:
+		return {'msg':'usr_not_exist'}
+	pvpData= other.pvpProperty()	
+	return {'pvpProperty':pvpData}

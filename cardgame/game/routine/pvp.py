@@ -404,21 +404,21 @@ class pvp:
 		
 
 		quality = stoneConf[st['stoneid']]['quality']
-		stoneLevelConf = config.getConfig('stone')
-		stoneLevelInfo = stoneLevelConf[str(quality)][st['level'] - 1]
+		stoneConf = config.getConfig('stone')
+		stoneInfo = stoneConf[st[stoneid]]
 				
 		if st['typestr'] == 'strenghth':
-			ppData['strenghth'] = stoneLevelInfo['strenghth']
+			ppData['strenghth'] = stoneInfo[st['level'] - 1]['value']
 		elif st['typestr'] == 'intelligence':
-			ppData['intelligence'] = stoneLevelInfo['intelligence']
+			ppData['intelligence'] = stoneInfo[st['level'] - 1]['value']
 		elif st['typestr'] == 'artifice':
-			ppData['artifice'] = stoneLevelInfo['artifice']		
+			ppData['artifice'] = stoneInfo[st['level'] - 1]['value']		
 		elif st['typestr'] == 'pt':
-			ppData['pt'] = stoneLevelInfo['pt']		
+			ppData['pt'] = stoneInfo[st['level'] - 1]['value']		
 		elif st['typestr'] == 'pd':
-			ppData['pd'] = stoneLevelInfo['pd']
+			ppData['pd'] = stoneInfo[st['level'] - 1]['value']
 		elif st['typestr'] == 'md':
-			ppData['md'] = stoneLevelInfo['md']		
+			ppData['md'] = stoneInfo[st['level'] - 1]['value']		
 			
 		return ppData
 
