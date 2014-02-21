@@ -47,8 +47,6 @@ class config(gcconfig):
 			return conf
 		if confname == 'stone_probability':
 			return config.stoneProbabilityFilter(conf)
-		if confname == 'stone_level':
-			return conf
 		if confname == 'educate':
 			return conf
 		if confname == 'educate_grade':

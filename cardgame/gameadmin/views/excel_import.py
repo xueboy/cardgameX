@@ -945,19 +945,21 @@ class excel_import:
 				return HttpResponse('宝石xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_file.read())
-			sheet = wb.sheet_by_index(2)
+			sheet = wb.sheet_by_index(1)
 					
 			conf = {}
 			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 				stoneid = row[0]
-				quality = row[3]
+				quality = int(row[3])
 				name = row[4]
 				icon = row[5]			
 				typestr = row[6]
-				type = row[7]
-				value = row[8]
-				gravel = row[9]
+				type = int(row[7])
+				value = int(row[8])
+				gravel = int(row[9])
+				level = int(row[10])
+				exp = int(row[11])
 				
 				stoneConf = {}
 				stoneConf['stoneid'] = stoneid
@@ -968,8 +970,16 @@ class excel_import:
 				stoneConf['type'] = type
 				stoneConf['value'] = value
 				stoneConf['gravel'] = gravel
+				stoneConf['level'] = level
+				stoneConf['exp'] = exp
 				
-				conf[stoneid] = stoneConf
+				if not conf.has_key(stoneid):
+					conf[stoneid] = []
+					
+				while len(conf[stoneid]) < level:
+					conf[stoneid].append({})
+				
+				conf[stoneid][level - 1] = stoneConf		
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_import')
@@ -982,7 +992,7 @@ class excel_import:
 				return HttpResponse('宝石概率xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_probability_file.read())
-			sheet = wb.sheet_by_index(1)
+			sheet = wb.sheet_by_index(0)
 					
 			conf = {}
 			

@@ -184,25 +184,23 @@ class stone:
 		return {'stone':dest_stone, 'stone_delete_array':source_stoneid}
 		
 	@staticmethod
-	def add_exp(st, exp, stoneInfo):
-		stoneLevelConf = config.getConfig('stone_level')		
+	def add_exp(st, exp, stoneInfo):	
 		
-		expdeff = stoneLevelConf[str(stoneInfo['quality'])][st['level']]['exp'] - stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
+		expdeff = stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp']
 		exp = exp + st['exp']
 		st['exp'] = 0
 		while expdeff < exp:
 			st['level'] = st['level'] + 1
 			exp = exp - expdeff
-			expdeff = stoneLevelConf[str(stoneInfo['quality'])][st['level']]['exp'] - stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
+			expdeff = stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp']
 			
 		st['exp'] = exp
 			
 	@staticmethod
 	def get_exp(st, stoneInfo):
-		stoneLevelConf = config.getConfig('stone_level')
 		exp = st['exp']
-		exp = exp + stoneLevelConf[str(stoneInfo['quality'])][st['level'] - 1]['exp']
-		exp = exp + stoneInfo['gravel']
+		exp = exp + stoneInfo[st['level'] - 1]['exp']
+		exp = exp + stoneInfo[st['level'] - 1]['gravel']
 		return exp
 		
 	@staticmethod

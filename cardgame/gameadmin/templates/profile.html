@@ -150,7 +150,7 @@
       </script>
       <table width="825" border="1">
         <tr>
-          <td colspan="4">宠物</td>
+          <td colspan="4"><div align="center">宠物</div></td>
     </tr>
         <tr>
           <td colspan="4">
@@ -237,7 +237,7 @@
           <td colspan="5"><label>
             <select name="stoneSelect">
 				{% for stoneid, stone in stoneConf.items %}
-        		<option value="{{ stoneid }}">{{ stoneid }},{{ stone.name }}</option>        
+        		<option value="{{ stoneid }}">{{ stoneid }},{{ stone.0.name }}</option>        
 				{% endfor %}      
 
             </select>
@@ -255,7 +255,7 @@
 	{% for st in stoneList %}
         <tr>
        <td>{{ st.id }}</td>
-      <td>{{ stoneConf | dict_get:st.stoneid | dict_get:'name' }} </td>
+      <td>{{ stoneConf | dict_get:st.stoneid | array_get:'0' | dict_get:'name' }} </td>
       <td>{{ st.level }}</td>
       <td><input type="submit" name="Submit72" value="删除" onclick="setStoneOpt('remove', '{{ st.id }}')"/></td>  
     </tr>
