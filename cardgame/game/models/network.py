@@ -47,6 +47,8 @@ class network(object):
 		data['gift'] = self.gift
 		data['tuhao'] = self.tuhao
 		data['charm'] = self.charm
+		data['send_gift_record'] = self.send_gift_record
+		data['receive_gift_record'] = self.receive_gift_record
 		return data			
 		
 	def getClientMailData(self):
@@ -81,6 +83,8 @@ class network(object):
 		data['email'] = self.email
 		data['friend_request'] = self.friend_request				
 		data['charm'] = self.charm
+		data['send_gift_record'] = self.send_gift_record
+		data['receive_gift_record'] = self.receive_gift_record
 		#data['nt_info'] = self.nt_info
 		return data			
 		
@@ -97,6 +101,8 @@ class network(object):
 		self.gift = data['gift']
 		self.tuhao = data['tuhao']
 		self.charm = data['charm']
+		self.send_gift_record = data['send_gift_record']
+		self.receive_gift_record = data['receive_gift_record']
 		
 	def addFriendRequest(self, friend):
 		
