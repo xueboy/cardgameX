@@ -82,7 +82,6 @@ class network(object):
 		data['mail'] = self.getClientMailData()
 		data['email'] = self.email
 		data['friend_request'] = self.friend_request				
-		data['charm'] = self.charm
 		data['send_gift_record'] = self.send_gift_record
 		data['receive_gift_record'] = self.receive_gift_record
 		#data['nt_info'] = self.nt_info
