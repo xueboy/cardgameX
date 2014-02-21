@@ -42,7 +42,7 @@ class equipment:
 		else:
 			strengthenProbability = gameConf['equipment_strength_fix_probablity']
 		
-		goldCost = strengthenPriceConf[str(equipmentQuality - 1)][strengthLevel]
+		goldCost = strengthenPriceConf[str(equipmentQuality)][strengthLevel]
 		
 		if isUseGem:
 			gemCost = gemCost + gameConf['equipment_strength_extra_gem_price']
