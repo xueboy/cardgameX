@@ -176,7 +176,7 @@ class user(gcuser):
 		data['levelup'] = self.levelup['record']
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)
-		data['practice'] = self.practice
+		data['practice'] = practice.getClientData(self)
 		data['slotmachine'] = slotmachine.getClientData(self)
 		return data
 		
@@ -252,7 +252,7 @@ class user(gcuser):
 		nw = self.getNetwork()
 		data.update(nw.getClientData())
 		data['user']['charm'] = nw.charm
-		data['user']['tohao'] = nw.tuhao
+		data['user']['tuhao'] = nw.tuhao
 		al = self.getAlmanac()
 		data.update(al.getClientData())
 		data.update(garcha.getClientData(self, gameConf))
