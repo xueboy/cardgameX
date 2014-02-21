@@ -84,6 +84,7 @@ class network(object):
 		self.sequenceid = data['sequenceid']
 		self.nt_info = data['nt_info']
 		self.request_list = data['request_list']
+		self.friend_request = data['friend_request']
 		
 	def addFriendRequest(self, friend):
 		
