@@ -137,6 +137,7 @@ class config(gcconfig):
 		del data['garcha_skill_10_dropid1']
 		del data['garcha_skill_10_dropid2']
 		del data['garcha_skill_dropid']
+		del data['gift_record_max_count']
 		
 		return data
 	
