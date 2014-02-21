@@ -114,15 +114,21 @@ class pet:
 					
 		cost = {}	
 		gameConf = config.getConfig('game')
-		if trainlevel == '0':
+		trpProbabilityConf = config.getConfig('trp_probability')
+		trpProbabilityInfo = {}
+		if trainlevel == 0:
 			trpPriceConfig = config.getConfig('trp_price')
 			cost = {'trp':trpPriceConfig[usr.level - 1], 'gold':0, 'gem':0}
-		elif trainlevel == '1':
+			trpProbabilityInfo = trpProbabilityConf['training']
+		elif trainlevel == 1:
 			cost = gameConf['training_price1']
-		elif trainlevel == '2':
+			trpProbabilityInfo = trpProbabilityConf['training1']
+		elif trainlevel == 2:
 			cost = gameConf['training_price2']
-		elif trainlevel == '3':
+			trpProbabilityInfo = trpProbabilityConf['training2']
+		elif trainlevel == 3:
 			cost = gameConf['training_price3']
+			trpProbabilityInfo = trpProbabilityConf['training3']
 		else:
 			return {'msg':'parameter_bad'}
 	
@@ -132,31 +138,57 @@ class pet:
 			return {'msg': 'gem_not_enough'}
 		if cost['trp'] > usr.trp:
 			return {'msg': 'trp_not_enough'}
-				
+			
 		strrev = 0
 		itlrev = 0
 		artrev = 0
-		if trainlevel == '0':
-			strrev = random.randint(-10, int(card['level']))
-			itlrev = random.randint(-10, int(card['level'] * 1.5 - strrev))
-			artrev = random.randint(-10, int(card['level'] * 1.5 - strrev - itlrev))
-		elif trainlevel == '1':
-			strrev = random.randint(-10, int(card['level']))
-			itlrev = random.randint(-10, int(card['level'] * 2 - strrev))
-			artrev = random.randint(-10, int(card['level'] * 2 - strrev - itlrev))
-		elif trainlevel == '2':
-			strrev = random.randint(-10, int(card['level']))
-			itlrev = random.randint(-10, int(card['level'] * 2.5 - strrev))
-			artrev = random.randint(-10, int(card['level'] * 2.5 - strrev - itlrev))
-		elif trainlevel == '3':
-			strrev = random.randint(-10, int(card['level']))
-			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
-			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
+				
+		rd = randint()
+		for (i, prob) in  enumerate(trpProbabilityInfo):
+			if rd > prob:
+				rd = rd - prob
+			else:
+				strrev = trpProbabilityConf['point'][i]
+					
+		rd = randint()
+		for (i, prob) in  enumerate(trpProbabilityInfo):
+			if rd > prob:
+				rd = rd - prob
+			else:
+				itlrev = trpProbabilityConf['point'][i]
+		
+		rd = randint()
+		for (i, prob) in  enumerate(trpProbabilityInfo):
+			if rd > prob:
+				rd = rd - prob
+			else:
+				artrev = trpProbabilityConf['point'][i]
+				
+#		strrev = 0
+#		itlrev = 0
+#		artrev = 0
+#		if trainlevel == '0':
+#			strrev = random.randint(-10, int(card['level']))
+#			itlrev = random.randint(-10, int(card['level'] * 1.5 - strrev))
+#			artrev = random.randint(-10, int(card['level'] * 1.5 - strrev - itlrev))
+#		elif trainlevel == '1':
+#			strrev = random.randint(-10, int(card['level']))
+#			itlrev = random.randint(-10, int(card['level'] * 2 - strrev))
+#			artrev = random.randint(-10, int(card['level'] * 2 - strrev - itlrev))
+#		elif trainlevel == '2':
+#			strrev = random.randint(-10, int(card['level']))
+#			itlrev = random.randint(-10, int(card['level'] * 2.5 - strrev))
+#			artrev = random.randint(-10, int(card['level'] * 2.5 - strrev - itlrev))
+#		elif trainlevel == '3':
+#			strrev = random.randint(-10, int(card['level']))
+#			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
+#			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
 				
 		usr.train_prd['cardid'] = cardid
 		usr.train_prd['strength_revision'] = strrev
 		usr.train_prd['intelligence_revision'] = itlrev
 		usr.train_prd['artifice_revision'] = artrev
+		usr.train_prd['trp_level'] = trainlevel
 		
 		usr.gold = usr.gold - cost['gold']
 		usr.gem = usr.gem - cost['gem']
@@ -177,10 +209,110 @@ class pet:
 		if not card:
 			return {'msg':'card_not_exist'}
 				
+					
 		card['strength'] = card['strength'] + usr.train_prd['strength_revision']
+		if card['strength'] < 0:
+			usr.train_prd['strength_revision'] = usr.train_prd['strength_revision'] + card['strength']
+			card['strength'] = 0		
 		card['intelligence'] = card['intelligence'] + usr.train_prd['intelligence_revision']
-		card['artifice'] = card['artifice'] + usr.train_prd['artifice_revision']
+		if card['intelligence'] < 0:
+			usr.train_prd['intelligence_revision'] = usr.train_prd['intelligence_revision'] + card['intelligence']
+			card['intelligence'] = 0
+		if card['artifice'] < 0:
+			usr.train_prd['artifice_revision'] = usr.train_prd['artifice_revision'] + card['artifice']
+			card['artifice'] = 0
+		
+		if not card.has_key('strength_ptr'):
+			card['strength_ptr'] = 0
+		if not card.has_key('intelligence_ptr'):
+			card['intelligence_ptr'] = 0
+		if not card.has_key('artifice_ptr'):
+			card['artifice_ptr'] = 0
+		
+		total_trp_limit = 0
+		if usr.train_prd['trp_level'] == 0:
+			total_trp_limit = int(card['level'] * 1.5 + 30.5)
+		elif usr.train_prd['trp_level'] == 1:
+			total_trp_limit = int(card['level'] * 2 + 40)
+		elif usr.train_prd['trp_level'] == 2:
+			total_trp_limit = int(card['level'] * 2.5 + 50.5)
+		elif usr.train_prd['trp_level'] == 3:
+			total_trp_limit = int(card['level'] * 3 + 60)
+			
+		total_trp = card['strength_ptr'] + card['intelligence_ptr'] + card['artifice_ptr']
+		total_over_trp = total_trp - total_trp_limit
+		
+		while total_over_trp > 0:
+			if usr.train_prd['strength_revision'] > 0:
+				usr.train_prd['strength_revision'] = usr.train_prd['strength_revision'] - 1			
+				card['strength'] = card['strength'] - 1
+				total_over_trp = total_over_trp - 1
+			if usr.train_prd['intelligence_revision'] >0 and total_over_trp > 0:
+				usr.train_prd['intelligence_ptr'] = usr.train_prd['intelligence_ptr'] - 1
+				card['intelligence'] = card['intelligence'] - 1
+				total_over_trp = total_over_trp - 1
+			if usr.train_prd['artifice_revision'] > 0 and total_over_trp > 0:				
+				usr.train_prd['artifice_revision'] = usr.train_prd['artifice_revision'] - 1
+				card['artifice'] = card['artifice'] - 1
+				total_over_trp = total_over_trp - 1
 				
+		petConf = config.getConfig('pet')
+		petInfo = petConf[card['cardid']]
+				
+		card['strength_ptr'] = card['strength_ptr'] + usr.train_prd['strength_revision']
+		card['intelligence_ptr'] = card['intelligence_ptr'] + usr.train_prd['intelligence_revision']
+		card['artifice_ptr'] = card['artifice_ptr'] + usr.train_prd['artifice_revision']
+		
+		strength_ptr_limit = petInfo['strength'] + card['level'] + 20
+		intelligence_ptr_limit = petInfo['intelligence'] + card['level'] + 20
+		artifice_ptr_limit = petInfo['artifice'] + card['level'] + 20
+		
+		ptr_over = 0
+		
+		strength_ptr_over = card['strength_ptr'] - strength_ptr_limit
+		intelligence_ptr_over = card['intelligence_ptr'] - intelligence_ptr_limit
+		artifice_ptr_over = card['artifice_ptr'] - artifice_ptr_limit
+		
+		if strength_ptr_over > 0:
+			card['strength_ptr'] = card['strength_ptr'] - strength_ptr_over
+			ptr_over = ptr_over + strength_ptr_over
+		if intelligence_ptr_over > 0:
+			card['intelligence_ptr'] = card['intelligence_ptr'] - intelligence_ptr_over
+			ptr_over = ptr_over + intelligence_ptr_over
+		if artifice_ptr_over > 0:
+			card['artifice_ptr'] = card['artifice_ptr'] - artifice_ptr_over
+			ptr_over = ptr_over + artifice_ptr_over
+		
+		if ptr_over > 0:
+			if strength_ptr_over < 0:
+				if ptr_over <= (-strength_ptr_over):
+					card['strength_ptr'] = card['strength_ptr'] + ptr_over
+					card['strength'] = card['strength'] + ptr_over
+					ptr_over = 0
+				else:
+					card['strength_ptr'] = card['strength_ptr'] - strength_ptr_over
+					card['strength'] = card['strength'] - strength_ptr_over
+					ptr_over = ptr_over + strength_ptr_over
+			if (intelligence_ptr_over < 0) and (ptr_over > 0):
+				if ptr_over <= (-intelligence_ptr_over):
+					card['intelligence_ptr'] = card['intelligence_ptr'] + ptr_over
+					card['intelligence'] = card['intelligence'] + ptr_over
+					ptr_over = 0
+				else:
+					card['intelligence_ptr'] = card['intelligence_ptr'] - intelligence_ptr_over
+					card['intelligence'] = card['intelligence_ptr'] - intelligence_ptr_over
+					ptr_over = ptr_over + intelligence_ptr_over
+			if (artifice_ptr_over < 0) and (ptr_over > 0):
+				if ptr_over <= (-artifice_ptr_over):
+					card['artifice_ptr'] = card['artifice_ptr'] + ptr_over
+					card['artifice'] = card['artifice'] + ptr_over
+					ptr_over = 0
+				else:
+					card['artifice_ptr'] = card['artifice_ptr'] - artifice_ptr_over
+					card['artifice'] = card['artifice'] - artifice_ptr_over
+					ptr_over = ptr_over + artifice_ptr_over				
+					
+			
 		usr.train_prd = {}
 		
 		inv.save()
@@ -346,8 +478,9 @@ class pet:
 			return {'card_chip':{cardid: inv.card_chip[cardid]}, 'add_card':card}
 		else:
 			return {'card_chip':{cardid: 0}, 'add_card':card}
+		
+		
 			
-
 		
 		
 		

@@ -96,7 +96,7 @@ def training(request):
  	usr = request.user
  	
  	id = request.GET['id']
- 	traininglevel = request.GET['training_level']
+ 	traininglevel = int(request.GET['training_level'])
  	
  	return pet.training(usr, id, traininglevel) 	
  	

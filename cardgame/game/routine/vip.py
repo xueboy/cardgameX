@@ -14,14 +14,12 @@ class vip:
 	@staticmethod
 	def charge(usr, point):
 		
-		vipConf = config.getConfig('vip')
-		
-		usr.vip['charge'] = usr.vip['charge'] + point
-		
+		vipConf = config.getConfig('vip')		
+		usr.vip['charge'] = usr.vip['charge'] + point		
 		for (i, p) in enumerate(vipConf['price']):
 			if usr.vip['charge'] <= p:
 				usr.vip['level'] = i + 1
-				
+		usr.gem = usr.gem + point				
 	
 	@staticmethod
 	def level(usr):

@@ -57,6 +57,12 @@ class inventory(object):
 			del data['st_slot']
 		if data.has_key('sk_slot'):
 			del data['sk_slot']
+		if data.has_key('strength_ptr'):
+			del data['strength_ptr']
+		if data.has_key('intelligence_ptr'):
+			del data['intelligence_ptr']
+		if data.has_key('artifice_ptr'):
+			del data['artifice_ptr']
 		return data
 		
 	def getClientData(self):
