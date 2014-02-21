@@ -104,7 +104,7 @@ class config(gcconfig):
 		if confname == 'potential_price':
 			return conf
 		if confname == 'email':
-			return emailFilter(conf)
+			return config.emailFilter(conf)
 		if confname == 'gift':
 			return conf
 		return None
