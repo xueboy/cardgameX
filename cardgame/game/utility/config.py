@@ -104,7 +104,7 @@ class config(gcconfig):
 		if confname == 'potential_price':
 			return conf
 		if confname == 'email':
-			return conf
+			return emailFilter(conf)
 		if confname == 'gift':
 			return conf
 		return None
@@ -257,3 +257,16 @@ class config(gcconfig):
 			if d['isClient']:
 				data[dropid] = d['drop']
 		return data
+		
+	@staticmethod
+	def emailFilter(conf):
+		data = {}
+		
+		for (emailid, email) in conf.items():
+			d = email.copy()
+			del d['optype']
+			del d['opvaule']
+			data[emailid] = d
+			
+		return data
+		
