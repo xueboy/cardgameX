@@ -251,6 +251,8 @@ class user(gcuser):
 		data.update(inv.getClientData())		
 		nw = self.getNetwork()
 		data.update(nw.getClientData())
+		data['usr']['charm'] = nw.charm
+		data['usr']['tohao'] = nw.tuhao
 		al = self.getAlmanac()
 		data.update(al.getClientData())
 		data.update(garcha.getClientData(self, gameConf))

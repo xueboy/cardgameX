@@ -79,9 +79,7 @@ class network(object):
 		data['message'] = self.message
 		data['mail'] = self.getClientMailData()
 		data['email'] = self.email
-		data['friend_request'] = self.friend_request		
-		data['gift'] =  self.gift
-		data['tuhao'] = self.tuhao
+		data['friend_request'] = self.friend_request				
 		data['charm'] = self.charm
 		#data['nt_info'] = self.nt_info
 		return data			
@@ -372,7 +370,8 @@ class network(object):
 		if not friendNw.gift.has_key(item):
 			friendNw.gift[item] = {'receive_count':0, 'send_count':0}
 		
-		friendNw.gift[item]['count'] = friendNw.gift[item]['count'] + 1
+		friendNw.gift[item]['receive_count'] = friendNw.gift[item]['receive_count'] + 1
+		self.gift[item]['send_count'] = self.gift[item]['send_count'] + 1
 		friendNw.charm = friend.charm + giftInfo['charm']
 		self.tuhao = self.tuhao + giftInfo['tuhao']
 		friendNw.notify_new_gift(item)
