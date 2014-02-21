@@ -248,8 +248,10 @@ class network(object):
 
 			friendNw = friend.getNetwork()
 			friendQt.udpateFinishFriendQuest(friendNw)
-			friendNw.addFriend(self.user)
-			
+			selfData = friendNw.addFriend(self.user)
+			if not friend.notify.has_key('notify_add_friend'):
+			friend.notify['notify_add_friend'] = {}
+			friend.notify['notify_add_friend'][self.roleid] = selfData		
 			requestid = [friendRequest['id']]
 			del self.friend_request[friendRequest['id']]
 			
@@ -261,9 +263,9 @@ class network(object):
 			friendNw.save()
 			return {'friend_request_delete':requestid, 'friend_new':friendData}
 		elif option == 'no':
-			del self.email[email['id']]		
+			del self.friend_request[requestid]		
 			self.save()
-			return {'friend_request_delete':[email['id']]}
+			return {'friend_request_delete':requestid}
 		return {}
 	
 	def emailMarkReaded(self, id):
