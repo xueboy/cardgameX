@@ -10,6 +10,10 @@ class practice:
 		return {'critical_level':0, 'critical_exp':0, 'tenacity_level':0, 'tenacity_exp':0, 'block_level':0, 'block_exp':0, 'wreck_level':0, 'wreck_exp':0}
 	
 	@staticmethod
+	def getClientData(usr):
+		return usr.practice
+	
+	@staticmethod
 	def card_levelup(usr, tp, cardid):
 		
 		if not cardid:
