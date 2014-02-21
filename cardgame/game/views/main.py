@@ -128,6 +128,8 @@ def info(request):
 	info['slotmachine_md5'] = conf.getClientConfigMd5('slotmachine')
 	info['vip_md5']= conf.getClientConfigMd5('vip')
 	info['potential_price_md5'] = conf.getClientConfigMd5('potential_price')
+	info['email_md5'] = conf.getClientConfigMd5('email')
+	info['gift_md5'] = conf.getClientConfigMd5('gift')
 	return HttpResponse(json.dumps({'info':info}))
 
 

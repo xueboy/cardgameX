@@ -173,6 +173,9 @@ def potential_price(request):
 def email(request):
 	return generalConfigRequestProcess(request, 'email')
 	
+def gift(request):
+	return generalConfigRequestProcess(request, 'gift')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -326,3 +329,6 @@ def potential_price_import(request):
 	
 def email_import(request):
 	return excel_import.email_import(request)
+	
+def gift_import(request):
+	return excel_import.gift_import(request)

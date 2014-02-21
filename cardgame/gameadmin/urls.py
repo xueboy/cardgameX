@@ -124,4 +124,6 @@ urlpatterns = patterns('',
     url(r'potential_price_import/$', gameadmin.views.main.potential_price_import),
     url(r'email/$', gameadmin.views.main.email),
     url(r'email_import/$', gameadmin.views.main.email_import),
+    url(r'gift/$', gameadmin.views.main.gift),
+    url(r'gift_import/$', gameadmin.views.main.gift_import),
 )

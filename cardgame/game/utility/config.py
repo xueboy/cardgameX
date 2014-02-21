@@ -103,6 +103,10 @@ class config(gcconfig):
 			return conf
 		if confname == 'potential_price':
 			return conf
+		if confname == 'email':
+			return conf
+		if confname == 'gift':
+			return conf
 		return None
 	
 	

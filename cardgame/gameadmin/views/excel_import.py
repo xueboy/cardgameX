@@ -1041,72 +1041,7 @@ class excel_import:
 			excel_import.read_stone_level(stoneCol, level5Col, conf, 5)
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('stone_probability_import')
-	
-	@staticmethod
-	def read_stone_level(stoneCol, levelCol, conf, level):
-		
-		visitConf = {}	
-		visitConf['gold'] = []
-		visitConf['gem'] = []	
-		
-		for rownum in range(6, 11):
-			levelgoldInfo = {}
-			levelgoldInfo['probability'] = int(levelCol[rownum])
-			levelgoldInfo['stone'] = stoneCol[rownum].split(',')
-			visitConf['gold'].append(levelgoldInfo)
-				
-		for rownum in range(13, 19):
-			levelgoldInfo = {}
-			levelgoldInfo['probability'] = int(levelCol[rownum])
-			levelgoldInfo['stone'] = stoneCol[rownum].split(',')
-			visitConf['gem'].append(levelgoldInfo)
-		conf['visit'].append(visitConf)			
-			
-	@staticmethod
-	def stone_level_import(request):
-		if request.method == 'POST':
-			stone_level_file = request.FILES.get('stone_level_file')
-			if not stone_level_file:
-				return HttpResponse('宝石等级xlsx文件未上传')			
-			
-			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, stone_level_file.read())
-			sheet = wb.sheet_by_index(1)
-					
-			conf = {}
-			
-			for rownum in range(4,sheet.nrows):
-				row = sheet.row_values(rownum)
-				
-				quality = int(row[0])
-				level = int(row[1])
-				strength = int(row[2])
-				intelligence = int(row[3])
-				artifice = int(row[4])
-				pt = int(row[5])				
-				pd = int(row[6])
-				md = int(row[7])
-				exp = int(row[8])
-				
-				levelConf = {}
-				levelConf['strength'] = strength
-				levelConf['intelligence'] = intelligence
-				levelConf['artifice'] = artifice
-				levelConf['pt'] = pt
-				levelConf['pd'] = pd
-				levelConf['md'] = md
-				levelConf['exp'] = exp
-				
-				if not conf.has_key(str(quality)):
-					conf[str(quality)] = []
-				while len(conf[str(quality)]) < level:
-					conf[str(quality)].append({})
-			
-				conf[str(quality)][level - 1] = levelConf
-				
-					
-			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('stone_level_import')
-		
+
 	@staticmethod
 	def trp_price_import(request):
 		if request.method == 'POST':
@@ -2255,15 +2190,19 @@ class excel_import:
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, email_file.read())
 			sheet = wb.sheet_by_index(0)			
 			conf = {}			
-			for rownum in range(1, sheet.nrows):
+			for rownum in range(3, sheet.nrows):
 				row = sheet.row_values(rownum)
 				
 				emailid = row[0]
+				optype = row[1]
+				opvaule = row[2]
 				email_title = row[3]
 				email_text = row[4]
 				dropid = row[5]
 				
 				emailConf = {}
+				emailConf['optype'] = optype
+				emailConf['opvaule'] = opvaule
 				emailConf['email_title'] = email_title
 				emailConf['email_text'] = email_text
 				emailConf['dropid'] = dropid
@@ -2273,3 +2212,41 @@ class excel_import:
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('email_import')
 		
+	@staticmethod
+	def gift_import(request):
+		if request.method == 'POST':
+			gift_file = request.FILES.get('gift_file')
+			if not gift_file:
+				return HttpResponse('礼物')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, gift_file.read())
+			sheet = wb.sheet_by_index(1)
+			conf = {}
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				item = str(int(row[0]))
+				ps = row[1]
+				memo = row[2]
+				broadcast = row[3]
+				gold = int(row[4])
+				gem = int(row[5])
+				exp = int(row[6])
+				tuhao = int(row[7])
+				charm = int(row[8])
+				
+				giftConf = {}
+				giftConf['ps'] = ps
+				giftConf['memo'] = memo
+				giftConf['broadcast'] = broadcast
+				giftConf['gold'] = gold
+				giftConf['gem'] = gem
+				giftConf['exp'] = exp
+				giftConf['tuhao'] = tuhao
+				giftConf['charm'] = charm
+				
+				conf[item] = giftConf
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('gift_import')
+				
