@@ -23,6 +23,11 @@ class network(object):
 		self.blacklist = []
 		self.sequenceid = 1
 		self.nt_info = {}
+		self.gift = {}
+		self.tuhao = 0
+		self.charm = 0
+		self.send_gift_record = []
+		self.receive_gift_record = []
 		self.user = None
 		
 	def install(self, roleid):
@@ -39,6 +44,9 @@ class network(object):
 		data['sequenceid'] = self.sequenceid
 		data['nt_info'] = self.nt_info
 		data['request_list'] = self.request_list
+		data['gift'] = self.gift
+		data['tuhao'] = self.tuhao
+		data['charm'] = self.charm
 		return data			
 		
 	def getClientMailData(self):
@@ -72,6 +80,9 @@ class network(object):
 		data['mail'] = self.getClientMailData()
 		data['email'] = self.email
 		data['friend_request'] = self.friend_request		
+		data['gift'] =  self.gift
+		data['tuhao'] = self.tuhao
+		data['charm'] = self.charm
 		#data['nt_info'] = self.nt_info
 		return data			
 		
@@ -85,6 +96,9 @@ class network(object):
 		self.nt_info = data['nt_info']
 		self.request_list = data['request_list']
 		self.friend_request = data['friend_request']
+		self.gift = data['gift']
+		self.tuhao = data['tuhao']
+		self.charm = data['charm']
 		
 	def addFriendRequest(self, friend):
 		
@@ -317,8 +331,82 @@ class network(object):
 	def appendEmail(self, emailid):
 		usr = self.user
 		requestid = str(self.sequenceid)		
-		self.email[requestid] = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid}
-		self.sequenceid = self.sequenceid + 1		
+		email = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid}
+		self.email[requestid] = email
+		self.sequenceid = self.sequenceid + 1
+		self.notify_add_email(email)
 		self.save()
 		
-	
+	def notify_add_email(self, email):
+		
+		usr = self.user
+		if not usr.notify.has_key('notify_add_email'):
+			usr.notify['notify_add_email'] = {}
+		usr.notify['notify_add_email'][email['id']]
+		
+	def sendGift(self, item, friendid):
+		
+		giftConf = config.getConfig('gift')
+		if not giftConf.has_key(item):
+			return {'msg':'gift_not_exist'}
+		
+		giftInfo = giftConf[item]
+		
+		usr = self.user
+		goldCost = giftInfo['gold']
+		if usr.gold < goldCost:
+			return {'msg': 'gold_not_enough'}
+		gemCost = giftInfo['gem']
+		if usr.gem < gemCost:
+			return {'msg': 'gem_not_enough'}
+				
+		usr.gold = usr.gold - goldCost
+		usr.gem = usr.gem - gemCost
+		
+		friend = user.get(friendid)
+		if not friend:
+			return {'msg':'usr_not_exist'}
+		
+		friendNw = friend.getNetwork()
+		
+		if not friendNw.gift.has_key(item):
+			friendNw.gift[item] = {'receive_count':0, 'send_count':0}
+		
+		friendNw.gift[item]['count'] = friendNw.gift[item]['count'] + 1
+		friendNw.charm = friend.charm + giftInfo['charm']
+		self.tuhao = self.tuhao + giftInfo['tuhao']
+		friendNw.notify_new_gift(item)
+		
+		self.send_gift_record.append({'roleid':friendid, 'send_time':currentTime(), 'item':item})
+		friendNw.receive_gift_record.append({'roleid':self.roleid, 'receive_time':currentTime(), 'item':item})
+		
+		gameConf = config.getConfig('game')
+		self.update_gift_list(self, gameConf)
+		friendNw.update_gift_list(self, gameConf)
+		
+		usr.save()
+		self.save()
+		friend.save()
+		friendNw.save()
+		
+		return {'tuhao':self.tuhao, 'gold':usr.gold, 'gem': usr.gem}
+		
+		
+	def update_gift_list(self, gameConf):
+		
+		cnt = len(self.send_gift_record) - gameConf['gift_record_max_count']
+		if cnt > 0:
+			self.send_gift_record = self.send_gift_record[cnt:]
+		
+		cnt = len(senf.receive_gift_record) - gameConf['gift_record_max_count']
+		if cnt > 0:
+			self.receive_gift_record = self.receive_gift_record[cnt:]
+		
+		
+	def notify_new_gift(self, item):
+		usr = self.user
+		if not usr.notify.has_key('notify_add_gift'):
+			usr.notify['notify_add_gift'] = []
+		usr.notify['notify_add_gift'].append(item)
+		usr.notify['network_charm'] = self.charm
+		
