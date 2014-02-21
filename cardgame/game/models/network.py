@@ -250,7 +250,7 @@ class network(object):
 			friendQt.udpateFinishFriendQuest(friendNw)
 			selfData = friendNw.addFriend(self.user)
 			if not friend.notify.has_key('notify_add_friend'):
-			friend.notify['notify_add_friend'] = {}
+				friend.notify['notify_add_friend'] = {}
 			friend.notify['notify_add_friend'][self.roleid] = selfData		
 			requestid = [friendRequest['id']]
 			del self.friend_request[friendRequest['id']]
