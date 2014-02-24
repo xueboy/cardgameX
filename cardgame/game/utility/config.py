@@ -267,6 +267,6 @@ class config(gcconfig):
 		data = {}
 		for (medalid, medal) in conf.items():
 			d = medal.copy()
-			del d['medalid']			
+			del d['medalid']
 			data[medalid] = d			
 		return data

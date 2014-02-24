@@ -89,8 +89,8 @@ class medal:
 			
 		inv.medal[medalid]['gravel'] = inv.medal[medalid]['gravel'] + medalInfo['gravel']
 		
-		while medalLevelConfig[medalid][medalLevel] <= inv.medal[medalid]['gravel'] and medalLevelMax > medalLevel:
-			medalLevel = medalLevel + 1			
+		while (medalLevelConfig[medalid][medalLevel]['exp'] -  medalLevelConfig[medalid][medalLevel - 1]['exp']) <= inv.medal[medalid]['gravel'] and medalLevelMax > medalLevel:
+			medalLevel = medalLevel + 1
 		
 		inv.medal[medalid]['level'] = medalLevel
 		
