@@ -280,6 +280,7 @@ class network(object):
 					requestid.append(key)				
 			self.save()
 			friendNw.save()
+			friend.save()
 			return {'friend_request_delete':requestid, 'friend_new':friendData}
 		elif option == 'no':
 			del self.friend_request[requestid]		
