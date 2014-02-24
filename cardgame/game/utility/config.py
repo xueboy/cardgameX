@@ -90,7 +90,7 @@ class config(gcconfig):
 		if confname == 'medal_loot':
 			return conf
 		if confname == 'medal_level':
-			return conf
+			return config.medalLevelFilter(conf)
 		if confname == 'mall_price':
 			return conf
 		if confname == 'practice_property':
@@ -270,3 +270,15 @@ class config(gcconfig):
 			del d['medalid']
 			data[medalid] = d			
 		return data
+	
+	@staticmethod
+	def medalLevelFilter(conf):
+		data = {}
+		for (medalid, levelInfo) in conf.items():
+			d = []
+			for l in levelInfo:
+				i = l.copy()
+				del i['typestr']
+				d.append(i)
+			
+			data[medalid] = d			
