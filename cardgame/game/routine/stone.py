@@ -152,7 +152,7 @@ class stone:
 		if not source_stoneid:
 			return {'msg':'stone_not_specified'}
 				
-		stoneConf = config.getConfig('stone')
+		stoneConf = config.getConfig('stone')	
 				
 		inv = usr.getInventory()
 		if teamPosition < 0:	
@@ -199,7 +199,7 @@ class stone:
 	@staticmethod
 	def get_exp(st, stoneInfo):
 		exp = st['exp']
-		exp = exp + stoneInfo[st['level'] - 1]['exp']
+		exp = exp + (stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp'])
 		exp = exp + stoneInfo[st['level'] - 1]['gravel']
 		return exp
 		
