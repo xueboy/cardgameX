@@ -86,7 +86,7 @@ class config(gcconfig):
 		if confname == 'tower_award':
 			return conf
 		if confname == 'medal':
-			return conf
+			return config.medalFilter(conf)
 		if confname == 'medal_loot':
 			return conf
 		if confname == 'medal_level':
@@ -261,4 +261,12 @@ class config(gcconfig):
 			data[emailid] = d
 			
 		return data
-		
+	
+	@staticmethod
+	def medalFilter(conf):
+		data = {}
+		for (medalid, medal) in conf.items():
+			d = medal.copy()
+			del d['medalid']			
+			data[medalid] = d			
+		return data

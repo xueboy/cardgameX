@@ -1828,7 +1828,7 @@ class excel_import:
 					chipicon.append(row[12])
 				
 				medalConf = {}
-				medalConf['modelid'] = modelid
+				medalConf['medalid'] = modelid
 				medalConf['quality'] = quality
 				medalConf['name'] = name
 				medalConf['icon'] = icon
