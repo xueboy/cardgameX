@@ -415,4 +415,3 @@ class network(object):
 		usr.notify['notify_add_gift'].append(item)
 		usr.notify['network_charm'] = self.charm
 		
-	def record
