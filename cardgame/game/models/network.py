@@ -3,6 +3,8 @@ from gclib.utility import currentTime, is_same_day
 from game.utility.config import config
 from game.models.massyell import massyell
 from game.routine.drop import drop
+from game.routine.gift import gift
+
 
 class network(object):
 	
@@ -255,7 +257,7 @@ class network(object):
 			friendid = friendRequest['roleid']
 			if self.friend.has_key(friendid):
 				return {'msg':'friend_not_exist'}
-			friend = self.user.get(friendid)
+			friend = self.user.__class__.get(friendid)
 			friendQt = friend.getQuest()
 
 			friendData = self.addFriend(friend)
@@ -346,7 +348,7 @@ class network(object):
 		usr = self.user
 		if not usr.notify.has_key('notify_add_email'):
 			usr.notify['notify_add_email'] = {}
-		usr.notify['notify_add_email'][email['id']]
+		usr.notify['notify_add_email'][email['id']] = email
 		
 	def sendGift(self, item, friendid):
 		
@@ -367,27 +369,31 @@ class network(object):
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost
 		
-		friend = user.get(friendid)
+		friend = self.user.__class__.get(friendid)
 		if not friend:
 			return {'msg':'usr_not_exist'}
 		
 		friendNw = friend.getNetwork()
+
+		if not self.gift.has_key(item):
+			self.gift[item] = {'receive_count':0, 'send_count':0}
 		
 		if not friendNw.gift.has_key(item):
 			friendNw.gift[item] = {'receive_count':0, 'send_count':0}
 		
 		friendNw.gift[item]['receive_count'] = friendNw.gift[item]['receive_count'] + 1
 		self.gift[item]['send_count'] = self.gift[item]['send_count'] + 1
-		friendNw.charm = friend.charm + giftInfo['charm']
+		friendNw.charm = friendNw.charm + giftInfo['charm']
 		self.tuhao = self.tuhao + giftInfo['tuhao']
 		friendNw.notify_new_gift(item)
 		
 		self.send_gift_record.append({'roleid':friendid, 'send_time':currentTime(), 'item':item})
 		friendNw.receive_gift_record.append({'roleid':self.roleid, 'receive_time':currentTime(), 'item':item})
+		gift.sendGift(self, friend)
 		
 		gameConf = config.getConfig('game')
-		self.update_gift_list(self, gameConf)
-		friendNw.update_gift_list(self, gameConf)
+		self.update_send_gift_list(gameConf)
+		friendNw.update_receive_gift_list(gameConf)
 		
 		usr.save()
 		self.save()
@@ -397,16 +403,15 @@ class network(object):
 		return {'tuhao':self.tuhao, 'gold':usr.gold, 'gem': usr.gem}
 		
 		
-	def update_gift_list(self, gameConf):
-		
+	def update_send_gift_list(self, gameConf):		
 		cnt = len(self.send_gift_record) - gameConf['gift_record_max_count']
 		if cnt > 0:
-			self.send_gift_record = self.send_gift_record[cnt:]
-		
-		cnt = len(senf.receive_gift_record) - gameConf['gift_record_max_count']
+			self.send_gift_record = self.send_gift_record[cnt:]		
+				
+	def update_receive_gift_list(self, gameConf):
+		cnt = len(self.receive_gift_record) - gameConf['gift_record_max_count']
 		if cnt > 0:
 			self.receive_gift_record = self.receive_gift_record[cnt:]
-		
 		
 	def notify_new_gift(self, item):
 		usr = self.user
