@@ -306,9 +306,10 @@ class network(object):
 		usr = self.user
 		emailConf = config.getConfig('email')
 		emailInfo = emailConf[self.email[id]['emailid']]
-		awd = {}
-		awd = drop.open(usr, emailInfo['dropid'], awd)
-		awd = drop.makeData(awd, {})
+		if emailInfo:
+			awd = {}
+			awd = drop.open(usr, emailInfo['dropid'], awd)
+			awd = drop.makeData(awd, {})
 		self.email[id]['open'] = True
 		
 		self.save()
@@ -414,3 +415,4 @@ class network(object):
 		usr.notify['notify_add_gift'].append(item)
 		usr.notify['network_charm'] = self.charm
 		
+	def record
