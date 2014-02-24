@@ -341,6 +341,7 @@ class network(object):
 		self.email[requestid] = email
 		self.sequenceid = self.sequenceid + 1
 		self.notify_add_email(email)
+		usr.save()
 		self.save()
 		
 	def notify_add_email(self, email):
