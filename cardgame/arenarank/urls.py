@@ -24,5 +24,7 @@ urlpatterns = patterns('',
  url(r'^delete_medal/$', 'arenarank.views.delete_medal'),
  url(r'^award_score/$', 'arenarank.views.award_score'),
  url(r'^try_grab/$', 'arenarank.views.try_grab'),
- url(r'^add_protect_time/$', 'arenarank.views.add_protect_time')
+ url(r'^add_protect_time/$', 'arenarank.views.add_protect_time'),
+ url(r'^network_gift/$', 'arenarank.views.network_gift'),
+ url(r'^network_range', 'arenarank.views.network_range'),
 )

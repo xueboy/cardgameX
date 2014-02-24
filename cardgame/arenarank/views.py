@@ -4,7 +4,8 @@
 from django.http import HttpResponse
 from gclib.cache import cache
 from gclib.json import json
-from arenarank.models import ladder, tower_ladder, medal_arena
+from arenarank.models.models import ladder, tower_ladder, medal_arena
+from arenarank.models.network_ladder import network_ladder
 
 def show_ladder(request):	
 			
@@ -72,7 +73,6 @@ def tower_stand(request):
 	return HttpResponse(json.dumps(ld.stand(roleid, name, int(level), int(point), int(floor))))
 	
 def tower_show(request):
-		
 	ld = tower_ladder.instance()
 	return HttpResponse(json.dumps(ld.show_ladder()))
 	
@@ -151,3 +151,20 @@ def add_protect_time(request):
 	second = int(request.REQUEST['add_second'])	
 	ld = medal_arena.instance()
 	return HttpResponse(json.dumps(ld.add_protect_time(roleid, second)))
+	
+def network_gift(request):
+	sendRoleid = request.REQUEST['send_roleid']	
+	receiveRoleid = request.REQUEST['receive_roleid']
+	ld = network_ladder.instance()
+	return HttpResponse(json.dumps(ld.gift(sendRoleid, receiveRoleid)))
+	
+def network_range(request):
+	tp = request.REQUEST['type']
+	roleid = request.REQUEST['roleid']
+	begin = int(request.REQUEST['begin'])
+	end = int(request.REQUEST['end'])
+	ld = network_ladder.instance()
+	if tp == 'charm':
+		return HttpResponse(json.dumps(ld.get_charm_range(roleid, begin, end)))
+	elif tp == 'tuhao':
+		return HttpResponse(json.dumps(ld.get_tuhao_range(roleid, begin, end)))

@@ -4,6 +4,7 @@
 from gclib.json import json
 from game.models.account import account
 from game.models.user import user
+from game.routine.gift import gift as giftR
 
 def request(request):
 	usr = request.user
@@ -158,3 +159,17 @@ def yell(request):
 	usr = request.user
 	usrNw = usr.getNetwork()
 	return usrNw.yell(usr.name, message)
+	
+def gift(request):
+	item = request.GET['item']
+	usr = request.user
+	friendid = request.GET['friendid']
+	return giftR.send_gift(usr, item, friendid)
+	
+def gift_ladder(request):
+	tp = request.GET['type']
+	begin = request.GET['begin']
+	end = request.GET['end']
+	usr = request.user
+	return giftR.gift_ladder(usr, tp, begin, end)
+	

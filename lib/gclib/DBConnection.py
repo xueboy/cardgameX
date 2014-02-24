@@ -32,16 +32,17 @@ class DBConnection:
 			col.append(desc[0])
 		return col
 		
-		
+	@transaction.autocommit
 	def excute(self, sql,param):
-		self.updateCursor()		
+		self.updateCursor()
+		#self.star_transaction()
 		row_count = self.cursor.execute(sql, param)
 		self.last_id = self.cursor.lastrowid
 		#transaction.commit_unless_managed()
 		self.myconnection.commit()
 		return row_count
 		
-	def insert_id(self):	
+	def insert_id(self):
 		return self.last_id
 		
 	def star_transaction(self):

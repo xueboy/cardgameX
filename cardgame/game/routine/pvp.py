@@ -184,13 +184,13 @@ class pvp:
 		practicePropertyConf = config.getConfig('practice_property')
 		
 		if usr.practice['critical_level'] > 0:
-			ppData[critical] = practicePropertyConf[usr.practice['critical_level']]
+			ppData['critical'] = practicePropertyConf['critical_property'][usr.practice['critical_level']]
 		if usr.practice['tenacity_level'] > 0:
-			ppData[tenacity] = practicePropertyConf[usr.practice['tenacity_level']]
+			ppData['tenacity'] = practicePropertyConf['tenacity_property'][usr.practice['tenacity_level']]
 		if usr.practice['block_level'] > 0:
-			ppData[block] = practicePropertyConf[usr.practice['block_level']]
+			ppData['block'] = practicePropertyConf['block_property'][usr.practice['block_level']]
 		if usr.practice['wreck_level'] > 0:
-			ppData[wreck] = practicePropertyConf[usr.practice['wreck_level']]
+			ppData['wreck'] = practicePropertyConf['wreck_property'][usr.practice['wreck_level']]
 			
 		return ppData
 		

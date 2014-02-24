@@ -245,7 +245,7 @@ class luckycat:
 				
 		luckycat.updateFeed(usr)
 		if usr.luckycat['feed_other_count'] >= gameConf['luckycat_feed_other_count_max']:
-			return {'msg''luckycat_agree_request_max_time'}
+			return {'msg':'luckycat_agree_request_max_time'}
 		
 		usr.luckycat['feed_candidate_list'].remove(friendid)
 		friend = usr.__class__.get(friendid)
