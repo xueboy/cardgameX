@@ -86,7 +86,7 @@ class config(gcconfig):
 		if confname == 'tower_award':
 			return conf
 		if confname == 'medal':
-			return config.madelFilter(conf)
+			return conf
 		if confname == 'medal_loot':
 			return conf
 		if confname == 'medal_level':
@@ -232,16 +232,6 @@ class config(gcconfig):
 				q['finishValue'] = [str(conf[questid]['finishValue'])]
 					
 			data[questid] = q
-		return data
-		
-	@staticmethod
-	def madelFilter(conf):
-		data = {}
-		for (madelid, madel) in conf.items():
-			m = madel.copy()
-			del m['typestr']			
-			del m['modelid']
-			data[madelid] = m
 		return data
 		
 	@staticmethod

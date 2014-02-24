@@ -1801,43 +1801,37 @@ class excel_import:
 				return HttpResponse('勋章设定xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_file.read())
-			sheet = wb.sheet_by_index(0)
+			sheet = wb.sheet_by_index(3)
 			
 			conf = {}
 			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 				modelid = row[0]
-				quality = row[3]
-				name = row[4]
-				icon = row[5]
-				typestr = row[6]
-				type = row[7]
-				val = int(row[8])
-				gravel = int(row[9])
-				chip = int(row[10])
-				desc = row[11]
+				quality = int(row[1])
+				name = row[2]
+				icon = row[3]				
+				gravel = int(row[4])
+				chip = int(row[5])
+				desc = row[6]
 				chipicon = []
+				if row[7]:
+					chipicon.append(row[7])
+				if row[8]:
+					chipicon.append(row[8])
+				if row[9]:
+					chipicon.append(row[9])
+				if row[10]:
+					chipicon.append(row[10])
+				if row[11]:
+					chipicon.append(row[11])
 				if row[12]:
 					chipicon.append(row[12])
-				if row[13]:
-					chipicon.append(row[13])
-				if row[14]:
-					chipicon.append(row[14])
-				if row[15]:
-					chipicon.append(row[15])
-				if row[16]:
-					chipicon.append(row[16])
-				if row[17]:
-					chipicon.append(row[17])
 				
 				medalConf = {}
 				medalConf['modelid'] = modelid
 				medalConf['quality'] = quality
 				medalConf['name'] = name
 				medalConf['icon'] = icon
-				medalConf['typestr'] = typestr
-				medalConf['type'] = type
-				medalConf['val'] = val
 				medalConf['gravel'] = gravel
 				medalConf['chip'] = chip
 				medalConf['desc'] = desc
@@ -1894,27 +1888,30 @@ class excel_import:
 				return HttpResponse('勋章等级设定xlsx文件未上传')
 			
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, medal_level_file.read())
-			sheet = wb.sheet_by_index(2)
+			sheet = wb.sheet_by_index(0)
 			
-			conf = {}
+			conf = {}			
 			
-			medalid = sheet.row_values(0)[1:]
-			
-			conf = dict.fromkeys(medalid, [])
-			
-			for rownum in range(1,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)					
 			
-				level = int(row[0])
-				for i in range(1, len(row) - 1):
-					if not row[i]:
-						continue
-					if row:
-						while len(conf[medalid[i]]) < level:
-							conf[medalid[i]].append(0)
-					
-					conf[medalid[i]][level - 1] = int(row[i])					
-		
+				medalid = row[0]
+				typestr = row[3]
+				type = int(row[4])
+				value = int(row[5])
+				level = int(row[6])
+				exp = int(row[7])
+				
+				if not conf.has_key(medalid):
+					conf[medalid] = []
+				
+				while len(conf[medalid]) < level:
+					conf[medalid].append({})
+				
+				conf[medalid][level - 1]['typestr'] = typestr
+				conf[medalid][level - 1]['type'] = type
+				conf[medalid][level - 1]['val'] = value
+				conf[medalid][level - 1]['exp'] = exp		
 			return HttpResponse(json.dumps(conf, sort_keys=True))			
 		return HttpResponse('medal_level_import')
 		
