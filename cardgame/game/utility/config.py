@@ -282,3 +282,4 @@ class config(gcconfig):
 				d.append(i)
 			
 			data[medalid] = d			
+		return data
