@@ -968,7 +968,7 @@ class excel_import:
 				stoneConf['icon'] = icon
 				stoneConf['typestr'] = typestr
 				stoneConf['type'] = type
-				stoneConf['value'] = value
+				stoneConf['val'] = value
 				stoneConf['gravel'] = gravel
 				stoneConf['level'] = level
 				stoneConf['exp'] = exp
