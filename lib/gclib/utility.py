@@ -35,8 +35,9 @@ def cache_session_key(roleid):
 
 def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
-	cskey  = cache_session_key(usr.id)
-	cache.mc_setValue(cskey, request.session.session_key)	
+	request.session.save()
+	cskey  = cache_session_key(usr.id)	
+	cache.mc_setValue(cskey, request.session.session_key)		
 	return usr.onLogin()
 
 def beginRequest(request,cls):
@@ -47,12 +48,11 @@ def beginRequest(request,cls):
 		raise NotHaveNickname
 
 	userid = request.session['user_id']
-	cskey = cache_session_key(userid)
-	
-	#session_key = cache.mc_getValue(cskey)
-	#if request.session.session_key != session_key:
-		#logout(request)
-		#raise NotLogin
+	cskey = cache_session_key(userid)	
+	session_key = cache.mc_getValue(cskey)	
+	if request.session.session_key != session_key:
+		logout(request)
+		raise NotLogin
 	
 	usr = cls.get(userid)	
 	if not usr:
