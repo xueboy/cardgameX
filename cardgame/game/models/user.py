@@ -26,6 +26,7 @@ from game.routine.practice import practice
 from game.routine.pvp import pvp
 from game.routine.slotmachine import slotmachine
 from game.routine.vip import vip
+from game.routine.invite import invite
 
 
 
@@ -78,6 +79,7 @@ class user(gcuser):
 		self.practice = practice.make()
 		self.slotmachine = slotmachine.make()
 		self.vip = vip.make()
+		self.invite = invite.make()
 		
 	
 	def init(self, acc = None):
@@ -86,6 +88,7 @@ class user(gcuser):
 			self.id = acc.roleid
 			self.roleid = acc.roleid
 			self.name = acc.nickname
+			self.account = acc
 		self.level = 1		
 		levelConf = config.getConfig('level')		
 		self.stamina = levelConf[0]['stamina']
@@ -93,6 +96,7 @@ class user(gcuser):
 		self.stamina_last_recover = currentTime()
 		self.sp_last_recover = currentTime()
 		self.last_card_no = 0
+		self.invite['make_time'] = currentTime()
 		
 	def install(self, roleid):
 		gcuser.install(self, roleid)
@@ -138,7 +142,49 @@ class user(gcuser):
 		data['practice'] = self.practice
 		data['slotmachine'] = self.slotmachine
 		data['vip'] = self.vip
+		data['invite'] = self.invite
 		return data
+		
+	def load(self, roleid, data):
+		gcuser.load(self, roleid, data)
+		self.name = data['name']
+		self.level = data['level']
+		self.stamina = data['stamina']
+		self.gem = data['gem']
+		self.gold = data['gold']
+		self.exp = data['exp']		
+		self.gender = data['gender']
+		self.stamina_last_recover = data['stamina_last_recover']
+		self.sp_last_recover = data['sp_last_recover']
+		self.last_card_no = data['last_card_no']		
+		self.last_login = data['last_login']		
+		self.leader = data['leader']		 
+		self.notify = data['notify']		
+		self.train_prd = data['train_prd']
+		self.equipment_strength_cooldown = data['equipment_strength_cooldown']
+		self.equipment_strength_last_time = data['equipment_strength_last_time']		
+		self.fatigue = data['fatigue']
+		self.fatigue_last_time = data['fatigue_last_time']
+		self.yell_hear_id = data['yell_hear_id']
+		self.luckycat.update(data['luckycat'])
+		self.trp = data['trp']
+		self.sp = data['sp']
+		self.stv = data['stv']
+		self.garcha.update(data['garcha'])
+		self.stv_gem = data['stv_gem']
+		self.educate = data['educate']
+		self.arena.update(data['arena'])
+		self.avatar = data['avatar']
+		self.signin = data['signin']
+		self.levelup = data['levelup']
+		self.longitude = data['longitude']
+		self.latitude = data['latitude']
+		self.tower = data['tower']
+		self.medal.update(data['medal'])
+		self.practice = data['practice']
+		self.slotmachine = data['slotmachine']		
+		self.vip.update(data['vip'])
+		self.invite.update(data['invite'])
 		
 	def getClientData(self):
 		now = currentTime()
@@ -177,7 +223,8 @@ class user(gcuser):
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)
 		data['practice'] = practice.getClientData(self)
-		data['slotmachine'] = slotmachine.getClientData(self)
+		data['slotmachine'] = slotmachine.getClientData(self)		
+		data['invite'] = invite.getClientData(self)
 		return data
 		
 	def getNtInfoData(self):
@@ -269,47 +316,11 @@ class user(gcuser):
 		return data
 		
 	def getAccount(self):
-		return __import__('game.models.account', globals(), locals(), ['account']).account.get(self.accountid)		
+		self.getAccountCls().get(self.accountid)		
 		
-	def load(self, roleid, data):
-		gcuser.load(self, roleid, data)
-		self.name = data['name']
-		self.level = data['level']
-		self.stamina = data['stamina']
-		self.gem = data['gem']
-		self.gold = data['gold']
-		self.exp = data['exp']		
-		self.gender = data['gender']
-		self.stamina_last_recover = data['stamina_last_recover']
-		self.sp_last_recover = data['sp_last_recover']
-		self.last_card_no = data['last_card_no']		
-		self.last_login = data['last_login']		
-		self.leader = data['leader']		 
-		self.notify = data['notify']		
-		self.train_prd = data['train_prd']
-		self.equipment_strength_cooldown = data['equipment_strength_cooldown']
-		self.equipment_strength_last_time = data['equipment_strength_last_time']		
-		self.fatigue = data['fatigue']
-		self.fatigue_last_time = data['fatigue_last_time']
-		self.yell_hear_id = data['yell_hear_id']
-		self.luckycat.update(data['luckycat'])
-		self.trp = data['trp']
-		self.sp = data['sp']
-		self.stv = data['stv']
-		self.garcha.update(data['garcha'])
-		self.stv_gem = data['stv_gem']
-		self.educate = data['educate']
-		self.arena.update(data['arena'])
-		self.avatar = data['avatar']
-		self.signin = data['signin']
-		self.levelup = data['levelup']
-		self.longitude = data['longitude']
-		self.latitude = data['latitude']
-		self.tower = data['tower']
-		self.medal.update(data['medal'])
-		self.practice = data['practice']
-		self.slotmachine = data['slotmachine']		
-		self.vip.update(data['vip'])
+	def getAccountCls(self):
+		return __import__('game.models.account', globals(), locals(), ['account']).account
+	
 
 	def getCardNo(self):
 		self.last_card_no = self.last_card_no + 1
@@ -478,6 +489,7 @@ class user(gcuser):
 		educate.update_exp(self, gameConf)
 		data = signin.login(self)
 		arena.arena_update(self)
+		invite.onLogin(self)
 		return data
 		
 	def onLevelup(self):

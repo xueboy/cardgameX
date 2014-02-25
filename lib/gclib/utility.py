@@ -26,7 +26,7 @@ def getAccountId(request):
 	return request.session['account_id']
 	
 def onAccountLogin(request, acc):
-	request.session['account_id'] = acc.id
+	request.session['account_id'] = acc.id	
 	acc.onLogin()
 	return acc
 
@@ -37,7 +37,8 @@ def onUserLogin(request, usr):
 	request.session['user_id'] = usr.id
 	request.session.save()
 	cskey  = cache_session_key(usr.id)	
-	cache.mc_setValue(cskey, request.session.session_key)		
+	cache.mc_setValue(cskey, request.session.session_key)
+	usr.accountid = request.session['account_id']
 	return usr.onLogin()
 
 def beginRequest(request,cls):
@@ -54,7 +55,8 @@ def beginRequest(request,cls):
 		logout(request)
 		raise NotLogin
 	
-	usr = cls.get(userid)	
+	usr = cls.get(userid)
+	usr.accountid = request.session['account_id']	
 	if not usr:
 		raise NotHaveNickname		
 	request.user = usr

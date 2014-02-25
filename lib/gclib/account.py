@@ -38,8 +38,7 @@ class account(object):
 	def getUser(self):		
 		usr = self.userCls().get(self.roleid)
 		if not usr:
-			return None
-		usr.account =  self
+			return None	
 		return usr
 	
 	def makeUserAndBind(self, nickname, avatar, gender):		

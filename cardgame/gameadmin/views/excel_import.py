@@ -328,14 +328,31 @@ class excel_import:
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, skill_level_file.read())
 			sheet = wb.sheet_by_index(3)		
 			
-			conf = []
+			conf = {'1':[], '2':[], '3':[], '4':[], '5':[]}			
 			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)				
 				level = int(row[0])
-				exp = int(row[1])
-				while len(conf) < level:
-					conf.append({})				
-				conf[level - 1] = exp			
+				exp1 = int(row[1])
+				exp2 = int(row[2])
+				exp3 = int(row[3])
+				exp4 = int(row[4])
+				exp5 = int(row[5])
+				while len(conf['1']) < level:
+					conf['1'].append(0)
+				while len(conf['2']) < level:
+					conf['2'].append(0)
+				while len(conf['3']) < level:
+					conf['3'].append(0)
+				while len(conf['4']) < level:
+					conf['4'].append(0)
+				while len(conf['5']) < level:
+					conf['5'].append(0)					
+				conf['1'][level - 1] = exp1			
+				conf['2'][level - 1] = exp2
+				conf['3'][level - 1] = exp3
+				conf['4'][level - 1] = exp4
+				conf['5'][level - 1] = exp5
+				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('skill_level_import')	
 		

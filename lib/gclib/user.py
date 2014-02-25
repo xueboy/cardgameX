@@ -8,13 +8,11 @@ class user(object):
 	
 	def __init__(self):
 		object.__init__(self)
-		self.account = None
 		self.accountid = 0
 	
 	def init(self, acc):
 		self.id = 0
-		if acc:
-			self.account = acc
+		if acc:			
 			self.accountid = acc.id
 		return
 			

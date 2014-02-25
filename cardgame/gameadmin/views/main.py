@@ -176,6 +176,9 @@ def email(request):
 def gift(request):
 	return generalConfigRequestProcess(request, 'gift')
 	
+def invite(request):
+	return generalConfigRequestProcess(request, 'invite')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']

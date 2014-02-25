@@ -14,6 +14,7 @@ from game.routine.signin import signin
 from game.models.user import user
 from game.routine.levelup import levelup
 from game.routine.arena import arena
+from game.routine.invite import invite
 
 def set_avatar(request):	
 	
@@ -181,3 +182,15 @@ def pk(request):
 		return {'msg':'usr_not_exist'}
 	pvpData= other.pvpProperty()	
 	return {'pvpProperty':pvpData}
+		
+		
+def invite_code(request):
+	
+	invCode = request.GET['invite_code']	
+	usr = request.user	
+	return invite.enterInviteCode(usr, invCode)
+	
+def invite_award(request):
+	invCount = int(request.GET['invite_count'])
+	usr = request.user
+	return invite.inviteAward(usr, invCount)
