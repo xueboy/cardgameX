@@ -315,8 +315,8 @@ class user(gcuser):
 		data['avatar'] = self.avatar
 		return data
 		
-	def getAccount(self):
-		self.getAccountCls().get(self.accountid)		
+	def getAccount(self):		
+		return self.getAccountCls().get(self.accountid)		
 		
 	def getAccountCls(self):
 		return __import__('game.models.account', globals(), locals(), ['account']).account

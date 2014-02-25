@@ -45,9 +45,7 @@ class invite:
 			return {'msg':'invite_code_bad'}
 		if usr.accountid == accountid:
 			return {'msg': 'invite_can_not_self'}
-		
-		
-		
+			
 		invUsr = invAccount.getUser()
 		if len(invUsr.invite['invite']) >= gameConf['invite_max_count']:
 			return {'msg': 'invitee_max_count'}
@@ -78,8 +76,7 @@ class invite:
 		
 		if inviteCount > len(usr.invite['invite']):
 			return {'msg':'invite_count_not_enough'}
-		
-					
+							
 		while len(usr.invite['invite_award']) < (inviteCount + 1):
 			usr.invite['invite_award'].append('')
 		
@@ -91,10 +88,7 @@ class invite:
 		dropid = inviteConf['invite_award'][inviteCount]
 		if not dropid:
 			return {'msg': 'invite_not_have_award'}
-				
-		
-
-		
+					
 		usr.invite['invite_award'][inviteCount] = dropid
 		awd = {}
 		awd = drop.open(usr, dropid, awd)		
