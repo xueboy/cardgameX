@@ -93,7 +93,7 @@ class skill:
 
 	@staticmethod
 	def get_exp(sk, skillInfo, skillLevelConf, gameConf):
-		return int((skillLevelConf[skillInfo['quality']][sk['level'] - 1] + sk['exp'] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
+		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + sk['exp'] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
 		
 	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
