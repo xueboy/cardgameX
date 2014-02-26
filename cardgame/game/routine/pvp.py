@@ -3,6 +3,7 @@
 
 from game.utility.config import config
 from game.routine.luck import luck
+from game.routine.skill import skill
 
 class pvp:
 	
