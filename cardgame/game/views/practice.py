@@ -31,7 +31,7 @@ def card_chip_levelup(request):
 		chipnumkeyname = 'chipnum' + str(i)
 		
 		if request.GET.has_key(chipkeyname):
-			chipDic[chipkeyname] = int(request.GET[chipnumkeyname)
+			chipDic[chipkeyname] = int(request.GET[chipnumkeyname])
 		else:
 			break
 	tp = request.GET['type']
