@@ -41,7 +41,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_card_array'] = cardid
+		data['delete_array'] = cardid
 		
 		return data
 		
@@ -76,7 +76,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_card_chip_dic'] = chipDic
+		data['delete_chip_dic'] = chipDic
 		return data
 		
 		
@@ -108,7 +108,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_skill_array'] = skillid
+		data['delete_chip_dic'] = skillid
 		
 		return data
 		
@@ -142,7 +142,7 @@ class practice:
 		inv.save()
 		usr.save()
 		data = practice.practice_type(usr, tp)
-		data['delete_skill_chip_dic'] = chipDic
+		data['delete_chip_dic'] = chipDic
 		return data
 		
 						

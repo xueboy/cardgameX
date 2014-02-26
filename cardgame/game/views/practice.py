@@ -54,8 +54,7 @@ def skill_levelup(request):
 	return practice.skill_levelup(usr, tp, skillid)
 	
 def skill_chip_levelup(request):
-	chipDic = {}
-	
+	chipDic = {}	
 	chipDic[request.GET['skill_id1']] = int(request.GET['skillnum1'])
 	
 	for i in range(2, 50):
