@@ -41,8 +41,9 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_dic'] = {cardid : 1}
-		
+		data['delete_dic'] = {}
+		for cid in cardid:
+			data['delete_dic'][cid] = 1		
 		return data
 		
 				
@@ -108,7 +109,10 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_dic'] = {skillid : 1}
+		data['delete_dic'] = {}
+		for sid in skillid:
+			data['delete_dic'][sid] = 1
+			
 		
 		return data
 		
