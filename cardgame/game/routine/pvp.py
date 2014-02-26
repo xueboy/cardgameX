@@ -332,9 +332,26 @@ class pvp:
 		ppData['pe'] = 0
 		ppData['init_star'] = card['init_star']
 		ppData['level'] = card['level']
-		ppData['sk_slot'] = inv.getSkSlots()
+		ppData['sk_slot'] = pvp.pvpGetSkSlots(usr)
 		return ppData
-		
+	@staticmethod
+	def pvpGetSkSlots(usr):
+		inv = usr.getInventory()		
+		sk_slot = {}		
+		for (i, t) in enumerate(inv.team):
+			if t:
+				tc = inv.getCard(t)
+				if tc.has_key('sk_slot'):
+					sk_slot['t'+ str(i)] = tc['sk_slot']
+				else:
+					sk_slot['t' + str(i)] = skill.make_sk_slot()
+			else:
+				sk_slot['t' + str(i)] = skill.make_sk_slot()
+			for sk in sk_slot['t' + str(i)]:
+				if sk:
+					del sk['id']
+					del sk['exp']
+		return sk_slot
 		
 	@staticmethod
 	def pvpEquipmentProperty(equipment, equipmentConf):

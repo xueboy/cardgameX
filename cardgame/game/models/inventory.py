@@ -371,6 +371,24 @@ class inventory(object):
 				sk_slot['t' + str(i)] = skill.make_sk_slot()
 		return sk_slot
 	
+	def getPvpSkSlots(self):
+		sk_slot = {}
+		
+		for (i, t) in enumerate(self.team):
+			if t:
+				tc = self.getCard(t)
+				if tc.has_key('sk_slot'):
+					sk_slot['t'+ str(i)] = tc['sk_slot']
+				else:
+					sk_slot['t' + str(i)] = skill.make_sk_slot()
+			else:
+				sk_slot['t' + str(i)] = skill.make_sk_slot()
+			for sk in sk_slot['t' + str(i)]:
+				if sk:
+					del sk['id']
+					del sk['exp']
+		return sk_slot
+	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, deq, dst, dsk):
 		
 		if cardid1 != '':
