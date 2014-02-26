@@ -173,11 +173,11 @@ class practice:
 				usr.practice['block_exp'] = usr.practice['block_exp'] - (practiceLevelConf['block_level'][level + 1] - practiceLevelConf['block_level'][level])
 				usr.practice['block_level'] = usr.practice['block_level'] + 1	
 		elif tp == 'wreck':
-			usr.prictice['wreck_exp'] = usr.practice['wreck_exp'] + point
+			usr.practice['wreck_exp'] = usr.practice['wreck_exp'] + point
 			level = usr.practice['wreck_level']
 			if level >= practiceLevelConf['wreck_level']:
 				return {'msg':'practice_level_max'}
-			while usr.prictice['wreck_exp'] >= (practiceLevelConf['wreck_level'][level + 1] - practiceLevelConf['wreck_level'][level]):
+			while usr.practice['wreck_exp'] >= (practiceLevelConf['wreck_level'][level + 1] - practiceLevelConf['wreck_level'][level]):
 				usr.practice['wreck_exp'] = usr.practice['wreck_exp'] - (practiceLevelConf['wreck_level'][level + 1] - practiceLevelConf['wreck_level'][level])
 				usr.practice['wreck_level'] = usr.practice['wreck_level'] + 1	
 		else:
