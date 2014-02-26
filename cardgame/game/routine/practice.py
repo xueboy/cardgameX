@@ -76,7 +76,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_dic'] = chipDic
+		data['delete_dic'] = chipDic.items()
 		return data
 		
 		
@@ -110,7 +110,7 @@ class practice:
 		data = practice.practice_type(usr, tp)
 		data['delete_array'] = skillid
 		
-		return data
+		return data.items()
 		
 		
 	@staticmethod
