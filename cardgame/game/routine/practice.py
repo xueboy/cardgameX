@@ -41,7 +41,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_array'] = cardid
+		data['delete_dic'] = cardid
 		
 		return data
 		
@@ -108,7 +108,7 @@ class practice:
 		usr.save()
 		
 		data = practice.practice_type(usr, tp)
-		data['delete_array'] = skillid
+		data['delete_dic'] = skillid
 		
 		return data.items()
 		
