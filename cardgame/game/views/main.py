@@ -143,7 +143,7 @@ def api(request, m, f):
 	try:		
 		usr = beginRequest(request,user)		
 	except NotLogin:		
-		return {'msg':'login_not'}
+		return HttpResponse(json.dumps({'msg':'login_not'}))
 	except NotHaveNickname:		
 		return HttpResponse(json.dumps({'msg':'nickname_should_set_before'}))
 		
@@ -186,7 +186,7 @@ def set_nickname(request):
 		usr = acc.makeUserAndBind(nickname, avatar, gender)		
 		loginData = onUserLogin(request, usr)
 	except NotLogin:
-		return {'msg':'login_not'}
+		return HttpResponse(json.dumps({'msg':'login_not'}))
 	except DuplicateNickname:
 		return HttpResponse(json.dumps({'msg':'nickname_duplicate'}))
 	if acc.nickname:
