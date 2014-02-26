@@ -55,7 +55,7 @@ def skill_levelup(request):
 	
 def skill_chip_levelup(request):
 	chipDic = {}	
-	chipDic[request.GET['skill_id1']] = int(request.GET['skillnum1'])
+	chipDic[request.GET['skill_id1']] = int(request.GET['chipnum1'])
 	
 	for i in range(2, 50):
 		chipkeyname = 'skill_id' + str(i)
