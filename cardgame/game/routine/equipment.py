@@ -95,7 +95,7 @@ class equipment:
 		
 		gameConf = config.getConfig('game')
 		
-		gemCost = int(usr.equipment_strength_cooldown * gameConf['equipment_strength_cooldown_reset_price_N'])
+		gemCost = int(usr.equipment_strength_cooldown / gameConf['equipment_strength_cooldown_reset_price_N'] + 1)
 		
 		if usr.gem < gemCost:
 			return {'msg':'gem_not_enough'}
