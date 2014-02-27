@@ -85,7 +85,7 @@ class pet:
 			exp = exp - needExp
 			level = level + 1
 			potential.onEveryPetLevelup(usr, card, petConf)
-			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			
+			needExp = petLevelConf[str(level)][quality - 1] - petLevelConf[str(level - 1)][quality - 1]			
 			card['level'] = level			
 		card['exp'] = exp	
 	
