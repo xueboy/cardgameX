@@ -96,7 +96,7 @@ class pet:
 		petInfo = petConf[card['cardid']]
 		quality = petInfo['quality']
 		#return petLevelConf[str(card['level'])][quality - 1] + card['exp'] + gameConf['pet_star_base_exp'][quality - 1]
-		return int(petLevelConf[str(card['level'])][quality - 1] * 0.75 + gameConf['pet_star_base_exp'][quality - 1])
+		return int(petLevelConf[str(card['level'] - 1)][quality - 1] * 0.75 + gameConf['pet_star_base_exp'][quality - 1])
 		
 
 	@staticmethod
