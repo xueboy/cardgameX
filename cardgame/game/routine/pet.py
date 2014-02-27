@@ -78,7 +78,7 @@ class pet:
 		level = card['level']
 		id = card['cardid']
 		quality = petConf[id]['quality']
-		needExp = petLevelConf[str(level)][quality - 1] - petLevelConf[str(level - 1)][quality - 1]
+		needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]
 		
 		levelLimit = gameConf['pet_level_limit'][quality - 1]
 		exp = exp + card['exp']
@@ -88,7 +88,7 @@ class pet:
 			print 'needExp' , needExp
 			level = level + 1
 			potential.onEveryPetLevelup(usr, card, petConf)
-			needExp = petLevelConf[str(level)][quality - 1] - petLevelConf[str(level - 1)][quality - 1]			
+			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			
 			
 			card['level'] = level			
 		card['exp'] = exp	
