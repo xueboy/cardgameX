@@ -62,9 +62,10 @@ class pet:
 		costMoney = len(sourceCard) * gameConf['pet_levelup_gold_cost']		
 		exp = 0
 		for card in sourceCard:
-			exp = pet.totalExp(card, petConf, petLevelConf, gameConf) + exp
-			inv.delCard(card['id'])
-		
+			tExp = pet.totalExp(card, petConf, petLevelConf, gameConf) 
+			print 'tExp', tExp
+			exp = tExp + exp			
+			inv.delCard(card['id'])		
 		
 		pet.gainExp(usr, destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
@@ -78,14 +79,17 @@ class pet:
 		id = card['cardid']
 		quality = petConf[id]['quality']
 		needExp = petLevelConf[str(level)][quality - 1] - petLevelConf[str(level - 1)][quality - 1]
+		
 		levelLimit = gameConf['pet_level_limit'][quality - 1]
 		exp = exp + card['exp']
 		card['exp'] = 0
 		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
+			print 'needExp' , needExp
 			level = level + 1
 			potential.onEveryPetLevelup(usr, card, petConf)
 			needExp = petLevelConf[str(level)][quality - 1] - petLevelConf[str(level - 1)][quality - 1]			
+			
 			card['level'] = level			
 		card['exp'] = exp	
 	
