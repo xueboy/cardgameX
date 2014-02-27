@@ -68,7 +68,8 @@ class pet:
 		
 		pet.gainExp(usr, destCard, exp, petConf, petLevelConf, gameConf)
 		inv.save()
-		return {'update_card':inv.getClientCard(destCard), 'delete_card':sourceCardid}
+		#return {'update_card':inv.getClientCard(destCard), 'delete_card':sourceCardid}
+		return {'cardid': destCard['id'], 'exp':destCard['exp'], 'level':destCard['level']}
 
 
 	@staticmethod
@@ -196,7 +197,10 @@ class pet:
 		
 		usr.save()
 		
-		return {'train_prd': usr.train_prd, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}	
+		prdData = usr.train_prd
+		del prdData['trp_level']
+		
+		return {'train_prd': prdData, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}	
 		
 	@staticmethod
 	def trainConfirm(usr):

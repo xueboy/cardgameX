@@ -137,6 +137,13 @@ class potential:
 		card['md_potential'] = card['md_potential'] - md_point
 		card['md'] = card['md'] + md_point
 		
+		if card['pt'] < 0:
+			card['pt'] = 0
+		if card['pd'] < 0:
+			card['pd'] = 0
+		if card['md'] < 0:
+			card['md'] = 0
+		
 		usr.save()
 		inv.save()
 		if updateIt:
