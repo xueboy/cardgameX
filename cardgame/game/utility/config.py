@@ -142,6 +142,7 @@ class config(gcconfig):
 		del data['invite_max_count']
 		del data['infection_ladder_level_group']
 		del data['infection_dungeon_probability']
+		del data['infection_quality']
 		return data
 	
 			
