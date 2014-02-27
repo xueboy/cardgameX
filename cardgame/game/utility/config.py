@@ -141,7 +141,7 @@ class config(gcconfig):
 		del data['gift_ladder_max_size']
 		del data['invite_max_count']
 		del data['infection_ladder_level_group']
-		
+		del data['infection_dungeon_probability']
 		return data
 	
 			
