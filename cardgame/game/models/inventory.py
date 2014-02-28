@@ -398,17 +398,17 @@ class inventory(object):
 		
 		usr = self.user
 		
-		if cardid1 != self.team[0] and usr.level <  teamLevelConf[0]:
+		if cardid1 != self.team[0] and usr.level <  teamLevelConf[0] and cardid1:
 			return {'msg':'level_required'}
-		if cardid2 != self.team[1] and usr.level <  teamLevelConf[1]:
+		if cardid2 != self.team[1] and usr.level <  teamLevelConf[1] and cardid2:
 			return {'msg':'level_required'}
-		if cardid3 != self.team[2] and usr.level <  teamLevelConf[2]:
+		if cardid3 != self.team[2] and usr.level <  teamLevelConf[2] and cardid3:
 			return {'msg':'level_required'}
-		if cardid4 != self.team[3] and usr.level <  teamLevelConf[3]:
+		if cardid4 != self.team[3] and usr.level <  teamLevelConf[3] and cardid4:
 			return {'msg':'level_required'}
-		if cardid5 != self.team[4] and usr.level <  teamLevelConf[4]:
+		if cardid5 != self.team[4] and usr.level <  teamLevelConf[4] and cardid5:
 			return {'msg':'level_required'}
-		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5]:
+		if cardid6 != self.team[5] and usr.level <  teamLevelConf[5] and cardid6:
 			return {'msg':'level_required'}
 			
 		deq1, dst1, dsk1 = self.setTeamEquipmentStoneSkill(cardid1, 0, gameConf)
