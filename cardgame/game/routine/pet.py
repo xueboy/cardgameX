@@ -202,7 +202,7 @@ class pet:
 		
 		usr.save()
 		
-		prdData = usr.train_prd
+		prdData = usr.train_prd.copy()
 		del prdData['trp_level']
 		
 		return {'train_prd': prdData, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}	
