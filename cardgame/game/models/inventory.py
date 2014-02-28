@@ -84,11 +84,11 @@ class inventory(object):
 		for equip in self.equipment:
 			equipment[equip['id']] = equip
 			
-#		for m in team:
-#			if m and m.has_key('slot'):
-#				for equip in m['slot']:
-#					if equip:
-#						equipment[equip['id']] = equip
+		for m in team:
+			if m and m.has_key('slot'):
+				for equip in m['slot']:
+					if equip:
+						equipment[equip['id']] = equip
 						
 		stone = {}
 		for st in self.stone:
