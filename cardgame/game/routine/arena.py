@@ -164,7 +164,11 @@ class arena:
 		gameConf = config.getConfig('game')
 		pointConsume = mediumCount * gameConf['arena_medium_price']
 		
-		res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.convert(roleid, pointConsume)
+		else:
+			res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
 		
 		res = json.loads(res)
 		if res.has_key('msg'):
