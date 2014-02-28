@@ -143,6 +143,7 @@ class config(gcconfig):
 		del data['infection_ladder_level_group']
 		del data['infection_dungeon_probability']
 		del data['infection_quality']
+		del data['infection_ladder_max_size']
 		return data
 	
 			
