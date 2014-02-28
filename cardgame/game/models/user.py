@@ -233,7 +233,7 @@ class user(gcuser):
 		data['slotmachine'] = slotmachine.getClientData(self)		
 		data['invite'] = invite.getClientData(self)
 		data['infection'] = infection.getClientData(self)
-		data['born_card'] = self.born_card['cardid']
+		data['born_card'] = (self.born_card['cardid'] != '')
 		return data
 		
 	def getNtInfoData(self):
