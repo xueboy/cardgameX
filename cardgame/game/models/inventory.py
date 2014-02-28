@@ -27,6 +27,7 @@ class inventory(object):
 		self.skill_chip = {}
 		self.medal = {}
 		
+		
 	def init(self):		
 		return		
 		
@@ -45,6 +46,7 @@ class inventory(object):
 		data['skill'] = self.skill
 		data['skill_chip'] = self.skill_chip
 		data['medal'] = self.medal
+		
 		return data
 		
 		
@@ -82,11 +84,11 @@ class inventory(object):
 		for equip in self.equipment:
 			equipment[equip['id']] = equip
 			
-		for m in team:
-			if m and m.has_key('slot'):
-				for equip in m['slot']:
-					if equip:
-						equipment[equip['id']] = equip
+#		for m in team:
+#			if m and m.has_key('slot'):
+#				for equip in m['slot']:
+#					if equip:
+#						equipment[equip['id']] = equip
 						
 		stone = {}
 		for st in self.stone:
@@ -272,7 +274,8 @@ class inventory(object):
 				res = equipment
 				self.equipment.remove(equipment)
 		return res
-			
+	
+	
 	def delEquipment(self, id):
 		self.equipment = filter(lambda e : e['id'] != id, self.equipment)
 		return 1
@@ -370,25 +373,7 @@ class inventory(object):
 			else:
 				sk_slot['t' + str(i)] = skill.make_sk_slot()
 		return sk_slot
-	
-	def getPvpSkSlots(self):
-		sk_slot = {}
 		
-		for (i, t) in enumerate(self.team):
-			if t:
-				tc = self.getCard(t)
-				if tc.has_key('sk_slot'):
-					sk_slot['t'+ str(i)] = tc['sk_slot']
-				else:
-					sk_slot['t' + str(i)] = skill.make_sk_slot()
-			else:
-				sk_slot['t' + str(i)] = skill.make_sk_slot()
-			for sk in sk_slot['t' + str(i)]:
-				if sk:
-					del sk['id']
-					del sk['exp']
-		return sk_slot
-	
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, deq, dst, dsk):
 		
 		if cardid1 != '':
@@ -456,8 +441,7 @@ class inventory(object):
 
 		self.save()
 		return None
-	
-	
+		
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
 		dst = []
 		deq = []
