@@ -1,4 +1,4 @@
-﻿#coding:utf-8\
+﻿#coding:utf-8
 #!/usr/bin/env python
 
 import hashlib
@@ -15,6 +15,7 @@ from game.models.user import user
 from game.routine.levelup import levelup
 from game.routine.arena import arena
 from game.routine.invite import invite
+from game.routine.pet import pet
 
 def set_avatar(request):	
 	
@@ -86,10 +87,8 @@ def nearby(request):
 	
 	longitude = float(request.GET['longitude'])
 	latitude = float(request.GET['latitude']	)
-	usr = request.user
-	
-	raidus = gameConf['player_near_by_raidus']
-		
+	usr = request.user	
+	raidus = gameConf['player_near_by_raidus']		
 	degree = (24901*1609)/360.0
 	raidusMile = raidus
 	dpmLat = 1 / degree
@@ -147,12 +146,10 @@ def draw_award(request):
 	
 def detail(request):
 	
-	roleid = request.GET['role_id']
-	
+	roleid = request.GET['role_id']	
 	other = user.get(roleid)
 	if not other:
-		return {'msg':'user_not_exist'}
-	
+		return {'msg':'user_not_exist'}	
 	return other.getBattleData()
 	
 def scene(request):
@@ -194,3 +191,9 @@ def invite_award(request):
 	invCount = int(request.GET['invite_count'])
 	usr = request.user
 	return invite.inviteAward(usr, invCount)
+	
+def get_born_card(request):
+	
+	dropid = request.GET['dropid']
+	usr = request.user		
+	return pet.select_born_pet(usr, dropid)

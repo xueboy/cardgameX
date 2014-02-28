@@ -3,10 +3,11 @@
 
 import random
 import math
-from gclib.utility import randint
+from gclib.utility import randint, currentTime
 from game.utility.config import config
 from game.routine.vip import vip
 from game.routine.potential import potential
+from game.routine.drop import drop
 
 class pet:
 	
@@ -486,6 +487,35 @@ class pet:
 			return {'card_chip':{cardid: inv.card_chip[cardid]}, 'add_card':card}
 		else:
 			return {'card_chip':{cardid: 0}, 'add_card':card}
+		
+	@staticmethod
+	def make_born_card():
+		return {'dropid':'', 'born_time':0}
+		
+	
+	@staticmethod
+	def select_born_pet(usr, dropid):
+		
+		gameConf = config.getConfig('game')
+		
+		if dropid not in gameConf['pet_born_candidate']:
+			return {'msg': 'card_not_born_card'}
+				
+		if usr.born_card['dropid']:
+			return {'msg': 'card_already_get_born_card'}				
+		
+		awd = {}		
+		awd = drop.open(usr, dropid, awd)
+		
+		data = drop.makeData(awd, {})
+		
+		usr.born_card['dropid'] = dropid
+		usr.born_card['born_time'] = currentTime()		
+		
+		usr.save()
+		
+		return data
+		
 		
 		
 			
