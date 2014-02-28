@@ -420,7 +420,7 @@ class excel_import:
 				type = unicode(row[8])
 				nature = unicode(row[11])
 				attacktype = int(row[12])
-				control = int(row[13])
+				proportion = float(row[13])
 				controllevel = int(row[14])
 				immunity = int(row[15])
 				immunitylevel = int(row[16])
@@ -483,7 +483,7 @@ class excel_import:
 				petConf['type'] = type
 				petConf['nature'] = nature
 				petConf['attacktype'] = attacktype
-				petConf['control'] = control
+				petConf['proportion'] = proportion
 				petConf['controllevel'] = controllevel
 				petConf['immunity'] = immunity			
 				petConf['immunitylevel'] = immunitylevel
