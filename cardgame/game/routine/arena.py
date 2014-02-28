@@ -166,7 +166,7 @@ class arena:
 		
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena
-			return arena.convert(roleid, pointConsume)
+			return arena.convert(usr.roleid, pointConsume)
 		else:
 			res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
 		
