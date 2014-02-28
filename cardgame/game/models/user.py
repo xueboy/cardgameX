@@ -219,13 +219,14 @@ class user(gcuser):
 		usrData['stv'] = self.stv
 		usrData['arena_time'] = self.arena['times']
 		usrData['arena_award'] = self.arena['rank_award']
+		usrData['avatar'] = self.avatar
 		data = {}
 		data['user'] = usrData
 		gameConf = config.getConfig('game')
 		if self.luckycat:
 			data['luckycat'] = luckycat.getClientData(self, gameConf)
 		data['educate'] = educate.getClientData(self, gameConf)
-		data['avatar'] = self.avatar
+		
 		data['levelup'] = self.levelup['record']
 		data['tower'] = tower.getClientData(self)
 		data['medal'] = medal.getClientData(self, gameConf)

@@ -30,6 +30,7 @@ import game.views.medal
 import game.views.mall
 import game.views.practice
 import game.views.slotmachine
+import game.views.infection
 
 
 viewsmap = {
@@ -51,7 +52,8 @@ viewsmap = {
 	'medal': sys.modules['game.views.medal'],
 	'mall' : sys.modules['game.views.mall'],
 	'practice' : sys.modules['game.views.practice'],
-	'slotmachine' : sys.modules['game.views.slotmachine']
+	'slotmachine' : sys.modules['game.views.slotmachine'],
+	'infection' : sys.modules['game.views.infection']
 }
 
 def index(request):
@@ -151,12 +153,13 @@ def api(request, m, f):
 		fun = getattr(viewsmap[m], f)		
 		ret = fun(request)		
 		if not isinstance(ret, tuple):
-			notify = endRequest(request)
-			yell = usr.yell_listen()
-			if yell:
-				notify.update(yell)
-			if notify:
-				ret.update({'notify':notify})			
+			if not ret.has_key('msg'):
+				notify = endRequest(request)
+				yell = usr.yell_listen()
+				if yell:
+					notify.update(yell)
+				if notify:
+					ret.update({'notify':notify})			
 			return HttpResponse(json.dumps(ret))
 		else:			
 			return ret[1]
