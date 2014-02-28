@@ -411,7 +411,7 @@ class excel_import:
 			sheet = wb.sheet_by_index(1)
 			
 			conf = {}
-			for rownum in range(3, sheet.nrows):
+			for rownum in range(2, sheet.nrows):
 				row = sheet.row_values(rownum)
 				petid = unicode(row[3])
 				model = unicode(row[4])
