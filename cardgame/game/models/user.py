@@ -27,6 +27,7 @@ from game.routine.pvp import pvp
 from game.routine.slotmachine import slotmachine
 from game.routine.vip import vip
 from game.routine.invite import invite
+from game.routine.infection import infection
 
 
 
@@ -80,6 +81,8 @@ class user(gcuser):
 		self.slotmachine = slotmachine.make()
 		self.vip = vip.make()
 		self.invite = invite.make()
+		self.infection = infection.make()
+		self.born_card = pet.make_born_card()
 		
 	
 	def init(self, acc = None):
@@ -143,6 +146,8 @@ class user(gcuser):
 		data['slotmachine'] = self.slotmachine
 		data['vip'] = self.vip
 		data['invite'] = self.invite
+		data['infection'] = self.infection
+		data['born_card'] = self.born_card
 		return data
 		
 	def load(self, roleid, data):
@@ -185,6 +190,8 @@ class user(gcuser):
 		self.slotmachine = data['slotmachine']		
 		self.vip.update(data['vip'])
 		self.invite.update(data['invite'])
+		self.infection.update(data['infection'])
+		self.born_card.update(data['born_card'])
 		
 	def getClientData(self):
 		now = currentTime()
@@ -225,6 +232,8 @@ class user(gcuser):
 		data['practice'] = practice.getClientData(self)
 		data['slotmachine'] = slotmachine.getClientData(self)		
 		data['invite'] = invite.getClientData(self)
+		data['infection'] = infection.getClientData(self)
+		data['born_card'] = self.born_card['cardid']
 		return data
 		
 	def getNtInfoData(self):
