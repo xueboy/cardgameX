@@ -7,6 +7,7 @@ from xlrd import USE_MMAP
 from django.http import HttpResponse
 from gclib.json import json
 from gclib.utility import str_to_time
+from game.utility.config import config
 
 class excel_import:
 	@staticmethod
@@ -1060,6 +1061,26 @@ class excel_import:
 		return HttpResponse('stone_probability_import')
 
 	@staticmethod
+	def read_stone_level(stoneCol, levelCol, conf, level):
+		
+		visitConf = {}	
+		visitConf['gold'] = []
+		visitConf['gem'] = []	
+		
+		for rownum in range(6, 11):
+			levelgoldInfo = {}
+			levelgoldInfo['probability'] = int(levelCol[rownum])
+			levelgoldInfo['stone'] = stoneCol[rownum].split(',')
+			visitConf['gold'].append(levelgoldInfo)
+				
+		for rownum in range(13, 20):
+			levelgoldInfo = {}
+			levelgoldInfo['probability'] = int(levelCol[rownum])
+			levelgoldInfo['stone'] = stoneCol[rownum].split(',')
+			visitConf['gem'].append(levelgoldInfo)
+		conf['visit'].append(visitConf)			
+	
+	@staticmethod
 	def trp_price_import(request):
 		if request.method == 'POST':
 			trp_price_file = request.FILES.get('trp_price_file')
@@ -1378,7 +1399,7 @@ class excel_import:
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, drop_file.read())
 			sheet = wb.sheet_by_index(0)
 			conf = {}
-			for rownum in range(3, sheet.nrows):
+			for rownum in range(2, sheet.nrows):
 				row = sheet.row_values(rownum)
 				dropid = row[0]
 				dropstr = row[1]
@@ -2231,7 +2252,7 @@ class excel_import:
 		if request.method == 'POST':
 			gift_file = request.FILES.get('gift_file')
 			if not gift_file:
-				return HttpResponse('礼物')
+				return HttpResponse('礼物xlsx文件未上传')
 				
 			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, gift_file.read())
 			sheet = wb.sheet_by_index(1)
@@ -2263,4 +2284,184 @@ class excel_import:
 				conf[item] = giftConf
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('gift_import')
+	
+	@staticmethod
+	def infection_battle_import(request):
+		if request.method == 'POST':
+			infection_battle_file = request.FILES.get('infection_battle_file')
+			if not infection_battle_file:
+				return HttpResponse('感染战场xlsx文件未上传')
 				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, infection_battle_file.read())
+			sheet = wb.sheet_by_index(1)
+			conf = {}
+			
+			for rownum in range(2, sheet.nrows):
+				row = sheet.row_values(rownum)
+				level = int(row[0])
+				quality = str(int(row[1]))
+				monster = row[2]
+				caller_dropid = row[3]
+				lasthit_dropid = row[4]
+				hit_dropid = row[5]
+				prestige = row[6]
+				
+				if not conf.has_key(quality):
+					conf[quality] = []
+					
+				while len(conf[quality]) < level:
+					conf[quality].append({})
+					
+				infectionBattleConf = {}
+				infectionBattleConf['monster'] = monster.split(',')
+				infectionBattleConf['caller_dropid'] = caller_dropid
+				infectionBattleConf['lasthit_dropid'] = lasthit_dropid
+				infectionBattleConf['hit_dropid'] = hit_dropid
+				infectionBattleConf['prestige'] = prestige
+				
+				conf[quality][level - 1] = infectionBattleConf
+				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('infection_battle_import')
+					
+	@staticmethod
+	def infection_prestige_price_import(request):
+		if request.method == 'POST':
+			infection_prestige_price_file = request.FILES.get('infection_prestige_price_file')
+			if not infection_prestige_price_file:
+				return HttpResponse('感染声望兑换xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, infection_prestige_price_file.read())
+			sheet = wb.sheet_by_index(0)
+			conf = {}
+			
+			gameConf = config.getConfig('game')
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				levelGroup = int(row[0])
+				prestige = int(row[1])
+				dropid = row[2]
+				
+				if levelGroup not in gameConf['infection_ladder_level_group']:
+					continue
+			
+				if not conf.has_key(str(levelGroup)):
+					conf[str(levelGroup)] = {}				
+				conf[str(levelGroup)][str(prestige)] = dropid
+			
+			
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('infection_prestige_price_import')
+			
+	@staticmethod
+	def infection_damage_award_import(request)			:
+		if request.method == 'POST':
+			infection_damage_award_file = request.FILES.get('infection_damage_award_file')
+			if not infection_damage_award_file:
+				return HttpResponse('感染伤害排名xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, infection_damage_award_file.read())
+			sheet = wb.sheet_by_index(2)
+			conf = {}
+			
+			gameConf = config.getConfig('game')
+						
+			for group in gameConf['infection_ladder_level_group']:
+				conf[str(group)] = []				
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				rank = int(row[0])
+				levelGroup1 = int(row[1])
+				levelGroup2 = int(row[2])
+				levelGroup3 = int(row[3])
+				levelGroup4 = int(row[4])
+				
+				for group in conf:					
+					while len(conf[group]) < rank:
+						conf[group].append(0)
+						
+				conf[str(gameConf['infection_ladder_level_group'][0])][rank - 1] = levelGroup1
+				conf[str(gameConf['infection_ladder_level_group'][1])][rank - 1] = levelGroup2
+				conf[str(gameConf['infection_ladder_level_group'][2])][rank - 1] = levelGroup3
+				conf[str(gameConf['infection_ladder_level_group'][3])][rank - 1] = levelGroup4
+				
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('infection_damage_award_import')
+				
+					
+	@staticmethod
+	def infection_prestige_award_import(request)			:
+		if request.method == 'POST':
+			infection_prestige_award_file = request.FILES.get('infection_prestige_award_file')
+			if not infection_prestige_award_file:
+				return HttpResponse('感染伤害排名xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, infection_prestige_award_file.read())
+			sheet = wb.sheet_by_index(3)
+			conf = {}
+			
+			gameConf = config.getConfig('game')
+						
+			for group in gameConf['infection_ladder_level_group']:
+				conf[str(group)] = []				
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				rank = int(row[0])
+				levelGroup1 = int(row[1])
+				levelGroup2 = int(row[2])
+				levelGroup3 = int(row[3])
+				levelGroup4 = int(row[4])
+				
+				for group in conf:					
+					while len(conf[group]) < rank:
+						conf[group].append(0)
+						
+				conf[str(gameConf['infection_ladder_level_group'][0])][rank - 1] = levelGroup1
+				conf[str(gameConf['infection_ladder_level_group'][1])][rank - 1] = levelGroup2
+				conf[str(gameConf['infection_ladder_level_group'][2])][rank - 1] = levelGroup3
+				conf[str(gameConf['infection_ladder_level_group'][3])][rank - 1] = levelGroup4
+				
+			return HttpResponse(json.dumps(conf, sort_keys = True))
+		return HttpResponse('infection_prestige_award_import')
+						
+	@staticmethod
+	def infection_exploit_price_import(request):
+		if request.method == 'POST':
+			infection_exploit_price_file = request.FILES.get('infection_exploit_price_file')
+			if not infection_exploit_price_file:
+				return HttpResponse('感染伤害排名xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, infection_exploit_price_file.read())
+			sheet = wb.sheet_by_index(4)
+			conf = {}
+			
+			gameConf = config.getConfig('game')
+						
+			for group in gameConf['infection_ladder_level_group']:
+				conf[str(group)] = []				
+			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)
+				
+				levelGroup = int(row[0])
+				dropid = row[1]
+				exploit = int(row[2])
+				limit = int(row[3])
+				
+				if levelGroup not in gameConf['infection_ladder_level_group']:
+					continue
+									
+				infectionExploitPriceConf = {}
+				infectionExploitPriceConf['dropid'] = dropid
+				infectionExploitPriceConf['exploit'] = exploit
+				infectionExploitPriceConf['limit'] = limit
+				
+				conf[str(levelGroup)].append(infectionExploitPriceConf)
+			return HttpResponse(json.dumps(conf, sort_keys = True))			
+		return HttpResponse('infection_exploit_price_import')
+	
