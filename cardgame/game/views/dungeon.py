@@ -6,6 +6,7 @@ from game.utility.config import config
 from gclib.json import json
 from game.models.user import user
 from game.routine.drop import drop
+from game.routine.infection import infection
 import time
 
 
@@ -133,6 +134,11 @@ def end(request):
 					data['exp'] = usr.exp
 					data['level'] = usr.level
 					data['gold'] = usr.gold	
+					
+					infectionBattle = infection.encounter(usr.roleid)
+					if infectionBattle:
+						if not infectionBattle.has_key('msg'):
+							data['infection_battle'] = infectionBattle
 					#if dun.curren_field['battleid'] == dun.last_dungeon['battleid'] and dun.curren_field['fieldid'] == dun.last_dungeon['fieldid']:
 					#	dun.nextField()
 					dun.curren_field = {'battleid':'', 'fieldid':''}

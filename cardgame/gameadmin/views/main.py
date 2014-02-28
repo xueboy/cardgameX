@@ -179,6 +179,21 @@ def gift(request):
 def invite(request):
 	return generalConfigRequestProcess(request, 'invite')
 	
+def infection_battle(request):
+	return generalConfigRequestProcess(request, 'infection_battle')
+
+def infection_prestige_price(request):
+	return generalConfigRequestProcess(request, 'infection_prestige_price')
+	
+def infection_damage_award(request):
+	return generalConfigRequestProcess(request, 'infection_damage_award')
+
+def infection_prestige_award(request):
+	return generalConfigRequestProcess(request, 'infection_prestige_award')
+	
+def infection_exploit_price(request):
+	return generalConfigRequestProcess(request, 'infection_exploit_price')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -335,3 +350,18 @@ def email_import(request):
 	
 def gift_import(request):
 	return excel_import.gift_import(request)
+	
+def infection_battle_import(request):
+	return excel_import.infection_battle_import(request)
+	
+def infection_prestige_price_import(request):
+	return excel_import.infection_prestige_price_import(request)
+	
+def infection_damage_award_import(request):
+	return excel_import.infection_damage_award_import(request)
+	
+def infection_prestige_award_import(request):
+	return excel_import.infection_prestige_award_import(request)
+	
+def infection_exploit_price_import(request):
+	return excel_import.infection_exploit_price_import(request)

@@ -11,7 +11,6 @@ def dict_get(v, k):
 	
 @register.filter(name = 'array_get')
 def array_get(v, i):
-	print v[int(i)]
 	return v[int(i)]
 	
 @register.filter(name='dict_lookup')	

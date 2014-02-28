@@ -6,6 +6,7 @@ from gclib.cache import cache
 from gclib.json import json
 from arenarank.models.models import ladder, tower_ladder, medal_arena
 from arenarank.models.network_ladder import network_ladder
+from arenarank.models.infection_arena import infection_arena
 
 def show_ladder(request):	
 			
@@ -168,3 +169,61 @@ def network_range(request):
 		return HttpResponse(json.dumps(ld.get_charm_range(roleid, begin, end)))
 	elif tp == 'tuhao':
 		return HttpResponse(json.dumps(ld.get_tuhao_range(roleid, begin, end)))
+		
+def infection_encounter(request):
+	roleid = request.REQUEST['roleid']	
+	rolename = request.REQUEST['rolename']
+	ia = infection_arena.instance()	
+	return HttpResponse(json.dumps(ia.encounter(roleid, rolename)))
+	
+def infection_beat(request):
+	roleid = request.REQUEST['roleid']
+	rolelevel = request.REQUEST['rolelevel']
+	rolename = request.REQUEST['rolename']
+	battleRoleid = request.REQUEST['battle_roleid']
+	damage1 = int(request.REQUEST['damage1'])
+	damage2 = int(request.REQUEST['damage2'])
+	damage3 = int(request.REQUEST['damage3'])
+	damage4 = int(request.REQUEST['damage4'])
+	damage5 = int(request.REQUEST['damage5'])
+	damage6 = int(request.REQUEST['damage6'])
+	
+	ia = infection_arena.instance()
+	return HttpResponse(json.dumps(ia.beat(roleid, rolelevel, rolename, battleRoleid, [damage1, damage2, damage3, damage4, damage5, damage6])))
+	
+def infection_call_relief(request):	
+	roleid = request.REQUEST['roleid']
+	i = 1
+	idkeyname = 'friendid' + str(i)
+	namekeynam = 'friendname' + str(i)
+	friendid = []
+	while request.REQUEST.has_key(idkeyname):
+		friendid.append((request.REQUEST[idkeyname], request.REQUEST[namekeynam]))		
+		i = i + 1
+		idkeyname = 'friendid' + str(i)
+		namekeynam = 'friendname' + str(i)
+	ia = infection_arena.instance()
+	return HttpResponse(json.dumps(ia.call_relief(roleid, friendid)))
+	
+def infection_get_battle(request):
+	roleid = request.REQUEST['roleid']	
+	ia = infection_arena.instance()
+	return HttpResponse(json.dumps(ia.get_infection_battle(roleid)))
+	
+def infection_award(request):
+	roleid = request.REQUEST['roleid']
+	battleRoleid = request.REQUEST['battle_roleid']
+	create_time = int(request.REQUEST['create_time'])
+	ia = infection_arena.instance()
+	return HttpResponse(json.dumps(ia.get_battle_award(roleid, battleRoleid, create_time)))
+	
+def infection_ladder(request):
+	tp = request.REQUEST['type']
+	rolelevel = int(request.REQUEST['rolelevel'])
+	ia = infection_arena.instance()
+	if tp == 'damage':
+		return HttpResponse(json.dumps(ia.damdage_ladder_list(rolelevel)))
+	elif tp == 'prestige':
+		return HttpResponse(json.dumps(ia.prestige_ladder_list(rolelevel)))
+	return HttpResponse(json.dumps({'msg':'infection_bad_ladder_type'}))
+	
