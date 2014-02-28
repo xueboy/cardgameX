@@ -93,7 +93,7 @@ class skill:
 
 	@staticmethod
 	def get_exp(sk, skillInfo, skillLevelConf, gameConf):
-		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + sk['exp'] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
+		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
 		
 	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
@@ -101,8 +101,9 @@ class skill:
 		skillInfo = skillConf[sk['skillid']]
 		exp = sk['exp'] + exp
 		sk['exp'] = 0
-		while skillInfo['maxLevel'] >= sk['level'] and skillLevelConf[str(skillInfo['quality'])][sk['level']] < exp:
-			exp = exp - skillLevelConf[str(skillInfo['quality'])][sk['level']]
+		
+		while (skillInfo['maxLevel'] > sk['level']) and (skillLevelConf[str(skillInfo['quality'])][sk['level']] - skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1]) < exp:
+			exp = exp - (skillLevelConf[str(skillInfo['quality'])][sk['level']] - skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1])
 			sk['level'] = sk['level'] + 1
 					
 		if sk['level'] == skillInfo['maxLevel']:
