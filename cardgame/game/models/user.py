@@ -233,7 +233,7 @@ class user(gcuser):
 		data['practice'] = practice.getClientData(self)
 		data['slotmachine'] = slotmachine.getClientData(self)		
 		data['invite'] = invite.getClientData(self)
-		data['infection'] = infection.getClientData(self)
+		#data['infection'] = infection.getClientData(self)
 		data['born_card'] = (self.born_card['cardid'] != '')
 		return data
 		
