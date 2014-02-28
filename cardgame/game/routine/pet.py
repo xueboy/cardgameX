@@ -490,31 +490,33 @@ class pet:
 		
 	@staticmethod
 	def make_born_card():
-		return {'dropid':'', 'born_time':0}
+		return {'cardid':'', 'born_time':0}
 		
 	
 	@staticmethod
-	def select_born_pet(usr, dropid):
+	def select_born_pet(usr, cardid):
 		
 		gameConf = config.getConfig('game')
 		
-		if dropid not in gameConf['pet_born_candidate']:
+		if cardid not in gameConf['pet_born_candidate']:
 			return {'msg': 'card_not_born_card'}
 				
-		if usr.born_card['dropid']:
-			return {'msg': 'card_already_get_born_card'}				
+		if usr.born_card['cardid']:
+			return {'msg': 'card_already_get_born_card'}
 		
-		awd = {}		
-		awd = drop.open(usr, dropid, awd)
+		#awd = {}		
+		#awd = drop.open(usr, dropid, awd)
 		
-		data = drop.makeData(awd, {})
+		#data = drop.makeData(awd, {})
+		inv = usr.getInventory()
+		card = inv.addCard(cardid)
 		
-		usr.born_card['dropid'] = dropid
+		usr.born_card['cardid'] = cardid
 		usr.born_card['born_time'] = currentTime()		
 		
 		usr.save()
 		
-		return data
+		return {'add_card': card}
 		
 		
 		

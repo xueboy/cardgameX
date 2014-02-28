@@ -194,6 +194,6 @@ def invite_award(request):
 	
 def get_born_card(request):
 	
-	dropid = request.GET['dropid']
+	cardid = request.GET['cardid']
 	usr = request.user		
-	return pet.select_born_pet(usr, dropid)
+	return pet.select_born_pet(usr, cardid)
