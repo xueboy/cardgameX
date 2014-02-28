@@ -7,11 +7,22 @@ from game.utility.config import config
 class skill:
 	
 	@staticmethod
-	def levelup(usr, destSkill_id, sourceSkill_id):
+	def levelup(usr, destSkill_id, ownerTeamPosition, sourceSkill_id):
 		
 		inv = usr.getInventory()		
 		
-		destSkill = inv.getSkill(destSkill_id)
+		destSkill = {}
+		if ownerTeamPosition == -1:		
+			destSkill = inv.getSkill(destSkill_id)
+		else:
+			card = inv.getCard(inv.team[ownerTeamPosition])
+			if not card:
+				return {'msg':'card_not_exist'}
+			
+			for sk in card['sk_slot']:
+				if sk['id'] == destSkill_id:
+					destSkill = sk
+					break
 		if not destSkill:
 			return {'msg':'skill_not_exist'}		
 		

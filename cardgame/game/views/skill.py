@@ -8,6 +8,7 @@ def levelup(request):
 	usr = request.user
 	
 	dest_skillid = request.GET['dest_skill']
+	ownerTeamPosition = int(request.GET['owner_team_position'])
 	source_skillid = []
 	source_skillid.append(request.GET['source_skill1'])
 	for i in range(2, 50):
@@ -15,7 +16,7 @@ def levelup(request):
 		if request.GET.has_key(keyname):
 			source_skillid.append(request.GET[keyname])
 		
-	return skill.levelup(usr, dest_skillid, source_skillid)
+	return skill.levelup(usr, dest_skillid, ownerTeamPosition, source_skillid)
 	
 def install(request):
 	
