@@ -135,7 +135,7 @@ def end(request):
 					data['level'] = usr.level
 					data['gold'] = usr.gold	
 					
-					infectionBattle = infection.encounter(usr.roleid)
+					infectionBattle = infection.encounter(usr)
 					if infectionBattle:
 						if not infectionBattle.has_key('msg'):
 							data['infection_battle'] = infectionBattle
