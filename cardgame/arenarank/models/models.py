@@ -7,6 +7,7 @@ from gclib.facility import facility
 from gclib.utility import currentTime, day_diff, time_to_str
 from game.models.user import user
 from game.utility.config import config
+from game.utility.email import email
 
 class ladder(facility):
 	def __init__(self):
@@ -46,7 +47,7 @@ class ladder(facility):
 			self.item[roleid] = rd
 			self.rank.append(roleid)
 			self.save()
-			return len(self.rank) -1
+			return {'position':(len(self.rank) -1)}
 		return {'msg':'arena_ladder_already_stand'}
 
 	def show(self, roleid):		
@@ -211,6 +212,7 @@ class tower_ladder(facility):
 		self.rank40 = []
 		self.rank50 = []
 		self.item = {}
+		self.last_update_time = 0
 		
 	def getData(self):
 		data = {}
@@ -228,6 +230,7 @@ class tower_ladder(facility):
 		self.rank40 = data['rank40']
 		self.rank50 = data['rank50']		
 		self.item = data['item']
+		self.last_update_time = data['last_update_time']
 		
 	@staticmethod
 	def position_in_rank(rank, roleid):
@@ -351,7 +354,12 @@ class tower_ladder(facility):
 			 ls.append(tower_ladder.show_position(self.rank50, self.item, i))
 		listLd['50'] = ls		
 		return listLd
-			
+	
+	def update_ladder(self):
+		if not is_same_day(currentTime(), self.last_update_time):
+			email.sendMail('3')
+			self.last_stand_time = 0
+			self.save()
 		
 	@staticmethod
 	def show_position(rank, item, position):

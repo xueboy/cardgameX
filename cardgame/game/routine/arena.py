@@ -4,41 +4,67 @@
 from gclib.curl import curl
 from gclib.json import json
 from gclib.utility import is_same_day, currentTime, randint
-from cardgame.settings import ARENE_SERVER
+from cardgame.settings import ARENE_SERVER, SIGLE_SERVER
 from game.utility.config import config
 from game.routine.drop import drop
 from game.routine.vip import vip
+
+
 #from game.models.user import user
 
 
 class arena:
 	@staticmethod
 	def stand_ladder(usr):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)}))
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.stand(usr.roleid)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)}))
 
 	@staticmethod
 	def show_all():
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/show_all/', None, {}))
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.show_all()
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/show_all/', None, {}))
 
 	@staticmethod
 	def remove(roleid):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/remove/', None, {'roleid':roleid}))
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.remove(roleid)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/remove/', None, {'roleid':roleid}))
 
 	@staticmethod
 	def set_avatar_id(roleid, avatar_id):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.set_avatar_id(roleid, avatar_id)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
 			
 	@staticmethod
 	def score(roleid):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/score/', None, {'roleid':roleid}))
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.score(roleid)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/score/', None, {'roleid':roleid}))
 
 	@staticmethod
 	def make():
 		return {'times':0, 'last_chellage_time':0, 'last_update_time':0, 'rank_award':{}}
 			
 	@staticmethod
-	def award_score(roleid, awardScore):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/award_score/', None, {'roleid':roleid, 'award_score': awardScore}))
+	def award_score(roleid, awardScore):		
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena
+			return arena.award_score(roleid, awardScore)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/award_score/', None, {'roleid':roleid, 'award_score': awardScore}))
 
 	@staticmethod
 	def challenge(usr, defenceRoleid):
@@ -90,7 +116,11 @@ class arena:
 		res = None
 		if usr.arena.has_key('challenge_roleid'):
 			
-			res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']}))
+			if SIGLE_SERVER:
+				from arenarank.routine.arena import arena
+				return arena.defeat(usr.roleid, usr.arena['challenge_roleid'])
+			else:
+				res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']}))
 			
 			arenaLootConf = config.getConfig('arena_loot')
 			gameConf = config.getConfig('game')
@@ -133,7 +163,7 @@ class arena:
 	def convert(usr, mediumCount):
 		gameConf = config.getConfig('game')
 		pointConsume = mediumCount * gameConf['arena_medium_price']
-
+		
 		res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
 		
 		res = json.loads(res)

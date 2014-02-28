@@ -1,14 +1,13 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
-
 from gclib.facility import facility
 from gclib.utility import currentTime, is_same_day, randint
 from game.utility.config import config
+from game.utility.email import email
 
 class infection_arena(facility):
-	
-	
+		
 	def __init__(self):
 		facility.__init__(self)
 		self.battle = {}		
@@ -37,8 +36,7 @@ class infection_arena(facility):
 	@staticmethod
 	def make_user(name):
 		return {'prestige':0, 'last_hit_time': 0, 'damage':0, 'level':1, 'infection_list':[], 'name': name}
-			
-			
+						
 	@staticmethod
 	def make_relief(battle):
 		data = {}
@@ -203,8 +201,7 @@ class infection_arena(facility):
 		data['prestige'] = prestige		
 		data['can_call'] = canCall
 		return data
-			
-			
+						
 	def update_prestige_ladder(self, roleid, rolelevel, prestige, gameConf):
 		
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
@@ -225,7 +222,6 @@ class infection_arena(facility):
 			self.prestige_ladder[levelGroup].append(roleid)			
 		elif prestige_position >= 0:
 			self.prestige_ladder[levelGroup].insert(prestige_position, roleid)
-
 				
 	def update_damage_ladder(self, roleid, rolelevel, damage, gameConf):		
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
@@ -250,8 +246,7 @@ class infection_arena(facility):
 	def update_prestige(self, roleid, now):
 		if not is_same_day(self.user[roleid]['last_hit_time'], now):
 			self.user[roleid]['prestige'] = 0
-			
-			
+						
 	def call_relief(self, roleid, friend):
 		
 		if not self.battle.has_key(roleid):
@@ -378,6 +373,7 @@ class infection_arena(facility):
 		if is_same_day(self.last_update_time, now):
 			return
 		
+		email.send_ladder_email('4')		
 		for roleid in self.battle.keys():
 			battleRemoveList = []
 			for battle in self.battle[roleid]:

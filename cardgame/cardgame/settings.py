@@ -37,6 +37,7 @@ MEMCACHED = {
 	}
 }
 
+SIGLE_SERVER = True
 
 DSSERVER = {
 	'HOST':'127.0.0.1',
@@ -208,7 +209,7 @@ LOGGING = {
         'default': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
-            'filename': path.join('logs/','all.log'), #或者直接写路径：'c:\logs\all.log',
+            'filename': path.join('logs/','all.log'), #禄髺爾卤陆詯麓路戮露拢潞'c:\logs\all.log',
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
