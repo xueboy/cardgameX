@@ -151,7 +151,7 @@ class medal:
 			usr.medal['levelup_last_time'] = 0
 			medalid = usr.medal['levelup_medalid']
 			usr.medal['levelup_medalid'] = ''
-				return medal.levelupMedal(usr.roleid, medalid, chipNeed)
+			return medal.levelupMedal(usr.roleid, medalid, chipNeed)
 		return {}	
 		
 	@staticmethod		
