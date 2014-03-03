@@ -4,7 +4,7 @@
 from gclib.curl import curl
 from gclib.json import json
 from gclib.utility import is_same_day, currentTime, randint
-from cardgame.settings import ARENE_SERVER
+from cardgame.settings import ARENE_SERVER, SIGLE_SERVER
 from game.models.network import network
 from game.utility.config import config
 from game.routine.drop import drop
@@ -75,28 +75,48 @@ class infection:
 		
 	@staticmethod
 	def Encount(usr):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_encounter/', None, {'roleid':str(usr.roleid), 'rolename': usr.name}))
+		if SIGLE_SERVER:
+			from arenarank.routine.infection import infection as infectionR
+			infectionR.encounter(usr.roleid, usr.name)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_encounter/', None, {'roleid':str(usr.roleid), 'rolename': usr.name}))
 			
 	@staticmethod
 	def Award(usr, battleRoleid, create_time):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_award/', None, {'roleid':str(usr.roleid), 'battle_roleid': battleRoleid, 'create_time':create_time}))
+		if SIGLE_SERVER:
+			from arenarank.routine.infection import infection as infectionR
+			infectionR.award(usr.roleid, battleRoleid, create_time)
+		else:
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_award/', None, {'roleid':str(usr.roleid), 'battle_roleid': battleRoleid, 'create_time':create_time}))
 			
 	@staticmethod
 	def Call(usr, friend):
-		data = {}
-		for (i, f) in enumerate(friend):
-			data['friendid' + str(i)] = f[0]
-			data['friendname' + str(i)] = f[1]['name']
-		data['roleid'] = usr.roleid
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_call_relief/', None, data))
+		if SIGLE_SERVER:
+			from arenarank.routine.infection import infection as infectionR
+			return infectionR.call_relief(usr.roleid, friend)
+		else:
+			data = {}
+			for (i, f) in enumerate(friend):
+				data['friendid' + str(i)] = f[0]
+				data['friendname' + str(i)] = f[1]['name']
+			data['roleid'] = usr.roleid
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_call_relief/', None, data))
 		
 	@staticmethod
 	def Ladder(usr, tp):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_ladder/', None, {'type':tp, 'rolelevel': usr.level}))
+		if SIGLE_SERVER:
+			from arenarank.routine.infection import infection as infectionR
+			return infectionR.ladder(tp, usr.roleid)
+		else:			
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_ladder/', None, {'type':tp, 'rolelevel': usr.level}))
 			
 	@staticmethod
 	def GetBattle(usr):
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_get_battle/', None, {'roleid':usr.roleid}))
+		if SIGLE_SERVER:
+			from arenarank.routine.infection import infection as infectionR
+			return infection.get_battle(usr.roleid)
+		else: 
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_get_battle/', None, {'roleid':usr.roleid}))
 			
 	@staticmethod
 	def make():
