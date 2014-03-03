@@ -287,7 +287,7 @@ class infection_arena(facility):
 			if self.battle.has_key(battleRoleid):
 				for battle in self.battle[battleRoleid]:					
 					if battle['create_time'] == inf['create_time']:
-						b['total_hp'] = infection_arena.battle_total_hp(battle)
+						b['monster'] = battle['monster']
 						b['create_time'] = battle['create_time']
 						b['roleid'] = battle['roleid']
 						b['rolename'] = battle['rolename']
@@ -313,10 +313,8 @@ class infection_arena(facility):
 			return {'msg': 'infection_battle_not_exist'}
 		
 		now = currentTime()		
-		gameConf = config.getConfig('game')
-		
-		self.update_battle(now, gameConf)
-				
+		gameConf = config.getConfig('game')		
+		self.update_battle(now, gameConf)				
 		battle = {}
 		for  b in self.battle[battleRoleid]:
 			if b['create_time'] == create_time:
@@ -335,8 +333,7 @@ class infection_arena(facility):
 		quality = battle['quality']
 		level = battle['level']
 		
-		infectionBattleConf = config.getConfig('infection_battle')
-		
+		infectionBattleConf = config.getConfig('infection_battle')		
 		infectionBattleInfo = infectionBattleConf[str(quality)][level - 1]
 		
 		if battle['roleid'] == roleid:
@@ -366,14 +363,14 @@ class infection_arena(facility):
 		if hitDropid:
 			data['hit_dropid'] = hitDropid			
 		return data
-		
-		
+				
 	def update_battle(self, now, gameConf):		
 		
 		if is_same_day(self.last_update_time, now):
 			return
-		
-		email.send_ladder_email('4')		
+	
+		email.send_ladder_email(self.damage_ladder, '4')
+		email.send_ladder_email(self.prestige_ladder, '4')
 		for roleid in self.battle.keys():
 			battleRemoveList = []
 			for battle in self.battle[roleid]:

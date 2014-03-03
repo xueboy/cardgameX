@@ -32,15 +32,20 @@ class infection:
 	@staticmethod
 	def beat(usr, battle_roleid, damage):
 		
+		gameConf = config.getConfig('game')		
+		if usr.costIp(gameConf['infection_point_cost']) < 0:
+			return {'msg' : 'ip_not_enough'}			
+		
 		res = infection.Beat(usr, battle_roleid, damage)		
 		if res.has_key('msg'):
 			return res
 		data = res
+		data['ip'] = usr.ip
+		usr.save()
 		return data
 				
 	@staticmethod
-	def Beat(usr, battle_roleid, damage):
-		
+	def Beat(usr, battle_roleid, damage):		
 		data = {}
 		data['roleid'] = usr.roleid
 		data['rolename'] = usr.name
@@ -51,8 +56,7 @@ class infection:
 		data['damage3'] = damage[2]
 		data['damage4'] = damage[3]
 		data['damage5'] = damage[4]
-		data['damage6'] = damage[5]
-		
+		data['damage6'] = damage[5]		
 		
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_beat/', None, data))
 		

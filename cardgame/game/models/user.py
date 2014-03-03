@@ -83,6 +83,8 @@ class user(gcuser):
 		self.invite = invite.make()
 		self.infection = infection.make()
 		self.born_card = pet.make_born_card()
+		self.ip = 0
+		self.ip_last_recover = 0
 		
 	
 	def init(self, acc = None):
@@ -96,10 +98,14 @@ class user(gcuser):
 		levelConf = config.getConfig('level')		
 		self.stamina = levelConf[0]['stamina']
 		self.sp = levelConf[0]['sp']
-		self.stamina_last_recover = currentTime()
-		self.sp_last_recover = currentTime()
+		now = currentTime()
+		self.stamina_last_recover = now
+		self.sp_last_recover = now
 		self.last_card_no = 0
-		self.invite['make_time'] = currentTime()
+		self.invite['make_time'] = now
+		gameConf = config.getConfig('game')
+		self.ip = gameConf['infection_point_max']
+		self.ip_last_recover = now
 		
 	def install(self, roleid):
 		gcuser.install(self, roleid)
@@ -148,6 +154,8 @@ class user(gcuser):
 		data['invite'] = self.invite
 		data['infection'] = self.infection
 		data['born_card'] = self.born_card
+		data['ip'] = self.ip
+		data['ip_last_recover'] = self.ip_last_recover
 		return data
 		
 	def load(self, roleid, data):
@@ -191,7 +199,9 @@ class user(gcuser):
 		self.vip.update(data['vip'])
 		self.invite.update(data['invite'])
 		self.infection.update(data['infection'])
-		self.born_card.update(data['born_card'])
+		self.born_card.update(data['born_card'])				
+		self.ip = data['ip']
+		self.ip_last_recover = data['ip_last_recover']
 		
 	def getClientData(self):
 		now = currentTime()
@@ -235,6 +245,8 @@ class user(gcuser):
 		data['invite'] = invite.getClientData(self)
 		#data['infection'] = infection.getClientData(self)
 		data['born_card'] = (self.born_card['cardid'] != '')
+		data['ip'] = self.ip
+		data['ip_last_recover'] = self.ip_last_recover
 		return data
 		
 	def getNtInfoData(self):
@@ -301,6 +313,7 @@ class user(gcuser):
 		data = {}		
 		self.updateStamina()
 		self.updateSp()
+		self.updateIp()
 		data.update(self.getClientData())
 		dun = self.getDungeon()
 		data['dungeon'] = dun.getClientData()
@@ -427,6 +440,19 @@ class user(gcuser):
 			if self.sp > maxSp:
 				self.sp = maxSp	
 				
+	def updateIp(self):
+		gameConf = config.getConfig('game')
+		
+		maxIp = gameConf['infection_point_max']
+		ip_recover_before = currentTime() - self.ip_last_recover
+		ip_recover_interval = gameConf['infection_point_recover_interval']
+		if ip_recover_before > ip_recover_interval:
+			point = ip_recover_before // ip_recover_interval
+			self.ip_last_recover = self.ip_last_recover + (point * gameConf['infection_point_recover_interval'])
+			self.ip = self.ip + point
+			if self.ip > maxIp:
+				self.ip = maxIp
+				
 	def gainExp(self, exp):
 		"""
 		gain exp
@@ -463,17 +489,16 @@ class user(gcuser):
 		self.stamina = self.stamina + point
 		levelConf = config.getConfig('level')
 		if levelConf[self.level - 1]['stamina'] < self.stamina:
-			levelConf[self.level - 1]['stamina'] = self.stamina
-		
+			levelConf[self.level - 1]['stamina'] = self.stamina	
 	
 	def costStamina(self, point):
 		if self.stamina < point:
 			return -1
 		self.updateStamina()
 		maxStamina = config.getMaxStamina(sefl.level)
-		if maxStamina == self.stamina:
-			self.stamina_last_recover = currentTime()
 		self.stamina = self.stamina - point
+		if maxStamina > self.stamina:
+			self.stamina_last_recover = currentTime()		
 		return 0
 		
 	def costSp(self, point):
@@ -482,10 +507,21 @@ class user(gcuser):
 		self.updateSp()
 		levelConf = config.getConfig('level')
 		maxSp = levelConf[self.level - 1]
-		if maxSp == self.sp:
-			self.sp_last_recover = currentTime()
 		self.sp = self.sp - point
+		if maxSp > self.sp:
+			self.sp_last_recover = currentTime()		
 		return 0
+		
+	def costIp(self, point):
+		if self.ip < point:
+			return -1
+		self.updateIp()
+		gameConf = config.getConfig('game')
+		maxIp = gameConf['infection_point_recover_interval']
+		self.ip = self.ip - point
+		if maxIp > self.ip:
+			self.ip_last_recover = currentTime()
+		return 0		
 			
 	def updateToFriend(self):
 		for key in self.friends:

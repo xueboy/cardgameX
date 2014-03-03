@@ -205,17 +205,19 @@ class medal:
 		
 		gameConf = config.getConfig('game')
 		
-		if usr.medal['grabmedalroleid'] == 0:
+		defenceRoleid = usr.medal['grabmedalroleid']
+		
+		if defenceRoleid == 0:
 			return {'msg':'medal_grab_shoulb_before'}		
 				
-		res = medal.tryGrab(usr.medal['grabmedalroleid'])
+		res = medal.tryGrab(defenceRoleid)
 		if res.has_key('msg'):
 			return res
 		if res['protect']:
 			return {'msg':'medal_player_in_protect'}
 		
 		now = currentTime()
-		defenceUsr = usr.__class__.get(usr.medal['grabmedalroleid'])
+		defenceUsr = usr.__class__.get(defenceRoleid)
 		
 		if not defenceUsr:
 			return {'msg':'usr_not_exist'}
@@ -226,25 +228,29 @@ class medal:
 		
 		if randrop(probablity):
 			
+			medalid = usr.medal['grabmedalid']
+			chipnum = usr.medal['grabmedalchip']
 			medalConf = config.getConfig('medal')
-			medalInfo = medalConf[usr.medal['grabmedalid']]
+			medalInfo = medalConf[medalid]
 			
 			res = medal.update_medal_levelup(defenceUsr, now, medalInfo, gameConf)
 			if res.has_key('msg'):
 				return res			
 			
 			defenceUsr_save = False
-			if defenceUsr.medal['levelup_medalid'] and defenceUsr.medal['levelup_medalid'] == usr.medal['grabmedalid']:
-				medal.notify_medal_levelup_interrupt(defenceUsr, defenceUsr.medal['levelup_medalid'])
-				defenceUsr.medal['levelup_medalid'] = ''
-				defenceUsr.medal['levelup_last_time'] = 0				
-				defenceUsr_save = True
+			defenceInv = defenceUsr.getInventory()
+			if defenceUsr.medal['levelup_medalid'] and defenceUsr.medal['levelup_medalid'] == medalid:
+				if defenceInv.medal[medalid][chipnum] < 2:
+					medal.notify_medal_levelup_interrupt(defenceUsr, medalid)
+					defenceUsr.medal['levelup_medalid'] = ''
+					defenceUsr.medal['levelup_last_time'] = 0				
+					defenceUsr_save = True
 			
 			res = medal.grabMedal(usr.roleid, usr.medal['grabmedalroleid'], usr.level, usr.medal['grabmedalid'], usr.medal['grabmedalchip'])
 			if res.has_key('msg'):
 				return res			
 			inv = usr.getInventory()			
-			defenceInv = defenceUsr.getInventory()
+			
 			if defenceInv.delMedalChip(usr.medal['grabmedalid'], usr.medal['grabmedalchip']) < 0:
 				return {'msg':'medal_chip_not_enough'}
 			medalid = usr.medal['grabmedalid']
