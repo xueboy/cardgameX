@@ -4,10 +4,11 @@
 from django.http import HttpResponse
 from gclib.cache import cache
 from gclib.json import json
-from arenarank.models.models import tower_ladder, medal_arena
+from arenarank.models.models import tower_ladder
 from arenarank.models.network_ladder import network_ladder
 from arenarank.models.infection_arena import infection_arena
 from arenarank.routine.arena import arena
+from arenarank.routine.medal import medal
 
 def show_ladder(request):				
 	roleid = request.REQUEST['roleid']
@@ -65,77 +66,52 @@ def tower_show(request):
 def grab_medal(request):
 	
 	offenceRoleid = request.REQUEST['offenceRoleid']
-	deffenceRoleid = request.REQUEST['deffenceRoleid']
-	
+	defenceRoleid = request.REQUEST['defenceRoleid']	
 	level = int(request.REQUEST['level'])
 	medalid = request.REQUEST['medalid']
-	chipnum = int(request.REQUEST['chipnum'])
-	
-	ld = medal_arena.instance()
-	if ld.is_protect(deffenceRoleid):
-		return HttpResponse(json.dumps({'msg':'arene_grab_in_protect'}))
-	if ld.lose_medal(deffenceRoleid, medalid, chipnum) == 0:
-		return HttpResponse(json.dumps({'msg':'medal_not_exist'}))
-	
-	return HttpResponse(json.dumps(ld.win_medal(offenceRoleid, level, medalid, chipnum)))
-	
-	
-#def lose_medal(request):
-#	
-#	roleid = request.REQUEST['roleid']
-#	medalid = request.REQUEST['medalid']
-#	chipnum = int(request.REQUEST['chipnum'])
-#	
-#	ld = medal_arena.instance()
-#	return HttpResponse(json.dumps(ld.lose_medal(roleid, medalid, chipnum)))
+	chipnum = int(request.REQUEST['chipnum'])	
+	return HttpResponse(json.dumps(medal.grab_medal(offenceRoleid, defenceRoleid, level, medalid, chipnum)))
 	
 def seek_holder(request):
 	
 	roleid = int(request.REQUEST['roleid'])
 	level = int(request.REQUEST['level'])
 	medalid = request.REQUEST['medalid']
-	chipnum = int(request.REQUEST['chipnum'])
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.seek_holder(roleid, level, medalid, chipnum)))
+	chipnum = int(request.REQUEST['chipnum'])	
+	return HttpResponse(json.dumps(medal.seek_holder(roleid, level, medalid, chipnum)))
 	
 	
-def medal_levelup(request):
-	
+def medal_levelup(request):	
 	roleid = request.REQUEST['roleid']
-	medalid = request.REQUEST['medalid']	
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.medal_levelup(roleid, medalid)))
+	medalid = request.REQUEST['medalid']
+	chipNeed = int(request.REQUEST['chip_need'])
+	return HttpResponse(json.dumps(medal.medal_levelup(roleid, medalid, chipNeed)))
 	
 def new_medal(request):
 	roleid = request.REQUEST['roleid']
 	medalid = request.REQUEST['medalid']
-	chipnum = request.REQUEST['chipnum']
-	level = request.REQUEST['level']
-	cnt = request.REQUEST['count']
-	
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.new_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))
+	chipnum = int(request.REQUEST['chipnum'])
+	level = int(request.REQUEST['level'])
+	cnt = int(request.REQUEST['count'])	
+	return HttpResponse(json.dumps(medal.new_medal(roleid, level, medalid, chipnum, cnt)))
 	
 def delete_medal(request):
 	roleid = request.REQUEST['roleid']
 	medalid = request.REQUEST['medalid']
 	level = request.REQUEST['level']
 	chipnum = request.REQUEST['chipnum']
-	cnt = request.REQUEST['count']
-	
+	cnt = request.REQUEST['count']	
 	ld = medal_arena.instance()
 	return HttpResponse(json.dumps(ld.delete_medal(roleid, int(level), medalid, int(chipnum), int(cnt))))
 	
 def try_grab(request):
-	defenceRoleid = request.REQUEST['defence_roleid']	
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps({'protect' : ld.is_protect(defenceRoleid)}))
+	defenceRoleid = request.REQUEST['defence_roleid']		
+	return HttpResponse(json.dumps(medal.try_grab(defenceRoleidd)))
 	
 def add_protect_time(request):	
 	roleid = request.REQUEST['roleid']
-	second = int(request.REQUEST['add_second'])	
-	ld = medal_arena.instance()
-	return HttpResponse(json.dumps(ld.add_protect_time(roleid, second)))
+	second = int(request.REQUEST['add_second'])		
+	return HttpResponse(json.dumps(medal.add_protect_time(roleid, second)))
 	
 def network_gift(request):
 	sendRoleid = request.REQUEST['send_roleid']	

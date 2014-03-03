@@ -177,7 +177,7 @@ class educate:
 				exp = int(exp)
 				if exp:
 					card = inv.getCard(edu_slot['card_id'])
-					pet.gainExp(card, int(exp), petConf, petLevelConf, gameConf)					
+					pet.gainExp(usr, card, int(exp), petConf, petLevelConf, gameConf)					
 					eduCard.append(card)		
 		inv.save()
 		usr.save()	

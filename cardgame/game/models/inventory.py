@@ -684,15 +684,13 @@ class inventory(object):
 		medalInfo = medalConfig[medalid]		
 		if not self.medal.has_key(medalid):
 			self.medal[medalid] = {'level':0, 'chip': [0] * medalInfo['chip'], 'id':medalid, 'gravel':0}			
-		self.medal[medalid]['chip'][chipnum] = self.medal[medalid]['chip'][chipnum] + cnt		
-
+		self.medal[medalid]['chip'][chipnum] = self.medal[medalid]['chip'][chipnum] + cnt
 		return self.medal[medalid]
 		
 	def delMedalChip(self, medalid, chipnum):
 		
 		if not self.medal.has_key(medalid):
-			return -1
-		
+			return -1		
 		if self.medal[medalid]['chip'][chipnum] < 1:
 			return -1
 		
