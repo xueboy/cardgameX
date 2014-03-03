@@ -352,7 +352,7 @@ class user(gcuser):
 	@retrieval_object
 	def getInventory(self):
 		if self.inv:
-			return self.inv		
+			return self.inv
 		inv = inventory.get(self.id)
 		if not inv:
 			inv = inventory()

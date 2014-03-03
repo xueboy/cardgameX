@@ -1,6 +1,7 @@
 ﻿#coding:utf-8
 #!/usr/bin/env python
 
+from gclib.DBConnection import DBConnection
 from gclib.facility import facility
 from game.utility.config import config
 
@@ -40,10 +41,10 @@ class medal_arena(facility):
 		holderRoleids = medal_arena.db_seek_medal_holder(roleid, medalid, chipnum, levelBase, gameConf['medal_holder_count'])		
 		return {'holder':holderRoleids}
 			
-	def medal_levelup(self, roleid, medalid,chipNeed):
+	def medal_levelup(self, roleid, medalid):
 		medalConf = config.getConfig('medal')
 		medalInfo = medalConf[medalid]
-		medal_arena.db_medal_levelup(roleid, medalid, medalInfo['chip'], chipNeed)			
+		medal_arena.db_medal_levelup(roleid, medalid, medalInfo['chip'])			
 		return {}	
 		
 	def new_medal(self, roleid, level, medalid, chipnum, cnt):		
@@ -115,13 +116,13 @@ class medal_arena(facility):
 		return list(set([n[0] for n in res]))
 				
 	@staticmethod
-	def db_medal_levelup( roleid, medalid, chipcnt, chipNeed):
+	def db_medal_levelup( roleid, medalid, chipcnt):
 		conn = DBConnection.getConnection()
 		conn.star_transaction()	
-		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT %s"
+		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT 1"
 		for i in range(chipcnt):
-			rc = conn.excute_no_commit(sql, [roleid, medalid, i, chipNeed])
-			if rc != chipNeed:
+			rc = conn.excute_no_commit(sql, [roleid, medalid, i])
+			if rc != 1:
 				conn.rollback()				
 				return {'msg': 'medal_levelup_fail'}
 		conn.commit()

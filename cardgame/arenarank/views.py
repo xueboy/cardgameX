@@ -83,9 +83,8 @@ def seek_holder(request):
 	
 def medal_levelup(request):	
 	roleid = request.REQUEST['roleid']
-	medalid = request.REQUEST['medalid']
-	chipNeed = int(request.REQUEST['chip_need'])
-	return HttpResponse(json.dumps(medal.medal_levelup(roleid, medalid, chipNeed)))
+	medalid = request.REQUEST['medalid']	
+	return HttpResponse(json.dumps(medal.medal_levelup(roleid, medalid)))
 	
 def new_medal(request):
 	roleid = request.REQUEST['roleid']
