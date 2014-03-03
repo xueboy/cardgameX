@@ -144,6 +144,7 @@ class config(gcconfig):
 		del data['infection_dungeon_probability']
 		del data['infection_quality']
 		del data['infection_ladder_max_size']
+		del data['medal_levelup_wink_finish_count']
 		return data
 	
 			
