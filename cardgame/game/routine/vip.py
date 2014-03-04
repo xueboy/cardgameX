@@ -111,3 +111,7 @@ class vip:
 	@staticmethod
 	def canMedalGrabProbabilityPromote(usr):
 		return vip.value(usr, 'medal_grab_probability10') != 0
+		
+	@staticmethod
+	def explore_critical_times(usr):
+		return vip.value(usr, 'explore_critical_times')

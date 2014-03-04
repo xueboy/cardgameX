@@ -12,7 +12,7 @@ class medal:
 		
 	@staticmethod
 	def make():
-		return {'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0, 'levelup_medalid':'', 'levelup_count':0}
+		return {'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0, 'levelup_medalid':'', 'levelup_count':0, 'protect_time':0}
 			
 	@staticmethod
 	def grabMedal(offenceRoleid, defenceRoleid, level, medalid, chipnum):

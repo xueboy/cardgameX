@@ -122,25 +122,25 @@ class drop:
 		save_inv = False
 		inv = None
 		if awd.has_key('st'):
-			usr.chargeStamina(awd['st'])
+			usr.chargeStamina(int(awd['st']))
 			data['st'] = usr.stamina
 			save_user = True
 		if awd.has_key('gem'):
-			usr.gem = usr.gem + awd['gem']
+			usr.gem = usr.gem + int(awd['gem'])
 			data['gem'] = usr.gem
 			save_user = True
 		if awd.has_key('gold'):
-			usr.gold = usr.gold + awd['gold']
+			usr.gold = usr.gold + int(awd['gold'])
 			data['gold'] = usr.gold
 			save_user = True
 		if awd.has_key('sp'):
-			usr.sp = usr.sp + awd['sp']
+			usr.sp = usr.sp + int(awd['sp'])
 			data['sp'] = usr.sp
 			save_user = True
 		if awd.has_key('exp'):
-			usr.gainExp(awd['exp'])
+			usr.gainExp(int(awd['exp']))
 			data['level'] = usr.level
-			data['exp'] = awd.exp
+			data['exp'] = usr.exp
 			save_user = True
 		if awd.has_key('stone'):
 			if not inv:

@@ -2465,3 +2465,22 @@ class excel_import:
 			return HttpResponse(json.dumps(conf, sort_keys = True))			
 		return HttpResponse('infection_exploit_price_import')
 	
+	@staticmethod
+	def explore_award_import(request):
+		if request.method == 'POST':
+			explore_award_file = request.FILES.get('explore_award_file')
+			if not explore_award_file:
+				return HttpResponse('探索奖励xlsx文件未上传')
+				
+			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, explore_award_file.read())
+			sheet = wb.sheet_by_index(0)
+			conf = {}			
+			for rownum in range(3, sheet.nrows):
+				row = sheet.row_values(rownum)				
+				level = int(row[0])
+				dropid = row[1].split(',')
+				conf[str(level)] = dropid				
+			return HttpResponse(json.dumps(conf, sort_keys=True))
+		return HttpResponse('explore_award_import')
+				
+		

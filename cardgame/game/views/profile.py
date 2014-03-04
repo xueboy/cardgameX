@@ -16,6 +16,7 @@ from game.routine.levelup import levelup
 from game.routine.arena import arena
 from game.routine.invite import invite
 from game.routine.pet import pet
+from game.routine.explore import explore as exploreR
 
 def set_avatar(request):	
 	
@@ -197,3 +198,11 @@ def get_born_card(request):
 	cardid = request.GET['cardid']
 	usr = request.user		
 	return pet.select_born_pet(usr, cardid)
+	
+def explore(request):
+	usr = request.user
+	return exploreR.explore(usr)
+	
+def explore_buy_critical(request):
+	usr = request.user
+	return exploreR.buy_critical_times(usr)

@@ -24,6 +24,15 @@ class infection:
 					return res							
 		return {}
 		
+	@staticmethod
+	def explore_encounter(usr, gameConf):
+		rd = randint
+		if rd < gameConf['infection_explore_probability']:
+			res = infection.Encount(usr)
+			if not res.has_key('msg'):
+				return res
+		return {}
+		
 		
 	@staticmethod
 	def encounter(usr):

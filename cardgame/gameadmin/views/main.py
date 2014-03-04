@@ -194,6 +194,9 @@ def infection_prestige_award(request):
 def infection_exploit_price(request):
 	return generalConfigRequestProcess(request, 'infection_exploit_price')
 	
+def explore_award(request):
+	return generalConfigRequestProcess(request, 'explore_award')
+	
 def generalConfigRequestProcess(request, confname):
 	if request.method == 'POST':
 		confstr = request.POST['config']
@@ -365,3 +368,6 @@ def infection_prestige_award_import(request):
 	
 def infection_exploit_price_import(request):
 	return excel_import.infection_exploit_price_import(request)
+	
+def explore_award_import(request):
+	return excel_import.explore_award_import(request)

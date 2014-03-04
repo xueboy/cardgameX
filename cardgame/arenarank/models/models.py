@@ -8,6 +8,7 @@ from gclib.utility import currentTime, day_diff, time_to_str
 from game.models.user import user
 from game.utility.config import config
 from game.utility.email import email
+from arenarank.models.medal_arena import medal_arena
 
 class ladder(facility):
 	def __init__(self):

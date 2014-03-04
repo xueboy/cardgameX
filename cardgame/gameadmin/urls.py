@@ -137,4 +137,6 @@ urlpatterns = patterns('',
     url(r'^infection_prestige_award_import/$',  gameadmin.views.main.infection_prestige_award_import),
     url(r'^infection_exploit_price/$', gameadmin.views.main.infection_exploit_price),
     url(r'^infection_exploit_price_import/$', gameadmin.views.main.infection_exploit_price_import),
+    url(r'^explore_award/$', gameadmin.views.main.explore_award),
+    url(r'^explore_award_import/', gameadmin.views.main.explore_award_import),
 )
