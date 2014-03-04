@@ -199,7 +199,7 @@ class user(gcuser):
 		self.tower = data['tower']
 		self.medal.update(data['medal'])
 		self.practice = data['practice']
-		self.slotmachine = data['slotmachine']		
+		self.slotmachine = data['slotmachine']
 		self.vip.update(data['vip'])
 		self.invite.update(data['invite'])
 		self.infection.update(data['infection'])

@@ -8,7 +8,7 @@ from gclib.curl import curl
 from game.utility.config import config
 from game.routine.drop import drop
 
-from cardgame.settings import ARENE_SERVER
+from cardgame.settings import ARENE_SERVER, SIGLE_SERVER
 
 
 class tower:
@@ -270,12 +270,20 @@ class tower:
 			usr.tower['floor_point'] = []
 			
 	@staticmethod
-	def stand(usr):		
-		return json.loads(curl.url(ARENE_SERVER +  '/arena/tower_stand/', None, {'roleid': usr.roleid, 'level': usr.level, 'point':  usr.tower['current']['point'], 'name':usr.name, 'floor':tower.current_floor(usr)}))
+	def stand(usr):
+		if SIGLE_SERVER:
+			from arenarank.routine.tower import tower as towerR
+			return towerR.stand(usr.roleid, usr.name, usr.level, usr.tower['current']['point'], tower.current_floor(usr))
+		else: 
+			return json.loads(curl.url(ARENE_SERVER +  '/arena/tower_stand/', None, {'roleid': usr.roleid, 'level': usr.level, 'point':  usr.tower['current']['point'], 'name':usr.name, 'floor':tower.current_floor(usr)}))
 			
 	@staticmethod
 	def show_ladder(usr):
-		return {'tower_ladder':json.loads(curl.url(ARENE_SERVER +  '/arena/tower_show/', None, {'roleid': usr.roleid, 'level': usr.level}))}
+		if SIGLE_SERVER:
+			from arenarank.routine.tower import tower as towerR
+			return {'tower_ladder':towerR.show_ladder()}
+		else:
+			return {'tower_ladder':json.loads(curl.url(ARENE_SERVER +  '/arena/tower_show/', None, {'roleid': usr.roleid, 'level': usr.level}))}
 			
 	@staticmethod
 	def times(usr, gameConf):

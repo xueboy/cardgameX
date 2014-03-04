@@ -4,12 +4,12 @@
 from django.http import HttpResponse
 from gclib.cache import cache
 from gclib.json import json
-from arenarank.models.models import tower_ladder
 from arenarank.models.network_ladder import network_ladder
 from arenarank.models.infection_arena import infection_arena
 from arenarank.routine.arena import arena
 from arenarank.routine.medal import medal
 from arenarank.routine.infection import infection
+from arenarank.routine.tower import tower
 
 def show_ladder(request):				
 	roleid = request.REQUEST['roleid']
@@ -58,10 +58,10 @@ def tower_stand(request):
 	point = int(request.REQUEST['point'])
 	name = request.REQUEST['name']
 	floor = int(request.REQUEST['floor'])	
-	return HttpResponse(json.dumps(arena.stand(roleid, name, level, point, floor)))
+	return HttpResponse(json.dumps(tower.stand(roleid, name, level, point, floor)))
 	
 def tower_show(request):	
-	return HttpResponse(json.dumps(arena.show_ladder()))
+	return HttpResponse(json.dumps(tower.show_ladder()))
 	
 	
 def grab_medal(request):

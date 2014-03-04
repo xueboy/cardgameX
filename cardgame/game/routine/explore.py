@@ -54,10 +54,9 @@ class explore:
 		awd = drop.do_award(usr, awd, {})		
 		data = drop.makeData(awd, {})
 		
-		rd = randint()
-		print usr.explore['times']
+		rd = randint()		
 		if rd < gameConf['explore_extra_times_probability']:
-			usr.explore['times'] = usr.explore['times'] - 1			
+			usr.explore['times'] = usr.explore['times'] - 1						
 			if usr.explore['times'] < 0:
 				usr.explore['times'] = 0
 			data['explore_times'] = usr.explore['times']
@@ -128,4 +127,9 @@ class explore:
 		if usr.explore['times'] < 0:
 			usr.explore['times'] = 0			
 		usr.explore['last_update_times_time'] = currentTime()
-		
+		explore.notify_explore_times(usr)
+	
+	@staticmethod
+	def notify_explore_times(usr):
+		usr.notify['notify_explore_times'] = usr.explore['times']
+			
