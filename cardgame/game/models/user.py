@@ -251,7 +251,7 @@ class user(gcuser):
 		#data['infection'] = infection.getClientData(self)
 		data['born_card'] = (self.born_card['cardid'] != '')
 		data['ip'] = self.ip
-		data['ip_last_recover_before'] = not - self.ip_last_recover
+		data['ip_last_recover_before'] = now - self.ip_last_recover
 		data['explore'] = explore.getClientData(self)
 		return data
 		
