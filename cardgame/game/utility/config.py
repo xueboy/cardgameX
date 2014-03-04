@@ -150,10 +150,9 @@ class config(gcconfig):
 		del data['explore_times_on_levelup']
 		del data['explore_friend_count']
 		del data['explore_extra_times_probability']
-		del data['explore_gold_and_money_revision']
+		del data['explore_gold_and_exp_revision']
 		del data['explore_critical_probability_growth']
-		del data['explore_critical_income_rate']
-		del data['explore_gold_and_money_revision']
+		del data['explore_critical_income_rate']		
 		return data
 	
 			
