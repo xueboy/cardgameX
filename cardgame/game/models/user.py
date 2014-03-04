@@ -28,6 +28,8 @@ from game.routine.slotmachine import slotmachine
 from game.routine.vip import vip
 from game.routine.invite import invite
 from game.routine.infection import infection
+from game.routine.explore import explore
+from game.routine.arena import arena
 
 
 
@@ -85,6 +87,7 @@ class user(gcuser):
 		self.born_card = pet.make_born_card()
 		self.ip = 0
 		self.ip_last_recover = 0
+		self.explore = explore.make()
 		
 	
 	def init(self, acc = None):
@@ -156,6 +159,7 @@ class user(gcuser):
 		data['born_card'] = self.born_card
 		data['ip'] = self.ip
 		data['ip_last_recover'] = self.ip_last_recover
+		data['explore'] = self.explore
 		return data
 		
 	def load(self, roleid, data):
@@ -202,6 +206,7 @@ class user(gcuser):
 		self.born_card.update(data['born_card'])				
 		self.ip = data['ip']
 		self.ip_last_recover = data['ip_last_recover']
+		self.explore = data['explore']
 		
 	def getClientData(self):
 		now = currentTime()
@@ -246,7 +251,8 @@ class user(gcuser):
 		#data['infection'] = infection.getClientData(self)
 		data['born_card'] = (self.born_card['cardid'] != '')
 		data['ip'] = self.ip
-		data['ip_last_recover'] = self.ip_last_recover
+		data['ip_last_recover_before'] = not - self.ip_last_recover
+		data['explore'] = explore.getClientData(self)
 		return data
 		
 	def getNtInfoData(self):
@@ -466,6 +472,7 @@ class user(gcuser):
 			self.exp = self.exp - (levelConf[self.level]['levelExp'] - levelConf[self.level - 1]['levelExp'])
 			self.level = self.level + 1
 			isLevelup = True
+			explore.on_user_levelup(self)
 		if isLevelup:
 			self.onLevelup()
 			
