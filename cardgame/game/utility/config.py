@@ -145,6 +145,13 @@ class config(gcconfig):
 		del data['infection_quality']
 		del data['infection_ladder_max_size']
 		del data['medal_levelup_wink_finish_count']
+		del data['omfection_explore_probability']
+		del data['explore_max_times']
+		del data['explore_times_on_levelup']
+		del data['explore_friend_count']
+		del data['explore_extra_times_probability']
+		del data['explore_gold_and_money_revision']
+		del data['explore_critical_probability_growth']
 		return data
 	
 			
