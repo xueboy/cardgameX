@@ -34,6 +34,7 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0		
 		ppData['pe'] = 0
+		ppData['speed'] = 0
 		
 		
 		
@@ -110,7 +111,7 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0		
 		ppData['pe'] = 0
-		
+		ppData['speed'] = 0
 			
 		for medalid in inv.medal:
 			
@@ -181,6 +182,7 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0		
 		ppData['pe'] = 0		
+		ppData['speed'] = 0
 		
 		practicePropertyConf = config.getConfig('practice_property')
 		
@@ -295,9 +297,10 @@ class pvp:
 		ppData['artifice'] = p1['artifice'] + p2['artifice']
 		ppData['pi'] = p1['pi'] + p2['pi']		
 		ppData['pe'] = p1['pe'] + p2['pe']
+		ppData['speed'] = p1['speed'] + p2['speed']
 		ppData['init_star'] = p1['init_star']
 		ppData['level'] = p1['level']
-		ppData['sk_slot'] = p1['sk_slot']
+		ppData['sk_slot'] = p1['sk_slot']		
 		return ppData
 		
 		
@@ -334,6 +337,7 @@ class pvp:
 		ppData['init_star'] = card['init_star']
 		ppData['level'] = card['level']
 		ppData['sk_slot'] = pvp.pvpGetSkSlots(usr)
+		ppData['speed'] = 0
 		return ppData
 	@staticmethod
 	def pvpGetSkSlots(usr):
@@ -395,6 +399,7 @@ class pvp:
 		ppData['pi'] = 0
 		ppData['mi'] = 0
 		ppData['pe'] = 0
+		ppData['speed'] = 0
 		return ppData
 		
 	@staticmethod
@@ -437,7 +442,7 @@ class pvp:
 			ppData['pd'] = stoneInfo[st['level'] - 1]['value']
 		elif st['typestr'] == 'md':
 			ppData['md'] = stoneInfo[st['level'] - 1]['value']		
-			
+		ppData['speed'] = 0
 		return ppData
 
 		
