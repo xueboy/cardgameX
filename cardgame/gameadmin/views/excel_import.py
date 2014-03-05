@@ -2229,7 +2229,7 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				
 				emailid = row[0]
-				optype = row[1]
+				optype = int(row[1])
 				opvaule = row[2]
 				email_title = row[3]
 				email_text = row[4]

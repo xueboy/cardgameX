@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from django.http import HttpResponse
+from game.utility.config import config
 from game.models.user import user
 from game.models.account import account
 from gclib.utility import currentTime
@@ -91,7 +92,7 @@ def gm_tool_set_profile(request):
 	data = {}
 	if request.method == 'POST':
 		operator = request.POST['operator']
-		roleid = request.POST['roleid']
+		roleid = request.POST['roleid']		
 		if operator == 'exp':
 			value = request.POST['tfExp']
 			if value == '':
@@ -175,7 +176,15 @@ def gm_tool_set_profile(request):
 				return HttpResponse('玩家不存在')
 			
 			nw = usr.getNetwork()
-			nw.appendEmail(value)	
+			emailConf = config.getConfig('email')
+			emailInfo = emailConf[value]
+			
+			if emailInfo['optype'] == 1:
+				nw.appendEmail(value, usr.name)
+			elif emailInfo['optype'] == 2:
+				nw.appendEmail(value, str(currentTime()))
+			else: 
+				return HttpResponse('不能发送')
 			acc = usr.getAccount()
 			data = gm.show_profile(acc, usr)
 			

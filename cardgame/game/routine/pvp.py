@@ -35,9 +35,7 @@ class pvp:
 		ppData['pi'] = 0		
 		ppData['pe'] = 0
 		ppData['speed'] = 0
-		
-		
-		
+						
 		for cb in al.combine:
 			if st['typestr'] == 'strenghth':
 				ppData['strenghth'] = ppData['strenghth'] + st['val']

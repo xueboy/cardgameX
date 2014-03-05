@@ -335,7 +335,7 @@ class network(object):
 		qt.updateFinishYellQuest()
 		return ms.yell(self.roleid, name, msg)
 
-	def appendEmail(self, emailid, parameter = ''):
+	def appendEmail(self, emailid, parameter):
 		usr = self.user
 		requestid = str(self.sequenceid)		
 		email = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid, 'parameter':parameter}
