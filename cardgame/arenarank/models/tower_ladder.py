@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.facility import facility
-from gclib.utility import currentTime
+from gclib.utility import currentTime, day_diff
 from game.utility.config import config
 				
 class tower_ladder(facility):
