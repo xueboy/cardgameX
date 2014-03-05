@@ -338,7 +338,7 @@ class network(object):
 	def appendEmail(self, emailid, parameter = ''):
 		usr = self.user
 		requestid = str(self.sequenceid)		
-		email = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid}
+		email = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid, 'parameter':parameter}
 		self.email[requestid] = email
 		self.sequenceid = self.sequenceid + 1
 		self.notify_add_email(email)
