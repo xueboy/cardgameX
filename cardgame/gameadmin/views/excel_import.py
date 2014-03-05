@@ -1236,7 +1236,7 @@ class excel_import:
 					
 			conf = {}
 			
-			for rownum in range(3,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)
 				almanacCombinationid = row[0]
 				if row[1] == '':
@@ -1253,9 +1253,9 @@ class excel_import:
 					combinEquipmentid = row[3].split(',')		
 				
 				dropid = row[4]
-				typestr = row[25]
-				type = int(row[26])
-				value = row[27]				
+				typestr = row[6]
+				type = int(row[7])
+				value = row[8]				
 				
 				almanacConf = {}
 				almanacConf['combin_cardid'] = combinCardid
