@@ -8,7 +8,7 @@ class tower:
 	@staticmethod
 	def stand(roleid, name, level, point, floor):		
 		tl = tower_ladder.instance()
-		return tl.stand(self, roleid, name, level, point, floor)
+		return tl.stand(roleid, name, level, point, floor)
 		
 	@staticmethod
 	def show_ladder():
