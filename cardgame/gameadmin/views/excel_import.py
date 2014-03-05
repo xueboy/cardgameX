@@ -1598,7 +1598,7 @@ class excel_import:
 				questConf['talkId'] = talkId
 				questConf['finishType'] = excel_import.quest_get_cond_str(finishType)
 				questConf['finishValue'] = excel_import.quest_get_conf_value(questConf['finishType'], finishValue)
-				questConf['trigerIcon'] = trigerIcon
+				questConf['triggerIcon'] = trigerIcon
 				questConf['dropid'] = dropid
 				questConf['desc'] = desc
 				questConf['isOpen'] = isOpen
