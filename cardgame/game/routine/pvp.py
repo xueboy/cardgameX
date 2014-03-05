@@ -88,6 +88,7 @@ class pvp:
 		inv = usr.getInventory()
 		
 		medalConfig = config.getConfig('medal')
+		medalLevelConfig = config.getConfig('medal_level')
 		
 		ppData = {}
 		ppData['attack'] = 0
@@ -112,49 +113,49 @@ class pvp:
 		ppData['speed'] = 0
 			
 		for medalid in inv.medal:
-			
-			if medalConfig[medalid]['typestr'] == 'strenghth':
-				ppData['strenghth'] = ppData['strenghth'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'intelligence':
-				ppData['intelligence'] = ppData['intelligence'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'artifice':
-				ppData['artifice'] = ppData['artifice'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'attack':
-				ppData['attack'] = ppData['attack'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hp':
-				ppData['hp'] = ppData['hp'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'critical':
-				ppData['critical'] = ppData['critical'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'tenacity':
-				ppData['tenacity'] = ppData['tenacity'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'dodge':
-				ppData['dodge'] = ppData['dodge'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hit':
-				ppData['hit'] = ppData['hit'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'block':
-				ppData['block'] = ppData['block'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'wreck':
-				ppData['wreck'] = ppData['wreck'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + medalConfig[medalid]['val']			
-			elif medalConfig[medalid]['typestr'] == 'pd':
-				ppData['pd'] = ppData['pd'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'md':
-				ppData['md'] = ppData['md'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'criticallv':
-				ppData['criticallv'] = ppData['criticallv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'tenacitylv':
-				ppData['tenacity'] = ppData['tenacity'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'dodgelv':
-				ppData['dodgelv'] = ppData['dodgelv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'hitlv':
-				ppData['hitlv'] = ppData['hitlv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'blocklv':
-				ppData['blocklv'] = ppData['blocklv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'wrecklv':
-				ppData['wrecklv'] = ppData['wrecklv'] + medalConfig[medalid]['val']
-			elif medalConfig[medalid]['typestr'] == 'speed':
-				ppData['speed'] = ppData['speed'] + medalConfig[medalid]['val']		
+			medalLevelInfo = medalLevelConfig[medalid][inv.medal[medalid]['level']]			
+			if medalLevelInfo['typestr'] == 'strenghth':
+				ppData['strenghth'] = ppData['strenghth'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'intelligence':
+				ppData['intelligence'] = ppData['intelligence'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'artifice':
+				ppData['artifice'] = ppData['artifice'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'attack':
+				ppData['attack'] = ppData['attack'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'hp':
+				ppData['hp'] = ppData['hp'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'critical':
+				ppData['critical'] = ppData['critical'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'tenacity':
+				ppData['tenacity'] = ppData['tenacity'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'dodge':
+				ppData['dodge'] = ppData['dodge'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'hit':
+				ppData['hit'] = ppData['hit'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'block':
+				ppData['block'] = ppData['block'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'wreck':
+				ppData['wreck'] = ppData['wreck'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'pt':
+				ppData['pt'] = ppData['pt'] + medalLevelInfo['val']			
+			elif medalLevelInfo['typestr'] == 'pd':
+				ppData['pd'] = ppData['pd'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'md':
+				ppData['md'] = ppData['md'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'criticallv':
+				ppData['criticallv'] = ppData['criticallv'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'tenacitylv':
+				ppData['tenacity'] = ppData['tenacity'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'dodgelv':
+				ppData['dodgelv'] = ppData['dodgelv'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'hitlv':
+				ppData['hitlv'] = ppData['hitlv'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'blocklv':
+				ppData['blocklv'] = ppData['blocklv'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'wrecklv':
+				ppData['wrecklv'] = ppData['wrecklv'] + medalLevelInfo['val']
+			elif medalLevelInfo['typestr'] == 'speed':
+				ppData['speed'] = ppData['speed'] + medalLevelInfo['val']		
 		
 		return ppData
 		
