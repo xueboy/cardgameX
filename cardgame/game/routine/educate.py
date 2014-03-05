@@ -172,7 +172,7 @@ class educate:
 				else:
 					edu_slot['last_update_time'] = now
 				rate = educateGradeConf[edu_slot['edt']]['rate']
-				exp = edu_slot['expptm'] * educateDuration / 600 * rate + edu_slot['fraction']
+				exp = edu_slot['expptm'] * educateDuration / 3600 * rate + edu_slot['fraction']
 				edu_slot['fraction'] = exp - int(exp)
 				exp = int(exp)
 				if exp:
