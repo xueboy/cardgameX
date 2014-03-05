@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from gclib.facility import facility
+from game.utility.config import config
 				
 class tower_ladder(facility):
 	def __init__(self):
