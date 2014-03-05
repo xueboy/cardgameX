@@ -9,10 +9,24 @@ from game.routine.vip import vip
 class equipment:
 
 	@staticmethod
-	def strengthen(usr, id, isUseGem):
+	def strengthen(usr, id, ownerTeamPosition, isUseGem):
 		inv = usr.getInventory()
-		
-		equip = inv.getEquipment(id)
+		equip = None
+		owner = None
+		print ownerTeamPosition
+		if ownerTeamPosition >= 0:
+			ownerCardid = inv.team[ownerTeamPosition]
+			if not ownerCardid:
+				return {'msg': 'team_position_not_have_member'}
+			owner = inv.getCard(ownerCardid)
+			if not owner:
+				return {'msg':'card_not_exist'}
+			for e in owner['slot']:
+				if e and e['id'] == id:
+					equipment = e
+					break			
+		else:
+			equip = inv.getEquipment(id)		
 		if not equip:
 			return {'msg':'equipment_not_exist'}
 				

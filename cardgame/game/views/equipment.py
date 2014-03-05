@@ -11,7 +11,8 @@ def strengthen(request):
 	isUseGem = request.GET['is_use_gem']
 	usr = request.user
 	isUseGem = isUseGem == 'yes'
-	return equipment.strengthen(usr, id, isUseGem)	
+	ownerTeamPosition = int(request.GET['owner_team_position'])
+	return equipment.strengthen(usr, id, ownerTeamPosition, isUseGem)	
 	
 def strengthen_reset(request):
 	usr = request.user	
