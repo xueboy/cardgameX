@@ -12,8 +12,8 @@ class equipment:
 	def strengthen(usr, id, isUseGem):
 		inv = usr.getInventory()
 		
-		equipment = inv.getEquipment(id)
-		if not equipment:
+		equip = inv.getEquipment(id)
+		if not equip:
 			return {'msg':'equipment_not_exist'}
 				
 		usr.updateFatigue()
@@ -25,14 +25,15 @@ class equipment:
 		
 		if gameConf['equipment_strength_cooldown_cumulate_max'] < usr.equipment_strength_cooldown:
 			return {'msg':'equipment_strength_cooldown_max'}		
-		equipmentConf = config.getConfig('equipment')[equipment['equipmentid']]
+		equipmentConf = config.getConfig('equipment')
+		equipmentInfo = equipmentConf[equip['equipmentid']]
 		strengthenPriceConf = config.getConfig('strength_price')
 		
-		equipmentQuality = equipmentConf['quality']
+		equipmentQuality = equipmentInfo['quality']
 		strengthenProbability = 0
 		strengthLevel = 0
-		if equipment.has_key('strengthLevel'):
-			strengthLevel = equipment['strengthLevel']
+		if equip.has_key('strengthLevel'):
+			strengthLevel = equip['strengthLevel']
 		
 		if strengthLevel >= gameConf['equipment_max_level']:
 			return {'msg':'equipment_level_max'}
@@ -70,7 +71,7 @@ class equipment:
 					point = i
 					break
 		
-		equipment['strengthLevel'] = strengthLevel + point
+		equip['strengthLevel'] = strengthLevel + point
 		
 		usr.gold = usr.gold - goldCost
 		usr.gem = usr.gem - gemCost
@@ -78,7 +79,7 @@ class equipment:
 		inv.save()		
 		usr.save()
 		data = {}
-		data['equipment_strength_level'] = equipment['strengthLevel']
+		data['equipment_strength_level'] = equip['strengthLevel']
 		data['equipment_strength_cooldown'] = usr.equipment_strength_cooldown
 		if goldCost:
 			data['gold'] = usr.gold
