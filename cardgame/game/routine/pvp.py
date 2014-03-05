@@ -218,6 +218,7 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0		
 		ppData['pe'] = 0		
+		ppData['speed'] = 0
 		
 		petConf = config.getConfig('pet')
 		luckConf = config.getConfig('luck')
