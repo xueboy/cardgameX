@@ -128,22 +128,23 @@ class ladder(facility):
 		
 	def update(self, position, roleid, now):
 		
-		ladderScoreConf = config.getConfig('ladder_score')		
-		if not self.item.has_key(roleid):
-			return None
+		ladderScoreConf = config.getConfig('ladder_score')				
 		item = self.item[roleid]		
 		duration = now - item['last_update']		
 		if duration < 60:
 			return item
 		score = 0
-		if position < len(ladderScoreConf) - 1:
-			score = ladderScoreConf[position - 1]			
-		elif position < 1001:
-			score = int(0.007 * position * position - 15.37 * position + 8553) / 6
-		else:
-			score = 16
-		
-		score = score * duration / 600
+		ladderScoreInfo = {}
+		infoPosition = -1
+				
+		for p in ladderScoreConf:
+			p = int(p)
+			if p <= (position + 1) and p > (infoPosition):
+				infoPosition = p
+				
+		ladderScoreInfo = ladderScoreConf[str(infoPosition)]			
+		score = ladderScoreInfo['efficiency'] - (float((position + 1) - infoPosition) * ladderScoreInfo['score'] / 100)
+		score = int(score * duration / 600)
 		item['last_update'] = now
 		item['score'] = item['score'] + score
 		return item
@@ -185,7 +186,7 @@ class ladder(facility):
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.update(position, roleid, currentTime())			
-			if not item:
+			if not item:				
 				return {'msg':'arena_ladder_not_stand'}
 			self.save()
 			return {'score':item['score']}

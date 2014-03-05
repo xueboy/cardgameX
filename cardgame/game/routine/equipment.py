@@ -13,7 +13,6 @@ class equipment:
 		inv = usr.getInventory()
 		equip = None
 		owner = None
-		print ownerTeamPosition
 		if ownerTeamPosition >= 0:
 			ownerCardid = inv.team[ownerTeamPosition]
 			if not ownerCardid:

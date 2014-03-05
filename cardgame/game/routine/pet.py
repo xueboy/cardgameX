@@ -64,7 +64,6 @@ class pet:
 		exp = 0
 		for card in sourceCard:
 			tExp = pet.totalExp(card, petConf, petLevelConf, gameConf) 
-			print 'tExp', tExp
 			exp = tExp + exp			
 			inv.delCard(card['id'])		
 		
@@ -86,7 +85,6 @@ class pet:
 		card['exp'] = 0
 		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
-			print 'needExp' , needExp
 			level = level + 1
 			potential.onEveryPetLevelup(usr, card, petConf)
 			needExp = petLevelConf[str(level + 1)][quality - 1] - petLevelConf[str(level)][quality - 1]			

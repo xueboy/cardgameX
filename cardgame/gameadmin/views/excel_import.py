@@ -48,12 +48,9 @@ class excel_import:
 				attack = int(row[23])
 				pr = int(row[24])
 				mr = int(row[25])
-				pa = int(row[26])
-				#ma = int(row[27])
-				pe = int(row[28])				#Pysical Extra
-				#me = int(row[29])				#Magical Extra
-				pi = int(row[30])				#Pysical Immune
-				#mi = int(row[31])				#Magical Immune
+				pa = int(row[26])				
+				pe = int(row[28])				#Pysical Extra				
+				pi = int(row[30])				#Pysical Immune				
 				
 				skill = []
 				if row[32] and row[36] and row[41]:
@@ -65,10 +62,8 @@ class excel_import:
 				if row[35] and row[39] and row[44]:
 					skill.append({'id':row[35], 'level':int(row[39]), 'probability':int(row[44])})
 				
-				dropid = row[40]
-				
-				pt = int(row[45])
-				#mt = int(row[46])
+				dropid = row[40]				
+				pt = int(row[45])				
 				pd = int(row[47])
 				md = int(row[48])				
 				
@@ -97,22 +92,17 @@ class excel_import:
 				monsterConf['attack'] = attack
 				monsterConf['pr'] = pr
 				monsterConf['mr'] = mr
-				monsterConf['pa'] = pa
-				#monsterConf['ma'] = ma
-				monsterConf['pe'] = pe
-				#monsterConf['me'] = me
-				monsterConf['pi'] = pi
-				#monsterConf['mi'] = mi
+				monsterConf['pa'] = pa				
+				monsterConf['pe'] = pe				
+				monsterConf['pi'] = pi				
 				monsterConf['level'] = level
 				monsterConf['hp'] = hp
 				monsterConf['attack'] = attack
 				monsterConf['pr'] = pr
 				monsterConf['mr'] = mr
-				monsterConf['pa'] = pa
-				#monsterConf['ma'] = ma
+				monsterConf['pa'] = pa				
 				monsterConf['skill'] = skill
-				monsterConf['pt'] = pt
-				#monsterConf['mt'] = mt
+				monsterConf['pt'] = pt				
 				monsterConf['pd'] = pd
 				monsterConf['md'] = md
 				conf[monsterId] = monsterConf
@@ -159,41 +149,7 @@ class excel_import:
 				conf[vip_level]	= garchaConf
 			return HttpResponse(json.dumps(conf, sort_keys = True))
 		return HttpResponse('garcha_import')	
-		
-				
-				
-#			sheets = []
-#			sheets.append(wb.sheet_by_index(0))
-#			sheets.append(wb.sheet_by_index(1))
-#			sheets.append(wb.sheet_by_index(2))
-#			sheets.append(wb.sheet_by_index(3))
-#			sheets.append(wb.sheet_by_index(4))
-#			
-#			conf = []
-#			for sheet in sheets:s
-#				garchaCataConf = {}
-#				cardConf = []
-#				total_prob = 0
-#				for rownum in range(4, sheet.nrows):
-#					row = sheet.row_values(rownum)
-#					cardid = row[0]
-#					name = row[1]				
-#					level = row[2]				
-#					prob = row[3]					
-#					key = int(prob)
-#					garchaConf = {}
-#					garchaConf['cardId'] = cardid
-#					garchaConf['name'] = name				
-#					garchaConf['level'] = level
-#					garchaConf['prob'] = prob
-#					total_prob = total_prob + prob
-#					cardConf.append(garchaConf)				
-#				garchaCataConf['card'] = cardConf
-#				garchaCataConf['totalProb'] = total_prob
-#				conf.append(garchaCataConf)
-#			return HttpResponse(json.dumps(conf, sort_keys=True))
-#		return HttpResponse('garcha_import')
-	
+
 	@staticmethod
 	def prompt_import(request):
 		if request.method == 'POST':
@@ -272,9 +228,6 @@ class excel_import:
 				maxLevel = row[10]
 				triggerType = row[11]
 				isActive = row[12]
-				#startEffect = row[13]
-				#inprocessEffect = row[14]
-				#finishEffect = row[15]
 				result = []
 				if row[16]:
 					result.append(row[16])
@@ -304,9 +257,6 @@ class excel_import:
 				skillConf['maxLevel'] = maxLevel
 				skillConf['triggerType'] = triggerType
 				skillConf['isActive'] = isActive
-#				skillConf['startEffect'] = startEffect
-#				skillConf['inprocessEffect'] = inprocessEffect
-#				skillConf['finishEffect'] = finishEffect
 				skillConf['result'] = result				
 				skillConf['mp'] = mp
 				skillConf['exp'] = exp
@@ -356,8 +306,7 @@ class excel_import:
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('skill_level_import')	
-		
-		
+				
 	@staticmethod
 	def skill_effect_import(request):
 		if request.method == 'POST':
@@ -395,7 +344,6 @@ class excel_import:
 				skillEffectConf['triggerType'] = triggerType
 				
 				conf[skillEffid] = skillEffectConf
-				
 				
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('skill_effect_import')
@@ -445,8 +393,6 @@ class excel_import:
 				mrgrowth = int(row[35])	#Magical Resistance
 				pa = int(row[36])	#Physical Amplification
 				pagrowth = int(row[37])
-				#ma = int(row[38])	#Magical Amplification
-				#magrowth = int(row[39])			
 				skillid = [unicode(row[40])]
 				if unicode(row[41]):
 					skillid.append(unicode(row[41]))
@@ -507,9 +453,7 @@ class excel_import:
 				petConf['mr'] = mr
 				petConf['mrgrowth'] = mrgrowth
 				petConf['pa'] = pa
-				petConf['pagrowth'] = pagrowth
-				#petConf['ma'] = ma
-				#petConf['magrowth'] = magrowth			
+				petConf['pagrowth'] = pagrowth				
 				petConf['skillid'] = skillid
 				petConf['evoId'] = evoId
 				petConf['evoObjectId'] = evoObjectId
@@ -601,8 +545,7 @@ class excel_import:
 				fieldConf['fieldName'] = fieldName
 				fieldConf['stamina'] = stamina
 				fieldConf['exp'] = exp
-				fieldConf['dayCount'] = dayCount
-				#fieldConf['difficult'] = difficult
+				fieldConf['dayCount'] = dayCount				
 				fieldConf['mayDrop'] = [mayDrop1, mayDrop2]
 				fieldConf['dropid'] = dropId
 				fieldConf['wave'] = excel_import.read_waves(row, dropConf)
@@ -623,21 +566,6 @@ class excel_import:
 				wave = excel_import.read_wave(row, 50, dropConf)
 				if wave:
 					waveConf.append(wave)
-			#		wave = excel_import.read_wave(row, 65, dropConf)	
-			#		if wave:
-			#			waveConf.append(wave)
-			#			wave = excel_import.read_wave(row, 80, dropConf)
-			#			if wave:
-			#				waveConf.append(wave)
-			#				wave = excel_import.read_wave(row, 95, dropConf)
-			#				if wave:
-			#					waveConf.append(wave)
-			#					wave = excel_import.read_wave(row, 110, dropConf)
-			#					if wave:
-			#						waveConf.append(wave)
-			#						wave = excel_import.read_wave(row, 125, dropConf)
-			#						if wave:
-			#							waveConf.append(wave)	
 		return waveConf
 		
 	@staticmethod
@@ -760,16 +688,12 @@ class excel_import:
 				hpgrowth = int(row[12])
 				pa = int(row[13])
 				pagrowth = int(row[14])
-				#ma = int(row[15])
-				#magrowth = int(row[16])
 				pd = int(row[17])
 				pdgrowth = int(row[18])
 				md = int(row[19])
 				mdgrowth = int(row[20])
 				pt = int(row[21])
 				ptgrowth = int(row[22])
-				#mt = int(row[23])
-				#mtgrowth = int(row[24])
 				chip = int(row[25])
 				price = int(row[28])
 				desc = row[29]				
@@ -788,16 +712,12 @@ class excel_import:
 				equipmentConf['hpgrowth'] = hpgrowth
 				equipmentConf['pa'] = pa
 				equipmentConf['pagrowth'] = pagrowth
-				#equipmentConf['ma'] = ma
-				#equipmentConf['magrowth'] = magrowth
 				equipmentConf['pd'] = pd
 				equipmentConf['pdgrowth'] = pdgrowth
 				equipmentConf['md'] = md
 				equipmentConf['mdgrowth'] = mdgrowth
 				equipmentConf['pt'] = pt
 				equipmentConf['ptgrowth'] = ptgrowth
-				#equipmentConf['mt'] = mt
-				#equipmentConf['mtgrowth'] = mtgrowth
 				equipmentConf['chip'] = chip
 				equipmentConf['price'] = price
 				equipmentConf['desc'] = desc			
@@ -1302,28 +1222,6 @@ class excel_import:
 				sorted(conf, key = lambda s:s['level'])			
 			return HttpResponse(json.dumps(conf, sort_keys=True))
 		return HttpResponse('reborn_import')
-	
-	@staticmethod
-	def ladder_score_import(request):
-		if request.method == 'POST':
-			reborn_file = request.FILES.get('ladder_score_file')
-			if not reborn_file:
-				return HttpResponse('天梯分数xlsx文件未上传')
-						
-			wb = xlrd.open_workbook(None, sys.stdout, 0, USE_MMAP, reborn_file.read())
-			sheet = wb.sheet_by_index(0)					
-			conf = []
-			
-			for rownum in range(1,sheet.nrows):
-				row = sheet.row_values(rownum)
-				no = int(row[0])
-				score = int(row[1])				
-				while len(conf) < no:
-					conf.append(0)					
-				conf[no - 1] = score
-				
-			return HttpResponse(json.dumps(conf, sort_keys=True))
-		return HttpResponse('ladder_score_import')			
 	
 	@staticmethod
 	def name_import(request):
