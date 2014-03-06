@@ -83,37 +83,35 @@ class quest(object):
 		newQuest = []
 		for qid in questConf:			
 			if questConf[qid]['type'] == 1:
-				if self.commonIsAvailable(usr, qid, questConf[qid]):					
+				if self.commonIsAvailable(usr, qid, questConf[qid], questConf):					
 					newQuest.append(qid)
 			elif questConf[qid]['type'] == 2:
 				if self.dayIsAvailable(usr, qid, questConf[qid], questConf):			
 					newQuest.append(qid)							
 		return newQuest		
 		
-	def commonIsAvailable(self, usr, qid, questInfo):				
+	def commonIsAvailable(self, usr, qid, questInfo, questConf):
 		newQuest = []		
 		alreadyAccept = False
 		alreadyFinishPre = False
 		alreadyFinish = False			
 		if questInfo['level'] > usr.level:
-			return False
-    
+			return False    
 	
 		if not quest.isActive(questInfo):
 			return False
 		
 		for questid in self.finish:
-			if qid == questid:
-				alreadyFinish = True
+			if qid == questid:				
 				if self.finish[questid]['count'] >= questInfo['repeatCount']:
 					return False
-				break
-			if questInfo['nextId'] == questid:
+				return True
+			finishQuestInfo = questConf[questid]
+			if finishQuestInfo['nextId'] == qid:
 				alreadyFinishPre = True
 		
-		for questid in self.current:
-			if qid == questid:
-				return False			
+		if self.current.has_key(qid):
+			return False		
 		if questInfo['isFirst'] or alreadyFinishPre:
 			return True
 		return False
@@ -265,24 +263,30 @@ class quest(object):
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'dungeon_id':
 				if dungeonId == questInfo['finishValue'][0] and fieldId == questInfo['finishValue'][1]:
 					self.current[questid]['dungeon_id'] = dungeonId
 					self.current[questid]['field_id'] = fieldId
-					self.current[questid]['finish'] = 1
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()			
 		
 	def updateFinishNpcQuest(self):
 		pass
 	
 	def udpateFinishChardgeQuest(self, amount):
 		questConf = config.getConfig('quest')
-		usr = self.user		
+		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'charge_cumulate':
@@ -290,15 +294,20 @@ class quest(object):
 					self.current[questid]['charge_count'] = 0
 				self.current[questid]['charge_count'] = self.current[questid]['charge_count'] + amount
 				if self.current[questid]['charge_count'] >= int(questInfo['finishValue']):
-					self.current[questid]['finish'] = 1
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)					
 					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()
 		
 	def updateFinishYellQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]						
 			if questInfo['finishType'] == 'yell_count':
@@ -306,28 +315,38 @@ class quest(object):
 					self.current[questid]['yell_count'] = 0
 				self.current[questid]['yell_count'] = self.current[questid]['yell_count'] + 1
 				if self.current[questid]['yell_count'] >= int(questInfo['finishValue']):
-					self.current[questid]['finish'] = 1
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()
 		
 	def udpateFinishFriendQuest(self, usrNt):
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			if questInfo['finishType'] == 'friend_count':				
 				if len(usrNt.friend) >= int(questInfo['finishValue']):
-					self.current[questid]['finish'] = 1		
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)			
 					self.finish[questid] = self.current[questid]
 					del self.current[questid]
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()
 	
 	def updateVipItemBuyQuest(self, item_id, item_count):
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
@@ -336,14 +355,20 @@ class quest(object):
 					self.q['vip_item_buy_count'] = 0
 				q['vip_item_buy_count'] = q['vip_item_buy_count'] + 1
 				if q['vip_item_buy_count'] >= int(questInfo['finishValue']):
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)
-					self.finish[questid] = self.current[questid]
+					self.finish[questid] = self.current[questid]					
 					del self.current[questid]			
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()
 		
 	def updateArenaWinQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
@@ -352,14 +377,20 @@ class quest(object):
 					self.q['arena_win_count'] = 0
 				q['arena_win_count'] = q['arena_win_count'] + 1
 				if q['arena_win_count'] >= int(questInfo['finishValue']):
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
-					del self.current[questid]			
-		self.save()
+					del self.current[questid]
+				haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest(True)
+			self.save()
 		
 	def updateDungeonCountQuest(self):
 		questConf = config.getConfig('quest')
 		usr = self.user
+		haveQuestFinish = False
 		for questid in self.current.keys():
 			questInfo = questConf[questid]
 			q = self.current[questid]
@@ -368,7 +399,12 @@ class quest(object):
 					q['dungeon_count'] = 0
 				q['dungeon_count'] = q['dungeon_count'] + 1
 				if q['dungeon_count'] >= int(questInfo['finishValue']):
+					self.current[questid]['finish'] = True
+					self.current[questid]['count'] = self.current[questid]['count'] + 1
 					quest.notify_finish_quest(usr, questid)
 					self.finish[questid] = self.current[questid]
 					del self.current[questid]					
-		self.save()
+					haveQuestFinish = True
+		if haveQuestFinish:
+			self.updateQuest()
+			self.save()
