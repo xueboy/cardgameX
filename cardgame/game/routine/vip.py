@@ -8,7 +8,7 @@ class vip:
 	
 	@staticmethod
 	def make():
-		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0, 'buy_arena_times':0, 'buy_dungeon_reset_count':0, 'buy_arena_protect_times':0}
+		return {'level':0, 'charge':0, 'buy_stamina_count':0, 'buy_sp_count':0, 'vip_last_update_time':0, 'buy_arena_times':0, 'buy_dungeon_reset_count':0, 'buy_arena_protect_times':0, 'reset_infection_pretige_score_times':0}
 			
 			
 	@staticmethod
@@ -117,5 +117,5 @@ class vip:
 		return vip.value(usr, 'explore_critical_times')
 		
 	@staticmethod
-	def infection_prestige_score_reset_count(usr):
-		return vip.value(usr, 'infection_prestige_score_reset')
+	def canResetInfectionPrestigeScoreCount(usr):
+		return vip.value(usr, 'infection_prestige_score_reset') > usr.vip['reset_infection_pretige_score_times']

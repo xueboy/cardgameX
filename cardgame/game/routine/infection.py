@@ -204,7 +204,7 @@ class infection:
 	@staticmethod
 	def reset_prestige_score(usr):		
 		usr.infection['prestige_score_reset_count'] = usr.infection['prestige_score_reset_count'] + 1
-		if usr.infection['prestige_score_reset_count'] > vip.infection_prestige_score_reset_count(usr):
+		if not vip.canResetInfectionPrestigeScoreCount(usr):
 			return {'msg':'vip_required'}
 		usr.save()
 		return {'infection_prestige_score_reset_count': usr.infection['prestige_score_reset_count']}
