@@ -115,3 +115,7 @@ class vip:
 	@staticmethod
 	def explore_critical_times(usr):
 		return vip.value(usr, 'explore_critical_times')
+		
+	@staticmethod
+	def infection_prestige_score_reset_count(usr):
+		return vip.value(usr, 'infection_prestige_score_reset')

@@ -134,8 +134,7 @@ def info(request):
 	return HttpResponse(json.dumps({'info':info}))
 
 
-def get_config(request):
-	
+def get_config(request):	
 	configkey = request.GET['config']	
 	data = conf.getClientConfig(configkey)	
 	return HttpResponse(json.dumps(data))
@@ -149,8 +148,8 @@ def api(request, m, f):
 		return HttpResponse(json.dumps({'msg':'nickname_should_set_before'}))
 		
 	if viewsmap.has_key(m) :		
-		fun = getattr(viewsmap[m], f)		
-		ret = fun(request)		
+		fun = getattr(viewsmap[m], f)
+		ret = fun(request)
 		if not isinstance(ret, tuple):
 			if not ret.has_key('msg'):
 				notify = endRequest(request)
@@ -158,18 +157,17 @@ def api(request, m, f):
 				if yell:
 					notify.update(yell)
 				if notify:
-					ret.update({'notify':notify})			
+					ret.update({'notify':notify})
 			return HttpResponse(json.dumps(ret))
-		else:			
+		else:
 			return ret[1]
 	return HttpResponse('api')
-
 
 def new_account(request):
 	
 	accountName = request.GET['account_name']
-	password = request.GET['password']	
-	res = account.new(accountName, password)	
+	password = request.GET['password']
+	res = account.new(accountName, password)
 	return HttpResponse(json.dumps(res))
 	
 def set_nickname(request):
@@ -182,8 +180,7 @@ def set_nickname(request):
 	if gender != 'male' and gender != 'female':
 		return HttpResponse(json.dumps({'msg':'gender_out_of_except'}))	
 	try:
-		acc = getAccount(request, account)
-		
+		acc = getAccount(request, account)		
 		acc.gender = gender
 		usr = acc.makeUserAndBind(nickname, avatar, gender)		
 		loginData = onUserLogin(request, usr)
@@ -203,11 +200,9 @@ def set_nickname(request):
 	usr.save()	
 	return HttpResponse(json.dumps(data))
 	
-
 def exit(request):
 	logout(request)
 	return HttpResponse('exist')
-
 
 def test(request):	
 	from gclib.cache import cache	
@@ -225,7 +220,6 @@ def test(request):
 #	data['notify']['notify_message'] = {}
 #	data['notify']['notify_message']['1'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
 #	data['notify']['notify_message']['2'] = {'roleid':1, 'name':'test1', 'level': '1', 'leader' : "", 'last_login' : 1381734250, 'create_time': 1381734253, 'avatar_id': 'e7cc74f1d4f389976bb41ee5cf33d1c4', 'message': 'testmail', 'send_time':1381734253}
-
 	
 	data = []
 	data.append([{'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}, {'data1':1, 'data2':'2'}])

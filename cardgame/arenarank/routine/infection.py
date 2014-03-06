@@ -16,9 +16,14 @@ class infection:
 		return ia.beat(roleid, rolelevel, rolename, battleRoleid, damage)
 		
 	@staticmethod
-	def award(roleid, battleRoleid, create_time):
+	def battle_award(roleid, battleRoleid, create_time):
 		ia = infection_arena.instance()
 		return ia.get_battle_award(roleid, battleRoleid, create_time)
+		
+	@staticmethod
+	def prestige_award(roleid, rolelevel):
+		ia = infection_arena.instance()
+		return ia.get_prestige_award(roleid, rolelevel)
 		
 	@staticmethod
 	def get_battle(roleid):
@@ -44,4 +49,12 @@ class infection:
 			return ia.prestige_ladder_list(rolelevel)
 		return {'msg':'infection_bad_ladder_type'}
 			
-	
+	@staticmethod
+	def user_info(roleid):
+		ia = infection_arena.instance()
+		return ia.user_info(roleid)
+		
+	@staticmethod
+	def reset_prestige_score(roleid):
+		ia = infection_arena.instance()
+		return ia.reset_prestige_score(roleid)

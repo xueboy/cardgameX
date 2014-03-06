@@ -167,16 +167,26 @@ def infection_get_battle(request):
 	roleid = request.REQUEST['roleid']	
 	return HttpResponse(json.dumps(infection.get_battle(roleid)))
 	
-def infection_award(request):
+def infection_battle_award(request):
 	roleid = request.REQUEST['roleid']
 	battleRoleid = request.REQUEST['battle_roleid']
-	create_time = int(request.REQUEST['create_time'])
-	
+	create_time = int(request.REQUEST['create_time'])	
 	return HttpResponse(json.dumps(infection.get_battle_award(roleid, battleRoleid, create_time)))
+	
+def infection_prestige_award(request):
+	roleid = request.REQUEST['roleid']
+	rolelevel = int(request.REQUEST['rolelevel'])
+	return HttpResponse(json.dumps(infection.prestige_award(roleid, rolelevel)))
 	
 def infection_ladder(request):
 	tp = request.REQUEST['type']
 	rolelevel = int(request.REQUEST['rolelevel'])	
 	return HttpResponse(json.dumps(infection.ladder(tp, rolelevel)))
+		
+def infection_info(request):
+	roleid = request.REQUEST['roleid']
+	return HttpResponse(json.dumps(infection.user_info(roleid)))
 	
-	
+def infection_reset_prestige_score(request):
+	roleid = request.REQUEST['roleid']
+	return HttpResponse(json.dumps(infection.reset_prestige_score(roleid)))

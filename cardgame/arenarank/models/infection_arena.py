@@ -35,7 +35,7 @@ class infection_arena(facility):
 	
 	@staticmethod
 	def make_user(name):
-		return {'prestige':0, 'last_hit_time': 0, 'damage':0, 'level':1, 'infection_list':[], 'name': name}
+		return {'prestige':0, 'last_hit_time': 0, 'damage':0, 'level':1, 'infection_list':[], 'name': name, 'prestige_score': 0 ,'last_award_prestige_score' : 0}
 						
 	@staticmethod
 	def make_relief(battle):
@@ -81,7 +81,7 @@ class infection_arena(facility):
 		return battle['create_time'] + escape_time			
 				
 	def encounter(self, roleid, name):		
-		gameConf = config.getConfig('game')		
+		gameConf = config.getConfig('game')
 		now = currentTime()		
 		self.update_battle(now, gameConf)
 		if self.battle.has_key(roleid):
@@ -185,7 +185,8 @@ class infection_arena(facility):
 		self.update_prestige(roleid, now)
 		self.user[roleid]['last_hit_time'] = now
 		self.user[roleid]['prestige'] = self.user[roleid]['prestige'] + prestige
-		self.update_prestige_ladder(roleid, rolelevel, self.user[roleid]['prestige'], gameConf)		
+		self.user[roleid]['prestige_score'] = self.user[roleid]['prestige_score'] + prestige
+		prestige_ladder_position = self.update_prestige_ladder(roleid, rolelevel, self.user[roleid]['prestige'], gameConf)		
 		if battle['user'][roleid]['damage'] > self.user[roleid]['damage']:
 			self.user[roleid]['damage'] = battle['user'][roleid]['damage']
 			self.update_damage_ladder(roleid, rolelevel, self.user[roleid]['damage'], gameConf)
@@ -198,9 +199,13 @@ class infection_arena(facility):
 		self.save()
 		data['total_damage'] = totaldamage
 		data['left_hp'] = lefthp
-		data['prestige'] = prestige		
+		data['prestige'] = prestige
+		data['prestige_score'] = self.user[roleid]['prestige_score']
+		data['prestige_ladder_position'] = prestige_ladder_position
 		data['can_call'] = canCall
 		return data
+		
+	
 						
 	def update_prestige_ladder(self, roleid, rolelevel, prestige, gameConf):
 		
@@ -219,10 +224,12 @@ class infection_arena(facility):
 			if self.user[rid]['prestige'] < prestige:
 				prestige_position = i
 		if prestige_position < 0 and (len(self.prestige_ladder[levelGroup]) < gameConf['infection_ladder_max_size']):
-			self.prestige_ladder[levelGroup].append(roleid)			
+			self.prestige_ladder[levelGroup].append(roleid)
+			prestige_position = len(self.prestige_ladder[levelGroup]) - 1
 		elif prestige_position >= 0:
 			self.prestige_ladder[levelGroup].insert(prestige_position, roleid)
-				
+		return prestige_position
+		
 	def update_damage_ladder(self, roleid, rolelevel, damage, gameConf):		
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
 		for lg in gameConf['infection_ladder_level_group']:
@@ -246,6 +253,7 @@ class infection_arena(facility):
 	def update_prestige(self, roleid, now):
 		if not is_same_day(self.user[roleid]['last_hit_time'], now):
 			self.user[roleid]['prestige'] = 0
+			self.user[roleid]['prestige_score'] = 0
 						
 	def call_relief(self, roleid, friend):
 		
@@ -363,6 +371,36 @@ class infection_arena(facility):
 		if hitDropid:
 			data['hit_dropid'] = hitDropid			
 		return data
+		
+	def get_prestige_award(self, roleid, rolelevel):
+		infectionPrestigePriceConf = config.getConfig('infection_prestige_price')
+		gameConf = config.getConfig('game')		
+		
+		levelGroup = gameConf['infection_ladder_level_group'][-1]
+		for lg in gameConf['infection_ladder_level_group']:
+			if rolelevel < lg:
+				levelGroup = lg
+				break
+		infectionPrestigePriceInfo = infectionPrestigePriceConf[str(levelGroup)]
+		
+		last_award_prestige_score = self.user[roleid]['last_award_prestige_score']
+		prestige_score = self.user[roleid]['prestige_score']
+		
+		award = []
+		next_awrd_score = last_award_prestige_score
+		for key in infectionPrestigePriceInfo:
+			pp = int(key)
+			if pp > last_award_prestige_score and pp <= prestige_score:
+				award.append(key)
+				if next_awrd_score < pp:
+					next_awrd_score = pp
+					
+		self.user[roleid]['last_award_prestige_score'] = next_awrd_score
+		
+		data = {}
+		data['award'] = award		
+		
+		return data	
 				
 	def update_battle(self, now, gameConf):		
 		
@@ -395,7 +433,8 @@ class infection_arena(facility):
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
 		for lg in gameConf['infection_ladder_level_group']:
 			if rolelevel < lg:
-				levelGroup = lg			
+				levelGroup = lg
+				break
 		
 		data = {}
 		data['prestige_ladder'] = []		
@@ -416,7 +455,7 @@ class infection_arena(facility):
 				levelGroup = lg			
 		
 		data = {}
-		data['damdage_ladder'] = []		
+		data['damdage_ladder'] = []
 		for (i, roleid) in enumerate(self.damage_ladder[str(levelGroup)]):
 			item = {}
 			item['position'] = i
@@ -424,4 +463,27 @@ class infection_arena(facility):
 			item['prestige'] = self.user[roleid]['prestige']
 			data['damdage_ladder'].append(item)
 			
-		return data	
+		return data
+		
+	def user_info(self, roleid):
+		
+		if self.user.has_key(roleid):			
+			data = {}
+			data['prestige'] = self.user[roleid]['prestige']
+			data['prestige_score'] = self.user[roleid]['prestige_score']			
+			data['prestige_ladder_position'] = -1
+			if roleid in self.prestige_ladder:
+				data['prestige_ladder_position'] = self.prestige_ladder.index(roleid)
+			return data
+		else:
+			data = {}
+			data['prestige'] = 0
+			data['prestige_score'] = 0
+			data['prestige_ladder_position'] = -1
+			return data
+			
+	def reset_prestige_score(self, roleid):		
+		if not self.user.has_key(roleid):
+			return {'prestige_score':0}				
+		self.user[roleid]['prestige_score'] = 0		
+		return {'prestige_score':0}

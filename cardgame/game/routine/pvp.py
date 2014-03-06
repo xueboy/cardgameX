@@ -424,7 +424,7 @@ class pvp:
 		ppData['artifice'] = 0
 		ppData['pi'] = 0
 		ppData['mi'] = 0
-		
+		ppData['speed'] = 0		
 
 		quality = stoneConf[st['stoneid']]['quality']
 		stoneConf = config.getConfig('stone')
@@ -442,7 +442,7 @@ class pvp:
 			ppData['pd'] = stoneInfo[st['level'] - 1]['value']
 		elif st['typestr'] == 'md':
 			ppData['md'] = stoneInfo[st['level'] - 1]['value']		
-		ppData['speed'] = 0
+		
 		return ppData
 
 		

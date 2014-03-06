@@ -27,11 +27,11 @@ def get_battle(request):
 	usr = request.user
 	return infection.get_battle(usr)
 	
-def award(request):
+def battle_award(request):
 	usr = request.user
 	battleRoleid = request.GET['battle_roleid']
 	createTime = int(request.GET['create_time'])
-	return infection.award(usr, battleRoleid, createTime)
+	return infection.battle_award(usr, battleRoleid, createTime)
 	
 def damage_ladder(request):
 	usr = request.user
@@ -40,3 +40,15 @@ def damage_ladder(request):
 def prestige_ladder(request):
 	usr = request.user
 	return infection.prestige_ladder(usr)
+	
+def prestige_award(request):
+	usr = request.user	
+	return infection.prestige_award(usr)
+	
+def info(request):
+	usr = request.user
+	return infection.info(usr)
+	
+def reset_prestige_score(request):
+	usr = request.user
+	return infection.reset_prestige_score(usr)
