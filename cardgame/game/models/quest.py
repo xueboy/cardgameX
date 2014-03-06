@@ -273,8 +273,8 @@ class quest(object):
 					self.current[questid]['field_id'] = fieldId
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]
 		self.save()
 		
 	def updateFinishNpcQuest(self):
@@ -292,8 +292,8 @@ class quest(object):
 				if self.current[questid]['charge_count'] >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)					
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]
 		self.save()
 		
 	def updateFinishYellQuest(self):
@@ -308,8 +308,8 @@ class quest(object):
 				if self.current[questid]['yell_count'] >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1
 					quest.notify_finish_quest(usr, questid)
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]
 		self.save()
 		
 	def udpateFinishFriendQuest(self, usrNt):
@@ -321,8 +321,8 @@ class quest(object):
 				if len(usrNt.friend) >= int(questInfo['finishValue']):
 					self.current[questid]['finish'] = 1		
 					quest.notify_finish_quest(usr, questid)			
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]
 		self.save()
 	
 	def updateVipItemBuyQuest(self, item_id, item_count):
@@ -337,8 +337,8 @@ class quest(object):
 				q['vip_item_buy_count'] = q['vip_item_buy_count'] + 1
 				if q['vip_item_buy_count'] >= int(questInfo['finishValue']):
 					quest.notify_finish_quest(usr, questid)
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]			
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]			
 		self.save()
 		
 	def updateArenaWinQuest(self):
@@ -353,8 +353,8 @@ class quest(object):
 				q['arena_win_count'] = q['arena_win_count'] + 1
 				if q['arena_win_count'] >= int(questInfo['finishValue']):
 					quest.notify_finish_quest(usr, questid)
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]			
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]			
 		self.save()
 		
 	def updateDungeonCountQuest(self):
@@ -369,6 +369,6 @@ class quest(object):
 				q['dungeon_count'] = q['dungeon_count'] + 1
 				if q['dungeon_count'] >= int(questInfo['finishValue']):
 					quest.notify_finish_quest(usr, questid)
-					#self.finish[questid] = self.current[questid]
-					#del self.current[questid]					
+					self.finish[questid] = self.current[questid]
+					del self.current[questid]					
 		self.save()
