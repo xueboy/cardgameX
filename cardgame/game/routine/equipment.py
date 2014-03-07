@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from game.utility.config import config
-from gclib.utility import currentTime
+from gclib.utility import currentTime, dayTime
 
 from game.routine.vip import vip
 
@@ -131,7 +131,7 @@ class equipment:
 				selItem = item
 			else:
 				break				
-		return (selItem[1][0] + selItem[1][2]) / 2
+		return (selItem[1][0] + selItem[1][1]) / 2
 		
 	@staticmethod
 	def equip(usr, teamPosition, ownerTeamPosition, equipmentid):
