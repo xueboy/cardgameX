@@ -22,7 +22,7 @@ class equipment:
 				return {'msg':'card_not_exist'}
 			for e in owner['slot']:
 				if e and e['id'] == id:
-					equipment = e
+					equip = e
 					break			
 		else:
 			equip = inv.getEquipment(id)		
