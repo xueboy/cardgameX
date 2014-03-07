@@ -744,8 +744,7 @@ class excel_import:
 			
 				quality = row[1]
 				level = int(row[2])
-				price = int(row[3])
-				probability = int(row[4])			
+				price = int(row[3])				
 				if level < 1:
 					return HttpResponse('level can not less 1')
 				if not conf.has_key(quality):
@@ -1414,10 +1413,12 @@ class excel_import:
 				row = sheet.row_values(rownum)
 				dialogid = row[0]
 				npcid = row[1]
-				text = row[2]
+				npcname = row[2]
+				text = row[3]
 				
 				dialog = {}
 				dialog['npcid'] = npcid
+				dialog['npcname'] = npcname
 				dialog['info'] = text
 				
 				if not conf.has_key(dialogid):
