@@ -45,7 +45,15 @@ class arena:
 			return arenaR.set_avatar_id(roleid, avatar_id)
 		else:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
-			
+	
+	@staticmethod
+	def show(usr):		
+		if SIGLE_SERVER:
+			from arenarank.routine.arena import arena as arenaR
+			return arenaR.show(str(usr.roleid))
+		else: 
+			return json.loads(curl.url(ARENE_SERVER + '/arena/show/', None, {'roleid': usr.roleid}))
+					
 	@staticmethod
 	def score(roleid):
 		if SIGLE_SERVER:
@@ -216,3 +224,4 @@ class arena:
 				return data				
 		return {'msg':'arena_rank_award_not_exist'}
 		
+	

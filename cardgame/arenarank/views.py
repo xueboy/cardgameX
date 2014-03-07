@@ -13,7 +13,7 @@ from arenarank.routine.tower import tower
 
 def show_ladder(request):				
 	roleid = request.REQUEST['roleid']
-	return HttpResponse(json.dumps(arena.show_ladder(roleid)))
+	return HttpResponse(json.dumps(arena.show(roleid)))
 	
 def stand_ladder(request):	
 	roleid = request.REQUEST['roleid']	

@@ -12,7 +12,7 @@ from game.utility.config import config
 
 def show_ladder(request):
 	usr = request.user
-	return json.loads(curl.url(ARENE_SERVER +  '/arena/show_ladder/', None, {'roleid':str(usr.roleid)}))
+	return arena.show(usr.roleid)
 
 def stand_ladder(request):
 	usr = request.user
