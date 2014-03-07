@@ -14,18 +14,18 @@ class infection:
 	
 	@staticmethod
 	def dungeon_encounter(usr):
-		if not usr.infection['is_infection']:			
-			rd = randint
-			gameConf = config.getConfig('game')
-			if rd < gameConf['infection_dungeon_probability']:
-				res = infection.Encount(usr)
-				if not res.has_key('msg'):
-					return res							
+		rd = randint()
+		gameConf = config.getConfig('game')
+		print rd, gameConf['infection_dungeon_probability']
+		if rd < gameConf['infection_dungeon_probability']:
+			res = infection.Encount(usr)
+			if not res.has_key('msg'):
+				return res							
 		return {}
 		
 	@staticmethod
 	def explore_encounter(usr, gameConf):
-		rd = randint
+		rd = randint()
 		if rd < gameConf['infection_explore_probability']:
 			res = infection.Encount(usr)
 			if not res.has_key('msg'):
