@@ -57,6 +57,6 @@ class arena:
 		return ld.tower_stand(roleid, level, point ,name, floor)
 		
 	@staticmethod
-	def show():
-		ld = ladder.instance(roleid)
-		return ld.show(roleid)
+	def show_ladder():
+		ld = ladder.instance()
+		return ld.show_ladder()

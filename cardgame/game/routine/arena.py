@@ -18,7 +18,7 @@ class arena:
 	def stand_ladder(usr):
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.stand(usr.roleid)
+			return arenaR.stand(str(usr.roleid))
 		else:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/stand_ladder/', None, {'roleid':str(usr.roleid)}))
 
@@ -34,7 +34,7 @@ class arena:
 	def remove(roleid):
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.remove(roleid)
+			return arenaR.remove(str(roleid))
 		else:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/remove/', None, {'roleid':roleid}))
 
@@ -42,7 +42,7 @@ class arena:
 	def set_avatar_id(roleid, avatar_id):
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.set_avatar_id(roleid, avatar_id)
+			return arenaR.set_avatar_id(str(roleid), avatar_id)
 		else:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
 	
@@ -70,7 +70,7 @@ class arena:
 	def award_score(roleid, awardScore):		
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.award_score(roleid, awardScore)
+			return arenaR.award_score(str(roleid), awardScore)
 		else:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/award_score/', None, {'roleid':roleid, 'award_score': awardScore}))
 
@@ -126,9 +126,9 @@ class arena:
 			
 			if SIGLE_SERVER:
 				from arenarank.routine.arena import arena as arenaR
-				return arenaR.defeat(usr.roleid, usr.arena['challenge_roleid'])
+				return arenaR.defeat(str(usr.roleid), str(usr.arena['challenge_roleid']))
 			else:
-				res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':str(usr.roleid), 'defence_roleid':usr.arena['challenge_roleid']}))
+				res = json.loads(curl.url(ARENE_SERVER +  '/arena/defeat/', None, {'offence_roleid':usr.roleid, 'defence_roleid':usr.arena['challenge_roleid']}))
 			
 			arenaLootConf = config.getConfig('arena_loot')
 			gameConf = config.getConfig('game')
@@ -174,9 +174,9 @@ class arena:
 		
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.convert(usr.roleid, pointConsume)
+			return arenaR.convert(str(usr.roleid), pointConsume)
 		else:
-			res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':str(usr.roleid), 'score':pointConsume})
+			res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':usr.roleid, 'score':pointConsume})
 		
 		res = json.loads(res)
 		if res.has_key('msg'):

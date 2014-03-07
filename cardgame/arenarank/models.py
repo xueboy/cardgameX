@@ -158,7 +158,7 @@ class ladder(facility):
 			position = self.rank.index(roleid)			
 			item = self.item[roleid]			
 			if item['score'] < score:
-				return {'msg':'arena_score_not_enoug'}
+				return {'msg':'arena_score_not_enough'}
 			item['score'] = item['score'] - score
 			self.save()
 			return item		

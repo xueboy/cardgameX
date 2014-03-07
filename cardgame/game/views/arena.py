@@ -12,7 +12,7 @@ from game.utility.config import config
 
 def show_ladder(request):
 	usr = request.user
-	return arena.show(usr.roleid)
+	return arena.show(usr)
 
 def stand_ladder(request):
 	usr = request.user
