@@ -188,12 +188,14 @@ class excel_import:
 				stamina = int(row[2])
 				sp = int(row[3])
 				friend = int(row[4])
+				speed = int(row[5])
 				
 				levelConf = {}
 				levelConf['levelExp'] = exp
 				levelConf['stamina'] = stamina
 				levelConf['sp'] = sp
 				levelConf['friend'] = friend
+				levelConf['speed'] = speed
 				
 				while len(conf) < level:
 					conf.append({})
@@ -1037,7 +1039,7 @@ class excel_import:
 					
 			conf = []
 			
-			for rownum in range(3,sheet.nrows):
+			for rownum in range(4,sheet.nrows):
 				row = sheet.row_values(rownum)				
 				level = int(row[0])
 				card_trp = int(row[1])
