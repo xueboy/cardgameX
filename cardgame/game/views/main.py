@@ -131,6 +131,7 @@ def info(request):
 	info['potential_price_md5'] = conf.getClientConfigMd5('potential_price')
 	info['email_md5'] = conf.getClientConfigMd5('email')
 	info['gift_md5'] = conf.getClientConfigMd5('gift')
+	info['ladder_score_md5'] = conf.getClientConfigMd5('ladder_score')
 	return HttpResponse(json.dumps({'info':info}))
 
 

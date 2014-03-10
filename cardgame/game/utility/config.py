@@ -107,6 +107,8 @@ class config(gcconfig):
 			return config.emailFilter(conf)
 		if confname == 'gift':
 			return conf
+		if confname == 'ladder_score':
+			return conf
 		return None
 	
 	
