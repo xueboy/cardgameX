@@ -205,8 +205,9 @@ def gm_tool_set_pet(request):
 		
 		if petopt == 'add':
 			cardid = request.POST['petSelect']
+			cnt = int(request.POST['tfPetCount'])
 			inv = usr.getInventory()
-			c = inv.addCard(cardid)
+			c = inv.addCardCount(cardid, cnt)
 			inv.save()
 			if not c:
 				return HttpResponse('添加失败')			
@@ -218,7 +219,7 @@ def gm_tool_set_pet(request):
 			inv.save()
 		elif petopt == 'add_chip':
 			cardid = request.POST['petChipSelect']
-			cnt = int(request.POST['tfPetCount'])
+			cnt = int(request.POST['tfPetChipCount'])
 			inv = usr.getInventory()
 			if inv.addCardChip(cardid, cnt) < 0:
 				return HttpResponse('添加失败')				
@@ -275,8 +276,9 @@ def gm_tool_set_equipment(request):
 		
 		if equipmentopt == 'add':
 			equipmentid = request.POST['equipmentSelect']
+			cnt = int(request.POST['tfEquipmentCount'])
 			inv = usr.getInventory()
-			s = inv.addEquipment(equipmentid)
+			s = inv.addEquipmentCount(equipmentid,cnt)
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')
