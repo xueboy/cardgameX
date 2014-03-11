@@ -16,6 +16,9 @@ from game.routine.vip import vip
 class arena:
 	@staticmethod
 	def stand_ladder(usr):
+		"""
+		站上天梯
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.stand(str(usr.roleid))
@@ -24,6 +27,9 @@ class arena:
 
 	@staticmethod
 	def show_all():
+		"""
+		显示所有
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.show_all()
@@ -32,6 +38,9 @@ class arena:
 
 	@staticmethod
 	def remove(roleid):
+		"""
+		移除
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.remove(str(roleid))
@@ -40,6 +49,9 @@ class arena:
 
 	@staticmethod
 	def set_avatar_id(roleid, avatar_id):
+		"""
+		设置avatar id
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.set_avatar_id(str(roleid), avatar_id)
@@ -47,7 +59,10 @@ class arena:
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/set_avatar_id/', None, {'roleid':roleid, 'avatar_id':avatar_id}))
 	
 	@staticmethod
-	def show(usr):		
+	def show(usr):	
+		"""
+		显示
+		"""	
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.show(str(usr.roleid))
@@ -56,6 +71,9 @@ class arena:
 					
 	@staticmethod
 	def score(roleid):
+		"""
+		分数
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.score(str(roleid))
@@ -64,10 +82,16 @@ class arena:
 
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'times':0, 'last_chellage_time':0, 'last_update_time':0, 'rank_award':{}}
 			
 	@staticmethod
-	def award_score(roleid, awardScore):		
+	def award_score(roleid, awardScore):
+		"""
+		分数奖励
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
 			return arenaR.award_score(str(roleid), awardScore)
@@ -76,6 +100,9 @@ class arena:
 
 	@staticmethod
 	def challenge(usr, defenceRoleid):
+		"""
+		挑战
+		"""
 		defenceRole = usr.get(defenceRoleid)
 		if not defenceRole:
 			return {'msg':'user_not_exist'}
@@ -113,7 +140,10 @@ class arena:
 		return data
 
 	@staticmethod
-	def arena_update(usr):		
+	def arena_update(usr):
+		"""
+		竞技场更新
+		"""
 		if not is_same_day(usr.arena['last_update_time'], currentTime()):		
 			usr.arena['times'] = 0
 		usr.arena['last_update_time'] = currentTime()
@@ -121,6 +151,9 @@ class arena:
 
 	@staticmethod
 	def defeate(usr):
+		"""
+		击败
+		"""
 		res = None
 		if usr.arena.has_key('challenge_roleid'):
 			
@@ -169,16 +202,18 @@ class arena:
 			
 	@staticmethod
 	def convert(usr, mediumCount):
+		"""
+		况换
+		"""
 		gameConf = config.getConfig('game')
 		pointConsume = mediumCount * gameConf['arena_medium_price']
 		
 		if SIGLE_SERVER:
 			from arenarank.routine.arena import arena as arenaR
-			return arenaR.convert(str(usr.roleid), pointConsume)
+			res = arenaR.convert(str(usr.roleid), pointConsume)
 		else:
-			res = curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':usr.roleid, 'score':pointConsume})
-		
-		res = json.loads(res)
+			res = json.loads(curl.url(ARENE_SERVER +  '/arena/convert/', None, {'roleid':usr.roleid, 'score':pointConsume}))
+				
 		if res.has_key('msg'):
 			return res
 
@@ -206,6 +241,9 @@ class arena:
 			
 	@staticmethod
 	def rank_award(usr, rk):
+		"""
+		排名奖励
+		"""
 		if not usr.arena['rank_award'].has_key(rk):
 			return {'msg':'arena_rank_award_not_exist'}
 		if not usr.arena['rank_award'][rk]:
