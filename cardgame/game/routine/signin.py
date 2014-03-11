@@ -10,6 +10,9 @@ class signin:
 	
 	@staticmethod
 	def login(usr):
+		"""
+		登陆
+		"""
 		now = currentTime()
 		gameConf = config.getConfig('game')
 		signinConf = config.getConfig('signin')
@@ -51,10 +54,16 @@ class signin:
 		
 	@staticmethod
 	def have_signin(usr, now):
+		"""
+		是否已经签到
+		"""
 		return is_same_day(usr.signin['last_signin_time'], now)
 		
 	@staticmethod
 	def do_signin(usr):
+		"""
+		是否签名
+		"""
 		
 		now = currentTime()
 		
@@ -74,15 +83,24 @@ class signin:
 		
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'last_signin_time':0, 'last_login_time':0, 'login_count':0, 'last_meal_time':[], 'continue_award_time':[], 'draw_award_time':[]}
 		
 
 	@staticmethod
 	def reset(usr):
+		"""
+		重制
+		"""
 		usr.signin = signin.make()
 		
 	@staticmethod
 	def meal(usr):
+		"""
+		用餐
+		"""
 		now  = currentTime()
 		gameConf = config.getConfig('game')
 		if not signin.can_meal(now, usr.signin['last_meal_time'], gameConf):
@@ -94,6 +112,9 @@ class signin:
 	
 	@staticmethod
 	def can_meal(now, last_meal_time, gameConf):		
+		"""
+		可以用餐
+		"""
 		t1 = str_to_day_time(gameConf['meal_time1'][0])		
 		t2 = str_to_day_time(gameConf['meal_time1'][1])
 		if is_in_day_period(t1, t2, now):
@@ -112,6 +133,9 @@ class signin:
 	
 	@staticmethod
 	def continue_award(usr, no):
+		"""
+		连续登陆
+		"""
 		openAwardConf = config.getConfig('open_award')
 		if not signin.is_continue_award_available(no, openAwardConf):
 			return {'msg':'open_award_not_available'}
@@ -139,6 +163,9 @@ class signin:
 		
 	@staticmethod
 	def draw_award(usr):
+		"""
+		开服奖励
+		"""
 		openAwardConf = config.getConfig('open_award')
 		drawidx = []
 		
@@ -169,6 +196,9 @@ class signin:
 		
 	@staticmethod
 	def is_continue_award_available(no, openAwardConf):
+		"""
+		连续登陆奖励是否有效
+		"""
 		if len(openAwardConf['continue_award']) < no:
 			return False
 		if not openAwardConf['continue_award'][no -1]:
@@ -177,6 +207,9 @@ class signin:
 			
 	@staticmethod
 	def is_continue_award_already_get(usr ,no):
+		"""
+		连续登陆奖励是否已领
+		"""
 		if len(usr.signin['continue_award_time']) < no:
 			return False
 		

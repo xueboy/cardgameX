@@ -8,7 +8,10 @@ from game.utility.config import config
 class potential:
 	
 	@staticmethod
-	def onEveryPetLevelup(usr, card, petConf):	
+	def onEveryPetLevelup(usr, card, petConf):
+		"""
+		每次宠物升级时
+		"""
 	
 		petInfo = petConf[card['cardid']]
 		potentialConf = config.getConfig('potential')
@@ -28,6 +31,9 @@ class potential:
 	
 	@staticmethod
 	def fire(usr ,id, useGem):
+		"""
+		潜能激发
+		"""
 		
 		inv = usr.getInventory()
 	

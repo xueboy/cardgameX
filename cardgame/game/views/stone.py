@@ -4,23 +4,33 @@
 from game.routine.stone import stone
 
 def visit(request):
+	"""
+	访问
+	"""
 	
 	usr = request.user
 	level = int(request.GET['vlevel'])
 	return stone.visit(usr, level)
 	
 def visit_gem(request):
-	
+	"""
+	钻石访问
+	"""
 	usr = request.user
 	level = int(request.GET['vlevel'])
 	return stone.visit_gem(usr, level)
 		
 def visit_clickonece(request):
+	"""
+	一键访问
+	"""
 	usr = request.user
 	return stone.visit_clickonce(usr, 10)	
 	
 def levelup(request):
-	
+	"""
+	宝石升级
+	"""
 	usr = request.user	
 	dest_stoneid = request.GET['dest_stone']
 	teamPosition = int(request.GET['team_position'])
@@ -36,7 +46,9 @@ def levelup(request):
 
 	
 def install(request):
-	
+	"""
+	安装宝石
+	"""
 	usr = request.user
 	
 	teamPosition = int(request.GET['team_position'])

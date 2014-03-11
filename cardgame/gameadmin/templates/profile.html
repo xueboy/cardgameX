@@ -161,6 +161,7 @@
       </select>
             <label>
             <input name="tfPetCount" type="text" value="1" size="4" />
+            <input name="tfPetLevel" type="text" value="1" size="4" />
             </label>
             <input type="submit" name="Submit3" value="添加" onclick="setPetOpt('add', '0')" />          </td>
     </tr>
@@ -194,7 +195,7 @@
       
           </select>
             <label>
-            <input name="tfPetChipCount" type="text" value="2" size="4" />
+            <input name="tfPetChipCount" type="text" value="1" size="4" />
             </label>
             <input type="submit" name="Submit32" value="添加" onclick="setPetOpt('add_chip', '0')" /></td>
         </tr>
@@ -246,6 +247,7 @@
             </select>
           </label>
             <label>
+            <input name="tfStoneCount" type="text" value="1" size="4" />
             <input type="submit" name="Submit4" value="添加" onclick="setStoneOpt('add', '0')" />
           </label></td>
       </tr>
@@ -379,6 +381,9 @@
         		<option value="{{ skillid }}">{{ skillid }},{{ skill.name }}</option>        
 				{% endfor %}
             </select>
+			<label>
+			<input name="tfSkillCount" type="text" value="1" size="4" />
+			</label>
 			<input type="submit" name="Submit6" value="添加" onclick="setSkillOpt('add', '0')" /></td>
         </tr>
         <tr>

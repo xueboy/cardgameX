@@ -10,6 +10,9 @@ class MMPersistent:
 	
 	@staticmethod
 	def install(obj, roleid):
+		"""
+		安装
+		"""
 		i = 0			
 		for column in obj.extend_columns:
 			setattr(obj, column['name'], column['value'])
@@ -17,7 +20,9 @@ class MMPersistent:
 		
 	@staticmethod		
 	def get(tp, roleid):
-		
+		"""
+		得到对象
+		"""
 		key = cacheobj.makeMKey(tp, roleid)		
 		conn = DBConnection.getConnection()		
 		res = conn.query("SELECT * FROM " + tp.__name__ + " WHERE roleid = %s", [roleid])
@@ -35,6 +40,9 @@ class MMPersistent:
 		
 	@staticmethod		
 	def save(obj):
+		"""
+		保存
+		"""
 		conn = DBConnection.getConnection()
 		data = obj.getData()
 		dumpstr = json.dumps(data)
@@ -48,6 +56,9 @@ class MMPersistent:
 		conn.excute(sql, update_value)				
 		
 	def delete(obj):
+		"""
+		删除
+		"""
 		conn = DBconnection.getConnection()
 		conn.excute("DELETE FROM " + self.__class__.__name__ + " WHERE id = %s", [self.id])		
 		return		

@@ -7,6 +7,9 @@ from game.utility.config import config
 class drop:
 	@staticmethod
 	def open(usr, dropid, awd):
+		"""
+		打开掉落
+		"""
 		dropConf = config.getConfig('drop')
 		
 		rd = randbigint()
@@ -28,6 +31,9 @@ class drop:
 		
 	@staticmethod
 	def roll(dropid, awd):
+		"""
+		抽取掉落
+		"""
 		dropConf = config.getConfig('drop')
 		
 		rd = randbigint()
@@ -51,6 +57,9 @@ class drop:
 		
 	@staticmethod
 	def make_award(dropItem, awd):
+		"""
+		制做奖励
+		"""
 		if dropItem['type'] == 'st':
 			if not awd.has_key('st'):
 				awd['st'] = 0
@@ -118,6 +127,9 @@ class drop:
 		
 	@staticmethod
 	def do_award(usr, awd, data):
+		"""
+		发奖
+		"""
 		save_user = False
 		save_inv = False
 		inv = None
@@ -236,6 +248,9 @@ class drop:
 	
 	@staticmethod
 	def award(usr, dropItem, awd):
+		"""
+		奖励
+		"""
 		save_user = False
 		save_inv = False
 		inv = None		
@@ -343,6 +358,9 @@ class drop:
 		
 	@staticmethod
 	def makeAwardData(awd, data, keyname = 'award'):
+		"""
+		制做发奖励数据
+		"""
 		dropData = []
 		if awd.has_key('st'):
 			dropData.append({'type':11, 'count':awd['st']})
@@ -399,7 +417,10 @@ class drop:
 		
 		
 	@staticmethod
-	def makeData(awd, data, keyname = 'drop'):		
+	def makeData(awd, data, keyname = 'drop'):
+		"""
+		制做数据
+		"""
 		dropData = []
 		if awd.has_key('st'):
 			dropData.append({'type':11, 'count':awd['st']})

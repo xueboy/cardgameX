@@ -8,13 +8,19 @@ from game.models.user import user
 class network_ladder(facility):
 	
 	
-	def __init__(self):		
+	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		self.user = {}
 		self.charm_ladder = []
 		self.tuhao_ladder = []
 		
 	def getData(self):
+		"""
+		得到数据
+		"""		
 		data = {}
 		data['user'] = self.user
 		data['charm_ladder'] = self.charm_ladder
@@ -22,13 +28,18 @@ class network_ladder(facility):
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.user = data['user']
 		self.charm_ladder = data['charm_ladder']
 		self.tuhao_ladder = data['tuhao_ladder']
 	
 	def gift(self, sendRoleid, receiveRoleid):
-		
+		"""
+		送礼
+		"""
 		sendUsr = user.get(sendRoleid)
 		receiveUsr = user.get(receiveRoleid)
 		
@@ -79,7 +90,9 @@ class network_ladder(facility):
 		return {'charm_user_position': charm_position, 'tuhao_user_position': tuhao_position}
 		
 	def update_ladder(self, gameConf):		
-		
+		"""
+		更新天梯
+		"""
 		cnt = len(self.charm_ladder) - gameConf['gift_ladder_max_size']
 		if cnt > 0:
 			for i in range(cnt, gameConf['gift_ladder_max_size'] + cnt):
@@ -95,7 +108,9 @@ class network_ladder(facility):
 			self.tuhao = self.tuhao[gameConf['gift_ladder_max_size']]
 						
 	def get_charm_range(self, roleid, begin, end):
-		
+		"""
+		得到魅力天梯
+		"""		
 		data = {'ladder':[]}
 		
 		ladder_size = len(self.charm_ladder)
@@ -115,7 +130,9 @@ class network_ladder(facility):
 		return data
 		
 	def get_tuhao_range(self, roleid, begin, end):
-		
+		"""
+		得到土豪天梯
+		"""		
 		data = {'ladder':[]}
 		
 		ladder_size = len(self.tuhao_ladder)

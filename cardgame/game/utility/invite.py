@@ -7,6 +7,9 @@ class invite:
 	
 	@staticmethod
 	def generateCode(accountid):
+		"""
+		生成邀请码
+		"""
 		code_base = 916132832 - accountid    
 		text_code = invite.dec2ary62(code_base)
 		final_code = []
@@ -23,7 +26,10 @@ class invite:
 		return ''.join(final_code)
     
 	@staticmethod
-	def reverseCode(inviteCode):    
+	def reverseCode(inviteCode): 
+		"""
+		解释邀请码
+		"""
 		orgineCode = []
 		for i in range(len(inviteCode)):
 			c = ord(inviteCode[i])
@@ -40,6 +46,9 @@ class invite:
     
 	@staticmethod
 	def dec2ary62(string_num):
+		"""
+		编码
+		"""
 		num = int(string_num)
 		mid = []
 		while True:
@@ -51,6 +60,9 @@ class invite:
 
 	@staticmethod
 	def ary622dec(string_num):
+		"""
+		解码
+		"""		
 		val = 0
 		for i in range(len(string_num)):
 			num = invite.base.index(string_num[i])

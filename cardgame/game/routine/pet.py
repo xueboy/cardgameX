@@ -14,6 +14,9 @@ class pet:
 	
 	@staticmethod
 	def make_pet(inv, cardid, level, petConf):
+		"""
+		制做宠物
+		"""
 		data = {}
 		data['cardid'] = cardid
 		data['id'] = inv.generateCardName()
@@ -29,6 +32,9 @@ class pet:
 	
 	@staticmethod
 	def isCardAvailable(usr, cardid):
+		"""
+		是否卡牌有效
+		"""
 		inv = usr.getInventory()
 		if cardid == inv.team[0]:
 			return False
@@ -45,6 +51,9 @@ class pet:
 	
 	@staticmethod
 	def levelup(usr, destCardid, sourceCardid):
+		"""
+		升级
+		"""
 		if not sourceCardid:
 			return {'msg':'card_not_exist'}
 		inv = usr.getInventory()
@@ -75,6 +84,9 @@ class pet:
 
 	@staticmethod
 	def gainExp(usr, card, exp, petConf, petLevelConf, gameConf):
+		"""
+		赢得经验
+		"""
 		level = card['level']
 		id = card['cardid']
 		quality = petConf[id]['quality']
@@ -94,7 +106,10 @@ class pet:
 	
 
 	@staticmethod	
-	def totalExp(card, petConf, petLevelConf, gameConf):	
+	def totalExp(card, petConf, petLevelConf, gameConf):
+		"""
+		总经验
+		"""
 		#total = 0
 		petInfo = petConf[card['cardid']]
 		quality = petInfo['quality']
@@ -104,6 +119,9 @@ class pet:
 
 	@staticmethod
 	def training(usr, cardid, trainlevel):
+		"""
+		训练
+		"""
 		inv = usr.getInventory()
 		
 		card = inv.getCard(cardid)
@@ -167,27 +185,7 @@ class pet:
 				rd = rd - prob
 			else:
 				artrev = trpProbabilityConf['point'][i]
-				
-#		strrev = 0
-#		itlrev = 0
-#		artrev = 0
-#		if trainlevel == '0':
-#			strrev = random.randint(-10, int(card['level']))
-#			itlrev = random.randint(-10, int(card['level'] * 1.5 - strrev))
-#			artrev = random.randint(-10, int(card['level'] * 1.5 - strrev - itlrev))
-#		elif trainlevel == '1':
-#			strrev = random.randint(-10, int(card['level']))
-#			itlrev = random.randint(-10, int(card['level'] * 2 - strrev))
-#			artrev = random.randint(-10, int(card['level'] * 2 - strrev - itlrev))
-#		elif trainlevel == '2':
-#			strrev = random.randint(-10, int(card['level']))
-#			itlrev = random.randint(-10, int(card['level'] * 2.5 - strrev))
-#			artrev = random.randint(-10, int(card['level'] * 2.5 - strrev - itlrev))
-#		elif trainlevel == '3':
-#			strrev = random.randint(-10, int(card['level']))
-#			itlrev = random.randint(-10, int(card['level'] * 3 - strrev))
-#			artrev = random.randint(-10, int(card['level'] * 3 - strrev - itlrev))
-				
+			
 		usr.train_prd['cardid'] = cardid
 		usr.train_prd['strength_revision'] = strrev
 		usr.train_prd['intelligence_revision'] = itlrev
@@ -203,11 +201,13 @@ class pet:
 		prdData = usr.train_prd.copy()
 		del prdData['trp_level']
 		
-		return {'train_prd': prdData, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}	
+		return {'train_prd': prdData, 'gold':usr.gold, 'gem':usr.gem, 'trp':usr.trp}
 		
 	@staticmethod
 	def trainConfirm(usr):
-		
+		"""
+		确认训练
+		"""
 		if not usr.train_prd:
 			return {'msg':'training_should_before'}				
 				
@@ -255,7 +255,7 @@ class pet:
 				card['strength'] = card['strength'] - 1
 				total_over_trp = total_over_trp - 1
 			if usr.train_prd['intelligence_revision'] >0 and total_over_trp > 0:
-				usr.train_prd['intelligence_ptr'] = usr.train_prd['intelligence_ptr'] - 1
+				usr.train_prd['intelligence_revision'] = usr.train_prd['intelligence_revision'] - 1
 				card['intelligence'] = card['intelligence'] - 1
 				total_over_trp = total_over_trp - 1
 			if usr.train_prd['artifice_revision'] > 0 and total_over_trp > 0:				
@@ -329,7 +329,9 @@ class pet:
 	
 	@staticmethod		
 	def decompose(usr, cardids):
-		
+		"""
+		分解
+		"""
 		cards = []
 		inv = usr.getInventory()
 		trpConfig = config.getConfig('trp')
@@ -354,7 +356,9 @@ class pet:
 		
 	@staticmethod
 	def sell(usr, id):
-			
+		"""
+		出售
+		"""	
 		inv = usr.getInventory()
 		card = inv.getCard(id)
 		if not card:
@@ -398,6 +402,9 @@ class pet:
 			
 	@staticmethod
 	def reborn(usr, id):
+		"""
+		转生
+		"""
 		
 		gameConf = config.getConfig('game')
 		rebornConf = config.getConfig('reborn')
@@ -448,6 +455,9 @@ class pet:
 				
 	@staticmethod
 	def reborn_inc_star(rebornInfo):
+		"""
+		转身增加星数
+		"""
 		rn = randint()
 		
 		for pb in rebornInfo['star']:
@@ -459,6 +469,9 @@ class pet:
 
 	@staticmethod
 	def assembly(usr, cardid):
+		"""
+		组装
+		"""
 		
 		inv = usr.getInventory()
 		
@@ -488,17 +501,21 @@ class pet:
 		
 	@staticmethod
 	def make_born_card():
+		"""
+		制做出生卡
+		"""
 		return {'cardid':'', 'born_time':0}
 		
 	
 	@staticmethod
 	def select_born_pet(usr, cardid):
+		"""
+		选择出生宠物
+		"""
 		
-		gameConf = config.getConfig('game')
-		
+		gameConf = config.getConfig('game')		
 		if cardid not in gameConf['pet_born_candidate']:
-			return {'msg': 'card_not_born_card'}
-				
+			return {'msg': 'card_not_born_card'}				
 		if usr.born_card['cardid']:
 			return {'msg': 'card_already_get_born_card'}
 		

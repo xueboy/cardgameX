@@ -10,6 +10,9 @@ class equipment:
 
 	@staticmethod
 	def strengthen(usr, id, ownerTeamPosition, isUseGem):
+		"""
+		强化
+		"""
 		inv = usr.getInventory()
 		equip = None
 		owner = None
@@ -37,7 +40,7 @@ class equipment:
 		gameConf = config.getConfig('game')
 		
 		if gameConf['equipment_strength_cooldown_cumulate_max'] < usr.equipment_strength_cooldown:
-			return {'msg':'equipment_strength_cooldown_max'}		
+			return {'msg':'equipment_strength_cooldown_max'}
 		equipmentConf = config.getConfig('equipment')
 		equipmentInfo = equipmentConf[equip['equipmentid']]
 		strengthenPriceConf = config.getConfig('strength_price')
@@ -102,7 +105,9 @@ class equipment:
 		
 	@staticmethod
 	def strengthen_reset(usr):
-		
+		"""
+		重置强化
+		"""
 		if usr.equipment_strength_cooldown <= 0:
 			return {'msg':'equipment_strength_not_in_cooldown'}
 		
@@ -121,6 +126,9 @@ class equipment:
 					
 	@staticmethod		
 	def currentStrengthCurrentProbability():
+		"""
+		当前的强化概率
+		"""
 		strengthProbabilityConf = config.getConfig('strength_probability')
 		now = currentTime()
 		daysecond = dayTime()
@@ -135,6 +143,9 @@ class equipment:
 		
 	@staticmethod
 	def equip(usr, teamPosition, ownerTeamPosition, equipmentid):
+		"""
+		装备
+		"""
 		inv = usr.getInventory()
 		
 		cardid = inv.team[teamPosition]
@@ -193,11 +204,17 @@ class equipment:
 			
 	@staticmethod
 	def make_slot():
+		"""
+		制做槽位
+		"""
 		return [{}, {}, {}, {}, {}]
 	
 			
 	@staticmethod
 	def sell(usr, equipmentid):
+		"""
+		卖出装备
+		"""
 		inv = usr.getInventory()		
 		
 		sellequipment = []
@@ -222,6 +239,9 @@ class equipment:
 		
 	@staticmethod
 	def takeoff(inv, card):
+		"""
+		脱下
+		"""
 		deq = []
 		if card and card.has_key('slot'):
 			for equip in card['slot']:
@@ -233,7 +253,9 @@ class equipment:
 
 	@staticmethod
 	def exchage(inv, fromCard, toCard, gameConf):
-		
+		"""
+		交换
+		"""
 		toSlot = None
 		if toCard.has_key('slot'):
 			toSlot = toCard['slot']			
@@ -245,6 +267,9 @@ class equipment:
 
 	@staticmethod
 	def degradation(usr, equipmentid):
+		"""
+		降级
+		"""
 		inv = usr.getInventory()
 		equipment = inv.getEquipment(equipmentid)
 		
@@ -274,7 +299,9 @@ class equipment:
 		
 	@staticmethod
 	def assembly(usr, equipmentid):
-		
+		"""
+		装配
+		"""
 		inv = usr.getInventory()
 		
 		if not inv.equipment_chip.has_key(equipmentid):

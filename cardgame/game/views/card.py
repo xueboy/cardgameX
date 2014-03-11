@@ -7,6 +7,9 @@ from game.models.inventory import inventory
 from game.routine.garcha import garcha as garchaR
 from game.routine.potential import potential
 def set_team(request):
+	"""
+	设置队伍
+	"""
 	usr = request.user
 	inv = usr.getInventory()
 	cardid1 = request.GET['card_id1']
@@ -38,6 +41,9 @@ def set_team(request):
 
 	
 def level_up(request):
+	"""
+	升级
+	"""
 	usr = request.user
 	
 	sourceCard1 = ''
@@ -78,6 +84,9 @@ def level_up(request):
 	
 		
 def garcha(request):
+	"""
+	求将
+	"""
 	usr = request.user
 	
 	garchaAmount = request.GET['amount']
@@ -93,6 +102,9 @@ def garcha(request):
 	return res
 	
 def training(request):
+	"""
+	培养
+	"""
  	usr = request.user
  	
  	id = request.GET['id']
@@ -101,16 +113,24 @@ def training(request):
  	return pet.training(usr, id, traininglevel) 	
  	
 def sell(request):
-	
+	"""
+	卖出
+	"""
 	usr = request.user
 	id = request.GET['id']
 	return pet.sell(usr, id)
 	
 def training_confirm(request):
+	"""
+	培养确认
+	"""
 	usr = request.user	
 	return pet.trainConfirm(usr)
 	
 def decompose(request):
+	"""
+	分解
+	"""
 	usr = request.user
 	cardids = []
 	
@@ -136,16 +156,25 @@ def decompose(request):
 	return pet.decompose(usr, cardids)
 
 def reborn(request):
+	"""
+	转生
+	"""
 	usr = request.user
-	cardid = request.GET['cardid']	
+	cardid = request.GET['card']	
 	return pet.reborn(usr, cardid)
 	
 def assembly(request):	
+	"""
+	组装碎片
+	"""
 	usr = request.user	
 	card_id = request.GET['cardid']	
 	return pet.assembly(usr, card_id)
 	
 def fire_potential(request):
+	"""
+	替能激发
+	"""
 	usr = request.user
 	id = request.GET['card']
 	useGem = (request.GET['is_use_gem'] == 'yes')

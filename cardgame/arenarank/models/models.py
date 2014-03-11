@@ -12,22 +12,34 @@ from arenarank.models.medal_arena import medal_arena
 
 class ladder(facility):
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		self.rank = []
 		self.item = {}
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = {}
 		data['rank'] = self.rank
 		data['item'] = self.item
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.rank = data['rank']
 		self.item = data['item']
 		
-	def stand(self, roleid):		
+	def stand(self, roleid):
+		"""
+		站上天梯
+		"""
 		usr = user.get(roleid)
 		
 		if not usr:
@@ -51,7 +63,10 @@ class ladder(facility):
 			return {'position':(len(self.rank) -1)}
 		return {'msg':'arena_ladder_already_stand'}
 
-	def show(self, roleid):		
+	def show(self, roleid):
+		"""
+		显示天梯
+		"""
 		ls = []
 		
 		if self.item.has_key(roleid):
@@ -99,12 +114,18 @@ class ladder(facility):
 		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
+		"""
+		显示所有
+		"""
 		uls = []
 		for position in range(len(self.rank)):			
-			uls.append(self.show_floor(position))					
+			uls.append(self.show_floor(position))
 		return uls
 			
 	def remove(self, roleid):
+		"""
+		移除
+		"""
 		if roleid in self.rank:
 			self.rank.remove(roleid)
 			del self.item[roleid]
@@ -113,7 +134,9 @@ class ladder(facility):
 		return {'msg':'roleid_not_exsit'}
 						
 	def show_floor(self, position):
-		
+		"""
+		显示当前层
+		"""
 		if len(self.rank) < position:
 			return {'msg':'position_invalid'}
 		roleid = self.rank[position]
@@ -124,9 +147,15 @@ class ladder(facility):
 			
 	@staticmethod
 	def up_floor(position, lastPosition):
+		"""
+		上一层
+		"""
 		return lastPosition - int(position / 101) - 1
 		
 	def update(self, position, roleid, now):
+		"""
+		更新
+		"""
 		
 		ladderScoreConf = config.getConfig('ladder_score')				
 		item = self.item[roleid]		
@@ -150,6 +179,9 @@ class ladder(facility):
 		return item
 		
 	def defeat(self, offenceRoleid, defenceRoleid):
+		"""
+		击败
+		"""
 		offencePosition = self.rank.index(offenceRoleid)
 		defencePosition = self.rank.index(defenceRoleid)
 		
@@ -160,7 +192,9 @@ class ladder(facility):
 		return self.show(offenceRoleid)
 		
 	def convert(self, roleid, score):
-		
+		"""
+		兑换奖励
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)			
 			item = self.item[roleid]			
@@ -173,6 +207,9 @@ class ladder(facility):
 		
 		
 	def set_avatar_id(self, roleid, avatar_id):		
+		"""
+		设置avatar_id
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.item[roleid]
@@ -182,7 +219,10 @@ class ladder(facility):
 		else:
 			return {'msg':'arena_ladder_not_stand'}
 				
-	def score(self, roleid):		
+	def score(self, roleid):
+		"""
+		当前积分
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.update(position, roleid, currentTime())			
@@ -194,6 +234,9 @@ class ladder(facility):
 			return {'msg':'arena_ladder_not_stand'}
 	
 	def award_score(self, roleid, awardScore):
+		"""
+		挣取积分
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.update(position, roleid, currentTime())			

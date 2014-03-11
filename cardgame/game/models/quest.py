@@ -9,6 +9,9 @@ from game.routine.drop import drop
 class quest(object):
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		object.__init__(self)
 		self.finish = {}
 		self.current = {}
@@ -16,12 +19,21 @@ class quest(object):
 		self.user = None
 		
 	def init(self):
+		"""
+		初始化
+		"""
 		pass
 	
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		object.install(self, roleid)
 	
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = object.getData(self)
 		data['finish'] = self.finish
 		data['current'] = self.current
@@ -30,12 +42,18 @@ class quest(object):
 		
 		
 	def load(self, roleid, data):
+		"""
+		加载
+		"""
 		object.load(self, roleid, data)
 		self.finish = data['finish']
 		self.current = data['current']
 		self.drama = data['drama']
 	
 	def getClientData(self):
+		"""
+		得到客户端数据
+		"""
 		self.updateQuest()
 		current = {}		
 		for q in self.current:
@@ -67,9 +85,15 @@ class quest(object):
 	
 	@staticmethod
 	def makeQuest(questid):
+		"""
+		制做任务数据
+		"""
 		return {'count':0, 'create_time':currentTime()}
 			
 	def updateQuest(self, isNotify=False):
+		"""
+		更新任务
+		"""
 		newQuest = self.getAvailableQuest()
 		for quest_id in newQuest:
 			self.acceptQuest(quest_id, isNotify)
@@ -77,6 +101,9 @@ class quest(object):
 			
 				
 	def getAvailableQuest(self):
+		"""
+		得到有效的任务
+		"""
 		
 		questConf = config.getConfig('quest')
 		usr = self.user
@@ -91,6 +118,9 @@ class quest(object):
 		return newQuest		
 		
 	def commonIsAvailable(self, usr, qid, questInfo, questConf):
+		"""
+		是否有效的一般任务
+		"""
 		newQuest = []		
 		alreadyAccept = False
 		alreadyFinishPre = False
@@ -116,7 +146,10 @@ class quest(object):
 			return True
 		return False
 					
-	def dayIsAvailable(self, usr, qid, questInfo, questConf):				
+	def dayIsAvailable(self, usr, qid, questInfo, questConf):
+		"""
+		是否有效的每日任务
+		"""
 		if questInfo['level'] > usr.level:
 			return False
 		
@@ -133,7 +166,9 @@ class quest(object):
 		return False 
 			
 	def acceptQuest(self, questid, isNotify=True):
-		
+		"""
+		接受任务
+		"""
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]
 		if not self.canAccept(questid, questInfo, questConf):
@@ -162,6 +197,9 @@ class quest(object):
 		return q
 		
 	def acceptNextQuest(self, questid, questInfo, questConf):
+		"""
+		接受下一个任务
+		"""
 		nextQuestid = questInfo['nextId']
 		if not nextQuestid:
 			return None
@@ -172,6 +210,9 @@ class quest(object):
 	
 	@staticmethod
 	def notify_add_quest(usr, questid, q):
+		"""
+		通知添加新任务
+		"""
 		if not usr.notify.has_key('add_quest_notify'):
 			usr.notify['add_quest_notify'] = {}						
 		usr.notify['add_quest_notify'][questid] = q
@@ -179,6 +220,9 @@ class quest(object):
 			
 	@staticmethod
 	def notify_finish_quest(usr, questid):
+		"""
+		通知完成任务
+		"""
 		if not usr.notify.has_key('finish_quest_notify'):
 			usr.notify['finish_quest_notify'] = []				
 		usr.notify['finish_quest_notify'].append(questid)
@@ -202,6 +246,9 @@ class quest(object):
 		return True			
 		
 	def canAccept(self, questid, questInfo, questConf):		
+		"""
+		是否可以接受任务
+		"""
 		usr = self.user
 		
 		if usr.level < questInfo['level']:
@@ -225,6 +272,9 @@ class quest(object):
 		
 	@staticmethod
 	def isFinish(questid,q):
+		"""
+		是否已经完成任务
+		"""
 		questConf = config.getConfig('quest')
 		questInfo = questConf[questid]
 		#if questInfo['finishType'] == 'talk_npc_id':
@@ -235,6 +285,9 @@ class quest(object):
 		
 		
 	def finishQuest(self, questid):
+		"""
+		完成任务
+		"""
 		if not self.current.has_key(questid):
 			return {'msg':'quest_not_exist'}
 		q = self.current[questid]
@@ -261,6 +314,9 @@ class quest(object):
 		return data
 	
 	def updateFinishDungeonQuest(self, dungeonId, fieldId):		
+		"""
+		更新完成地下城任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -281,9 +337,15 @@ class quest(object):
 			self.save()			
 		
 	def updateFinishNpcQuest(self):
+		"""
+		更新完成Npc对话任务
+		"""
 		pass
 	
 	def udpateFinishChardgeQuest(self, amount):
+		"""
+		更新完成充值任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -305,6 +367,9 @@ class quest(object):
 			self.save()
 		
 	def updateFinishYellQuest(self):
+		"""
+		更新完成世界聊天任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -326,6 +391,9 @@ class quest(object):
 			self.save()
 		
 	def udpateFinishFriendQuest(self, usrNt):
+		"""
+		更新完成好友任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -344,6 +412,9 @@ class quest(object):
 			self.save()
 	
 	def updateVipItemBuyQuest(self, item_id, item_count):
+		"""
+		更新完成购买vip道具任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -366,6 +437,9 @@ class quest(object):
 			self.save()
 		
 	def updateArenaWinQuest(self):
+		"""
+		更新完成竞技胜利任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False
@@ -388,6 +462,9 @@ class quest(object):
 			self.save()
 		
 	def updateDungeonCountQuest(self):
+		"""
+		更新完成地下城计数任务
+		"""
 		questConf = config.getConfig('quest')
 		usr = self.user
 		haveQuestFinish = False

@@ -7,6 +7,9 @@ from game.models.user import user
 from game.routine.gift import gift as giftR
 
 def request(request):
+	"""
+	请求加好友
+	"""
 	usr = request.user
 	friendid = request.GET['friend_id']
 	friendid = int(friendid)
@@ -22,6 +25,9 @@ def request(request):
 	return {'msg':'friend_not_exist'}
 		
 def friend_anwser(request):
+	"""
+	回应好友请求
+	"""
 	usr = request.user
 	request_id = request.GET['request_id']
 	option = request.GET['option']	
@@ -29,6 +35,9 @@ def friend_anwser(request):
 	return usrNw.friendRequestAnswer(request_id, option)
 
 def search(request):
+	"""
+	寻找好友
+	"""
 	usr = request.user	
 	friendname = request.GET['friend_name']
 	
@@ -42,6 +51,9 @@ def search(request):
 		return {'friend': {}}
 			
 def delete(request):
+	"""
+	删除好友
+	"""
 	usr = request.user	
 	friendid = request.GET['friend_id']
 	usrNw = usr.getNetwork()
@@ -51,6 +63,9 @@ def delete(request):
 	return usrNw.deleteFriend(friend)	
 			
 def message(request):
+	"""
+	留言
+	"""
 	friendid = int(request.GET['friend_id'])
 	msg = request.GET['message']
 	usr = request.user
@@ -69,6 +84,9 @@ def message(request):
 	return {'msg':'friend_not_exist'}
 		
 def get_message(request):
+	"""
+	刷新留言
+	"""
 	friendid = request.GET['friend_id']
 	friend = user.get(friendid)
 	if not friend:
@@ -79,6 +97,9 @@ def get_message(request):
 	
 		
 def message_delete(request):
+	"""
+	删除留言
+	"""
 	messageid = request.GET['message_id']
 	usr = request.user
 	usrNw = usr.getNetwork()
@@ -87,6 +108,9 @@ def message_delete(request):
 	
 
 def mail(request):
+	"""
+	发送私信
+	"""
 	friendid = request.GET['friend_id']
 	mail = request.GET['mail']
 	usr = request.user	
@@ -105,6 +129,9 @@ def mail(request):
 	return {'msg':'friend_not_exist'}
 		
 def delete_mail(request):
+	"""
+	删除私信
+	"""
 	friendid = request.GET['friend_id']
 	mailid = request.GET['mail_id']
 	usr = request.user
@@ -113,6 +140,9 @@ def delete_mail(request):
 	return {'mailid': mailid}
 		
 def delete_friend_mail(request):
+	"""
+	删除好友私信
+	"""
 	friendid = request.GET['friend_id']	
 	usr = request.user
 	usrNw = usr.getNetwork()
@@ -121,14 +151,22 @@ def delete_friend_mail(request):
 
 
 def email_read(request):
+	"""
+	阅读邮件
+	"""
 	emailid = request.GET['id']
 	
 	usr = request.user
 	usrNw = usr.getNetwork()	
 	ret = usrNw.emailMarkReaded(emailid)
+	if ret.has_key(emailid):
+		return ret
 	return {'update_email':ret}
 
 def email_open(request):
+	"""
+	打开邮件
+	"""
 	emailid = request.GET['id']
 	
 	usr = request.user
@@ -136,6 +174,9 @@ def email_open(request):
 	return usrNw.emailOpen(emailid)
 
 def email_delete(request):
+	"""
+	删除邮件
+	"""
 	emailid = request.GET['id']
 	
 	usr = request.user
@@ -144,6 +185,9 @@ def email_delete(request):
 	
 		
 def ban(request):
+	"""
+	阻止好友
+	"""
 	banid = request.GET['ban_id']
 	
 	usr = request.user
@@ -155,18 +199,27 @@ def ban(request):
 	return {'msg':'friend_not_exist'}
 	
 def yell(request):	
+	"""
+	世界聊天
+	"""
 	message = request.GET['message']
 	usr = request.user
 	usrNw = usr.getNetwork()
 	return usrNw.yell(usr.name, message)
 	
 def gift(request):
+	"""
+	送礼
+	"""
 	item = request.GET['item']
 	usr = request.user
 	friendid = request.GET['friendid']
 	return giftR.send_gift(usr, item, friendid)
 	
 def gift_ladder(request):
+	"""
+	送礼排行榜
+	"""
 	tp = request.GET['type']
 	begin = request.GET['begin']
 	end = request.GET['end']

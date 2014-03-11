@@ -15,15 +15,23 @@ class tower:
 		
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'tiems':0, 'last_update':0, 'record':[], 'current':{}, 'floor_score':[], 'floor_point':[], 'max_floor':0, 'max_point':0, 'last_max_floor':0, 'last_max_point':0, 'ladder_position':0, 'ladder_rank_level':0}
 
 	@staticmethod			
 	def make_data():
+		"""
+		制做当前数据
+		"""
 		return {'floor':0, 'point':0, 'energy':0, 'score':0, 'strength':0, 'intelligence':0, 'artifice':0}
 				
 	@staticmethod
 	def getClientData(usr):
-		
+		"""
+		得到client data
+		"""
 		now = currentTime()
 		tower.dayUpdate(usr, now)		
 		gameConf = config.getConfig('game')
@@ -68,7 +76,9 @@ class tower:
 			
 	@staticmethod
 	def start(usr, markup):
-		
+		"""
+		开始
+		"""
 		if usr.tower['current']:
 			return {'msg':'tower_not_finished'}
 				
@@ -97,6 +107,9 @@ class tower:
 		
 	@staticmethod
 	def beat(usr, difficulty, star, dp, ehc):
+		"""
+		战胜
+		"""
 		if not usr.tower['current']:
 			return {'msg':'tower_not_start'}
 				
@@ -184,6 +197,9 @@ class tower:
 		
 	@staticmethod
 	def do_enhance(usr, ehc):
+		"""
+		加强属性
+		"""
 		if ehc == 0:
 			usr.tower['current']['strength'] = usr.tower['current']['strength'] + usr.tower['current']['enhance'][0]
 		elif ehc == 1:
@@ -194,6 +210,9 @@ class tower:
 		
 	@staticmethod
 	def do_markup(usr, mkp):
+		"""
+		加强属性
+		"""
 		if mkp == 0:
 			return
 		if usr.tower['max_floor'] == 0:
@@ -211,6 +230,9 @@ class tower:
 		
 	@staticmethod
 	def fail(usr):
+		"""
+		爬塔失败
+		"""
 		if not usr.tower['current']:
 			return {'msg':'tower_not_start'}		
 				
@@ -219,20 +241,21 @@ class tower:
 			 usr.tower['max_floor'] = usr.tower['current']['floor']
 		usr.tower['record'].append(usr.tower['current'])
 		usr.tower['current'] = {}
-		usr.save()
-		
+		usr.save()		
 		
 		if not res.has_key('msg'):
 			if usr.tower['ladder_position'] < res['position']:
 				usr.tower['ladder_position'] = res['position']
 			if usr.tower['ladder_rank_level'] < res['rank_level']:
-				usr.tower['ladder_rank_level'] = res['rank_level']
-		
+				usr.tower['ladder_rank_level'] = res['rank_level']		
 		
 		return {'tower_max_floor': usr.tower['max_floor'], 'tower_max_point':usr.tower['max_point'], 'tower_times': usr.tower['times']}	
 		
 	@staticmethod
 	def make_enhance_list():
+		"""
+		制做强化列表
+		"""
 		
 		point = []
 		for i in range(3):			
@@ -245,12 +268,18 @@ class tower:
 		
 	@staticmethod
 	def current_floor(usr):
+		"""
+		当前层数
+		"""
 		if usr.tower['current']:
 			return usr.tower['current']['floor']
 		return 0
 		
 	@staticmethod
 	def dayUpdate(usr, now):
+		"""
+		每日更新
+		"""
 		if not is_same_day(usr.tower['last_update'], now):
 			if usr.tower['current']:
 				usr.tower['record'].append(usr.tower['current'])
@@ -271,6 +300,9 @@ class tower:
 			
 	@staticmethod
 	def stand(usr):
+		"""
+		加入排行榜
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.tower import tower as towerR
 			return towerR.stand(usr.roleid, usr.name, usr.level, usr.tower['current']['point'], tower.current_floor(usr))
@@ -279,6 +311,9 @@ class tower:
 			
 	@staticmethod
 	def show_ladder(usr):
+		"""
+		显示楼梯
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.tower import tower as towerR
 			return {'tower_ladder':towerR.show_ladder()}
@@ -287,6 +322,9 @@ class tower:
 			
 	@staticmethod
 	def times(usr, gameConf):
+		"""
+		剩余次数
+		"""
 		towerTimes = gameConf['tower_times'] - len(usr.tower['record'])
 		if usr.tower['current']:
 			towerTimes = towerTimes - 1

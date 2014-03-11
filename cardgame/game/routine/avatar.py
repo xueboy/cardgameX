@@ -7,7 +7,10 @@ import hashlib
 class avatar:
 	
 	@staticmethod
-	def getAvatarId(roleid):		
+	def getAvatarId(roleid):
+		"""
+		得到avatar id
+		"""
 		file_title = "".join([unicode(roleid), ".avt"])
 		file_name = "/".join([STATIC_ROOT, "avatar", file_title])	
 		try:
@@ -20,7 +23,10 @@ class avatar:
 			return ''
 	
 	@staticmethod		
-	def setAvatar(roleid, body):				
+	def setAvatar(roleid, body):
+		"""
+		调置avatar id
+		"""
 		m = hashlib.md5(body)
 		avatar_id = m.hexdigest()
 	
@@ -36,7 +42,9 @@ class avatar:
 	
 	@staticmethod
 	def getAvatar(roleid):
-		
+		"""
+		得到avatar
+		"""
 		file_title = "".join([roleid, ".avt"])
 		file_name = "/".join([STATIC_ROOT, "avatar", file_title])
 	

@@ -6,7 +6,9 @@ from game.routine.equipment import equipment
 
 
 def strengthen(request):
-	
+	"""
+	强化
+	"""
 	id = request.GET['id']
 	isUseGem = request.GET['is_use_gem']
 	usr = request.user
@@ -15,11 +17,16 @@ def strengthen(request):
 	return equipment.strengthen(usr, id, ownerTeamPosition, isUseGem)	
 	
 def strengthen_reset(request):
+	"""
+	重置强化冷却时间
+	"""
 	usr = request.user	
 	return equipment.strengthen_reset(usr)
 
 def equip(request):
-	
+	"""
+	装备
+	"""
 	teamPosition = int(request.GET['team_position'])
 	equipmentid = request.GET['equipment_id']	
 	ownerTeamPosition = int(request.GET['owner_team_position'])
@@ -27,7 +34,9 @@ def equip(request):
 	return equipment.equip(usr, teamPosition, ownerTeamPosition, equipmentid)
 	
 def sell(request):
-	
+	"""
+	贩卖
+	"""
 	equipmentid = [request.GET['equipment_id1']]	
 	for i in range(2, 50):
 		keyname = 'equipment_id' + str(i)
@@ -40,13 +49,18 @@ def sell(request):
 	
 	
 def degradation(request):
+	"""
+	降级
+	"""
 	equipmentid = request.GET['id']
 	usr = request.user
 	return equipment.degradation(usr, equipmentid)
 	
 
 def assembly(request):
-	
+	"""
+	组装
+	"""
 	usr = request.user
 	
 	equipmentid = request.GET['equipmentid']

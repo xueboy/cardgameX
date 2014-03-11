@@ -10,22 +10,34 @@ from game.utility.config import config
 
 class ladder(facility):
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		self.rank = []
 		self.item = {}
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = {}
 		data['rank'] = self.rank
 		data['item'] = self.item
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.rank = data['rank']
 		self.item = data['item']
 		
 	def stand(self, roleid):		
+		"""
+		添加排行榜
+		"""
 		usr = user.get(roleid)
 		
 		if not usr:
@@ -46,6 +58,9 @@ class ladder(facility):
 		return {'msg':'arena_ladder_already_stand'}
 
 	def show(self, roleid):		
+		"""
+		显示
+		"""
 		ls = []
 		
 		if self.item.has_key(roleid):
@@ -93,12 +108,18 @@ class ladder(facility):
 		return {'msg':'arena_ladder_not_stand'}
 		
 	def show_all(self):
+		"""
+		显示合部
+		"""
 		uls = []
 		for position in range(len(self.rank)):			
 			uls.append(self.show_floor(position))					
 		return uls
 			
 	def remove(self, roleid):
+		"""
+		移除
+		"""
 		if roleid in self.rank:
 			self.rank.remove(roleid)
 			del self.item[roleid]
@@ -107,6 +128,9 @@ class ladder(facility):
 		return {'msg':'roleid_not_exsit'}
 						
 	def show_floor(self, position):
+		"""
+		显示层数
+		"""
 		
 		if len(self.rank) < position:
 			return {'msg':'position_invalid'}
@@ -118,10 +142,15 @@ class ladder(facility):
 			
 	@staticmethod
 	def up_floor(position, lastPosition):
+		"""
+		上一层
+		"""
 		return lastPosition - int(position / 101) - 1
 		
 	def update(self, position, roleid, now):
-		
+		"""
+		更新
+		"""
 		ladderScoreConf = config.getConfig('ladder_score')		
 		if not self.item.has_key(roleid):
 			return None
@@ -143,6 +172,9 @@ class ladder(facility):
 		return item
 		
 	def defeat(self, offenceRoleid, defenceRoleid):
+		"""
+		击败
+		"""
 		offencePosition = self.rank.index(offenceRoleid)
 		defencePosition = self.rank.index(defenceRoleid)
 		
@@ -153,7 +185,9 @@ class ladder(facility):
 		return self.show(offenceRoleid)
 		
 	def convert(self, roleid, score):
-		
+		"""
+		兑换
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)			
 			item = self.item[roleid]			
@@ -166,6 +200,9 @@ class ladder(facility):
 		
 		
 	def set_avatar_id(self, roleid, avatar_id):		
+		"""
+		设置avatar id
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.item[roleid]
@@ -176,6 +213,9 @@ class ladder(facility):
 			return {'msg':'arena_ladder_not_stand'}
 				
 	def score(self, roleid):		
+		"""
+		天梯分数
+		"""
 		if roleid in self.rank:
 			position = self.rank.index(roleid)
 			item = self.update(position, roleid, currentTime())			
@@ -189,6 +229,9 @@ class ladder(facility):
 				
 class tower_ladder(facility):
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		self.rank20 = []
 		self.rank30 = []
@@ -197,6 +240,9 @@ class tower_ladder(facility):
 		self.item = {}
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = {}
 		data['rank20'] = self.rank20
 		data['rank30'] = self.rank30
@@ -206,6 +252,9 @@ class tower_ladder(facility):
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.rank20 = data['rank20']
 		self.rank30 = data['rank30']
@@ -215,6 +264,9 @@ class tower_ladder(facility):
 		
 	@staticmethod
 	def position_in_rank(rank, roleid):
+		"""
+		排名
+		"""
 		for (i, r) in enumerate(rank):
 			if r['roleid'] == roleid:
 				return i
@@ -222,7 +274,9 @@ class tower_ladder(facility):
 		
 		
 	def stand(self, roleid, name, level, point, floor):
-		
+		"""
+		加入天梯
+		"""
 		gameConf = config.getConfig('game')
 				
 		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
@@ -312,6 +366,9 @@ class tower_ladder(facility):
 		return {'msg':'tower_ladder_not_stand'}
 			
 	def show_ladder(self):
+		"""
+		显示天梯
+		"""
 		rank = None
 				
 		listLd = {}
@@ -339,38 +396,62 @@ class tower_ladder(facility):
 		
 	@staticmethod
 	def show_position(rank, item, position):
+		"""
+		显示天梯位置
+		"""
 		roleid = rank[position]['roleid']				
 		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
 		
 class medal_arena(facility):	
 		
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = {}		
 		return data
 	
 	def win_medal(self, roleid, level, medalid, chipnum):		
+		"""
+		赢得勋章
+		"""
 		medal_arena.db_add_medal(roleid, level, medalid, chipnum, 1)
 		return {}
 				
-	def lose_medal(self, roleid, medalid, chipnum):		
+	def lose_medal(self, roleid, medalid, chipnum):
+		"""
+		失去勋章
+		"""
 		if medal_arena.db_remove_medal(roleid, medalid, chipnum) == 1:
 			return 1
 		return 0		
 					
 		
 	def role_level(self, roleid, level):
+		"""
+		玩家等级
+		"""
 		medal_arena.db_set_level(roleid, level)
 		
 		
 	def seek_holder(self, roleid, level, medalid, chipnum):
+		"""
+		寻找持有者
+		"""
 		gameConf = config.getConfig('game')
 		levelBase = level + gameConf['medal_holder_relate_level_at_last']
 		if levelBase < 1:
@@ -379,21 +460,33 @@ class medal_arena(facility):
 		return {'holder':holderRoleids}
 			
 	def medal_levelup(self, roleid, medalid):
+		"""
+		勋章升级
+		"""
 		medalConf = config.getConfig('medal')
 		medalInfo = medalConf[medalid]
 		medal_arena.db_medal_levelup(roleid, medalid, medalInfo['chip'])			
 		return {}	
 		
 	def new_medal(self, roleid, level, medalid, chipnum, cnt):		
+		"""
+		新勋章
+		"""
 		if medal_arena.db_add_medal(roleid, level, medalid, chipnum, cnt)	== 0:
 			return {'msg':'medal_chip_not_enough'}
 		return {}
 	
 	def delete_medal(self, roleid, level, medalid, chipnum, cnt):
+		"""
+		删除勋章
+		"""
 		return medal_arena.db_delete_medal(roleid, level, medalid, chipnum, cnt)
 		
 	@staticmethod
 	def db_add_medal(roleid, level, medalid, chipnum, cnt):
+		"""
+		添加勋章
+		"""
 		conn = DBConnection.getConnection()	
 		conn.star_transaction()	
 		sql = "INSERT INTO medal_holder (roleid, medalid, chipnum) VALUES (%s, %s, %s)"
@@ -405,6 +498,9 @@ class medal_arena(facility):
 			
 	@staticmethod
 	def db_remove_medal(roleid, medalid, chipnum):
+		"""
+		移除勋章
+		"""
 		conn = DBConnection.getConnection()		
 		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT 1"		
 		row_count = conn.excute(sql, [roleid, medalid, chipnum])		
@@ -414,6 +510,9 @@ class medal_arena(facility):
 		
 	@staticmethod
 	def db_delete_medal(roleid, medalid, chipnum, cnt):
+		"""
+		删除勋章
+		"""
 		conn = DBConnection.getConnection()		
 		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT %s"		
 		row_count = conn.excute(sql, [roleid, medalid, chipnum, cnt])		
@@ -425,12 +524,18 @@ class medal_arena(facility):
 
 	@staticmethod		
 	def db_set_level(roleid, level):
+		"""
+		设置等级
+		"""
 		conn = DBConnection.getConnection()
 		sql = "INSERT INTO medal_level (roleid, level) VALUES (%s, %s) ON DUPLICATE KEY UPDATE level = %s"
 		conn.excute(sql, [roleid, level, level])
 		
 	@staticmethod	
 	def db_seek_medal_holder(roleid, medalid, chipnum, baseLevel, cnt):
+		"""
+		寻找勋章持有者
+		"""
 		conn = DBConnection.getConnection()
 		sql = "SELECT distinct(medal_holder.roleid) FROM medal_holder INNER JOIN medal_level ON medal_holder.roleid = medal_level.roleid WHERE medal_level.level >= %s AND medal_holder.medalid = %s AND medal_holder.chipnum = %s AND medal_holder.roleid <> %s ORDER BY rand() LIMIT %s"
 		res = conn.query(sql, [baseLevel, medalid, chipnum, roleid, cnt])		
@@ -440,6 +545,9 @@ class medal_arena(facility):
 		
 	@staticmethod
 	def db_medal_levelup( roleid, medalid, chipcnt):
+		"""
+		勋章升级
+		"""
 		conn = DBConnection.getConnection()
 		conn.star_transaction()	
 		sql = "DELETE FROM medal_holder WHERE roleid = %s AND medalid = %s AND chipnum = %s LIMIT 1"

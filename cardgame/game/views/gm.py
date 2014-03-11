@@ -6,6 +6,9 @@ from game.utility.config import config
 from game.routine.pet import pet
 
 def add_card(request):
+	"""
+	添加卡牌
+	"""
 	card_id = request.GET['card_id']	
 	usr = request.user
 	inv = usr.getInventory()
@@ -19,6 +22,9 @@ def add_card(request):
 	return data
 
 def del_card(request):
+	"""
+	删除卡牌
+	"""
 	id = request.GET['id']
 	usr = request.user
 	inv = usr.getInventory()	
@@ -28,6 +34,9 @@ def del_card(request):
 	return {'del_card':id}
 		
 def add_gold(request):
+	"""
+	添加金币
+	"""
 	gold = int(request.GET['gold'])
 	usr = request.user	
 	usr.gold = usr.gold + gold
@@ -35,6 +44,9 @@ def add_gold(request):
 	return {'gold':usr.gold}
 		
 def add_gem(request):
+	"""
+	添加钻石
+	"""
 	gem = int(request.GET['gem'])
 	usr = request.user
 	usr.gem = usr.gem + gem
@@ -42,6 +54,9 @@ def add_gem(request):
 	return {'gem':usr.gem}
 		 
 def gain_exp(request):
+	"""
+	得到经验
+	"""
 	exp = request.GET['exp']
 	exp = int(exp)
 	usr = request.user
@@ -51,6 +66,9 @@ def gain_exp(request):
 	return {'exp':usr.exp, 'level':usr.level}
 		 
 def gain_card_exp(request):
+	"""
+	得到卡牌经验
+	"""
 	cardid = request.GET['card']
 	exp = int(request.GET['exp'])	
 	usr = request.user
@@ -67,6 +85,9 @@ def gain_card_exp(request):
 			
 		
 def add_equipment(request):
+	"""
+	添加装备
+	"""
 	equipid = request.GET['equipment_id']
 	usr = request.user
 	inv = usr.getInventory()
@@ -80,6 +101,9 @@ def add_equipment(request):
 	
 	
 def del_equipment(request):
+	"""
+	删除装备
+	"""
 	id = request.GET['id']
 	usr = request.user
 	inv = usr.getInventory()
@@ -89,6 +113,9 @@ def del_equipment(request):
 	return {'del_equipment':id}
 		
 def add_trp(request):
+	"""
+	添加培养点
+	"""
 	trp = int(request.GET['trp'])
 	usr = request.user	
 	usr.trp = usr.trp + trp
@@ -96,6 +123,9 @@ def add_trp(request):
 	return {'trp':usr.trp}
 		
 def add_stone(request):
+	"""
+	添加石头
+	"""
 	stoneid = request.GET['stone']	
 	usr = request.user	
 	inv = usr.getInventory()
@@ -104,6 +134,9 @@ def add_stone(request):
 	return {'add_stone':stone}
 		
 def add_skill(request):
+	"""
+	添加技能
+	"""
 	skillid = request.GET['skill']	
 	usr = request.user	
 	inv = usr.getInventory()
@@ -112,6 +145,9 @@ def add_skill(request):
 	return {'add_skill':skill}
 		
 def add_item(request):
+	"""
+	添加道具
+	"""
 	itemid = request.GET['itemid']
 	usr = request.user
 	inv = usr.getInventory()

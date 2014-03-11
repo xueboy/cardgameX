@@ -11,6 +11,9 @@ class config:
 	
 	@staticmethod 
 	def getConfigStr(confname):
+		"""
+		得到配置字串
+		"""
 		conn = DBConnection.getConnection()
 		res = conn.query("SELECT * FROM config WHERE confname = %s", [confname])
 		if len(res) > 0:
@@ -20,6 +23,9 @@ class config:
 	
 	@staticmethod 
 	def getConfig(confname):
+		"""
+		得到置配
+		"""
 		conf = cache.loc_getValue('config:' + confname)
 		if not conf:
 			conf = json.loads(config.getConfigStr(confname))
@@ -29,7 +35,10 @@ class config:
 		return conf
 				
 	@staticmethod 
-	def getMd5(confobj):		
+	def getMd5(confobj):
+		"""
+		得到MD5
+		"""
 		confpurestr = json.dumps(confobj).encode("utf-8")
 		m = hashlib.md5()		
 		m.update(confpurestr)
@@ -37,12 +46,18 @@ class config:
 			
 	@staticmethod
 	def createConfig(confname):
+		"""
+		创建配置
+		"""
 		conn = DBConnection.getConnection()
 		conn.excute("INSERT INTO config (confname, conf) VALUES (%s, '')", [confname])
 		cache.loc_delete('config:' + confname)
 		
 	@staticmethod
 	def setConfig(confname, confstr):
+		"""
+		设置配置
+		"""
 		confjson = json.loads(confstr)
 		conn = DBConnection.getConnection();
 		conn.excute("UPDATE config SET conf = %s WHERE confname = %s", [confstr, confname])

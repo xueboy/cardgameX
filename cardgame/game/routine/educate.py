@@ -10,6 +10,9 @@ class educate:
 	
 	@staticmethod
 	def start(usr, edupos, cardid):
+		"""
+		开始训练
+		"""
 		inv = usr.getInventory()
 		card = inv.getCard(cardid)
 		if not card:
@@ -46,6 +49,9 @@ class educate:
 			
 	@staticmethod
 	def stop(usr, edupos):
+		"""
+		停卡训练
+		"""
 		gameConf = config.getConfig('game')
 		educate.update_exp(usr, gameConf)
 		if not educate.is_edu_slot_start(usr, edupos):
@@ -56,6 +62,9 @@ class educate:
 		
 	@staticmethod
 	def call(usr):
+		"""
+		召唤
+		"""
 		educateGradeConf = config.getConfig('educate_grade')
 		
 		edt = usr.educate['edt']		
@@ -91,6 +100,9 @@ class educate:
 	
 	@staticmethod
 	def open_edu_solt(usr):
+		"""
+		打开训练栏位
+		"""
 		
 		gameConf = config.getConfig('game')
 		gemCost = 0
@@ -114,6 +126,9 @@ class educate:
 	
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		data = {}
 		data['edu_slot'] = [{}, {}, {}, {}, {}, {}]
 		data['edt'] = 0
@@ -121,10 +136,16 @@ class educate:
 		
 	@staticmethod
 	def make_open_edu_slot(edt):
+		"""
+		制做训练栏位
+		"""
 		return {'edt':edt}
 	
 	@staticmethod
 	def make_null_edu_slot():
+		"""
+		制做空训练栏位
+		"""
 		return {}
 		
 	@staticmethod
@@ -142,10 +163,16 @@ class educate:
 
 	@staticmethod
 	def is_edu_slot_start(usr, edupos):
+		"""
+		是否训练开始
+		"""
 		return usr.educate['edu_slot'][edupos].has_key('start_time')		
 	
 	@staticmethod
 	def card_already_educate(usr, cardid):
+		"""
+		卡牌已经训练
+		"""
 		for slot in usr.educate['edu_slot']:
 			if slot and slot.has_key('card_id') and slot['card_id'] == cardid:
 				return True
@@ -153,7 +180,9 @@ class educate:
 		
 	@staticmethod
 	def update_exp(usr, gameConf):		
-		
+		"""
+		更新经验
+		"""
 		petConf = config.getConfig('pet')
 		petLevelConf = config.getConfig('pet_level')		
 		inv = usr.getInventory()
@@ -184,6 +213,9 @@ class educate:
 				
 	@staticmethod
 	def getEduSlots(usr, gameConf):
+		"""
+		得到训练栏位
+		"""
 		now = currentTime()		
 		edu_slot = usr.educate['edu_slot']
 		data = {}
@@ -210,6 +242,9 @@ class educate:
 	
 	@staticmethod
 	def getClientData(usr, gameConf):	
+		"""
+		得到玩家数据
+		"""
 		data = {}		
 		data['edu_slot'] = educate.getEduSlots(usr, gameConf)
 		data['edu_edt'] = usr.educate['edt']

@@ -11,11 +11,17 @@ from gclib.exception import NotHaveNickname, NotLogin
 from gclib.cache import cache, cachekey_usr_session_profix
 
 def HttpResponse500():
+	"""
+	返回500
+	"""
 	response = HttpResponse()
 	response.status_code = 500
 	return resonse
 
 def getAccount(request, cls):
+	"""
+	得到帐号
+	"""
 	if not request.session.has_key('account_id'):
 		raise NotLogin		
 	accountid = request.session['account_id']
@@ -23,14 +29,23 @@ def getAccount(request, cls):
 	return acc
 	
 def getAccountId(request):
+	"""
+	得到帐号ID
+	"""
 	return request.session['account_id']
 	
 def onAccountLogin(request, acc):
+	"""
+	帐号登陆
+	"""
 	request.session['account_id'] = acc.id	
 	acc.onLogin()
 	return acc
 
 def cache_session_key(roleid):
+	"""
+	帐号登陆
+	"""
 	return cachekey_usr_session_profix + str(roleid)
 
 def onUserLogin(request, usr):

@@ -17,6 +17,9 @@ import random
 class dungeon(object):
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		object.__init__(self)
 		self.roleid = 0
 		self.normal_recored = {}		#{battleid:'', fieldid:'',finishCount:1, enterCount:1 }		all normal dungeon recorder
@@ -32,15 +35,24 @@ class dungeon(object):
 		#self.allow_list = {}
 		self.user = None
 		
-	def init(self):		
+	def init(self):
+		"""
+		初始化
+		"""
 		conf = config.getConfig('dungeon')
 		self.last_dungeon['battleid'] = ''
 		self.last_dungeon['fieldid'] = ''
 	
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		object.install(self, roleid)
 	
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = object.getData(self)
 		data['normal_recored'] = self.normal_recored
 		data['last_dungeon'] = self.last_dungeon		
@@ -56,6 +68,9 @@ class dungeon(object):
 		return data
 		
 	def load(self, roleid, data):
+		"""
+		加裁
+		"""
 		object.load(self, roleid, data)
 		if isinstance(data['normal_recored'], list):
 			self.normal_recored = {}
@@ -73,6 +88,9 @@ class dungeon(object):
 		self.fatigue = data['fatigue']
 		
 	def getClientData(self):
+		"""
+		得到客户端数据
+		"""
 		data = {}
 		data['last_dungeon'] = self.last_dungeon
 		#data['fatigue'] = self.fatigue
@@ -83,6 +101,9 @@ class dungeon(object):
 		return data
 		
 	def updateReinforce(self):
+		"""
+		更新援军
+		"""
 		now = currentTime()
 		tmLast = time.localtime(self.last_reinforce_time)
 		tmNow = time.localtime(now)
@@ -91,10 +112,16 @@ class dungeon(object):
 			last_reinforce_time = currentTime()
 	
 	def setLastDungeon(self, battleid, fieldid):
+		"""
+		设置最后进入地下城
+		"""
 		self.last_dungeon['battleid'] = battleid
 		self.last_dungeon['fieldid'] = fieldid
 	
 	def canEnterNormal(self, conf, battleid, fieldid):
+		"""
+		能否进入一般副本
+		"""
 		if (not self.last_dungeon.has_key('battleid')) or (not self.last_dungeon.has_key('fieldid')):
 			return False
 		if not self.last_dungeon['battleid']:
@@ -115,7 +142,10 @@ class dungeon(object):
 		#	return False
 		#return True	
 		
-	def getVolunteer(self):		
+	def getVolunteer(self):
+		"""
+		得到义军
+		"""
 		usr = self.user
 		excludeRoleids = usr.friends.keys()
 		excludeRoleids.extend(self.reinforced_list)		
@@ -136,6 +166,9 @@ class dungeon(object):
 		return data
 		
 	def dailyRecored(self, battleid, fieldid):
+		"""
+		每日记录
+		"""
 		
 		if not is_same_day(self.daily_recored_last_time, currentTime()):
 			self.daily_recored = {}
@@ -151,6 +184,9 @@ class dungeon(object):
 		return self.daily_recored[battleid][fieldid]['count']
 	
 	def normalRecordEnter(self, battleid, fieldid):
+		"""
+		每日进入副本的记录
+		"""
 		if not self.normal_recored.has_key(battleid):
 			self.normal_recored[battleid] = {}
 		if not self.normal_recored[battleid].has_key(fieldid):
@@ -158,15 +194,24 @@ class dungeon(object):
 		
 	@staticmethod
 	def make_field_info():
+		"""
+		制做战场信息
+		"""
 		return {'finish':False, 'star':0}
 	
 	def normalRecordEnd(self, battleid, fieldid, star):		
+		"""
+		记录一般战场结算信息
+		"""
 		self.normal_recored[battleid][fieldid]['finish'] = True
 		if self.normal_recored[battleid][fieldid]['star'] < star:
 			self.normal_recored[battleid][fieldid]['star'] = star
 				
 	
 	def getFieldConf(self, battleid, fieldid):
+		"""
+		得到战场配置
+		"""
 		for battle in conf:
 			if battle['battleId'] == dungeonid:
 				for field in battle['field']:
@@ -175,6 +220,9 @@ class dungeon(object):
 		return None
 		
 	def dailyCount(self, dungeonid, fieldid):
+		"""
+		每日进入记录
+		"""
 		if not self.daily_recored.has_key(dungeonid):
 			return 0;
 		if not self.daily_recored[dungeonid].has_key(fieldid):
@@ -183,6 +231,9 @@ class dungeon(object):
 		
 	
 	def getReinforcement(self):
+		"""
+		得到援军
+		"""
 		usr = self.user
 		self.updateReinforce()
 		reinforces = self.getVolunteer()		
@@ -200,12 +251,21 @@ class dungeon(object):
 		return reinforces
 		
 	def setCurrentField(self, battleid, fieldid):
+		"""
+		当前战场
+		"""
 		self.curren_field = {'battleid':battleid, 'fieldid':fieldid}	
 		
 	def setReinforce(self, ls):
+		"""
+		设置援军
+		"""
 		self.reinforeces = ls
 		
 	def isReinforceExist(self, reinforceid):
+		"""
+		是否有援军存在
+		"""
 		if reinforceid == '':
 			return False
 		for reinforce in self.reinforces:
@@ -214,6 +274,9 @@ class dungeon(object):
 		return False
 		
 	def arrangeWaves(self, field):
+		"""
+		安排战斗
+		"""
 		waves = {}		
 		for wave in field['wave']:
 			i = 0
@@ -240,6 +303,9 @@ class dungeon(object):
 		return waves
 		
 	def award(self):
+		"""
+		领奖
+		"""
 		usr = self.user
 		inv = usr.getInventory()		
 		waves = self.curren_field_waves
@@ -254,6 +320,9 @@ class dungeon(object):
 		return awd
 	
 	def nextField(self):
+		"""
+		下一个战场
+		"""
 		dunConf = config.getConfig('dungeon')
 		for battleConf in dunConf:
 			if battleConf['battleId'] == self.curren_field['battleid']:
@@ -269,6 +338,9 @@ class dungeon(object):
 								self.last_dungeon['fieldid'] = dunConf[i + 1]['field'][0]['fieldId']
 
 	def notify_allow_dungeon(self, battleid, fieldid):
+		"""
+		是否允许地下城
+		"""
 		usr = self.user
 	
 		if not usr.notify.has_key('dungeon_allow'):
@@ -280,7 +352,9 @@ class dungeon(object):
 		
 		
 	def sweep(self, battleid, fieldid, cnt):
-		
+		"""
+		扫荡
+		"""
 		if not self.normal_recored.has_key(battleid):
 			return {'msg' : 'dungeon_not_finished'}
 		if not self.normal_recored[battleid].has_key(fieldid):
@@ -301,7 +375,7 @@ class dungeon(object):
 						
 						staminaCost = fieldConf['stamina']
 						if usr.stamina < staminaCost:
-							return {'msg':'stamina_not_enough'}
+							return {'msg':'stamina_not_enough'}						
 						if fieldConf['dayCount'] == self.daily_recored[battleid][fieldid]['count']:
 							return {'msg':'dungeon_max_count'}
 						if fieldConf['dayCount'] < (self.daily_recored[battleid][fieldid]['count'] + cnt):
@@ -344,7 +418,9 @@ class dungeon(object):
 		return resultData
 		
 	def reset(self, battleid, fieldid):
-		
+		"""
+		重置战场
+		"""
 		usr = self.user
 		#if not vip.canBuyDungeonResetCount(usr):
 		#	return {'msg': 'vip_required'}

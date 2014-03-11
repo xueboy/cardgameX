@@ -5,6 +5,9 @@ from game.models.almanac import almanac
 
 
 def draw(request):
+	"""
+	领取奖励
+	"""
 	
 	almawardid = request.GET['almawardid']	
 	usr = request.user	

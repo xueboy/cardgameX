@@ -12,10 +12,16 @@ class medal:
 		
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'grabmedalid':'', 'grabmedalchip':-1, 'grabmedalroleid':0, 'levelup_last_time':0, 'levelup_medalid':'', 'levelup_count':0, 'protect_time':0}
 			
 	@staticmethod
 	def grabMedal(offenceRoleid, defenceRoleid, level, medalid, chipnum):
+		"""
+		抢夺勋章
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR.grab_medal(offenceRoleid, defenceRoleid, level, medalid, chipnum)
@@ -24,6 +30,9 @@ class medal:
 			
 	@staticmethod
 	def newMedal(usr, medalid, chipnum, cnt):
+		"""
+		新勋章
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR. new_medal(usr.roleid, usr.level, medalid, chipnum, cnt)
@@ -32,6 +41,9 @@ class medal:
 			
 	@staticmethod
 	def tryGrab(defenceRoleid):
+		"""
+		尝试抢夺
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR.try_grab(defenceRoleid)
@@ -40,6 +52,9 @@ class medal:
 			
 	@staticmethod
 	def levelupMedal(roleid, medalid):
+		"""
+		升级勋章
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR.medal_levelup(roleid, medalidm)
@@ -48,6 +63,9 @@ class medal:
 			
 	@staticmethod
 	def addProtectTime(usr, second):
+		"""
+		添加保护时间
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR.add_protect_time(usr.roleid, second)
@@ -56,6 +74,9 @@ class medal:
 			
 	@staticmethod
 	def seekHolder(usr, medalid, chipnum):
+		"""
+		寻找持有者
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.medal import medal as medalR
 			return medalR.seek_holder(usr.roleid, usr.level, medalid, chipnum)
@@ -64,6 +85,9 @@ class medal:
 			
 	@staticmethod
 	def getClientData(usr, gameConf):
+		"""
+		得到 client data
+		"""
 		data = {}
 		data['medal_protect_time'] = usr.medal['protect_time']
 		data['medal_levelup_countdown'] = gameConf['medal_levelup_cooldown'] - currentTime() - usr.medal['levelup_last_time']
@@ -73,6 +97,9 @@ class medal:
 		
 	@staticmethod
 	def seek_holder(usr, medalid, chipnum):		
+		"""
+		寻找持有者
+		"""
 		res = medal.seekHolder(usr, medalid, chipnum)		
 		if res.has_key('holder'):		
 			gameConf = config.getConfig('game')			
@@ -88,7 +115,9 @@ class medal:
 			
 	@staticmethod
 	def getHolderData(h, gameConf):
-		
+		"""
+		得到持有者信息
+		"""
 		member = []
 		for i in range(len(gameConf['medal_holder_appear_member_position'])):
 			if gameConf['medal_holder_appear_member_position']:
@@ -105,9 +134,9 @@ class medal:
 		
 	@staticmethod
 	def medallevelup(usr, medalid):
-		
-		
-		
+		"""
+		勋章升级
+		"""
 		medalConfig = config.getConfig('medal')
 		medalInfo = medalConfig[medalid]		
 		medalLevelConfig = config.getConfig('medal_level')
@@ -151,6 +180,9 @@ class medal:
 		
 	@staticmethod
 	def medal_levelup_finish(usr, now , medalInfo, medalLevelInfo, gameConf):
+		"""
+		勋章升级完成
+		"""
 		medalid = usr.medal['levelup_medalid']
 		inv = usr.getInventory()
 		for i in range(len(inv.medal[medalid]['chip'])):
@@ -168,12 +200,18 @@ class medal:
 		
 	@staticmethod
 	def is_time_to_medal_levelup_finish(usr, now, gameConf):
+		"""
+		勋章升级是否完成
+		"""
 		if usr.medal['levelup_last_time'] == 0:
 			return True
 		return (usr.medal['levelup_last_time'] + gameConf['medal_levelup_cooldown']) < now
 		
 	@staticmethod
 	def update_medal_levelup(usr, now, medalInfo, gameConf):
+		"""
+		更新勋章升级
+		"""
 		if usr.medal['levelup_last_time'] == 0:
 			return {}
 		if medal.is_time_to_medal_levelup_finish(usr, now, gameConf):
@@ -185,6 +223,9 @@ class medal:
 		
 	@staticmethod		
 	def grab(usr, defenceRoleid, medalid, chipnum):
+		"""
+		抢夺
+		"""
 		gameConf = config.getConfig('game')
 						
 		if usr.costSp(gameConf['medal_grab_sp_cost'])	< 0:
@@ -202,7 +243,9 @@ class medal:
 	
 	@staticmethod
 	def win(usr):
-		
+		"""
+		赢取勋章
+		"""
 		gameConf = config.getConfig('game')
 		
 		defenceRoleid = usr.medal['grabmedalroleid']
@@ -220,7 +263,7 @@ class medal:
 		defenceUsr = usr.__class__.get(defenceRoleid)
 		
 		if not defenceUsr:
-			return {'msg':'usr_not_exist'}
+			return {'msg':'user_not_exist'}
 				
 		probablity = gameConf['medal_grab_probablity']
 		if vip.canMedalGrabProbabilityPromote(usr):
@@ -269,10 +312,16 @@ class medal:
 	
 	@staticmethod
 	def grab_fail(usr, defenceRoleid):
+		"""
+		抢夺失败
+		"""
 		return {}
 		
 	@staticmethod
 	def add_protect_time(usr, second):
+		"""
+		添加保护时间
+		"""
 		res = medal.addProtectTime(usr, second)		
 		if res.has_key('msg'):
 			return res		
@@ -280,12 +329,18 @@ class medal:
 			
 	@staticmethod
 	def notify_medal_levelup_interrupt(usr, medalid):
+		"""
+		提示勋章升级中断
+		"""
 		if not usr.notify.has_key('medal_levelup_interrup'):
 			usr.notify['medal_levelup_interrup'] = []
 		usr.notify['medal_levelup_interrup'].append({'medalid' : medalid})
 		
 	@staticmethod
 	def notify_medal_levelup_finish(usr, medalid):
+		"""
+		提示勋章升级完成
+		"""
 		if not usr.notify.has_key('medal_levelup_finish'):
 			usr.notify['medal_levelup_finish'] = []
 		inv = usr.getInventory()

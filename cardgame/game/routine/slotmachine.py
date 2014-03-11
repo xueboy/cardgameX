@@ -8,10 +8,16 @@ class slotmachine:
 	
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'play_time':[]}
 	
 	@staticmethod
 	def play(usr):
+		"""
+		玩老虎机
+		"""
 		now = currentTime()
 		
 		gameConf = config.getConfig('game')
@@ -64,9 +70,7 @@ class slotmachine:
 		
 	@staticmethod
 	def getClientData(usr):
+		"""
+		得到client data
+		"""
 		return {'times':len(usr.slotmachine['play_time'])}
-				
-				
-		
-				
-				

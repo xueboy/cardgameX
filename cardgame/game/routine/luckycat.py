@@ -10,6 +10,9 @@ from game.routine.vip import vip
 class luckycat:
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		data = {}
 		data['level'] = 1
 		data['exp'] = 0
@@ -34,6 +37,9 @@ class luckycat:
 		
 	@staticmethod
 	def beckon(usr, useGem):
+		"""
+		招财
+		"""
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
 		luckycatProfitConf = config.getConfig('luckycat_profit')
@@ -68,6 +74,9 @@ class luckycat:
 			
 	@staticmethod
 	def beckon_clickonce(usr):
+		"""
+		一键招财
+		"""
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
 		
@@ -108,6 +117,9 @@ class luckycat:
 		
 	@staticmethod
 	def beckon_once(usr, costGem, beckonGold, luckycatBlessConf, gameConf):
+		"""
+		招财一次
+		"""
 		blessid = []
 		for i in range(3):
 			bid = luckycat.rollBeckonBless(usr, luckycatBlessConf)
@@ -137,7 +149,9 @@ class luckycat:
 	
 	@staticmethod
 	def beckonBless(usr, beckonGold, blessid, luckycatBlessConf):
-		
+		"""
+		招财祝福
+		"""			
 		gold = beckonGold
 		gem = 0
 		beckonCount = usr.luckycat['beckon_count']
@@ -159,6 +173,9 @@ class luckycat:
 	
 	@staticmethod
 	def beckon_reset(usr):
+		"""
+		重置招财
+		"""
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
 		
@@ -182,6 +199,9 @@ class luckycat:
 			
 	@staticmethod
 	def beckon_cooldown(usr):
+		"""
+		招财冷却
+		"""
 		now = currentTime()
 		if usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] > now:			
 			return usr.luckycat['beckon_cooldown'] + usr.luckycat['beckon_last_update_time'] - currentTime()		
@@ -189,6 +209,9 @@ class luckycat:
 	
 	@staticmethod
 	def beckonCooldownCleanup(usr):
+		"""
+		清除招财冷却时间
+		"""
 		gemCost = usr.luckycat['beckon_cooldown'] / 10
 		usr.gem = usr.gem - gemCost
 		usr.save()
@@ -196,6 +219,9 @@ class luckycat:
 		
 	@staticmethod
 	def feed(usr, target):
+		"""
+		喂养
+		"""
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
 		luckycat.updateFeed(usr)
@@ -234,6 +260,9 @@ class luckycat:
 		
 	@staticmethod
 	def agreeFeed(usr, friendid):
+		"""
+		同意喂养
+		"""
 		
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
@@ -296,6 +325,9 @@ class luckycat:
 		
 	@staticmethod
 	def disagreeFeed(usr, friendid):
+		"""
+		不同意喂养
+		"""
 		if friendid not in usr.luckycat['feed_candidate_list']:
 			return {'msg':'luckycat_candidate_not_exist'}
 		
@@ -315,6 +347,9 @@ class luckycat:
 				
 	@staticmethod
 	def cancelRequest(usr, friendid):
+		"""
+		取消请求
+		"""
 		if friendid not in usr.luckycat['feed_request_list']:
 			return {'msg':'luckycat_request_not_exist'}
 
@@ -340,7 +375,9 @@ class luckycat:
 	
 	@staticmethod
 	def rollBeckonBless(usr, luckycatBlessConf):
-		
+		"""
+		抽取招财祝福
+		"""
 		#luckycat.updateBless(usr)
 		#luckycatBlessConf = config.getConfig('luckycat_bless')		
 		
@@ -359,6 +396,9 @@ class luckycat:
 	
 	@staticmethod
 	def rollBless(usr, isUseGem):
+		"""
+		抽取祝福
+		"""
 		if not usr.luckycat:
 			return {'msg':'luckycat_not_available'}
 		
@@ -398,6 +438,9 @@ class luckycat:
 		
 	@staticmethod	
 	def updateBless(usr):
+		"""
+		更新祝福
+		"""
 		now = currentTime()
 		gameConf = config.getConfig('game')
 		if usr.luckycat['bless_cycle_begin_time'] and (day_diff(usr.luckycat['bless_cycle_begin_time'], now) > gameConf['luckycat_bless_cycle_day']):
@@ -405,10 +448,16 @@ class luckycat:
 			
 	@staticmethod	
 	def isCycleDay(usr):
+		"""
+		是否循环天
+		"""
 		return is_same_day(usr.luckycat['bless_cycle_begin_time'], currentTime()) or (usr.luckycat['bless_cycle_begin_time'] == 0)
 					
 	@staticmethod
-	def getClientData(usr, gameConf):		
+	def getClientData(usr, gameConf):
+		"""
+		得到client data
+		"""
 		data = {}
 		data['level'] = usr.luckycat['level']
 		data['exp'] = usr.luckycat['exp']
@@ -431,12 +480,18 @@ class luckycat:
 				
 	@staticmethod
 	def isCritical(usr):
+		"""
+		是否爆击
+		"""
 		criticalPoint = sum(usr.luckycat['critical_point_list'])
 		probability = criticalPoint / usr.luckycat['level'] * 25
 		return drop(probability)
 		
 	@staticmethod
 	def updateBeckon(usr):		
+		"""
+		更新招财
+		"""
 		gameConf = config.getConfig('game')
 		now = currentTime()
 		if is_expire(gameConf['luckycat_beckon_count_reset_time'], usr.luckycat['beckon_last_update_time']):
@@ -453,6 +508,9 @@ class luckycat:
 			
 	@staticmethod
 	def updateFeed(usr):
+		"""
+		更新喂养
+		"""
 		gameConf = config.getConfig('game')		
 		now = currentTime()
 		if is_expire(gameConf['luckycat_beckon_count_reset_time'], usr.luckycat['feed_self_last_time']):
@@ -464,11 +522,17 @@ class luckycat:
 				
 	@staticmethod
 	def onLeveup(usr):
+		"""
+		升级喂养
+		"""
 		nw = usr.getNetwork()
 		nw.updateFriendData()		
 		
 	@staticmethod
 	def onEveryLeveup(usr):
+		"""
+		每次升级
+		"""
 		gameConf = config.getConfig('game')
 		luckycatLevelConf = config.getConfig('luckycat_level')
 		if gameConf['luckycat_level_critical_itme'].count(usr.luckycat['level']):
@@ -479,6 +543,9 @@ class luckycat:
 			
 	@staticmethod
 	def freshCritical(usr, itemIndex):
+		"""
+		更新暴击
+		"""
 		gameConf = config.getConfig('game')
 		goldCost = gameConf['luckycat_critical_item_fresh_price']['gold']
 		gemCost = gameConf['luckycat_critical_item_fresh_price']['gem']
@@ -495,6 +562,9 @@ class luckycat:
 
 	@staticmethod		
 	def currentLuckycatFortune():
+		"""
+		当前财运
+		"""
 		luckycatFortuneConf = config.getConfig('luckycat_fortune')
 		now = currentTime()
 		daysecond = dayTime()		
@@ -508,6 +578,9 @@ class luckycat:
 			
 	@staticmethod
 	def notify_bless(usr, blessid):
+		"""
+		提示祝福
+		"""
 		if not usr.notify.has_key('add_luckycat_bless'):
 			usr.notify['add_luckycat_bless'] = []
 		usr.notify['add_luckycat_bless'].append(blessid)
@@ -515,12 +588,18 @@ class luckycat:
 			
 	@staticmethod
 	def notify_request_list_remove(usr, friendid):
+		"""
+		提示请求移除
+		"""
 		if not usr.notify.has_key('delete_luckcat_request'):			
 			usr.notify['delete_luckcat_request'] = []
 		usr.notify['delete_luckcat_request'].append(friendid)
 		
 	@staticmethod
 	def notify_candidate_add(usr, friendid):
+		"""
+		提示添加候选菜单
+		"""
 		if not usr.notify.has_key('add_luckycat_candidate'):
 			usr.notify['add_luckycat_candidate'] = []
 		usr.notify['add_luckycat_candidate'].append(friendid)

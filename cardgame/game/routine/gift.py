@@ -12,11 +12,16 @@ class gift:
 	
 	@staticmethod
 	def send_gift_recored(sendRoleid, receiveRoleid):
+		"""
+		记录送礼
+		"""
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/network_gift/', None, {'send_roleid':sendRoleid, 'receive_roleid': receiveRoleid}))
 		
 	@staticmethod	
 	def send_gift(usr, item, friendid):
-		
+		"""
+		送礼
+		"""
 		giftConf = config.getConfig('gift')
 		if not giftConf.has_key(item):
 			return {'msg':'gift_not_exist'}
@@ -69,6 +74,9 @@ class gift:
 		
 	@staticmethod
 	def update_send_gift_list(usr, gameConf):
+		"""
+		更新送礼列表
+		"""
 		usrNw = usr.getNetwork()
 		cnt = len(usrNw.send_gift_record) - gameConf['gift_record_max_count']
 		if cnt > 0:
@@ -76,6 +84,9 @@ class gift:
 				
 	@staticmethod
 	def update_receive_gift_list(usr, gameConf):
+		"""
+		接收送礼列表
+		"""
 		usrNw = usr.getNetwork()
 		cnt = len(usrNw.receive_gift_record) - gameConf['gift_record_max_count']
 		if cnt > 0:
@@ -83,6 +94,9 @@ class gift:
 		
 	@staticmethod
 	def notify_new_gift(usr, item):
+		"""
+		提示新礼物
+		"""
 		usrNw = usr.getNetwork()	
 		if not usr.notify.has_key('notify_add_gift'):
 			usr.notify['notify_add_gift'] = []
@@ -91,6 +105,9 @@ class gift:
 		
 	@staticmethod
 	def gift_ladder(usr, tp, begin, end):
+		"""
+		礼物天梯
+		"""
 		if tp != 'charm' and tp != 'tuhao':
 			return {'msg':'parameter_bad'}
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/network_range/', None, {'roleid':usr.roleid, 'type':tp, 'begin': begin, 'end': end}))

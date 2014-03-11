@@ -11,10 +11,16 @@ from game.routine.drop import drop
 class invite:
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'invite':[], 'invitee':[], 'open_time': 0, 'invite_award':[]}
 			
 	@staticmethod
 	def getClientData(usr):
+		"""
+		得到 client data
+		"""
 		data = {}
 		data['invite_code'] = ''
 		if usr.accountid != 0:
@@ -26,12 +32,18 @@ class invite:
 		
 	@staticmethod
 	def onLogin(usr):
+		"""
+		登陆
+		"""
 		if not usr.invite['open_time']:
 			usr.invite['open_time'] = currentTime()
 			
 			
 	@staticmethod
 	def enterInviteCode(usr, invite_code):
+		"""
+		输入邀请码
+		"""
 		
 		gameConf = config.getConfig('game')				
 		accountid = inviteU.reverseCode(invite_code)
@@ -73,6 +85,9 @@ class invite:
 		
 	@staticmethod
 	def inviteAward(usr, inviteCount):
+		"""
+		邀请领奖
+		"""
 		
 		if inviteCount > len(usr.invite['invite']):
 			return {'msg':'invite_count_not_enough'}

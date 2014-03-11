@@ -9,6 +9,9 @@ class almanac(object):
 	
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		object.__init__(self)
 		self.card = set()
 		self.equipment = set()
@@ -18,12 +21,21 @@ class almanac(object):
 		return
 	
 	def init(self):
+		"""
+		初始化
+		"""
 		pass
 		
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		object.install(self, roleid)
 	
 	def load(self, roleid, data):
+		"""
+		加载
+		"""
 		object.load(self, roleid, data)
 		self.roleid = roleid
 		self.card = set(data['card'])
@@ -32,6 +44,9 @@ class almanac(object):
 		self.combine = data['combine']		
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = object.getData(self)
 		data['card'] = list(self.card)
 		data['equipment'] = list(self.equipment)
@@ -41,6 +56,9 @@ class almanac(object):
 		return data
 		
 	def getClientData(self):
+		"""
+		得到client data
+		"""
 		data = {}
 		data['almanac_card'] = list(self.card)
 		data['almanac_skill'] = list(self.skill)
@@ -49,7 +67,10 @@ class almanac(object):
 		
 		return data
 	
-	def addCard(self, cardid):						
+	def addCard(self, cardid):
+		"""
+		添加卡牌
+		"""
 		if cardid in self.card:
 			return
 		self.card.add(cardid)
@@ -58,6 +79,9 @@ class almanac(object):
 		return
 	
 	def addSkill(self, skillid):
+		"""
+		添加技能
+		"""
 		if skillid in self.skill:
 			return
 		self.skill.add(skillid)
@@ -66,6 +90,9 @@ class almanac(object):
 		return
 		
 	def addEquipment(self, equipmentid):
+		"""
+		添加装备
+		"""
 		if equipmentid in self.equipment:
 			return
 		self.equipment.add(equipmentid)
@@ -74,6 +101,9 @@ class almanac(object):
 		return
 		
 	def award(self, cmbid):
+		"""
+		领取奖励
+		"""
 		combinaionConf = config.getConfig('almanac_combination')
 		
 		if cmbid in self.combine:
@@ -112,6 +142,9 @@ class almanac(object):
 		return data			
 				
 	def notifyCard(self, cardid):
+		"""
+		提示卡片
+		"""
 		usr = self.user
 		if not usr.notify.has_key('almanac_notify'):
 			usr.notify['almanac_notify'] = {}				
@@ -121,6 +154,9 @@ class almanac(object):
 		usr.save()
 			
 	def notifySkill(self, skillid):
+		"""
+		提示技能
+		"""
 		usr = self.user
 		if not usr.notify.has_key('almanac_notify'):
 			usr.notify['almanac_notify'] = {}				
@@ -131,6 +167,9 @@ class almanac(object):
 
 			
 	def notifyEquipment(self, equipmentid):
+		"""
+		提示装备
+		"""
 		usr = self.user
 		if not usr.notify.has_key('almanac_notify'):
 			usr.notify['almanac_notify'] = {}				

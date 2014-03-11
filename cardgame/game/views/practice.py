@@ -5,6 +5,9 @@
 from game.routine.practice import practice
 
 def card_levelup(request):
+	"""
+	用卡牌升级
+	"""
 	
 	cardid = []
 	
@@ -22,6 +25,9 @@ def card_levelup(request):
 	
 	
 def card_chip_levelup(request):
+	"""
+	用卡牌碎片升级
+	"""
 	chipDic = {}
 	
 	chipDic[request.GET['card_id1']] = int(request.GET['chipnum1'])
@@ -39,6 +45,9 @@ def card_chip_levelup(request):
 	return practice.card_chip_levelup(usr, tp, chipDic)
 	
 def skill_levelup(request):
+	"""
+	技能升级
+	"""
 	skillid = []
 	
 	skillid.append(request.GET['skillid1'])
@@ -54,6 +63,9 @@ def skill_levelup(request):
 	return practice.skill_levelup(usr, tp, skillid)
 	
 def skill_chip_levelup(request):
+	"""
+	技能碎片升级
+	"""
 	chipDic = {}	
 	chipDic[request.GET['skill_id1']] = int(request.GET['chipnum1'])
 	

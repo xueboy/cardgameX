@@ -36,6 +36,9 @@ from game.routine.arena import arena
 class user(gcuser):
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		gcuser.__init__(self)
 		self.id = 0
 		self.roleid = 0
@@ -91,6 +94,9 @@ class user(gcuser):
 		
 	
 	def init(self, acc = None):
+		"""
+		初始化
+		"""
 		gcuser.init(self, acc)
 		if acc:
 			self.id = acc.roleid
@@ -111,9 +117,15 @@ class user(gcuser):
 		self.ip_last_recover = now
 		
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		gcuser.install(self, roleid)
 	
 	def getData(self):	
+		"""
+		得到数据
+		"""
 		data = gcuser.getData(self)
 		data['name'] = self.name
 		data['level'] = self.level
@@ -163,6 +175,9 @@ class user(gcuser):
 		return data
 		
 	def load(self, roleid, data):
+		"""
+		加载
+		"""
 		gcuser.load(self, roleid, data)
 		self.name = data['name']
 		self.level = data['level']
@@ -183,32 +198,35 @@ class user(gcuser):
 		self.fatigue = data['fatigue']
 		self.fatigue_last_time = data['fatigue_last_time']
 		self.yell_hear_id = data['yell_hear_id']
-		self.luckycat.update(data['luckycat'])
+		self.luckycat = (data['luckycat'])
 		self.trp = data['trp']
 		self.sp = data['sp']
 		self.stv = data['stv']
-		self.garcha.update(data['garcha'])
+		self.garcha = (data['garcha'])
 		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
-		self.arena.update(data['arena'])
+		self.arena = (data['arena'])
 		self.avatar = data['avatar']
 		self.signin = data['signin']
 		self.levelup = data['levelup']
 		self.longitude = data['longitude']
 		self.latitude = data['latitude']
 		self.tower = data['tower']
-		self.medal.update(data['medal'])
+		self.medal = (data['medal'])
 		self.practice = data['practice']
 		self.slotmachine = data['slotmachine']
-		self.vip.update(data['vip'])
-		self.invite.update(data['invite'])
-		self.infection.update(data['infection'])
-		self.born_card.update(data['born_card'])				
+		self.vip = (data['vip'])
+		self.invite = (data['invite'])
+		self.infection = (data['infection'])
+		self.born_card = (data['born_card'])				
 		self.ip = data['ip']
 		self.ip_last_recover = data['ip_last_recover']
 		self.explore = data['explore']
 		
 	def getClientData(self):
+		"""
+		得到client data
+		"""
 		now = currentTime()
 		usrData = {}
 		usrData['roleid'] = self.roleid
@@ -256,6 +274,9 @@ class user(gcuser):
 		return data
 		
 	def getNtInfoData(self):
+		"""
+		得到network 数据
+		"""
 		ntInfo = {}
 		ntInfo['roleid'] = self.roleid
 		ntInfo['name'] = self.name
@@ -267,6 +288,9 @@ class user(gcuser):
 		
 		
 	def getFriendData(self):
+		"""
+		得到好友数据
+		"""
 		data = {}
 		inv = self.getInventory()
 		data['roleid'] = self.roleid
@@ -298,6 +322,9 @@ class user(gcuser):
 		return data
 		
 	def getBattleData(self):
+		"""
+		得到战斗数据
+		"""		
 		data = {}
 		inv = self.getInventory()
 		data['roleid'] = self.roleid
@@ -316,6 +343,9 @@ class user(gcuser):
 		return data
 		
 	def getLoginData(self, gameConf):
+		"""
+		得到登陆数据
+		"""
 		data = {}		
 		self.updateStamina()
 		self.updateSp()
@@ -337,6 +367,9 @@ class user(gcuser):
 		return data
 		
 	def getSceneData(self):
+		"""
+		得到场景数据
+		"""
 		data = {}
 		data['name'] = self.name
 		data['gender'] = self.gender
@@ -345,18 +378,30 @@ class user(gcuser):
 		return data
 		
 	def getAccount(self):		
+		"""
+		得到帐号
+		"""
 		return self.getAccountCls().get(self.accountid)		
 		
 	def getAccountCls(self):
+		"""
+		得到帐号类
+		"""
 		return __import__('game.models.account', globals(), locals(), ['account']).account
 	
 
 	def getCardNo(self):
+		"""
+		卡牌编号
+		"""
 		self.last_card_no = self.last_card_no + 1
 		return self.last_card_no
 			
 	@retrieval_object
 	def getDungeon(self):
+		"""
+		得到地下城
+		"""
 		if self.dun:
 			return self.dun			
 		dun = dungeon.get(self.id)
@@ -370,6 +415,9 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getInventory(self):
+		"""
+		得到玩家背包
+		"""
 		if self.inv:
 			return self.inv
 		inv = inventory.get(self.id)
@@ -383,6 +431,9 @@ class user(gcuser):
 		
 	@retrieval_object
 	def getNetwork(self):
+		"""
+		得到人脉
+		"""
 		if self.network:
 			return self.network
 		nt = network.get(self.id)
@@ -396,6 +447,9 @@ class user(gcuser):
 	
 	@retrieval_object
 	def getAlmanac(self):
+		"""
+		得到图鉴
+		"""
 		if self.almanac:
 			return self.almanac
 		al = almanac.get(self.id)
@@ -409,6 +463,9 @@ class user(gcuser):
 		
 	@retrieval_object
 	def getQuest(self):
+		"""
+		得到任务
+		"""
 		if self.quest:
 			return self.quest
 		qt = quest.get(self.id)
@@ -435,6 +492,9 @@ class user(gcuser):
 				self.stamina = maxStamina
 				
 	def updateSp(self):
+		"""
+		更新sp
+		"""
 		levelConf = config.getConfig('level')
 		gameConf = config.getConfig('game')
 		maxSp = levelConf[self.level - 1]['sp']
@@ -447,6 +507,9 @@ class user(gcuser):
 				self.sp = maxSp	
 				
 	def updateIp(self):
+		"""
+		更新ip
+		"""
 		gameConf = config.getConfig('game')
 		
 		maxIp = gameConf['infection_point_max']
@@ -477,9 +540,15 @@ class user(gcuser):
 			self.onLevelup()
 			
 	def update(self):
+		"""
+		更新
+		"""
 		return
 		
 	def onInit(self):
+		"""
+		初始化
+		"""
 		inv = self.getInventory()
 		tc = inv.addCard('pet10111_3')
 		inv.addCard('pet10001_4')
@@ -493,12 +562,18 @@ class user(gcuser):
 		self.onLevelup()		
 
 	def chargeStamina(self, point):
+		"""
+		补充体力
+		"""
 		self.stamina = self.stamina + point
 		levelConf = config.getConfig('level')
 		if levelConf[self.level - 1]['stamina'] < self.stamina:
 			levelConf[self.level - 1]['stamina'] = self.stamina	
 	
 	def costStamina(self, point):
+		"""
+		消费体力
+		"""
 		if self.stamina < point:
 			return -1
 		self.updateStamina()
@@ -509,6 +584,9 @@ class user(gcuser):
 		return 0
 		
 	def costSp(self, point):
+		"""
+		消费sp
+		"""
 		if self.sp < point:
 			return -1
 		self.updateSp()
@@ -520,6 +598,9 @@ class user(gcuser):
 		return 0
 		
 	def costIp(self, point):
+		"""
+		消费ip
+		"""
 		if self.ip < point:
 			return -1
 		self.updateIp()
@@ -531,12 +612,18 @@ class user(gcuser):
 		return 0		
 			
 	def updateToFriend(self):
+		"""
+		更新好友
+		"""
 		for key in self.friends:
 			friend = user.get(key)
 			friend.addFreind(self)
 			friend.save()
 	
 	def onLogin(self):
+		"""
+		登陆时
+		"""
 		gcuser.onLogin(self)
 		gameConf = config.getConfig('game')
 		educate.update_exp(self, gameConf)
@@ -546,6 +633,9 @@ class user(gcuser):
 		return data
 		
 	def onLevelup(self):
+		"""
+		升级时
+		"""
 		gameConf = config.getConfig('game')
 		if not self.luckycat:
 			if gameConf['luckycat_open_level'] <= self.level:
@@ -562,19 +652,28 @@ class user(gcuser):
 			self.arena['stand'] = 1
 	
 	def updateFatigue(self):
+		"""
+		更新体力
+		"""
 		gameConf = config.getConfig('game')
 		if is_expire(gameConf['fatigue_reset_time'], self.fatigue):
 			self.fatigue = 0
 			fatigue_last_time = currentTime()
 
 	def updateEquipmentStrengthCooldown(self):
+		"""
+		更新强化装备冷却时间
+		"""
 		now = currentTime()
 		elapse = now - self.equipment_strength_last_time
 		self.equipment_strength_cooldown = self.equipment_strength_cooldown - elapse
 		if self.equipment_strength_cooldown < 0:
 			self.equipment_strength_cooldown = 0			
 
-	def yell_listen(self):		
+	def yell_listen(self):
+		"""
+		收到世界聊天
+		"""		
 		ms = massyell.get(0)
 		yells = ms.listen(self)
 		self.yell_hear_id = ms.sequenceid
@@ -583,9 +682,15 @@ class user(gcuser):
 		return {}
 		
 	def delete(self):
+		"""
+		删除
+		"""
 		gcuser.delete(self)
 		
 	def clear(self):
+		"""
+		清除
+		"""
 		self.getInventory().delete()
 		self.getNetwork().delete()
 		self.getQuest().delete()
@@ -593,7 +698,10 @@ class user(gcuser):
 		self.getAlmanac().delete()
 		self.delete()
 		
-	def pvpProperty(self):		
+	def pvpProperty(self):
+		"""
+		pvp属性
+		"""
 		
 		inv = self.getInventory()
 		
@@ -636,4 +744,7 @@ class user(gcuser):
 		return data
 		
 	def notify_gold(self):
+		"""
+		提示金币
+		"""
 		self.notify['gold'] = self.gold

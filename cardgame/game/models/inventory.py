@@ -14,6 +14,9 @@ from game.routine.pet import pet
 class inventory(object):
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		object.__init__(self)
 		self.card = []
 		self.card_chip = {}
@@ -29,12 +32,21 @@ class inventory(object):
 		
 		
 	def init(self):		
+		"""
+		初始化
+		"""
 		return		
 		
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		object.install(self, roleid)
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = object.getData(self)
 		data['card'] = self.card
 		data['card_chip'] = self.card_chip
@@ -52,6 +64,9 @@ class inventory(object):
 		
 	@staticmethod
 	def getClientCard(card):
+		"""
+		得到 client data
+		"""
 		data = card.copy()
 		if data.has_key('slot'):
 			del data['slot']
@@ -68,6 +83,9 @@ class inventory(object):
 		return data
 		
 	def getClientData(self):
+		"""
+		得到 client data
+		"""
 		data = {}		
 		card = {}
 		
@@ -137,6 +155,9 @@ class inventory(object):
 		return data
 		
 	def load(self, roleid, data):
+		"""
+		加载
+		"""
 		object.load(self, roleid, data)
 		
 		for c in data['card']:
@@ -153,11 +174,14 @@ class inventory(object):
 		self.stone = data['stone']
 		self.skill = data['skill']
 		self.skill_chip = data['skill_chip']
-		self.medal = data['medal']		
+		self.medal = data['medal']
 		
 		
 		
 	def addCard(self, cardid, level = 1):
+		"""
+		添加卡牌
+		"""
 		cardConf = config.getConfig('pet')				
 		if cardConf.has_key(cardid):
 			card = pet.make_pet(self, cardid, level, cardConf)
@@ -169,6 +193,9 @@ class inventory(object):
 		return None
 	
 	def addCardCount(self, cardid, cnt, level = 1):
+		"""
+		添加卡牌个数
+		"""
 		cardConf = config.getConfig('pet')
 		if cardConf.has_key(cardid):
 			usr = self.user
@@ -184,6 +211,9 @@ class inventory(object):
 				
 	
 	def addAllCard(self, cardid):
+		"""
+		批量添加卡牌
+		"""
 		newCard = []
 		for cid in cardid:
 			if cid:
@@ -193,6 +223,9 @@ class inventory(object):
 		return newCard
 
 	def addCardChip(self, cardid, cnt):
+		"""
+		添加卡片碎片
+		"""
 		cardConf = config.getConfig('pet')
 		if not cardConf.has_key(cardid):
 			return -1
@@ -202,6 +235,9 @@ class inventory(object):
 		return self.card_chip[cardid]
 
 	def canDelCard(self, id):
+		"""
+		删除卡片
+		"""
 		if self.team.count (id) > 0:
 			return False
 		for edu_slot in self.user.educate['edu_slot']:
@@ -210,12 +246,18 @@ class inventory(object):
 		return True		
 			
 	def delCard(self, id):
+		"""
+		删除卡片
+		"""
 		if not self.canDelCard(id):
 			return 0
 		self.card = filter(lambda c : c['id'] != id, self.card)		
 		return 1	
 	
 	def CountCardByQuality(self, quality, petConf):
+		"""
+		以品质计算卡牌
+		"""
 		cnt = 0
 		for card in self.card:
 			petInfo = petConf[card['cardid']]
@@ -224,11 +266,17 @@ class inventory(object):
 		return cnt
 
 	def CountCardChip(self, cardid):
+		"""
+		计算卡牌碎片
+		"""
 		if not self.card_chip.has_key(cardid):
 			return 0
 		return self.card_chip[cardid]
 	
 	def addEquipment(self, equipmentid):
+		"""
+		添加装备
+		"""
 		equipmentconf = config.getConfig('equipment')
 		if equipmentconf.has_key(equipmentid):
 			data = {}
@@ -242,6 +290,9 @@ class inventory(object):
 		return None
 		
 	def addEquipmentCount(self, equipmentid, cnt):
+		"""
+		添加多件装备
+		"""
 		equipmentConf = config.getConfig('equipment')
 		equipment = []
 		usr = self.user
@@ -257,6 +308,9 @@ class inventory(object):
 		return equipment
 		
 	def addEquipmentChip(self, equipmentid, cnt):
+		"""
+		添加装备碎片
+		"""
 		equipmentConf = config.getConfig('equipment')
 		if not equipmentConf.has_key(equipmentid):
 			return -1
@@ -266,10 +320,16 @@ class inventory(object):
 		return self.equipment_chip[equipmentid]
 		
 	def depositEquipment(self, equipment):
+		"""
+		分解装备
+		"""
 		self.equipment.append(equipment)
 		return equipment
 		
 	def withdrawEquipment(self, id):
+		"""
+		取出装备
+		"""
 		res = None
 		for equipment in self.equipment:
 			if equipment['id'] == id:
@@ -279,30 +339,54 @@ class inventory(object):
 	
 	
 	def delEquipment(self, id):
+		"""
+		删除装备
+		"""
 		self.equipment = filter(lambda e : e['id'] != id, self.equipment)
 		return 1
 		
 	def CountEquipmentChip(self, equipmentid):
+		"""
+		计算装备碎片
+		"""
 		if not self.equipment_chip.has_key(equipmentid):
 			return 0
 		return self.equipment_chip[equipmentid]
 	
 	def generateCardName(self):
+		"""
+		生成卡牌名称
+		"""
 		return self.generateName('C')
 		
 	def generateEquipmentName(self):
+		"""
+		生成装备名称
+		"""
 		return self.generateName('E')
 	
 	def generateStoneName(self):
+		"""
+		生成宝石名称
+		"""
 		return self.generateName('S')
 		
 	def generateSkillName(self):
+		"""
+		生成技能名称
+		"""
 		return self.generateName('K')
 	
 	def generateItemName(self):
+		"""
+		生成道具名称
+		"""
 		return self.generateName('I')
 	
 	def generateName(self, perfix):
+		"""
+		生成名称
+		"""
 		serveridLen = len(str(serverid))
 		roleidLen = len(str(self.roleid))
 		tm = time.gmtime(currentTime())
@@ -314,30 +398,45 @@ class inventory(object):
 		return name
 		
 	def getCard(self, id):
+		"""
+		得到卡牌
+		"""
 		for card in self.card:
 			if card['id'] == id:
 				return card
 		return None
 		
 	def getFirstCardType(self, cardid):
+		"""
+		得到第一个卡片该类型卡牌
+		"""
 		for card in self.card:
 			if card['cardid'] == cardid:
 				return card
 		return None
 		
 	def getEquipment(self, id):
+		"""
+		得到装备
+		"""
 		for equipment in self.equipment:			
 			if equipment['id'] == id:				
 				return equipment
 		return None
 		
 	def getOwnerEquipment(self, card, id):
+		"""
+		得到所有者装备
+		"""
 		for equipment in card['slot']:
 			if equipment['id'] == id:
 				return equipment
 		return None
 		
 	def getSlots(self):
+		"""
+		得到槽位
+		"""
 		slots = {}
 		for i, t in enumerate(self.team):
 			if t:
@@ -349,6 +448,9 @@ class inventory(object):
 		return slots
 		
 	def getStSlots(self):
+		"""
+		得到宝石槽位
+		"""
 		st_slot = {}
 		
 		for i, t in enumerate(self.team):
@@ -363,6 +465,9 @@ class inventory(object):
 		return st_slot
 		
 	def getSkSlots(self):
+		"""
+		得到技能槽位
+		"""
 		sk_slot = {}
 		
 		for i, t in enumerate(self.team):
@@ -377,7 +482,9 @@ class inventory(object):
 		return sk_slot
 		
 	def setTeam(self, cardid1, cardid2, cardid3, cardid4, cardid5, cardid6, deq, dst, dsk):
-		
+		"""
+		设置队伍
+		"""
 		if cardid1 != '':
 			if cardid1 == cardid2 or cardid1 == cardid3 or cardid1 == cardid4 or cardid1 == cardid5 or cardid1 == cardid6:
 				return {'team':self.team}
@@ -445,6 +552,9 @@ class inventory(object):
 		return None
 		
 	def setTeamEquipmentStoneSkill(self, cardid, teamPos, gameConf):
+		"""
+		设置队伍的装备宝石技能
+		"""
 		dst = []
 		deq = []
 		dsk = []
@@ -468,6 +578,9 @@ class inventory(object):
 		return deq, dst, dsk
 		
 	def addStone(self, stoneid):
+		"""
+		添加宝石
+		"""
 		stoneConf = config.getConfig('stone')
 		
 		stoneInfo = stoneConf[stoneid]		
@@ -480,6 +593,9 @@ class inventory(object):
 		return st
 		
 	def addStoneCount(self, stoneid, cnt):
+		"""
+		添加多个宝石
+		"""
 		stoneConf = config.getConfig('stone')
 		
 		stone = []
@@ -494,17 +610,26 @@ class inventory(object):
 			stone.append(st)
 		return stone
 		
-	def getStone(self, id):					
+	def getStone(self, id):
+		"""
+		得到宝石
+		"""					
 		for st in self.stone:			
 			if st['id'] == id:
 				return st
 		return None
 		
 	def delStone(self, id):
+		"""
+		删除宝石
+		"""
 		self.stone = filter(lambda s : s['id'] != id, self.stone)
 		return 1
 			
 	def depositStone(self, st):
+		"""
+		放入宝石
+		"""
 		self.stone.append(st)
 		
 	def withdrawStone(self, id):
@@ -518,6 +643,9 @@ class inventory(object):
 		return res
 		
 	def addSkill(self, skillid, level = 1):
+		"""
+		添加技能
+		"""
 		skillConf = config.getConfig('skill')
 		
 		skillInfo = skillConf[skillid]
@@ -534,6 +662,9 @@ class inventory(object):
 		return sk
 	
 	def addSkillCount(self, skillid, cnt):
+		"""
+		添加多个技能
+		"""
 		skillConf = config.getConfig('skill')
 		skillInfo = skillConf[skillid]
 		
@@ -552,6 +683,9 @@ class inventory(object):
 		return skill
 		
 	def addSkillChip(self, skillid, cnt):
+		"""
+		添加技能碎片
+		"""
 		skillConf = config.getConfig('skill')
 		if not skillConf.has_key(skillid):
 			return -1
@@ -562,6 +696,9 @@ class inventory(object):
 		return self.skill_chip[skillid]
 	
 	def addAllSkill(self, skillid):
+		"""
+		添加所有的技能
+		"""
 		newSkill = []
 		for sid in skillid:
 			if sid:
@@ -571,16 +708,25 @@ class inventory(object):
 		return newSkill
 		
 	def getSkill(self, id):
+		"""
+		得到技能
+		"""
 		for sk in self.skill:
 			if sk['id'] == id:
 				return sk
 		return None
 	
 	def delSkill(self, id):
+		"""
+		删除技能
+		"""
 		self.skill = filter(lambda s : s['id'] != id, self.skill)
 		return 1
 		
 	def CountSkillChip(self, skillid):
+		"""
+		计算技能碎片个数
+		"""
 		if not self.skill_chip.has_key(skillid):
 			return 0
 		return self.skill_chip[skillid]
@@ -590,6 +736,9 @@ class inventory(object):
 		self.skill.append(sk)
 		
 	def withdrawSkill(self, id):
+		"""
+		存入技能
+		"""
 		res = None
 		for i, sk in enumerate(self.skill):
 			if sk['id'] == id:
@@ -600,6 +749,9 @@ class inventory(object):
 		return res
 		
 	def addItem(self, itemid):
+		"""
+		添加道具
+		"""
 		itemConf = config.getConfig('item')
 		itemInfo = itemConf[itemid]
 		
@@ -616,6 +768,9 @@ class inventory(object):
 		return None, it
 	
 	def addItemCount(self, itemid, cnt):
+		"""
+		添加多少道具
+		"""
 		itemConf = config.getConfig('item')
 		itemInfo = itemConf[itemid]
 		
@@ -652,6 +807,9 @@ class inventory(object):
 		return its, item
 		
 	def delItem(self, id, cnt = 1):
+		"""
+		删除道具
+		"""
 		if cnt <= 0:
 			return 0
 		it = self.getItem(id)
@@ -669,19 +827,27 @@ class inventory(object):
 		return 0
 			
 	def getItem(self, id):
+		"""
+		得到道具
+		"""
 		for it in self.item:
 			if it['id'] == id:
 				return it
 		return None
 		
 	def getItemByType(self, itemid):
+		"""
+		通过类型得到道具
+		"""
 		for it in self.item:
 			if it['itemid'] == itemid:
 				return it
 		return None
 		
 	def addMedalChip(self, medalid, chipnum, cnt = 1):
-		
+		"""
+		添加勋章碎片
+		"""
 		medalConfig = config.getConfig('medal')		
 		medalInfo = medalConfig[medalid]		
 		if not self.medal.has_key(medalid):
@@ -690,6 +856,9 @@ class inventory(object):
 		return self.medal[medalid]
 		
 	def delMedalChip(self, medalid, chipnum):
+		"""
+		删除勋章碎片
+		"""
 		
 		if not self.medal.has_key(medalid):
 			return -1		

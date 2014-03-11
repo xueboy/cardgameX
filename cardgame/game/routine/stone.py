@@ -10,6 +10,9 @@ class stone:
 	
 	@staticmethod
 	def visit(usr, level):
+		"""
+		访问
+		"""
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')
@@ -34,6 +37,9 @@ class stone:
 		
 	@staticmethod
 	def visit_gem(usr, level):
+		"""
+		钻石访问
+		"""
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')
@@ -78,7 +84,9 @@ class stone:
 			
 	@staticmethod
 	def visit_clickonce(usr, count):	
-		
+		"""
+		一键访问
+		"""
 		inv = usr.getInventory()
 		gameConf = config.getConfig('game')
 		stoneProbabilityConf = config.getConfig('stone_probability')		
@@ -98,6 +106,9 @@ class stone:
 		
 	@staticmethod
 	def max_available_stv(usr):
+		"""
+		最大访问等级
+		"""
 		if usr.stv[4]:
 			return 5
 		if usr.stv[3]:
@@ -111,6 +122,9 @@ class stone:
 		
 	@staticmethod
 	def do_visit(usr, level, result, gameConf,stoneProbabilityConf):
+		"""
+		访问
+		"""
 		inv = usr.getInventory()			
 		
 		goldCost = stoneProbabilityConf['visitGold'][level - 1]		
@@ -148,7 +162,9 @@ class stone:
 			
 	@staticmethod
 	def levelup(usr, teamPosition, dest_stoneid, source_stoneid):
-			
+		"""
+		宝石升级
+		"""	
 		if not source_stoneid:
 			return {'msg':'stone_not_specified'}
 				
@@ -185,7 +201,9 @@ class stone:
 		
 	@staticmethod
 	def add_exp(st, exp, stoneInfo):	
-		
+		"""
+		添加经验
+		"""
 		expdeff = stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp']
 		exp = exp + st['exp']
 		st['exp'] = 0
@@ -198,6 +216,9 @@ class stone:
 			
 	@staticmethod
 	def get_exp(st, stoneInfo):
+		"""
+		得到经验
+		"""
 		exp = st['exp']
 		exp = exp + (stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp'])
 		exp = exp + stoneInfo[st['level'] - 1]['gravel']
@@ -205,11 +226,16 @@ class stone:
 		
 	@staticmethod
 	def make_stv():
+		"""
+		制做stv
+		"""
 		return [1, 0, 0, 0, 0]
 
 	@staticmethod
 	def install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid):
-		
+		"""
+		安装宝石
+		"""
 		inv = usr.getInventory()
 		
 		if not inv.team[teamPosition]:
@@ -269,10 +295,16 @@ class stone:
 		
 	@staticmethod
 	def make_st_solt():
+		"""
+		制做宝石槽位
+		"""
 		return [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
 		
 	@staticmethod
 	def takeoff(inv, card):
+		"""
+		脱下宝石
+		"""
 		dst = []
 		if card and card.has_key('st_slot'):
 			for st in card['st_slot']:
@@ -284,7 +316,9 @@ class stone:
 
 	@staticmethod
 	def exchage(inv, fromCard, toCard, gameConf):				
-				
+		"""
+		交换宝石
+		"""
 		toSlot = None		
 		if toCard.has_key('st_slot'):
 			toSlot = toCard['st_slot']			

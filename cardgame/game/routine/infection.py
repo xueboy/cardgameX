@@ -14,6 +14,9 @@ class infection:
 	
 	@staticmethod
 	def dungeon_encounter(usr):
+		"""
+		感染地下城遇敌
+		"""
 		rd = randint()
 		gameConf = config.getConfig('game')
 		print rd, gameConf['infection_dungeon_probability']
@@ -25,6 +28,9 @@ class infection:
 		
 	@staticmethod
 	def explore_encounter(usr, gameConf):
+		"""
+		感染探索遇敌
+		"""
 		rd = randint()
 		if rd < gameConf['infection_explore_probability']:
 			res = infection.Encount(usr)
@@ -34,11 +40,16 @@ class infection:
 				
 	@staticmethod
 	def encounter(usr):
+		"""
+		遇敌
+		"""
 		return infection.Encount(usr)
 		
 	@staticmethod
 	def beat(usr, battle_roleid, damage):
-		
+		"""
+		击败
+		"""
 		gameConf = config.getConfig('game')		
 		if usr.costIp(gameConf['infection_point_cost']) < 0:
 			return {'msg' : 'ip_not_enough'}			
@@ -53,6 +64,9 @@ class infection:
 				
 	@staticmethod
 	def Beat(usr, battle_roleid, damage):		
+		"""
+		击败
+		"""
 		data = {}
 		data['roleid'] = usr.roleid
 		data['rolename'] = usr.name
@@ -68,7 +82,10 @@ class infection:
 		return json.loads(curl.url(ARENE_SERVER +  '/arena/infection_beat/', None, data))
 		
 	@staticmethod
-	def call(usr):		
+	def call(usr):
+		"""
+		招唤
+		"""
 		nw = usr.getNetwork()		
 		friend = nw.friend.items()
 		res = infection.Call(usr, friend)
@@ -78,10 +95,16 @@ class infection:
 	
 	@staticmethod
 	def get_battle(usr):
+		"""
+		得到战斗
+		"""
 		return infection.GetBattle(usr)
 		
 	@staticmethod
 	def Encount(usr):
+		"""
+		遇敌
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.encounter(str(usr.roleid), usr.name)
@@ -90,6 +113,9 @@ class infection:
 			
 	@staticmethod
 	def BattleAward(usr, battleRoleid, create_time):
+		"""
+		站斗奖励
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.award(str(usr.roleid), battleRoleid, create_time)
@@ -98,6 +124,9 @@ class infection:
 			
 	@staticmethod
 	def Call(usr, friend):
+		"""
+		呼叫援军
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.call_relief(str(usr.roleid), friend)
@@ -111,6 +140,9 @@ class infection:
 		
 	@staticmethod
 	def Ladder(usr, tp):
+		"""
+		天梯
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.ladder(tp, str(usr.roleid))
@@ -119,6 +151,9 @@ class infection:
 			
 	@staticmethod
 	def GetBattle(usr):
+		"""
+		得到战斗
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.get_battle(str(usr.roleid))
@@ -127,6 +162,9 @@ class infection:
 				
 	@staticmethod
 	def PrestigeAward(usr):
+		"""
+		声望奖励
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.prestige_award(str(usr.roleid), usr.level)
@@ -135,6 +173,9 @@ class infection:
 	
 	@staticmethod
 	def Info(usr):
+		"""
+		感染信息
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.user_info(str(usr.roleid))
@@ -143,6 +184,9 @@ class infection:
 				
 	@staticmethod
 	def ResetPrestigeScore(usr):
+		"""
+		重置声望分数
+		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.infection import infection as infectionR
 			return infectionR.reset_prestige_score(str(usr.roleid))
@@ -151,24 +195,38 @@ class infection:
 	
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'prestige_score_reset_count':0}
 		
 	@staticmethod
 	def getClientData(usr):
+		"""
+		得到 client data
+		"""
 		return {}
 		
 	@staticmethod
 	def damage_ladder(usr):
+		"""
+		伤害天梯
+		"""
 		return infection.Ladder(usr, 'damage')
 		
 	@staticmethod
 	def prestige_ladder(usr):
+		"""
+		声望天梯
+		"""
 		return infection.Ladder(usr, 'prestige')
 		
 		
 	@staticmethod
 	def battle_award(usr, battleRoleid, create_time):
-		
+		"""
+		战斗奖励
+		"""
 		res = infection.BattleAward(usr, battleRoleid, create_time)
 		if res.has_key('msg'):
 			return res
@@ -186,6 +244,9 @@ class infection:
 		
 	@staticmethod
 	def prestige_award(usr):
+		"""
+		声望奖励
+		"""
 		res = infection.PrestigeAward(usr)
 		if res.has_key('msg'):
 			return res
@@ -199,10 +260,16 @@ class infection:
 		
 	@staticmethod
 	def info(usr):
+		"""
+		感染信息
+		"""
 		return infection.Info(usr)
 		
 	@staticmethod
-	def reset_prestige_score(usr):		
+	def reset_prestige_score(usr):	
+		"""
+		重置声望分数
+		"""
 		usr.infection['prestige_score_reset_count'] = usr.infection['prestige_score_reset_count'] + 1
 		if not vip.canResetInfectionPrestigeScoreCount(usr):
 			return {'msg':'vip_required'}

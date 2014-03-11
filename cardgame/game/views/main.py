@@ -57,6 +57,9 @@ viewsmap = {
 }
 
 def index(request):
+	"""
+	登陆
+	"""
 	account_name = request.GET['account_name']
 	pwd = request.GET['password']
 	acc = account.login(account_name, pwd)
@@ -80,7 +83,9 @@ def index(request):
 
 
 def info(request):
-	
+	"""
+	服务器状态
+	"""
 	info = {}	
 	info[u'status'] = 'OK'	
 	info['dungeon_md5'] = conf.getClientConfigMd5('dungeon')
@@ -135,12 +140,18 @@ def info(request):
 	return HttpResponse(json.dumps({'info':info}))
 
 
-def get_config(request):	
+def get_config(request):
+	"""
+	得到配置
+	"""
 	configkey = request.GET['config']	
 	data = conf.getClientConfig(configkey)	
 	return HttpResponse(json.dumps(data))
 	
 def api(request, m, f):
+	"""
+	接口
+	"""
 	try:		
 		usr = beginRequest(request,user)		
 	except NotLogin:		
@@ -165,14 +176,18 @@ def api(request, m, f):
 	return HttpResponse('api')
 
 def new_account(request):
-	
+	"""
+	新帐号
+	"""
 	accountName = request.GET['account_name']
 	password = request.GET['password']
 	res = account.new(accountName, password)
 	return HttpResponse(json.dumps(res))
 	
 def set_nickname(request):
-	
+	"""
+	设置昵称
+	"""
 	nickname = request.GET['nickname']
 	gender = request.GET['gender']
 	avatar = request.GET['avatar']
@@ -202,6 +217,9 @@ def set_nickname(request):
 	return HttpResponse(json.dumps(data))
 	
 def exit(request):
+	"""
+	登出
+	"""
 	logout(request)
 	return HttpResponse('exist')
 

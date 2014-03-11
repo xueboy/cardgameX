@@ -5,6 +5,9 @@ from game.routine.skill import skill
 from game.routine.garcha import garcha as garchaR
 
 def levelup(request):
+	"""
+	技能升级
+	"""
 	usr = request.user
 	
 	dest_skillid = request.GET['dest_skill']
@@ -19,7 +22,9 @@ def levelup(request):
 	return skill.levelup(usr, dest_skillid, ownerTeamPosition, source_skillid)
 	
 def install(request):
-	
+	"""
+	安装技能
+	"""
 	usr = request.user	
 	teamPosition = int(request.GET['team_position'])
 	ownerTeamPosition = int(request.GET['owner_team_position'])
@@ -28,6 +33,9 @@ def install(request):
 	return skill.install(usr, teamPosition, ownerTeamPosition, slotpos, stoneid)
 	
 def decompose(request):
+	"""
+	分解技能
+	"""
 	usr = request.user
 	skilids = []
 	
@@ -39,15 +47,24 @@ def decompose(request):
 	return skill.decompose(usr, skilids)
 	
 def assembly(request):	
+	"""
+	组装技能
+	"""
 	usr = request.user	
 	skillid = request.GET['skillid']	
 	return skill.assembly(usr, skillid)
 	
 def garcha_skill10(request):
+	"""
+	技能10连抽
+	"""
 	usr = request.user	
 	return garchaR.garcha_skill10(usr)
 	
 def garcha_skill(request):
+	"""
+	抽技能
+	"""	
 	usr = request.user
 	nature = int(request.GET['nature'])	
 	return garchaR.garcha_skill(usr, nature)

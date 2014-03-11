@@ -13,6 +13,9 @@ class network(object):
 		
 	
 	def __init__(self):
+		"""
+		初始化
+		"""
 		object.__init__(self)
 		self.message = {}
 		self.mail = {}
@@ -33,9 +36,15 @@ class network(object):
 		self.user = None
 		
 	def install(self, roleid):
+		"""
+		安装
+		"""
 		object.install(self, roleid)
 		
 	def getData(self):
+		"""
+		得到 data
+		"""
 		data = object.getData(self)
 		data['friend'] = self.friend
 		data['message'] = self.message
@@ -54,6 +63,9 @@ class network(object):
 		return data			
 		
 	def getClientMailData(self):
+		"""
+		得到client mail data
+		"""
 		
 		data = {}
 		for roleid in self.mail:
@@ -69,6 +81,9 @@ class network(object):
 		
 	
 	def getClientData(self):	
+		"""
+		得到client data
+		"""
 		
 		avatarmap = {}		
 		for key in self.message:
@@ -90,6 +105,9 @@ class network(object):
 		return data			
 		
 	def load(self, roleid, data):
+		"""
+		加载
+		"""
 		object.load(self, roleid, data)
 		self.friend = data['friend']
 		self.message = data['message']
@@ -106,6 +124,9 @@ class network(object):
 		self.receive_gift_record = data['receive_gift_record']
 		
 	def addFriendRequest(self, friend):
+		"""
+		添加好友请求
+		"""
 		
 		friendRoleid = str(friend.roleid)
 		if self.request_list.has_key(friendRoleid):
@@ -128,11 +149,17 @@ class network(object):
 		return data
 		
 	def addFriend(self, friend):
+		"""
+		添加好友
+		"""
 		data = friend.getFriendData()
 		self.friend[str(friend.roleid)] =  data
 		return data
 				
 	def deleteFriend(self, friend):
+		"""
+		删除好友
+		"""
 		if self.friend.has_key(friend.roleid):
 			del self.friend[friend.roleid]
 			self.save()
@@ -146,10 +173,16 @@ class network(object):
 			return {'friend_delete':friend.roleid}		
 			
 	def getFriend(self, friendRoleid):
+		"""
+		得到好友
+		"""
 		if self.friends.has_key(str(friendRoleid)):
 			return friends[str(friendRoleid)]
 
-	def sendMessage(self, toUser, msg):		
+	def sendMessage(self, toUser, msg):
+		"""
+		发送消息
+		"""
 		self.updateMessage()
 		toUserNw = toUser.getNetwork()
 		fromUserId = str(self.roleid)		
@@ -165,17 +198,26 @@ class network(object):
 		toUserNw.save()
 	
 	def deleteMessage(self, messageid):
+		"""
+		删除消息
+		"""		
 		if self.message.has_key(messageid):
 			del self.message[messageid]
 			self.save()
 	
 	def updateMessage(self):
+		"""
+		更新消息
+		"""
 		now = currentTime()
 		gameConf = config.getConfig('game')
 		expire = gameConf['message_expiry_period']
 		self.message = dict((k, v) for k,v in self.message.items() if (v['send_time'] + expire) > now)		
 		
 	def sendMail(self, toUser, mail):
+		"""
+		发送邮件
+		"""
 		toUserNw = toUser.getNetwork()					
 		ntInfo = self.user.getNtInfoData()	
 		requestid = str(toUserNw.sequenceid)
@@ -207,6 +249,9 @@ class network(object):
 		fromUser.save()
 		
 	def deleteMail(self, friendid, mailid):		
+		"""
+		删除邮件
+		"""
 		if not self.mail.has_key(friendid):
 			return {'msg':'mail_not_exist'}		
 		self.mail[friendid] = filter(lambda x : x['id'] != mailid, self.mail[friendid])
@@ -217,8 +262,11 @@ class network(object):
 		return {}
 		
 	def deleteFriendMail(self, friendid):
+		"""
+		删除好友的邮件
+		"""
 		if not self.mail.has_key(friendid):
-			return {'msg':'mail_not_exist'}		
+			return {'msg':'mail_not_exist'}
 		
 		del self.mail[friendid]
 		del self.nt_info[friendid]
@@ -226,15 +274,24 @@ class network(object):
 		return {}
 			
 	def ban(self, ben_roleid, ben_name):
+		"""
+		阻止玩家
+		"""
 		self.blacklist.append({'roleid':ben_roleid, 'name':ben_name, 'create_time':currentTime()})
 			
 	def updateBlacklist(self):
+		"""
+		更新好友列表
+		"""
 		gameConf = config.getConfig('game')
 		expire = gameConf['blacklist_expiry_period']
 		now = currentTime()		
 		self.blacklist = filter(lambda ban: ban['create_time'] + exp > now, self.blacklist)
 			
 	def isBan(self, ban_roleid):
+		"""
+		是否禁用
+		"""
 		self.updateBlacklist()
 		for ban in self.blacklist:
 			if ban['roleid'] == ban_roleid:
@@ -242,6 +299,9 @@ class network(object):
 		return False
 				
 	def updateFriendData(self):
+		"""
+		更新好友数据
+		"""
 		for friendid in self.friend:
 			fNw = network.get(friendid)
 			strRoleid = str(self.roleid)
@@ -250,6 +310,9 @@ class network(object):
 				fNw.save()			
 		
 	def friendRequestAnswer(self, requestid, option):
+		"""
+		回应好友请求
+		"""
 		if not self.friend_request.has_key(requestid):
 			return {'msg':'request_not_exist'}
 		friendRequest = self.friend_request[requestid]
@@ -289,6 +352,9 @@ class network(object):
 		return {}
 	
 	def emailMarkReaded(self, id):
+		"""
+		将邮件标记为已读
+		"""
 		if not self.email.has_key(id):
 			return {'msg':'email_not_exist'}
 		if not self.email.has_key(id):
@@ -299,6 +365,9 @@ class network(object):
 		return self.email[id]
 		
 	def emailOpen(self, id):
+		"""
+		打开邮件
+		"""
 		
 		if not self.email.has_key(id):
 			return {'msg':'email_not_exist'}
@@ -323,6 +392,9 @@ class network(object):
 		
 		
 	def emailDelete(self, emailid):
+		"""
+		删除邮件
+		"""
 		if self.email.has_key(emailid):
 			del self.email[emailid]
 			self.save()
@@ -330,12 +402,18 @@ class network(object):
 		return {'msg':'email_not_exist'}
 
 	def yell(self, name, msg):
+		"""
+		世界聊天
+		"""
 		ms = massyell.get(0)
 		qt = self.user.getQuest()		
 		qt.updateFinishYellQuest()
 		return ms.yell(self.roleid, name, msg)
 
 	def appendEmail(self, emailid, parameter):
+		"""
+		加入 email
+		"""
 		usr = self.user
 		requestid = str(self.sequenceid)		
 		email = {'emailid' : emailid, 'read' : False, 'open' : False, 'send_time' : currentTime(), 'roleid':0, 'id':requestid, 'parameter':parameter}
@@ -346,7 +424,9 @@ class network(object):
 		self.save()
 		
 	def notify_add_email(self, email):
-		
+		"""
+		提示新的邮件
+		"""
 		usr = self.user
 		if not usr.notify.has_key('notify_add_email'):
 			usr.notify['notify_add_email'] = {}

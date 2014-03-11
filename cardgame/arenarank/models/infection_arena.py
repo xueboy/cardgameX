@@ -9,6 +9,9 @@ from game.utility.email import email
 class infection_arena(facility):
 		
 	def __init__(self):
+		"""
+		初始化
+		"""
 		facility.__init__(self)
 		self.battle = {}		
 		self.user = {}
@@ -17,6 +20,9 @@ class infection_arena(facility):
 		self.last_update_time = 0
 	
 	def getData(self):
+		"""
+		得到 data
+		"""
 		data = {}
 		data['battle'] = self.battle
 		data['user'] = self.user
@@ -26,6 +32,9 @@ class infection_arena(facility):
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.battle = data['battle']
 		self.user = data['user']
@@ -35,10 +44,16 @@ class infection_arena(facility):
 	
 	@staticmethod
 	def make_user(name):
+		"""
+		制造玩家
+		"""
 		return {'prestige':0, 'last_hit_time': 0, 'damage':0, 'level':1, 'infection_list':[], 'name': name, 'prestige_score': 0 ,'last_award_prestige_score' : 0}
 						
 	@staticmethod
 	def make_relief(battle):
+		"""
+		制造援军
+		"""
 		data = {}
 		data['roleid'] = battle['roleid']
 		data['rolename'] = battle['rolename']
@@ -49,6 +64,9 @@ class infection_arena(facility):
 		
 	@staticmethod
 	def battle_total_hp(battle):
+		"""
+		总hp
+		"""
 		totalhp = 0
 		for mon in battle['monster']:
 			totalhp = totalhp + mon['hp']
@@ -56,18 +74,30 @@ class infection_arena(facility):
 		
 	@staticmethod
 	def battle_is_finish(battle, now, gameConf):
+		"""
+		战斗完成
+		"""
 		return infection_arena.battle_is_escape(battle, now, gameConf) or infection_arena.battle_is_clear(battle)
 		
 	@staticmethod
 	def battle_is_clear(battle):
+		"""
+		战斗全清
+		"""
 		return battle.has_key('last_hit')
 		
 	@staticmethod
 	def battle_clear_time(battle):
+		"""
+		全清时间
+		"""
 		return battle[battle['last_hit']]['last_hit_time']
 		
 	@staticmethod
 	def battle_is_escape(battle, now, gameConf):
+		"""
+		是否逃跑
+		"""
 		quality = battle['quality']
 		escape_time = gameConf['infection_quality'][quality]['escape_time']
 		if battle['create_time'] + escape_time < now:			
@@ -76,11 +106,17 @@ class infection_arena(facility):
 		
 	@staticmethod
 	def battle_escapse_time(battle, now, gameConf):
+		"""
+		逃跑时间
+		"""
 		quality = battle['quality']
 		escape_time = gameConf['infection_quality'][quality]['escape_time']
 		return battle['create_time'] + escape_time			
 				
 	def encounter(self, roleid, name):		
+		"""
+		遇敌
+		"""
 		gameConf = config.getConfig('game')
 		now = currentTime()		
 		self.update_battle(now, gameConf)
@@ -139,6 +175,9 @@ class infection_arena(facility):
 		
 			
 	def beat(self, roleid, rolelevel, rolename, battleRoleid, damage):
+		"""
+		击败
+		"""
 		
 		if not self.battle.has_key(battleRoleid):
 			return {'msg': 'infection_battle_not_exist'}
@@ -208,7 +247,9 @@ class infection_arena(facility):
 	
 						
 	def update_prestige_ladder(self, roleid, rolelevel, prestige, gameConf):
-		
+		"""
+		更新声望排行榜
+		"""
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
 		for lg in gameConf['infection_ladder_level_group']:
 			if rolelevel < lg:
@@ -230,7 +271,10 @@ class infection_arena(facility):
 			self.prestige_ladder[levelGroup].insert(prestige_position, roleid)
 		return prestige_position
 		
-	def update_damage_ladder(self, roleid, rolelevel, damage, gameConf):		
+	def update_damage_ladder(self, roleid, rolelevel, damage, gameConf):
+		"""
+		更新伤害排行
+		"""
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
 		for lg in gameConf['infection_ladder_level_group']:
 			if rolelevel < lg:
@@ -251,12 +295,17 @@ class infection_arena(facility):
 			self.damage_ladder[levelGroup].insert(damage_position, roleid)
 			
 	def update_prestige(self, roleid, now):
+		"""
+		更新声望
+		"""
 		if not is_same_day(self.user[roleid]['last_hit_time'], now):
 			self.user[roleid]['prestige'] = 0
 			self.user[roleid]['prestige_score'] = 0
 						
 	def call_relief(self, roleid, friend):
-		
+		"""
+		招唤援军
+		"""
 		if not self.battle.has_key(roleid):
 			return {'msg': 'infection_battle_not_exist'}
 							
@@ -278,6 +327,9 @@ class infection_arena(facility):
 		return {}
 	
 	def get_infection_battle(self, roleid):
+		"""
+		得到援军
+		"""
 		if not self.user.has_key(roleid):
 			return {'msg': 'infection_not_exist'}
 				
@@ -312,7 +364,10 @@ class infection_arena(facility):
 						
 		return data
 						
-	def get_battle_award(self, roleid, battleRoleid, create_time):		
+	def get_battle_award(self, roleid, battleRoleid, create_time):
+		"""
+		得到战斗奖励
+		"""
 			
 		if not self.battle.has_key(battleRoleid):
 			return {'msg': 'infection_battle_not_exist'}
@@ -373,6 +428,9 @@ class infection_arena(facility):
 		return data
 		
 	def get_prestige_award(self, roleid, rolelevel):
+		"""
+		得到声望奖励
+		"""
 		infectionPrestigePriceConf = config.getConfig('infection_prestige_price')
 		gameConf = config.getConfig('game')		
 		
@@ -403,7 +461,9 @@ class infection_arena(facility):
 		return data	
 				
 	def update_battle(self, now, gameConf):		
-		
+		"""
+		更新战斗
+		"""
 		if is_same_day(self.last_update_time, now):
 			return
 	
@@ -427,7 +487,9 @@ class infection_arena(facility):
 		self.last_update_time = now
 					
 	def prestige_ladder_list(self, rolelevel):
-		
+		"""
+		声望排行榜
+		"""
 		gameConf = config.getConfig('game')
 		
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
@@ -447,7 +509,9 @@ class infection_arena(facility):
 		return data
 	
 	def damdage_ladder_list(self, rolelevel):
-		
+		"""
+		伤害排行榜
+		"""
 		gameConf = config.getConfig('game')		
 		levelGroup = gameConf['infection_ladder_level_group'][-1]
 		for lg in gameConf['infection_ladder_level_group']:
@@ -466,7 +530,9 @@ class infection_arena(facility):
 		return data
 		
 	def user_info(self, roleid):
-		
+		"""
+		玩家信息
+		"""
 		if self.user.has_key(roleid):			
 			data = {}
 			data['prestige'] = self.user[roleid]['prestige']
@@ -482,7 +548,10 @@ class infection_arena(facility):
 			data['prestige_ladder_position'] = -1
 			return data
 			
-	def reset_prestige_score(self, roleid):		
+	def breset_prestige_score(self, roleid):
+		"""
+		声望分数
+		"""
 		if not self.user.has_key(roleid):
 			return {'prestige_score':0}				
 		self.user[roleid]['prestige_score'] = 0		

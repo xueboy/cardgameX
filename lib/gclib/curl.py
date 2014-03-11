@@ -9,6 +9,9 @@ import urllib
 
 		
 def db(debug_type, debug_msg):
+	"""
+	调试
+	"""
 	myfile = open(r'd:/debug.log', 'a')             # open for output (creates)
 
 	myfile.write( "debug(%d): %s" % (debug_type, debug_msg))        # write a line of text
@@ -17,10 +20,16 @@ def db(debug_type, debug_msg):
 class curl:
 	
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		pass
 	 		
 	@staticmethod
-	def url(url, postData = None, getData = None):		
+	def url(url, postData = None, getData = None):
+		"""
+		请求网址
+		"""
 		c = pycurl.Curl()		
 		ret = StringIO.StringIO()		
 		c.setopt(pycurl.WRITEFUNCTION, ret.write)

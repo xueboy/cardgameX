@@ -3,13 +3,19 @@
 
 from game.models.quest import quest
 
-def finish(request):	
+def finish(request):
+	"""
+	完成任务
+	"""
 	usr = request.user
 	questid = request.GET['quest_id']	
 	qt = usr.getQuest()
 	return qt.finishQuest(questid)
 	
 def new_drama(request):
+	"""
+	新剧情
+	"""
 	usr = request.user
 	dramaid = request.GET['drama_id']
 	qt = usr.getQuest()

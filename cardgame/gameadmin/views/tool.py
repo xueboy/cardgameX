@@ -206,8 +206,9 @@ def gm_tool_set_pet(request):
 		if petopt == 'add':
 			cardid = request.POST['petSelect']
 			cnt = int(request.POST['tfPetCount'])
+			level = int(request.POST['tfPetLevel'])
 			inv = usr.getInventory()
-			c = inv.addCardCount(cardid, cnt)
+			c = inv.addCardCount(cardid, cnt, level)
 			inv.save()
 			if not c:
 				return HttpResponse('添加失败')			
@@ -245,8 +246,9 @@ def gm_tool_set_stone(request):
 		
 		if stoneopt == 'add':
 			stoneid = request.POST['stoneSelect']
+			cnt = int(request.POST['tfStoneCount'])
 			inv = usr.getInventory()
-			s = inv.addStone(stoneid)
+			s = inv.addStoneCount(stoneid, cnt)
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')
@@ -317,8 +319,9 @@ def gm_tool_set_skill(request):
 		
 		if skillopt == 'add':
 			skillid = request.POST['skillSelect']
+			cnt = int(request.POST['tfSkillCount'])
 			inv = usr.getInventory()
-			s = inv.addSkill(skillid)
+			s = inv.addSkillCount(skillid, cnt)
 			inv.save()
 			if not s:
 				return HttpResponse('添加失败')

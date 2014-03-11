@@ -19,6 +19,9 @@ from game.routine.pet import pet
 from game.routine.explore import explore as exploreR
 
 def set_avatar(request):	
+	"""
+	设置avatar
+	"""
 	
 	body = request.body	
 	usr = request.user
@@ -34,18 +37,30 @@ def set_avatar(request):
 		return {msg:'avator_io_error'}	
 		
 def get_avatar(request):
+	"""
+	得到avatar
+	"""
 	avatar_id = request.GET['role_id']	
 	body = avatar.getAvatar(avatar_id)
 	return {}, HttpResponse(body, mimetype="image/png")
 
 def get_avatar_id(request):
+	"""
+	得到avatar id
+	"""
 	roleid = request.GET['role_id']	
 	return {'avatar_md5':avatar.getAvatarId(roleid)}			
 			
 def idle(request):
+	"""
+	空闲
+	"""
 	return {}
 	
 def show(request):	
+	"""
+	显示
+	"""
 	roleid = request.GET['role_id']	
 	other = user.get(roleid)
 	if not other:
@@ -63,7 +78,9 @@ def show(request):
 	
 	
 def locate(request):
-	
+	"""
+	定位
+	"""
 	longitude = request.GET['longitude']
 	latitude = request.GET['latitude']	
 	
@@ -83,7 +100,9 @@ def locate(request):
 	return {}
 	
 def nearby(request):
-	
+	"""
+	显示周围玩家
+	"""
 	gameConf = config.getConfig('game')
 	
 	longitude = float(request.GET['longitude'])
@@ -99,7 +118,7 @@ def nearby(request):
 	
 	mpdLng = degree * math.cos(latitude * (math.pi / 180))
 	dpmLng = 1 / mpdLng
-	radiusLng = dpmLng*raidusMile;  
+	radiusLng = dpmLng * raidusMile;  
 	minLng = longitude - radiusLng;  
 	maxLng = longitude + radiusLng;
   
@@ -124,29 +143,46 @@ def nearby(request):
 	return {'player':data}
 	
 def sign_in(request):	
+	"""
+	签到
+	"""
 	usr = request.user	
 	return signin.do_signin(usr)
 	
 def levelup_award(request):
+	"""
+	升级奖励
+	"""
 	usr = request.user
 	level = int(request.GET['level'])
 	return levelup.award(usr, level)
 	
 def meal(request):
+	"""
+	用餐
+	"""
 	usr = request.user
 	return signin.meal(usr)
 	
 def continue_award(request):
+	"""
+	连续登陆奖励
+	"""
 	usr = request.user
 	no = request.GET['no']
 	return signin.continue_award(usr, int(no))
 	
 def draw_award(request):
+	"""
+	开服登陆奖励
+	"""
 	usr = request.user	
 	return signin.draw_award(usr)
 	
 def detail(request):
-	
+	"""
+	玩家详细信息
+	"""
 	roleid = request.GET['role_id']	
 	other = user.get(roleid)
 	if not other:
@@ -154,7 +190,9 @@ def detail(request):
 	return other.getBattleData()
 	
 def scene(request):
-	
+	"""
+	场影中玩家
+	"""
 	idx = int(request.GET['index'])
 	sql = 'SELECT roleid from account WHERE roleid <> 0 ORDER BY lastlogin, gender LIMIT %s, %s'	
 	conn = DBConnection.getConnection()
@@ -173,7 +211,9 @@ def scene(request):
 	return data
 			
 def pk(request):
-	
+	"""
+	PK
+	"""
 	roleid = request.GET['roleid']
 	other = user.get(roleid)
 	if not other:
@@ -183,26 +223,39 @@ def pk(request):
 		
 		
 def invite_code(request):
-	
+	"""
+	邀请码
+	"""
 	invCode = request.GET['invite_code']	
 	usr = request.user	
 	return invite.enterInviteCode(usr, invCode)
 	
 def invite_award(request):
+	"""
+	邀请奖励
+	"""
 	invCount = int(request.GET['invite_count'])
 	usr = request.user
 	return invite.inviteAward(usr, invCount)
 	
 def get_born_card(request):
-	
+	"""
+	领取出生宠物
+	"""
 	cardid = request.GET['cardid']
 	usr = request.user		
 	return pet.select_born_pet(usr, cardid)
 	
 def explore(request):
+	"""
+	探索
+	"""
 	usr = request.user
 	return exploreR.explore(usr)
 	
 def explore_buy_critical(request):
+	"""
+	探索购买暴击
+	"""
 	usr = request.user
 	return exploreR.buy_critical_times(usr)

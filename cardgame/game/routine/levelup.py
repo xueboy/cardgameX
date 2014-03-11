@@ -8,6 +8,9 @@ class levelup:
 	
 	@staticmethod
 	def award(usr, level):
+		"""
+		升级奖励
+		"""
 		if usr.level < level:
 			return {'msg':'level_required'}
 		if level in usr.levelup['record']:
@@ -29,6 +32,9 @@ class levelup:
 		
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'record':[]}
 			
 	

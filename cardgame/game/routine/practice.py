@@ -7,15 +7,24 @@ class practice:
 	
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'critical_level':0, 'critical_exp':0, 'tenacity_level':0, 'tenacity_exp':0, 'block_level':0, 'block_exp':0, 'wreck_level':0, 'wreck_exp':0}
 	
 	@staticmethod
 	def getClientData(usr):
+		"""
+		得到 client data
+		"""
 		return usr.practice
 	
 	@staticmethod
 	def card_levelup(usr, tp, cardid):
-		
+		"""
+		用卡牌升级
+		"""
+				
 		if not cardid:
 			return {}
 		
@@ -49,7 +58,9 @@ class practice:
 				
 	@staticmethod
 	def card_chip_levelup(usr, tp, chipDic):
-		
+		"""
+		用卡牌碎片升级
+		"""
 		if not chipDic:
 			return {}
 		
@@ -83,7 +94,9 @@ class practice:
 		
 	@staticmethod
 	def skill_levelup(usr, tp, skillid):
-			
+		"""
+		用技能升级
+		"""
 		if not skillid:
 			return {}
 		
@@ -119,7 +132,9 @@ class practice:
 		
 	@staticmethod
 	def skill_chip_levelup(usr, tp, chipDic):
-				
+		"""
+		用技能碎片升级
+		"""		
 		if not chipDic:
 			return {}
 		
@@ -152,10 +167,13 @@ class practice:
 						
 	@staticmethod
 	def levelup(usr, tp, point, practiceLevelConf):		
+		"""
+		升级
+		"""
 		if tp == 'critical':
 			usr.practice['critical_exp'] = usr.practice['critical_exp'] + point
 			level = usr.practice['critical_level']
-			if level >= practiceLevelConf['critical_level']:
+			if level >= len(practiceLevelConf['critical_level']):
 				return {'msg':'practice_level_max'}
 			while usr.practice['critical_exp'] >= (practiceLevelConf['critical_level'][level + 1] - practiceLevelConf['critical_level'][level]):
 				usr.practice['critical_exp'] = usr.practice['critical_exp'] - (practiceLevelConf['critical_level'][level + 1] - practiceLevelConf['critical_level'][level])
@@ -163,7 +181,7 @@ class practice:
 		elif tp == 'tenacity':
 			usr.practice['tenacity_exp'] = usr.practice['tenacity_exp'] + point
 			level = usr.practice['tenacity_level']
-			if level >= practiceLevelConf['tenacity_level']:
+			if level >= len(practiceLevelConf['tenacity_level']):
 				return {'msg':'practice_level_max'}
 			while usr.practice['tenacity_exp'] >= (practiceLevelConf['tenacity_level'][level + 1] - practiceLevelConf['tenacity_level'][level]):
 				usr.practice['tenacity_exp'] = usr.practice['tenacity_exp'] - (practiceLevelConf['tenacity_level'][level + 1] - practiceLevelConf['tenacity_level'][level])
@@ -171,7 +189,7 @@ class practice:
 		elif tp == 'block':
 			usr.practice['block_exp'] = usr.practice['block_exp'] + point
 			level = usr.practice['block_level']
-			if level >= practiceLevelConf['block_level']:
+			if level >= len(practiceLevelConf['block_level']):
 				return {'msg':'practice_level_max'}
 			while usr.practice['block_exp'] >= (practiceLevelConf['block_level'][level + 1] - practiceLevelConf['block_level'][level]):
 				usr.practice['block_exp'] = usr.practice['block_exp'] - (practiceLevelConf['block_level'][level + 1] - practiceLevelConf['block_level'][level])
@@ -179,7 +197,7 @@ class practice:
 		elif tp == 'wreck':
 			usr.practice['wreck_exp'] = usr.practice['wreck_exp'] + point
 			level = usr.practice['wreck_level']
-			if level >= practiceLevelConf['wreck_level']:
+			if level >= len(practiceLevelConf['wreck_level']):
 				return {'msg':'practice_level_max'}
 			while usr.practice['wreck_exp'] >= (practiceLevelConf['wreck_level'][level + 1] - practiceLevelConf['wreck_level'][level]):
 				usr.practice['wreck_exp'] = usr.practice['wreck_exp'] - (practiceLevelConf['wreck_level'][level + 1] - practiceLevelConf['wreck_level'][level])
@@ -191,6 +209,9 @@ class practice:
 		
 	@staticmethod
 	def practice_type(usr, tp):
+		"""
+		训练类型
+		"""
 		if tp == 'critical':
 			return {'critical_exp':usr.practice['critical_exp'], 'critical_level': usr.practice['critical_level']}
 		elif tp == 'tenacity':

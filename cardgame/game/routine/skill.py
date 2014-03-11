@@ -8,6 +8,9 @@ class skill:
 	
 	@staticmethod
 	def levelup(usr, destSkill_id, ownerTeamPosition, sourceSkill_id):
+		"""
+		技能升级
+		"""
 		
 		inv = usr.getInventory()		
 		
@@ -37,7 +40,7 @@ class skill:
 		for skillid in sourceSkill_id:
 			sk = inv.getSkill(skillid)
 			if not sk:
-				return {'msg':'skill_not_exist'}			
+				return {'msg':'skill_not_exist'}
 			exp = exp + skill.get_exp(sk, skillConf[sk['skillid']], skillLevelConf, gameConf)
 			inv.delSkill(sk['id'])
 			
@@ -49,6 +52,9 @@ class skill:
 			
 	@staticmethod
 	def install(usr, teamPosition, ownerTeamPosition, slotpos, skill_id):
+		"""
+		安装技能
+		"""
 		inv = usr.getInventory()
 		
 		if not inv.team[teamPosition]:
@@ -104,10 +110,16 @@ class skill:
 
 	@staticmethod
 	def get_exp(sk, skillInfo, skillLevelConf, gameConf):
+		"""
+		得到经验
+		"""
 		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
 		
 	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
+		"""
+		增加经验
+		"""
 		
 		skillInfo = skillConf[sk['skillid']]
 		exp = sk['exp'] + exp
@@ -124,14 +136,23 @@ class skill:
 	
 	@staticmethod
 	def make_sk_slot():
+		"""
+		制制技能槽位
+		"""
 		return [{}, {}, {}]		
 	
 	@staticmethod
 	def getClientData():
+		"""
+		得到 client data
+		"""
 		pass
 		
 	@staticmethod
 	def takeoff(inv, card):
+		"""
+		脱下技能
+		"""
 		dst = []
 		if card and card.has_key('sk_slot'):
 			for st in card['sk_slot']:
@@ -143,6 +164,9 @@ class skill:
 
 	@staticmethod
 	def exchage(inv, fromCard, toCard, gameConf):				
+		"""
+		交换技能
+		"""
 				
 		toSlot = None		
 		if toCard.has_key('sk_slot'):
@@ -156,7 +180,9 @@ class skill:
 		
 	@staticmethod		
 	def decompose(usr, skillids):
-		
+		"""
+		分解技能
+		"""
 		cards = []
 		inv = usr.getInventory()
 		trpConfig = config.getConfig('trp')
@@ -179,7 +205,9 @@ class skill:
 			
 	@staticmethod
 	def assembly(usr, skillid):
-		
+		"""
+		安装技能
+		"""
 		inv = usr.getInventory()
 		
 		if not inv.skill_chip.has_key(skillid):

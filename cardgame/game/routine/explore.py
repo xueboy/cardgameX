@@ -13,10 +13,16 @@ class explore:
 	
 	@staticmethod
 	def make():
+		"""
+		制做
+		"""
 		return {'times':0, 'last_update_times_time':0, 'critical_count':0}
 			
 	@staticmethod
 	def getClientData(usr):
+		"""
+		得到client data
+		"""
 		data = {}
 		data['times'] = usr.explore['times']
 		if usr.explore['last_update_times_time'] == 0:
@@ -28,7 +34,9 @@ class explore:
 			
 	@staticmethod
 	def explore(usr):
-		
+		"""
+		探险
+		"""
 		explore.update_explore(usr)
 		
 		exploreConf = config.getConfig('explore_award')		
@@ -78,6 +86,9 @@ class explore:
 		
 	@staticmethod
 	def recommend_friend(usr):
+		"""
+		推荐好友
+		"""
 		nw = usr.getNetwork()
 		
 		fl = nw.friend.keys()
@@ -97,7 +108,9 @@ class explore:
 		
 	@staticmethod
 	def buy_critical_times(usr):
-		
+		"""
+		购买暴机时间
+		"""
 		gameConf = config.getConfig('game')			
 		
 		explore.update_explore(usr)	
@@ -115,6 +128,9 @@ class explore:
 		
 	@staticmethod
 	def update_explore(usr):
+		"""
+		更新探险时间
+		"""
 		now = currentTime()		
 		if not is_same_day(usr.explore['last_update_times_time'], now):
 			usr.explore['times'] = 0
@@ -123,6 +139,9 @@ class explore:
 			
 	@staticmethod
 	def on_user_levelup(usr):
+		"""
+		用户升级
+		"""
 		usr.explore['times'] = usr.explore['times'] - 12
 		if usr.explore['times'] < 0:
 			usr.explore['times'] = 0			
@@ -131,5 +150,8 @@ class explore:
 	
 	@staticmethod
 	def notify_explore_times(usr):
+		"""
+		通知捡险次数
+		"""
 		usr.notify['notify_explore_times'] = usr.explore['times']
 			

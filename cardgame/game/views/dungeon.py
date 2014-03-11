@@ -20,7 +20,9 @@ reinforce_price = [
 
 
 def enter(request):
-	
+	"""
+	进入地下城
+	"""
 	usr = request.user
 	dun = usr.getDungeon()
 	battleid = request.GET['battle_id']
@@ -104,6 +106,9 @@ def enter(request):
 	
 			
 def end(request):
+	"""
+	结束地下城
+	"""
 	battleId = request.GET['battle_id']
 	fieldId = request.GET['field_id']
 	star = request.GET['star']
@@ -153,6 +158,9 @@ def end(request):
 		
 		
 def sweep(request):
+	"""
+	扫荡
+	"""
 	battleId = request.GET['battle_id']
 	fieldId = request.GET['field_id']
 	cnt = int(request.GET['count'])
@@ -162,6 +170,9 @@ def sweep(request):
 	return dun.sweep(battleId, fieldId, cnt)
 	
 def reset(request):
+	"""
+	重置地下城次数
+	"""
 	battleId = request.GET['battle_id']
 	fieldId = request.GET['field_id']
 	usr = request.user

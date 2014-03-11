@@ -20,7 +20,10 @@ garcha_prob_table = {
 class garcha:
 	
 	@staticmethod
-	def garcha_once(usr, garchaAmount):		
+	def garcha_once(usr, garchaAmount):
+		"""
+		一次求将
+		"""
 		inv = usr.getInventory()
 		garchaConf = config.getConfig('garcha')
 		gameConf = config.getConfig('game')
@@ -143,26 +146,6 @@ class garcha:
 			return {'msg':'gold_not_enough'}
 		if usr.gem < garchaCostGem:
 			return {'msg':'gem_not_enough'}			
-				
-#		cataConf = None
-#		cata = 0
-#		if (not isFirstTime) or garchaAmount == 10:
-#			prob = garcha_prob_table[garchaType]
-#			cata = garcha.garcha_cata(prob)			
-#		else:
-#			if garchaAmount == 100:
-#				cata = 1				
-#			elif garchaAmount == 10000:
-#				cata = 2
-#		cataConf = garchaConf[cata]
-#		r = random.randint(0, cataConf['totalProb'] - 1)
-#		garchaCard = None
-#		for card in cataConf['card']:
-#			if r >  card['prob']:
-#				r = r - card['prob']
-#			else:
-#				garchaCard = inv.addCard(card['cardId'], card['level'])
-#				break;
 
 		awd = {}
 		if garchaAmount == 10:			
@@ -191,9 +174,6 @@ class garcha:
 					
 		data = drop.makeData(awd, {})
 				
-		#if not garchaCard:
-		#	return {'msg': 'card_not_exist'}
-		
 		usr.gold = usr.gold - garchaCostGold
 		usr.gem = usr.gem - garchaCostGem
 		if isFree:
@@ -219,20 +199,29 @@ class garcha:
 	
 	@staticmethod	
 	def garcha_cata(prob):
-		 r = randint()
-		 for i in range(len(prob)):
-		 	if prob[i] > r:
+		"""
+		求将分类
+		"""
+		r = randint()
+		for i in range(len(prob)):
+			if prob[i] > r:
 		 		return i
-		 	else: 
+			else: 
 		 		r = r - prob[i]		 		
-		 return -1	
+		return -1	
 	
 	@staticmethod
-	def make():		
+	def make():
+		"""
+		制做
+		"""
 		return {'garcha10':{'count': 0, 'last_time': 0},'garcha100':{'count': 0, 'last_time': 0, 'time_score':0, 'luck_score':0},'garcha10000':{'count': 0, 'last_time': 0, 'time_score':0, 'luck_score':0}}
 			
 	@staticmethod
-	def update_garcha(usr, now):		
+	def update_garcha(usr, now):
+		"""
+		更新求将
+		"""
 		if not is_same_day(now, usr.garcha['garcha10']['last_time']):
 			usr.garcha['garcha10']['count'] = 0
 		if not is_same_day(now, usr.garcha['garcha100']['last_time']):
@@ -243,6 +232,9 @@ class garcha:
 		
 	@staticmethod
 	def getClientData(usr, gameConf):
+		"""
+		得到客户端数据
+		"""
 		data = {}
 		data['garcha'] = {}
 		cooldown = 0
@@ -269,6 +261,9 @@ class garcha:
 		
 	@staticmethod
 	def garcha_skill10(usr):
+		"""
+		求技能10次
+		"""
 		
 		gameConf = config.getConfig('game')
 		
@@ -300,6 +295,9 @@ class garcha:
 		
 	@staticmethod
 	def garcha_skill(usr, nature):
+		"""
+		求技能
+		"""
 		gameConf = config.getConfig('game')
 		
 		if (nature > len(gameConf['garcha_skill_dropid'])) or (nature < 0):

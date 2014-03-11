@@ -7,6 +7,9 @@ from game.utility.config import config
 				
 class tower_ladder(facility):
 	def __init__(self):
+		"""
+		构造函数
+		"""
 		facility.__init__(self)
 		self.rank20 = []
 		self.rank30 = []
@@ -16,6 +19,9 @@ class tower_ladder(facility):
 		self.last_update_time = 0
 		
 	def getData(self):
+		"""
+		得到数据
+		"""
 		data = {}
 		data['rank20'] = self.rank20
 		data['rank30'] = self.rank30
@@ -25,6 +31,9 @@ class tower_ladder(facility):
 		return data
 		
 	def load(self, name, data):
+		"""
+		加载
+		"""
 		facility.load(self, name, data)
 		self.rank20 = data['rank20']
 		self.rank30 = data['rank30']
@@ -35,6 +44,9 @@ class tower_ladder(facility):
 		
 	@staticmethod
 	def position_in_rank(rank, roleid):
+		"""
+		排名
+		"""
 		for (i, r) in enumerate(rank):
 			if r['roleid'] == roleid:
 				return i
@@ -42,7 +54,9 @@ class tower_ladder(facility):
 		
 		
 	def stand(self, roleid, name, level, point, floor):
-		
+		"""
+		加入天梯
+		"""
 		gameConf = config.getConfig('game')
 				
 		if tower_ladder.position_in_rank(self.rank20, roleid) != -1:
@@ -132,6 +146,9 @@ class tower_ladder(facility):
 		return {'msg':'tower_ladder_not_stand'}
 			
 	def show_ladder(self):
+		"""
+		显示天梯
+		"""
 		rank = None
 				
 		listLd = {}
@@ -164,6 +181,9 @@ class tower_ladder(facility):
 		
 	@staticmethod
 	def show_position(rank, item, position):
+		"""
+		显示位置
+		"""
 		roleid = rank[position]['roleid']				
 		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
 		

@@ -5,7 +5,9 @@ from game.routine.tower import tower
 
 
 def start(request):
-	
+	"""
+	开始爬塔
+	"""
 	usr = request.user
 	markup = request.GET['markup']
 	markup = int(markup)	
@@ -13,6 +15,9 @@ def start(request):
 	
 	
 def beat(request):
+	"""
+	击败
+	"""
 	usr = request.user
 	difficulty = request.GET['difficulty']
 	difficulty = int(difficulty)
@@ -26,9 +31,15 @@ def beat(request):
 	return tower.beat(usr, difficulty, star, dp, ehc)
 	
 def fail(request):
+	"""
+	爬塔失败
+	"""
 	usr = request.user
 	return tower.fail(usr)
 
 def show_ladder(request):
+	"""
+	显示排行
+	"""
 	usr = request.user
 	return tower.show_ladder(usr)

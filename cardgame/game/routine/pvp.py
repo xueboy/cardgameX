@@ -9,6 +9,9 @@ class pvp:
 	
 	@staticmethod
 	def almanacPvpProperty(usr):
+		"""
+		图签pvp数据
+		"""
 		
 		al = usr.getAlmanac()
 		
@@ -84,7 +87,9 @@ class pvp:
 		
 	@staticmethod
 	def medalPvpProperty(usr):
-		
+		"""
+		勋章pvp数据
+		"""
 		inv = usr.getInventory()
 		
 		medalConfig = config.getConfig('medal')
@@ -161,6 +166,9 @@ class pvp:
 		
 	@staticmethod
 	def practicePvpProperty(usr):
+		"""
+		训练pvp数据
+		"""
 		ppData = {}
 		ppData['attack'] = 0
 		ppData['hp'] = 0
@@ -198,6 +206,9 @@ class pvp:
 		
 	@staticmethod
 	def luckPvpProperty(usr, card):
+		"""
+		缘份pvp数据
+		"""
 		ppData = {}
 		ppData['attack'] = 0
 		ppData['hp'] = 0
@@ -277,6 +288,9 @@ class pvp:
 		
 	@staticmethod
 	def mergePvpProperty(p1, p2):
+		"""
+		合并pvp数据
+		"""
 		ppData = p1.copy()
 		ppData['attack'] = p1['attack'] + p2['attack']
 		ppData['hp'] = p1['hp'] + p2['hp']
@@ -306,6 +320,9 @@ class pvp:
 		
 	@staticmethod
 	def pvpPetProperty(usr, card, petConf):
+		"""
+		宠物pvp数据
+		"""
 		
 		petInfo = petConf[card['cardid']]
 		
@@ -339,8 +356,12 @@ class pvp:
 		ppData['sk_slot'] = pvp.pvpGetSkSlots(usr)
 		ppData['speed'] = 0
 		return ppData
+		
 	@staticmethod
 	def pvpGetSkSlots(usr):
+		"""
+		得到技能栏位
+		"""
 		inv = usr.getInventory()		
 		sk_slot = {}		
 		for (i, t) in enumerate(inv.team):
@@ -360,6 +381,9 @@ class pvp:
 		
 	@staticmethod
 	def pvpEquipmentProperty(equipment, equipmentConf):
+		"""
+		pvp装备属性
+		"""
 				
 		if not equipment:
 			return {}
@@ -404,6 +428,9 @@ class pvp:
 		
 	@staticmethod
 	def pvpStoneProperty(st, stoneConf):
+		"""
+		pvp宝石属性
+		"""
 		ppData['hp'] = 0
 		ppData['pa'] = 0
 		ppData['ma'] = 0

@@ -42,9 +42,9 @@ class item:
 						if inv.delItem(key['id']) == None:
 							data['delete_item_array'].append(key['id'])
 							key = None											
-							
-					data = drop.open(usr, dropid, data)					
-					data = drop.makeData(data)					
+					awd = {}
+					awd = drop.open(usr, dropid, awd)					
+					data = drop.makeData(awd, data)					
 					itemCount = itemCount - 1					
 				if key:					
 					data['update_item_array'].append(key)				
@@ -102,8 +102,9 @@ class item:
 						else: 
 							break
 					dropid = treasureInfo['fun']['treasure'][0]
-					data = drop.open(usr, dropid, data)
-					data = drop.makeData(data)					
+					awd = {}
+					awd = drop.open(usr, dropid, awd)
+					data = drop.makeData(awd, data).s()					
 					if inv.delItem(treasure['id']) == None:						
 						data['delete_item_array'].append(treasure['id'])
 						treasure = None
@@ -111,8 +112,7 @@ class item:
 				if treasure:					
 					data['update_item_array'].append(treasure)
 			elif funkey == 'medium':
-				pass
-		
+				pass		
 		if inv.delItem(it['id'], cnt - itemCount) == None:
 			data['delete_item_array'].append(it['id'])
 		else:

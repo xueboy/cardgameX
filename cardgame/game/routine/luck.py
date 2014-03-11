@@ -11,6 +11,9 @@ class luck:
 				
 	@staticmethod
 	def check(usr, card, petConf):
+		"""
+		检测缘
+		"""
 		
 		petInfo = petConf[card['cardid']]
 			
@@ -28,6 +31,9 @@ class luck:
 		
 	@staticmethod
 	def analyse(luck):
+		"""
+		分析
+		"""
 		luck = luck.split('_')
 		cardid = []
 		equipmentid = []
@@ -46,6 +52,9 @@ class luck:
 		
 	@staticmethod
 	def has_card(usr, cardid):
+		"""
+		有卡牌
+		"""
 		inv = usr.getInventory()
 		
 		teamCardid = []
@@ -63,6 +72,9 @@ class luck:
 		
 	@staticmethod
 	def has_equipment(usr, card, equipmentid):
+		"""
+		有装备
+		"""
 		inv = usr.getInventory()
 		
 		equipid = []
@@ -78,6 +90,9 @@ class luck:
 		
 	@staticmethod
 	def has_skill(usr, card, skillid):
+		"""
+		有技能
+		"""
 		inv = usr.getInventory()
 		
 		skid = []

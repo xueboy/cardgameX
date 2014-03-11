@@ -8,6 +8,10 @@ class email:
 	
 	@staticmethod
 	def send_ladder_email(ladder, emailType):
+		"""
+		发送邮件
+		"""
+		
 		emailConf = config.getConfig('email')
 		
 		for emailid in emailConf:

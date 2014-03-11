@@ -7,6 +7,9 @@ from gclib.config import config as gcconfig
 class config(gcconfig):
 	@staticmethod 
 	def getClientConfig(confname):
+		"""
+		得到客户端配置
+		"""	
 		conf = config.getConfig(confname)
 		if confname == 'dungeon':
 			return config.dungeonFilter(conf)						
@@ -114,6 +117,9 @@ class config(gcconfig):
 	
 	@staticmethod 
 	def getClientConfigMd5(confname):
+		"""
+		得到客户端md5
+		"""
 		confobj = config.getClientConfig(confname)
 		if confobj:
 			return config.getMd5(confobj)
@@ -121,6 +127,9 @@ class config(gcconfig):
 	
 	@staticmethod
 	def gameFilter(conf):
+		"""
+		游戏配置过滤
+		"""
 		data = conf.copy()		
 		del data['dungeon_medal_probablity']
 		del data['medal_holder_relate_level_at_last']
@@ -160,6 +169,9 @@ class config(gcconfig):
 			
 	@staticmethod
 	def dungeonFilter(conf):
+		"""
+		地下城配置过滤
+		"""
 		data = []
 		for battle in conf:
 			b = {}
@@ -183,6 +195,9 @@ class config(gcconfig):
 	
 	@staticmethod	
 	def petFileter(conf):
+		"""
+		宠物过虑
+		"""
 		data = {}
 		for cardid in conf:
 			c = {}
@@ -208,6 +223,9 @@ class config(gcconfig):
 		
 	@staticmethod
 	def getMaxStamina(level):
+		"""
+		得到最大体力
+		"""
 		levelConf = config.getConfig('level')		
 		return levelConf[level - 1]['stamina']
 		return 0
@@ -215,6 +233,9 @@ class config(gcconfig):
 
 	@staticmethod
 	def luckFilter(conf):
+		"""
+		幸运配置过滤
+		"""
 		data = {}
 		for luckid in conf:
 			l = {}
@@ -228,6 +249,9 @@ class config(gcconfig):
 			
 	@staticmethod
 	def stoneProbabilityFilter(conf):
+		"""
+		宝石概率过滤
+		"""
 		data = {}
 		data['visitGold'] = conf['visitGold']
 		data['visitGem'] = conf['visitGem']		
@@ -236,6 +260,9 @@ class config(gcconfig):
 		
 	@staticmethod
 	def questFilter(conf):
+		"""
+		任务配置过滤
+		"""
 		data = {}
 		for questid in conf:
 			q = conf[questid].copy()			
@@ -251,6 +278,9 @@ class config(gcconfig):
 		
 	@staticmethod
 	def strengthProbabilityFilter(conf):
+		"""
+		强化配置过滤
+		"""
 		data = {}
 		for item in conf:
 			data[str(item[0])] = item[1]		
@@ -258,6 +288,9 @@ class config(gcconfig):
 		
 	@staticmethod
 	def dropFilter(conf):
+		"""
+		掉落配置过滤
+		"""
 		data = {}
 		
 		for (dropid, d) in conf.items():
@@ -267,6 +300,9 @@ class config(gcconfig):
 		
 	@staticmethod
 	def emailFilter(conf):
+		"""
+		邮件配置过滤
+		"""
 		data = {}
 		
 		for (emailid, email) in conf.items():
@@ -279,6 +315,9 @@ class config(gcconfig):
 	
 	@staticmethod
 	def medalFilter(conf):
+		"""
+		勋章配置过滤
+		"""
 		data = {}
 		for (medalid, medal) in conf.items():
 			d = medal.copy()
@@ -288,6 +327,9 @@ class config(gcconfig):
 	
 	@staticmethod
 	def medalLevelFilter(conf):
+		"""
+		勋章等级过滤
+		"""		
 		data = {}
 		for (medalid, levelInfo) in conf.items():
 			d = []
