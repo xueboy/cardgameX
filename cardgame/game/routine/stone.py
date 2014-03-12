@@ -69,10 +69,9 @@ class stone:
 				
 		stoneid = random.sample(cndStone, 1)[0]
 		stone = inv.addStone(stoneid)	
-		
-		usr.stv_gem[level - 1] = 0
-		if level < len(usr.stv):
-			usr.stv_gem[level] = 1
+				
+		usr.stv[level - 1] = 0
+		if level < len(usr.stv):		
 			usr.stv[level] = 1		
 				
 		usr.gem = usr.gem - gemCost
@@ -131,10 +130,8 @@ class stone:
 		
 		if goldCost > usr.gold:
 			return {'msg':'gold_not_enough'}
-		if usr.stv_gem[level - 1]:
-			probs = stoneProbabilityConf['visit'][level - 1]['gem']			
-		else:
-			probs = stoneProbabilityConf['visit'][level - 1]['gold']
+		
+		probs = stoneProbabilityConf['visit'][level - 1]['gold']
 			
 		seed = randint()		
 		cndStone = []
@@ -152,7 +149,6 @@ class stone:
 				
 		if drop(stoneProbabilityConf['visitProb'][level - 1]):
 			usr.stv[level] = 1
-			usr.stv_gem[level - 1] = 0		
 		usr.stv[level - 1] = 0	
 		usr.stv[0] = 1				
 		usr.gold = usr.gold - goldCost		

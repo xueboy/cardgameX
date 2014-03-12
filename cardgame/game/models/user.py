@@ -75,7 +75,6 @@ class user(gcuser):
 		self.levelup = levelup.make()
 		self.trp = 0
 		self.stv = stone.make_stv()
-		self.stv_gem = stone.make_stv()
 		self.arena = arena.make()
 		self.avatar = ''
 		self.longitude = 0.0
@@ -154,7 +153,6 @@ class user(gcuser):
 		data['educate'] = self.educate
 		data['trp'] = self.trp
 		data['stv'] = self.stv
-		data['stv_gem'] = self.stv_gem
 		data['arena'] = self.arena
 		data['avatar'] = self.avatar
 		data['signin'] = self.signin
@@ -203,7 +201,6 @@ class user(gcuser):
 		self.sp = data['sp']
 		self.stv = data['stv']
 		self.garcha = (data['garcha'])
-		self.stv_gem = data['stv_gem']
 		self.educate = data['educate']
 		self.arena = (data['arena'])
 		self.avatar = data['avatar']
