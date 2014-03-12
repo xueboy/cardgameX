@@ -39,7 +39,7 @@ def decompose(request):
 	usr = request.user
 	skilids = []
 	
-	skilids.append(request.GET['skill_id'])
+	skilids.append(request.GET['skill_id1'])
 	for i in range(2, 50):
 		keyname = 'skill_id' + str(i)	
 		if request.GET.has_key(keyname):
