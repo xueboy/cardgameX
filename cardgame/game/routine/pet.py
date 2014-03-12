@@ -250,19 +250,24 @@ class pet:
 		total_trp = card['strength_ptr'] + card['intelligence_ptr'] + card['artifice_ptr']
 		total_over_trp = total_trp - total_trp_limit
 		
-		while total_over_trp > 0:
+		is_over_reduce = True
+		while total_over_trp > 0 and is_over_reduce:
+			is_over_reduce = False
 			if usr.train_prd['strength_revision'] > 0:
 				usr.train_prd['strength_revision'] = usr.train_prd['strength_revision'] - 1			
 				card['strength'] = card['strength'] - 1
 				total_over_trp = total_over_trp - 1
+				is_over_reduce = True
 			if usr.train_prd['intelligence_revision'] >0 and total_over_trp > 0:
 				usr.train_prd['intelligence_revision'] = usr.train_prd['intelligence_revision'] - 1
 				card['intelligence'] = card['intelligence'] - 1
 				total_over_trp = total_over_trp - 1
+				is_over_reduce = True
 			if usr.train_prd['artifice_revision'] > 0 and total_over_trp > 0:				
 				usr.train_prd['artifice_revision'] = usr.train_prd['artifice_revision'] - 1
 				card['artifice'] = card['artifice'] - 1
 				total_over_trp = total_over_trp - 1
+				is_over_reduce = True
 				
 		petConf = config.getConfig('pet')
 		petInfo = petConf[card['cardid']]
@@ -299,45 +304,34 @@ class pet:
 			card['artifice'] = card['artifice'] - artifice_ptr_over
 			ptr_over = ptr_over + artifice_ptr_over
 		
-		isOverReduce = True
-		if ptr_over > 0 and isOverReduce:
-			isOverReduce = False
+		if ptr_over > 0:
 			if strength_ptr_over < 0:
 				if ptr_over <= (-strength_ptr_over):
 					card['strength_ptr'] = card['strength_ptr'] + ptr_over
 					card['strength'] = card['strength'] + ptr_over
 					ptr_over = 0
-					break
 				else:
 					card['strength_ptr'] = card['strength_ptr'] - strength_ptr_over
 					card['strength'] = card['strength'] - strength_ptr_over
 					ptr_over = ptr_over + strength_ptr_over
-					if strength_ptr_over != 0:
-						isOverReduce = True
 			if (intelligence_ptr_over < 0) and (ptr_over > 0):
 				if ptr_over <= (-intelligence_ptr_over):
 					card['intelligence_ptr'] = card['intelligence_ptr'] + ptr_over
 					card['intelligence'] = card['intelligence'] + ptr_over
 					ptr_over = 0
-					break
 				else:
 					card['intelligence_ptr'] = card['intelligence_ptr'] - intelligence_ptr_over
 					card['intelligence'] = card['intelligence_ptr'] - intelligence_ptr_over
 					ptr_over = ptr_over + intelligence_ptr_over
-					if intelligence_ptr_over != 0:
-						isOverReduce = True
 			if (artifice_ptr_over < 0) and (ptr_over > 0):
 				if ptr_over <= (-artifice_ptr_over):
 					card['artifice_ptr'] = card['artifice_ptr'] + ptr_over
 					card['artifice'] = card['artifice'] + ptr_over
 					ptr_over = 0
-					break
 				else:
 					card['artifice_ptr'] = card['artifice_ptr'] - artifice_ptr_over
 					card['artifice'] = card['artifice'] - artifice_ptr_over
-					ptr_over = ptr_over + artifice_ptr_over
-					if intelligence_ptr_over != 0:
-						isOverReduce = True
+					ptr_over = ptr_over + artifice_ptr_over				
 					
 			
 		usr.train_prd = {}
