@@ -40,7 +40,8 @@ class tower_ladder(facility):
 		self.rank40 = data['rank40']
 		self.rank50 = data['rank50']		
 		self.item = data['item']
-		self.last_update_time = data['last_update_time']
+		if data.has_key('last_update_time'):
+			self.last_update_time = data['last_update_time']
 		
 	@staticmethod
 	def position_in_rank(rank, roleid):
