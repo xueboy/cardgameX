@@ -165,12 +165,15 @@ class pet:
 		itlrev = 0
 		artrev = 0
 				
-		rd = randint()
+		
+		rd = randint()		
 		for (i, prob) in  enumerate(trpProbabilityInfo):
+			print prob, i
 			if rd > prob:
 				rd = rd - prob
 			else:
 				strrev = trpProbabilityConf['point'][i]
+				break		
 					
 		rd = randint()
 		for (i, prob) in  enumerate(trpProbabilityInfo):
@@ -178,6 +181,7 @@ class pet:
 				rd = rd - prob
 			else:
 				itlrev = trpProbabilityConf['point'][i]
+				break
 		
 		rd = randint()
 		for (i, prob) in  enumerate(trpProbabilityInfo):
@@ -185,6 +189,7 @@ class pet:
 				rd = rd - prob
 			else:
 				artrev = trpProbabilityConf['point'][i]
+				break
 			
 		usr.train_prd['cardid'] = cardid
 		usr.train_prd['strength_revision'] = strrev
@@ -275,15 +280,10 @@ class pet:
 		card['strength_ptr'] = card['strength_ptr'] + usr.train_prd['strength_revision']
 		card['intelligence_ptr'] = card['intelligence_ptr'] + usr.train_prd['intelligence_revision']
 		card['artifice_ptr'] = card['artifice_ptr'] + usr.train_prd['artifice_revision']
-		
-		print card['cardid']
-		print petInfo
+				
 		strength_ptr_limit = petInfo['strength'] + card['level'] + 20
 		intelligence_ptr_limit = petInfo['intelligence'] + card['level'] + 20
 		artifice_ptr_limit = petInfo['artifice'] + card['level'] + 20
-		print 'strength_ptr_limit', strength_ptr_limit
-		print 'intelligence_ptr_limit', intelligence_ptr_limit
-		print 'artifice_ptr_limit', artifice_ptr_limit
 		
 		ptr_over = 0
 		
