@@ -39,11 +39,15 @@ class item:
 								return {'msg':'key_not_exist'}
 							else:
 								break
-						if inv.delItem(key['id']) == None:
+						updateIt = inv.delItem(key['id'])
+						if updateIt == None:
 							data['delete_item_array'].append(key['id'])
-							key = None											
+						else: 
+							data['update_item_array'].append(updateIt)
+							key = None										
+						inv.save()	
 					awd = {}
-					awd = drop.open(usr, dropid, awd)					
+					awd = drop.open(usr, dropid, awd)
 					data = drop.makeData(awd, data)					
 					itemCount = itemCount - 1					
 				if key:					
@@ -103,12 +107,12 @@ class item:
 							break
 					dropid = treasureInfo['fun']['treasure'][0]
 					awd = {}
-					awd = drop.open(usr, dropid, awd)
-					data = drop.makeData(awd, data).s()					
+					awd = drop.open(usr, dropid, awd).s()
+					data = drop.makeData(awd, data)	
 					if inv.delItem(treasure['id']) == None:						
 						data['delete_item_array'].append(treasure['id'])
 						treasure = None
-					
+					inv.save()
 				if treasure:					
 					data['update_item_array'].append(treasure)
 			elif funkey == 'medium':

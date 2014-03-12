@@ -812,12 +812,10 @@ class inventory(object):
 		"""
 		if cnt <= 0:
 			return 0
-		it = self.getItem(id)
-		
+		it = self.getItem(id)		
 		if it:
 			if ['count'] < cnt:
-				return 0
-		
+				return 0			
 			it['count'] = it['count'] - cnt
 			if it['count'] > 0:
 				return it

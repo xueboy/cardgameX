@@ -207,7 +207,7 @@ class stone:
 		expdeff = stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp']
 		exp = exp + st['exp']
 		st['exp'] = 0
-		while expdeff < exp:
+		while expdeff < exp and len(stoneInfo) < st['level']:
 			st['level'] = st['level'] + 1
 			exp = exp - expdeff
 			expdeff = stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp']
@@ -220,7 +220,7 @@ class stone:
 		得到经验
 		"""
 		exp = st['exp']
-		exp = exp + (stoneInfo[st['level']]['exp'] - stoneInfo[st['level'] - 1]['exp'])
+		exp = exp + stoneInfo[st['level'] - 1]['exp']
 		exp = exp + stoneInfo[st['level'] - 1]['gravel']
 		return exp
 		
