@@ -225,6 +225,7 @@ class pet:
 		if card['intelligence'] < 0:
 			usr.train_prd['intelligence_revision'] = usr.train_prd['intelligence_revision'] + card['intelligence']
 			card['intelligence'] = 0
+		card['artifice'] = card['artifice'] + usr.train_prd['artifice_revision']
 		if card['artifice'] < 0:
 			usr.train_prd['artifice_revision'] = usr.train_prd['artifice_revision'] + card['artifice']
 			card['artifice'] = 0
@@ -270,9 +271,14 @@ class pet:
 		card['intelligence_ptr'] = card['intelligence_ptr'] + usr.train_prd['intelligence_revision']
 		card['artifice_ptr'] = card['artifice_ptr'] + usr.train_prd['artifice_revision']
 		
+		print card['cardid']
+		print petInfo
 		strength_ptr_limit = petInfo['strength'] + card['level'] + 20
 		intelligence_ptr_limit = petInfo['intelligence'] + card['level'] + 20
 		artifice_ptr_limit = petInfo['artifice'] + card['level'] + 20
+		print 'strength_ptr_limit', strength_ptr_limit
+		print 'intelligence_ptr_limit', intelligence_ptr_limit
+		print 'artifice_ptr_limit', artifice_ptr_limit
 		
 		ptr_over = 0
 		
@@ -282,12 +288,15 @@ class pet:
 		
 		if strength_ptr_over > 0:
 			card['strength_ptr'] = card['strength_ptr'] - strength_ptr_over
+			card['strength'] = card['strength'] - strength_ptr_over
 			ptr_over = ptr_over + strength_ptr_over
 		if intelligence_ptr_over > 0:
 			card['intelligence_ptr'] = card['intelligence_ptr'] - intelligence_ptr_over
+			card['intelligence'] = card['intelligence'] - intelligence_ptr_over
 			ptr_over = ptr_over + intelligence_ptr_over
 		if artifice_ptr_over > 0:
 			card['artifice_ptr'] = card['artifice_ptr'] - artifice_ptr_over
+			card['artifice'] = card['artifice'] - artifice_ptr_over
 			ptr_over = ptr_over + artifice_ptr_over
 		
 		if ptr_over > 0:

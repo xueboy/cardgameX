@@ -51,6 +51,9 @@ class equipment:
 		if equip.has_key('strengthLevel'):
 			strengthLevel = equip['strengthLevel']
 		
+		if strengthLevel >= usr.level:
+			return {'msg':'level_required'}
+		
 		if strengthLevel >= gameConf['equipment_max_level']:
 			return {'msg':'equipment_level_max'}
 			
