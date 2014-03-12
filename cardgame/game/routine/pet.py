@@ -282,9 +282,9 @@ class pet:
 		
 		ptr_over = 0
 		
-		strength_ptr_over = card['strength_ptr'] - strength_ptr_limit
-		intelligence_ptr_over = card['intelligence_ptr'] - intelligence_ptr_limit
-		artifice_ptr_over = card['artifice_ptr'] - artifice_ptr_limit
+		strength_ptr_over = card['strength'] - strength_ptr_limit
+		intelligence_ptr_over = card['intelligence'] - intelligence_ptr_limit
+		artifice_ptr_over = card['artifice'] - artifice_ptr_limit
 		
 		if strength_ptr_over > 0:
 			card['strength_ptr'] = card['strength_ptr'] - strength_ptr_over
