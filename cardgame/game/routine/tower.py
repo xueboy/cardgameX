@@ -305,7 +305,7 @@ class tower:
 		"""
 		if SIGLE_SERVER:
 			from arenarank.routine.tower import tower as towerR
-			return towerR.stand(usr.roleid, usr.name, usr.level, usr.tower['current']['point'], tower.current_floor(usr))
+			return towerR.stand(str(usr.roleid), usr.name, usr.level, usr.tower['current']['point'], tower.current_floor(usr))
 		else: 
 			return json.loads(curl.url(ARENE_SERVER +  '/arena/tower_stand/', None, {'roleid': usr.roleid, 'level': usr.level, 'point':  usr.tower['current']['point'], 'name':usr.name, 'floor':tower.current_floor(usr)}))
 			
