@@ -818,7 +818,7 @@ class inventory(object):
 				return 0			
 			it['count'] = it['count'] - cnt
 			if it['count'] > 0:
-				return itd
+				return it
 			else: 
 				self.item.remove(it)
 				return None
