@@ -241,7 +241,7 @@ class inventory(object):
 		if self.team.count (id) > 0:
 			return False
 		for edu_slot in self.user.educate['edu_slot']:
-			if edu_slot and edu_slot.has_key('cardid') and edu_slot['cardid'] == id:
+			if edu_slot and edu_slot.has_key('card_id') and edu_slot['card_id'] == id:
 				return False
 		return True		
 			
@@ -818,7 +818,7 @@ class inventory(object):
 				return 0			
 			it['count'] = it['count'] - cnt
 			if it['count'] > 0:
-				return it
+				return itd
 			else: 
 				self.item.remove(it)
 				return None
