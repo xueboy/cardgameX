@@ -79,16 +79,17 @@ class equipment:
 			usr.fatigue = gameConf['equipment_strength_fatigue_max']
 		usr.fatigue_last_time = currentTime()
 		
-		point = 1
-		
-		if vip.canStrengthEquipmentCritical(usr):
-			rd = randint()
-			for (i, prob) in enumerate(gameConf['equipment_strength_critical_probability']):
-				if prob > rd:
-					rd = rd - prob
-				else:
-					point = i
-					break
+		point = 0
+		if isUseGem or drop(strengthenProbability):
+			point = 1		
+			if vip.canStrengthEquipmentCritical(usr):
+				rd = randint()
+				for (i, prob) in enumerate(gameConf['equipment_strength_critical_probability']):
+					if prob > rd:
+						rd = rd - prob
+					else:
+						point = i
+						break
 		
 		equip['strengthLevel'] = strengthLevel + point
 		
