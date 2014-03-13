@@ -185,11 +185,10 @@ class tower_ladder(facility):
 		"""
 		显示位置
 		"""
-		try:
-			roleid = rank[position]['roleid']				
-			return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
-		except:
-			return {}
+		
+		roleid = rank[position]['roleid']				
+		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
+		
 		
 
 		

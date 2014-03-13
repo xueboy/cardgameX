@@ -106,7 +106,7 @@ class ladder(facility):
 				#self and below 7
 				
 				for i in range(position, position + 7):
-					if i > len(self.rank):
+					if i >= len(self.rank):
 						break
 					ls.append(self.show_floor(i))
 			self.save()
