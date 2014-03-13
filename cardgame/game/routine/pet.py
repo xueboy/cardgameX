@@ -66,7 +66,9 @@ class pet:
 		for cardid in sourceCardid:
 			if not pet.isCardAvailable(usr, cardid):
 				return {'msg':'card_not_available'}
-			card = inv.getCard(cardid)			
+			card = inv.getCard(cardid)
+			if not card:
+				return {'msg':'card_not_exist'}
 			sourceCard.append(card)		
 		
 		costMoney = len(sourceCard) * gameConf['pet_levelup_gold_cost']		
