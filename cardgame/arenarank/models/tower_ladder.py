@@ -186,7 +186,7 @@ class tower_ladder(facility):
 		显示位置
 		"""
 		
-		roleid = rank[position]['roleid']				
+		roleid = str(rank[position]['roleid'])
 		return {'roleid':roleid, 'name':item[roleid]['name'], 'level':item[roleid]['level'], 'position':position, 'in_ladder_day_count': item[roleid]['in_ladder_day_count'], 'point': item[roleid]['point'], 'floor': item[roleid]['floor']}
 		
 		
