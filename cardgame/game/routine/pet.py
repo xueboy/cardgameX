@@ -98,9 +98,7 @@ class pet:
 		if levelLimit > usr.level:
 			levelLimit = usr.level
 		exp = exp + card['exp']
-		card['exp'] = 0
-		print 'levelLimit', levelLimit
-		print 'level', level
+		card['exp'] = 0		
 		while (exp > needExp) and (levelLimit > level):
 			exp = exp - needExp
 			level = level + 1
