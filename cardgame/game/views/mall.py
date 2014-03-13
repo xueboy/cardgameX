@@ -4,6 +4,9 @@
 from game.utility.config import config
 
 def purchase(request):
+	"""
+	购买
+	"""
 	
 	purchasenum = int(request.GET['purchase_num'])
 	

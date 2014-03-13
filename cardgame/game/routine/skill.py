@@ -113,7 +113,7 @@ class skill:
 		"""
 		得到经验
 		"""
-		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + gameConf['skill_star_base_exp'][skillInfo['quality']]) * 0.75)
+		return int((skillLevelConf[str(skillInfo['quality'])][sk['level'] - 1] + gameConf['skill_star_base_exp'][skillInfo['quality'] - 1]) * 0.75)
 		
 	@staticmethod
 	def gain_exp(sk, exp, skillConf, skillLevelConf):
