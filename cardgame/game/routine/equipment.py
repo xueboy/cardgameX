@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from game.utility.config import config
-from gclib.utility import currentTime, dayTime
+from gclib.utility import currentTime, dayTime, drop
 
 from game.routine.vip import vip
 
