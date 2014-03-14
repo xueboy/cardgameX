@@ -48,6 +48,7 @@ class signin:
 				b2 = True
 		data['last_meal_time'] = [b1, b2]
 		data['continue_award'] = usr.signin['continue_award_time']
+		data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
 		return data
 							
