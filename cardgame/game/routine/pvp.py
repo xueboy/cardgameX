@@ -372,11 +372,11 @@ class pvp:
 				else:
 					sk_slot['t' + str(i)] = skill.make_sk_slot()
 			else:
-				sk_slot['t' + str(i)] = skill.make_sk_slot()
-			for sk in sk_slot['t' + str(i)]:
-				if sk:
-					del sk['id']
-					del sk['exp']
+				sk_slot['t' + str(i)] = skill.make_sk_slot()		
+		for sk in sk_slot['t' + str(i)]:
+			if sk:
+				del sk['id']
+				del sk['exp']
 		return sk_slot
 		
 	@staticmethod
