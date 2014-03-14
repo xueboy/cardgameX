@@ -40,48 +40,48 @@ class pvp:
 		ppData['speed'] = 0
 						
 		for cb in al.combine:
-			if st['typestr'] == 'strenghth':
-				ppData['strenghth'] = ppData['strenghth'] + st['val']
-			elif st['typestr'] == 'intelligence':
-				ppData['intelligence'] = ppData['intelligence'] + st['val']
-			elif st['typestr'] == 'artifice':
-				ppData['artifice'] = ppData['artifice'] + st['val']
-			elif st['typestr'] == 'attack':
-				ppData['attack'] = ppData['attack'] + st['val']
-			elif st['typestr'] == 'hp':
-				ppData['hp'] = ppData['hp'] + st['val']
-			elif st['typestr'] == 'critical':
-				ppData['critical'] = ppData['critical'] + st['val']
-			elif st['typestr'] == 'tenacity':
-				ppData['tenacity'] = ppData['tenacity'] + st['val']
-			elif st['typestr'] == 'dodge':
-				ppData['dodge'] = ppData['dodge'] + st['val']
-			elif st['typestr'] == 'hit':
-				ppData['hit'] = ppData['hit'] + st['val']
-			elif st['typestr'] == 'block':
-				ppData['block'] = ppData['block'] + st['val']
-			elif st['typestr'] == 'wreck':
-				ppData['wreck'] = ppData['wreck'] + st['val']
-			elif st['typestr'] == 'pt':
-				ppData['pt'] = ppData['pt'] + st['val']			
-			elif st['typestr'] == 'pd':
-				ppData['pd'] = ppData['pd'] + st['val']
-			elif st['typestr'] == 'md':
-				ppData['md'] = ppData['md'] + st['val']
-			elif st['typestr'] == 'criticallv':
-				ppData['criticallv'] = ppData['criticallv'] + st['val']
-			elif st['typestr'] == 'tenacitylv':
-				ppData['tenacity'] = ppData['tenacity'] + st['val']
-			elif st['typestr'] == 'dodgelv':
-				ppData['dodgelv'] = ppData['dodgelv'] + st['val']
-			elif st['typestr'] == 'hitlv':
-				ppData['hitlv'] = ppData['hitlv'] + st['val']
-			elif st['typestr'] == 'blocklv':
-				ppData['blocklv'] = ppData['blocklv'] + st['val']
-			elif st['typestr'] == 'wrecklv':
-				ppData['wrecklv'] = ppData['wrecklv'] + st['val']
-			elif st['typestr'] == 'speed':
-				ppData['speed'] = ppData['speed'] + st['val']
+			if cb['typestr'] == 'strenghth':
+				ppData['strenghth'] = ppData['strenghth'] + cb['val']
+			elif cb['typestr'] == 'intelligence':
+				ppData['intelligence'] = ppData['intelligence'] + cb['val']
+			elif cb['typestr'] == 'artifice':
+				ppData['artifice'] = ppData['artifice'] + cb['val']
+			elif cb['typestr'] == 'attack':
+				ppData['attack'] = ppData['attack'] + cb['val']
+			elif cb['typestr'] == 'hp':
+				ppData['hp'] = ppData['hp'] + cb['val']
+			elif cb['typestr'] == 'critical':
+				ppData['critical'] = ppData['critical'] + cb['val']
+			elif cb['typestr'] == 'tenacity':
+				ppData['tenacity'] = ppData['tenacity'] + cb['val']
+			elif cb['typestr'] == 'dodge':
+				ppData['dodge'] = ppData['dodge'] + cb['val']
+			elif cb['typestr'] == 'hit':
+				ppData['hit'] = ppData['hit'] + cb['val']
+			elif cb['typestr'] == 'block':
+				ppData['block'] = ppData['block'] + cb['val']
+			elif cb['typestr'] == 'wreck':
+				ppData['wreck'] = ppData['wreck'] + cb['val']
+			elif cb['typestr'] == 'pt':
+				ppData['pt'] = ppData['pt'] + cb['val']			
+			elif cb['typestr'] == 'pd':
+				ppData['pd'] = ppData['pd'] + cb['val']
+			elif cb['typestr'] == 'md':
+				ppData['md'] = ppData['md'] + cb['val']
+			elif cb['typestr'] == 'criticallv':
+				ppData['criticallv'] = ppData['criticallv'] + cb['val']
+			elif cb['typestr'] == 'tenacitylv':
+				ppData['tenacity'] = ppData['tenacity'] + cb['val']
+			elif cb['typestr'] == 'dodgelv':
+				ppData['dodgelv'] = ppData['dodgelv'] + cb['val']
+			elif cb['typestr'] == 'hitlv':
+				ppData['hitlv'] = ppData['hitlv'] + cb['val']
+			elif cb['typestr'] == 'blocklv':
+				ppData['blocklv'] = ppData['blocklv'] + cb['val']
+			elif cb['typestr'] == 'wrecklv':
+				ppData['wrecklv'] = ppData['wrecklv'] + cb['val']
+			elif cb['typestr'] == 'speed':
+				ppData['speed'] = ppData['speed'] + cb['val']
 				
 		return ppData
 		
