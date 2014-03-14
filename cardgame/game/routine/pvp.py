@@ -398,14 +398,12 @@ class pvp:
 			ppData['pd'] = equipmentInfo['pd'] + equipmentInfo['pdgrowth'] * equipment['strengthLevel']
 			ppData['md'] = equipmentInfo['md'] + equipmentInfo['mdgrowth'] * equipment['strengthLevel']
 			ppData['pt'] = equipmentInfo['pt'] + equipmentInfo['ptgrowth'] * equipment['strengthLevel']
-			ppData['mt'] = equipmentInfo['mt'] + equipmentInfo['mtgrowth'] * equipment['strengthLevel']
 		else:
 			ppData['hp'] = equipmentInfo['hp']
 			ppData['pa'] = equipmentInfo['pa']
 			ppData['pd'] = equipmentInfo['pd']
 			ppData['md'] = equipmentInfo['md']
 			ppData['pt'] = equipmentInfo['pt']
-			ppData['mt'] = equipmentInfo['mt']
 					
 		ppData['pr'] = 0
 		ppData['mr'] = 0
