@@ -46,9 +46,9 @@ class signin:
 				b1 = True
 			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time'][-1]):
 				b2 = True
-		data['last_meal_time'] = [b1, b2]
-		data['continue_award'] = usr.signin['continue_award_time']
-		data['draw_award'] = usr.signin['draw_award_time']
+		data['last_meal_time'] = [b1, b2]		
+		#data['continue_award'] = usr.signin['continue_award_time']
+		#data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
 		return data
 							
