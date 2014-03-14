@@ -140,6 +140,7 @@ class tower:
 		newScore = False
 		if usr.tower['floor_score'][usr.tower['current']['floor'] - 1] < usr.tower['current']['score']:
 			newScore = True
+		print usr.tower['floor_score'][usr.tower['current']['floor'] - 1], usr.tower['current']['score']
 		
 		data = {}		
 					
@@ -196,17 +197,28 @@ class tower:
 		return data		
 		
 	@staticmethod
-	def do_enhance(usr, ehc):
+	def do_enhance(usr, ehc, gameConf):
 		"""
 		加强属性
 		"""
+		
+		
+			
+		point = 0
 		if ehc == 0:
 			usr.tower['current']['strength'] = usr.tower['current']['strength'] + usr.tower['current']['enhance'][0]
+			point = usr.tower['current']['enhance'][0]
 		elif ehc == 1:
 			usr.tower['current']['intelligence'] = usr.tower['current']['intelligence'] + usr.tower['current']['enhance'][1]
+			point = usr.tower['current']['enhance'][1]
 		elif ehc == 2:
 			usr.tower['current']['artifice'] = usr.tower['current']['artifice'] + usr.tower['current']['enhance'][2]
+			point = usr.tower['current']['enhance'][2]
 		del usr.tower['current']['enhance']
+		
+		for item in gameConf['tower_enhance_probability']:
+			if item['point'] == point:
+				usr.tower['current']['point'] = usr.tower['current']['point'] - point
 		
 	@staticmethod
 	def do_markup(usr, mkp):
@@ -259,7 +271,7 @@ class tower:
 		
 		point = []
 		for i in range(3):			
-			point.extend(random.sample([2, 10, 30], 1))
+			point.extend(random.sample([2, 10, 20], 1))
 		
 		if 2 not in point:
 			idx = random.randint(0, 2)

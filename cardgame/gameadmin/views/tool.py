@@ -15,10 +15,20 @@ from game.routine.medal import medal
 	
 def tool_create_player(request):
 	if request.method == 'POST':
+		player = request.POST['player_name']
 		levelf = request.POST['levelf']
 		levelt = request.POST['levelt']
-		cnt = int(request.POST['count'])
-		main_card_dropid = request.POST['main_card_dropid']
+		protagonist_card = request.POST['protagonist_card']
+		other_card = request.POST['other_card']
+		card_count = int(request.POST['card_count'])
+		card_levelf = request.POST['card_levelf']
+		card_levelt = request.POST['card_levelt']
+		attack_equipment = request.POST['attack_equipment']
+		hp_equipment = request.POST['hp_equipment']
+		defence_equipment = request.POST['defence_equipment']
+		mt_equipment = request.POST['mt_equipment']
+		pd_equipment = request.POST['pd_equipment']
+		md_equipment = request.POST['md_equipment']
 		other_card_dropid = request.POST['other_card_dropid']
 		card_levelf = request.POST['card_levelf']
 		card_levelt = request.POST['card_levelt']
