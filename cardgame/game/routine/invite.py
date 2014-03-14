@@ -79,8 +79,7 @@ class invite:
 			data = drop.makeData(awd, {})
 		
 		invUsr.save()
-		usr.save()
-		data.update(invite.getClientData(usr))
+		usr.save()		
 		return data
 		
 	@staticmethod
