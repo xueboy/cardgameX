@@ -394,8 +394,7 @@ class pvp:
 		ppData['attack'] = 0
 		if equipment.has_key('strengthLevel'):
 			ppData['hp'] = equipmentInfo['hp'] + equipmentInfo['hpgrowth'] * equipment['strengthLevel']			
-			ppData['pa'] = equipmentInfo['pa'] + equipmentInfo['pagrowth'] * equipment['strengthLevel']
-			ppData['ma'] = equipmentInfo['ma'] + equipmentInfo['magrowth'] * equipment['strengthLevel']
+			ppData['pa'] = equipmentInfo['pa'] + equipmentInfo['pagrowth'] * equipment['strengthLevel']	
 			ppData['pd'] = equipmentInfo['pd'] + equipmentInfo['pdgrowth'] * equipment['strengthLevel']
 			ppData['md'] = equipmentInfo['md'] + equipmentInfo['mdgrowth'] * equipment['strengthLevel']
 			ppData['pt'] = equipmentInfo['pt'] + equipmentInfo['ptgrowth'] * equipment['strengthLevel']
@@ -403,7 +402,6 @@ class pvp:
 		else:
 			ppData['hp'] = equipmentInfo['hp']
 			ppData['pa'] = equipmentInfo['pa']
-			ppData['ma'] = equipmentInfo['ma']
 			ppData['pd'] = equipmentInfo['pd']
 			ppData['md'] = equipmentInfo['md']
 			ppData['pt'] = equipmentInfo['pt']
