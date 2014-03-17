@@ -6,10 +6,8 @@ from game.utility.config import config
 def purchase(request):
 	"""
 	购买
-	"""
-	
-	purchaseid = int(request.GET['purchase_id'])
-	
+	"""	
+	purchaseid = request.GET['purchase_id']	
 	usr = request.user	
 	mallPriceConf = config.getConfig('mall_price')
 					
