@@ -20,7 +20,7 @@ class signin:
 		if dd == 1:
 			usr.signin['login_count'] = usr.signin['login_count'] + 1
 		elif dd > 1:
-			usr.signin['login_count'] = 1
+			usr.signin['login_count'] = 1		
 		usr.signin['last_login_time'] = currentTime()
 		
 		data = {}
@@ -46,7 +46,15 @@ class signin:
 				b1 = True
 			if is_in_day_period(t2[0], t2[1], usr.signin['last_meal_time'][-1]):
 				b2 = True
-		data['last_meal_time'] = [b1, b2]		
+		data['last_meal_time'] = [b1, b2]
+		if len(usr.signin['continue_award_time']) == 2:
+			data['continue_award_time'] = [True, True]
+		elif len(usr.signin['continue_award_time']) == 0:
+			data['continue_award_time'] = [True]
+		elif day_diff(now, usr.signin['continue_award_time'][-1]) == 1:
+			data['continue_award_time'] = [True]
+		else:
+			data['continue_award_time'] = [False]
 		#data['continue_award'] = usr.signin['continue_award_time']
 		#data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
@@ -133,31 +141,31 @@ class signin:
 		return False
 	
 	@staticmethod
-	def continue_award(usr, no):
+	def continue_award(usr):
 		"""
 		连续登陆
 		"""
 		openAwardConf = config.getConfig('open_award')
-		if not signin.is_continue_award_available(no, openAwardConf):
+		if not signin.is_continue_award_available(openAwardConf):
 			return {'msg':'open_award_not_available'}
-		
-		
-		if usr.signin['login_count'] < no:
-			return {'msg':'bad_parameter'}
-				
-		if signin.is_continue_award_already_get(usr, no):
+							
+		if signin.is_continue_award_already_get(usr):
 			return {'msg':'open_award_already_get'}
 		
-		while len(usr.signin['continue_award_time']) < no:
-			usr.signin['continue_award_time'].append(None)
+		now = currentTime()
+		if not usr.signin['continue_award_time']:
+			if day_diff(now, usr.signin['continue_award_time'][-1]) != 1:
+				usr.signin['continue_award_time'] = []
+				
+		usr.signin['continue_award_time'].append(now)
 		
-		usr.signin['continue_award_time'][no - 1] = currentTime()
 		
-		cardid = openAwardConf['continue_award'][no - 1]
+		cardid = openAwardConf['continue_award'][len(usr.signin['continue_award_time']) - 1]
 		
 		inv = usr.getInventory()
 		c = inv.addCard(cardid)
 		inv.save()
+		usr.save()
 		data = {}
 		data['add_card'] = c
 		return data
@@ -186,12 +194,13 @@ class signin:
 			
 		adidx = random.sample(drawidx, 1)[0]
 		ad = openAwardConf['draw_award'][adidx]
-		data = {}
-		data = drop.open(usr, ad['dropid'], data)
+		awd = {}
+		awd = drop.open(usr, ad['dropid'], awd)
 		while len(usr.signin['draw_award_time']) <= adidx:
 			usr.signin['draw_award_time'].append(None)
 		usr.signin['draw_award_time'][adidx] = currentTime()
-		usr.save()		
+		usr.save()
+		drop.makeData(awd, {})
 		
 		return data	
 		
@@ -200,20 +209,22 @@ class signin:
 		"""
 		连续登陆奖励是否有效
 		"""
-		if len(openAwardConf['continue_award']) < no:
+		if usr.signin['login_count'] < 2:
 			return False
-		if not openAwardConf['continue_award'][no -1]:
-			return False
+		if len(openAwardConf['continue_award']) <= usr.signin['continue_award_time']:
+			return False		
 		return True
 			
 	@staticmethod
-	def is_continue_award_already_get(usr ,no):
+	def is_continue_award_already_get(usr):
 		"""
 		连续登陆奖励是否已领
 		"""
-		if len(usr.signin['continue_award_time']) < no:
-			return False
-		
-		if usr.signin['continue_award_time'][no - 1]:
+		now = currentTime()		
+		if not usr.signin['continue_award_time']:
 			return True
+		
+		for award_time in usr.signin['continue_award_time']:
+			if is_same_day(award_time, now):
+				return True		
 		return False
