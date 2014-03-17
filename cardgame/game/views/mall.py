@@ -13,7 +13,7 @@ def purchase(request):
 					
 	for pi in mallPriceConf:
 		if pi['mallPriceid'] == purchaseid:
-			mallPriceInfo = mallPriceConf[purchasenum]
+			mallPriceInfo = pi
 			
 	if not mallPriceInfo:
 		return {'msg':'puchaseid_not_exist'}
