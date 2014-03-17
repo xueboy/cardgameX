@@ -27,8 +27,9 @@ class levelup:
 		awd = {}
 		awd = drop.open(usr, dropid, awd)
 		usr.levelup['record'].append(level)
+		data = drop.makeData(awd, {})
 		usr.save()
-		return awd
+		return data
 		
 	@staticmethod
 	def make():
