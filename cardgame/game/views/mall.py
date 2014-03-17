@@ -8,15 +8,18 @@ def purchase(request):
 	购买
 	"""
 	
-	purchasenum = int(request.GET['purchase_num'])
+	purchaseid = int(request.GET['purchase_id'])
 	
 	usr = request.user	
 	mallPriceConf = config.getConfig('mall_price')
-	
-	if len(mallPriceConf) <= int(purchasenum):
-		return {'msg':'puchaseid_not_exist'}
+					
+	for pi in mallPriceConf:
+		if pi['mallPriceid'] == purchaseid:
+			mallPriceInfo = mallPriceConf[purchasenum]
 			
-	mallPriceInfo = mallPriceConf[purchasenum]	
+	if not mallPriceInfo:
+		return {'msg':'puchaseid_not_exist'}
+	
 	data = {}
 	if mallPriceInfo['goldPromote'] > 0:
 		costGold = mallPriceInfo['goldPromote']
