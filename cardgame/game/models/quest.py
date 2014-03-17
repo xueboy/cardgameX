@@ -109,7 +109,7 @@ class quest(object):
 		usr = self.user
 		newQuest = []
 		for qid in questConf:			
-			if questConf[qid]['type'] == 1:
+			if questConf[qid]['type'] == 1 or questConf[qid]['type'] == 4:
 				if self.commonIsAvailable(usr, qid, questConf[qid], questConf):					
 					newQuest.append(qid)
 			elif questConf[qid]['type'] == 2:
@@ -124,9 +124,9 @@ class quest(object):
 		newQuest = []		
 		alreadyAccept = False
 		alreadyFinishPre = False
-		alreadyFinish = False			
+		alreadyFinish = False							
 		if questInfo['level'] > usr.level:
-			return False    
+			return False		
 	
 		if not quest.isActive(questInfo):
 			return False
@@ -137,12 +137,12 @@ class quest(object):
 					return False
 				return True
 			finishQuestInfo = questConf[questid]
-			if finishQuestInfo['nextId'] == qid:
+			if finishQuestInfo['nextId'] == qid:				
 				alreadyFinishPre = True
-		
+			
 		if self.current.has_key(qid):
 			return False		
-		if questInfo['isFirst'] or alreadyFinishPre:
+		if questInfo['isFirst'] or alreadyFinishPre:			
 			return True
 		return False
 					
