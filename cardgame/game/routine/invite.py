@@ -27,7 +27,11 @@ class invite:
 			data['invite_code'] = inviteU.generateCode(usr.accountid)		
 		data['invite'] = usr.invite['invite']
 		data['open_time'] = usr.invite['open_time']
-		data['invite_award'] = usr.invite['invite_award']
+		data['invite_award'] = []
+		for (i di) in enumerate(usr.invite['invite_code']):
+			data['invite_award'].append(i)
+			
+		
 		return data
 		
 	@staticmethod
@@ -109,5 +113,9 @@ class invite:
 		data = drop.makeData(awd, {})				
 		data.update(invite.getClientData(usr))
 		usr.save()
+		
+		data['invite_award'] = []
+		for (i di) in enumerate(usr.invite['invite_code']):
+			data['invite_award'].append(i)
 		
 		return data
