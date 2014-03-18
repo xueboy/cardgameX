@@ -50,11 +50,11 @@ class signin:
 		if len(usr.signin['continue_award_time']) == 2:
 			data['continue_award_time'] = [True, True]
 		elif len(usr.signin['continue_award_time']) == 0:
-			data['continue_award_time'] = [True]
+			data['continue_award_time'] = [True, False]
 		elif day_diff(now, usr.signin['continue_award_time'][-1]) == 1:
-			data['continue_award_time'] = [True]
+			data['continue_award_time'] = [True, False]
 		else:
-			data['continue_award_time'] = [False]
+			data['continue_award_time'] = [False, False]
 		data['continue_award'] = usr.signin['continue_award_time']
 		data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
