@@ -3,7 +3,6 @@
 
 from game.utility.config import config
 from gclib.utility import currentTime, dayTime, drop
-
 from game.routine.vip import vip
 
 class equipment:
@@ -157,7 +156,7 @@ class equipment:
 		if not cardid:
 			return {'msg': 'team_position_not_have_member'}
 		
-		equipment = None
+		equipment1 = None
 		owner = None
 		if ownerTeamPosition >= 0:
 			ownerCardid = inv.team[ownerTeamPosition]
@@ -168,16 +167,16 @@ class equipment:
 				return {'msg':'card_not_exist'}
 			for equip in owner['slot']:
 				if equip and equip['id'] == equipmentid:
-					equipment = equip
+					equipment1 = equip
 					break			
 		else:
-			equipment = inv.getEquipment(equipmentid)			
+			equipment1 = inv.getEquipment(equipmentid)
 			
-		if not equipment:
+		if not equipment1:
 			return {'msg':'equipment_not_exist'}		
 		
 		equipmentConf = config.getConfig('equipment')
-		equipmentInfo = equipmentConf[equipment['equipmentid']]
+		equipmentInfo = equipmentConf[equipment1['equipmentid']]
 				
 		card = inv.getCard(cardid)
 		if not card:
@@ -194,11 +193,11 @@ class equipment:
 				card['slot'][equipmentInfo['position'] - 1] = {}
 				inv.save()
 				return {}
-		card['slot'][equipmentInfo['position'] - 1] = equipment
+		card['slot'][equipmentInfo['position'] - 1] = equipment1
 		if owner:
 			owner['slot'][equipmentInfo['position'] - 1] = {}
 		else:
-			inv.equipment.remove(equipment)
+			inv.equipment.remove(equipment1)
 		inv.save()		
 		data = {}
 		#data['slot'] = inv.getSlots()

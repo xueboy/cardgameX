@@ -12,53 +12,153 @@ from gclib.json import json
 from gameadmin.routine.gm import gm
 from game.routine.signin import signin
 from game.routine.medal import medal
+from game.routine.equipment import equipment
+from game.routine.skill import skill
+from game.routine.drop import drop
+from game.routine.stone import stone
+import random
 	
 def tool_create_player(request):
 	if request.method == 'POST':
-		player = request.POST['player_name']
-		levelf = request.POST['levelf']
-		levelt = request.POST['levelt']
+		player_name = request.POST['player_name']
+		levelf = int(request.POST['levelf'])
+		levelt = int(request.POST['levelt'])
 		protagonist_card = request.POST['protagonist_card']
 		other_card = request.POST['other_card']
 		card_count = int(request.POST['card_count'])
-		card_levelf = request.POST['card_levelf']
-		card_levelt = request.POST['card_levelt']
+		card_levelf = int(request.POST['card_levelf'])
+		card_levelt = int(request.POST['card_levelt'])
 		attack_equipment = request.POST['attack_equipment']
 		hp_equipment = request.POST['hp_equipment']
-		defence_equipment = request.POST['defence_equipment']
-		mt_equipment = request.POST['mt_equipment']
+		defence_equipment = request.POST['defence_equipment']		
 		pd_equipment = request.POST['pd_equipment']
 		md_equipment = request.POST['md_equipment']
-		equipment_strength_levelf = request.POST['equipment_strength_levelf']
-		equipment_strength_levelt = request.POST['equipment_strength_levelt']
-		fire_quipment = request.POST['fire_quipment']
-		water_equipment = request.POST['water_equipment']
-		poison_equipment = request.POST['poison_equipment']
-		super_equipment = request.POST['super_equipment']
-		straw_equipment = request.POST['straw_equipment']
-		general_equipment = request.POST['general_equipment']
+		equipment_strength_levelf = int(request.POST['equipment_strength_levelf'])
+		equipment_strength_levelt = int(request.POST['equipment_strength_levelt'])
+		fire_skill = request.POST['fire_skill']
+		water_skill = request.POST['water_skill']
+		poison_skill = request.POST['poison_skill']
+		super_skill = request.POST['super_skill']
+		straw_skill = request.POST['straw_skill']		
+		general_skill = request.POST['general_skill']
+		skill_levelf = int(request.POST['skill_levelf'])
+		skill_levelt = int(request.POST['skill_levelt'])
+		stone_seed = request.POST['stone']
+		stone_levelf = int(request.POST['stone_levelf'])
+		stone_levelt = int(request.POST['stone_levelt'])
+		practicef = int(request.POST['practicef'])
+		practicet = int(request.POST['practicet'])
+		strengthenf = int(request.POST['strengthenf'])
+		strengthent = int(request.POST['strengthent'])
 		
-		other_card_dropid = request.POST['other_card_dropid']
-		card_levelf = request.POST['card_levelf']
-		card_levelt = request.POST['card_levelt']
-		equip_strenght_levelf = request.POST['equip_strenght_levelf']
-		equip_strenght_levelt = request.POST['equip_strenght_levelt']
-		skill_levelf = request.POST['skill_levelf']
-		skill_levelt = request.POST['skill_levelt']
-		stone_levelf = request.POST['stone_levelf']
-		stone_levelt = request.POST['stone_levelt']		
+		intelligencef = int(request.POST['intelligencef'])
+		intelligencet = int(request.POST['intelligencet'])
+		artificef = int(request.POST['artificef'])
+		artificet = int(request.POST['artificet'])
+		medal_levelf = int(request.POST['medal_levelf'])
+		medal_levelt = int(request.POST['medal_levelt'])
+			
+		gameConf = config.getConfig('game')
 		
-		for i in range(cnt):
+		for i in range(card_count):
 			usr = user()					
 			usr.init(None)
 			usr.last_login = currentTime()
-			usr.name = 'testRobot'
-			usr.gender = 'female'
+			usr.name = player_name
+			usr.gender = 'male'
 			usr.avatar = '1'
 			usr.install(0)
 			
 			usr.saveRoleId()
 			usr.onInit()
+			usr.level = random.randint(levelf, levelt)
+			inv = usr.getInventory()
+			awd = drop.open(usr, protagonist_card, {})
+			for (i, l) in enumerate(gameConf['team_member_open_level']):
+				if l <= usr.level:
+					if awd['add_card_array']:
+						awd['add_card_array'][0]['level'] = random.randint(card_levelf, card_levelt)
+						inv.team[i] = awd['add_card_array'][0]['id']
+					break
+					
+			for (i, l) in enumerate(gameConf['team_member_open_level']):
+				if l <= usr.level and not inv.team[i]:
+					awd = drop.open(usr, other_card, {})
+					if awd['add_card_array']:
+						awd['add_card_array'][0]['level'] = random.randint(card_levelf, card_levelt)
+						inv.team[i] = awd['add_card_array'][0]['id']
+					break			
+			petConf = config.getConfig('pet')
+			for (i, cid) in enumerate(inv.team):
+				if cid:
+					card = inv.getCard(cid)
+					if card:
+						awd = drop.open(usr, attack_equipment, {})
+						if awd.has_key('add_equipment_array'):
+							awd['add_equipment_array'][0]['strengthLevel'] = random.randint(equipment_strength_levelf, equipment_strength_levelt)
+							equipment.equip(usr, i, -1, awd['add_equipment_array'][0]['id'])
+						awd = drop.open(usr, hp_equipment, {})
+						if awd.has_key('add_equipment_array'):
+							awd['add_equipment_array'][0]['strengthLevel'] = random.randint(equipment_strength_levelf, equipment_strength_levelt)
+							equipment.equip(usr, i, -1, awd['add_equipment_array'][0]['id'])
+						awd = drop.open(usr, defence_equipment, {})
+						if awd.has_key('add_equipment_array'):
+							awd['add_equipment_array'][0]['strengthLevel'] = random.randint(equipment_strength_levelf, equipment_strength_levelt)
+							equipment.equip(usr, i, -1, awd['add_equipment_array'][0]['id'])						
+						awd = drop.open(usr, pd_equipment, {})
+						if awd.has_key('add_equipment_array'):
+							awd['add_equipment_array'][0]['strengthLevel'] = random.randint(equipment_strength_levelf, equipment_strength_levelt)
+							equipment.equip(usr, i, -1, awd['add_equipment_array'][0]['id'])
+						awd = drop.open(usr, md_equipment, {})
+						if awd.has_key('add_equipment_array'):
+							awd['add_equipment_array'][0]['strengthLevel'] = random.randint(equipment_strength_levelf, equipment_strength_levelt)
+							equipment.equip(usr, i, -1, awd['add_equipment_array'][0]['id'])
+						
+						petInfo = petConf[card['cardid']]						
+						skill_seed = None
+						
+						if petInfo['nature'] == '2':
+							skill_seed = poison_skill
+						elif petInfo['nature'] == '3':
+							skill_seed = straw_skill
+						elif petInfo['nature'] == '4':
+							skill_seed = water_skill
+						elif petInfo['nature'] == '5':
+							skill_seed = fire_skill
+						elif petInfo['nature'] == '6':
+							skill_seed = super_skill
+						elif petInfo['nature'] == '7':
+							skill_seed = general_skill
+							
+						if skill_seed:
+							for k in range(3):
+								awd = drop.open(usr, skill_seed, {})
+								if awd.has_key('add_skill_array'):
+									awd['add_skill_array'][0]['level'] = random.randint(skill_levelf, skill_levelt)
+									skill.install(usr, i, -1, k, awd['add_skill_array'][0]['id'])
+									
+						for (k, l) in enumerate(gameConf['stone_slot_level']):
+							if l <= usr.level:
+								awd = drop.open(usr, stone_seed, {})
+								if awd.has_key('add_stone_array'):
+									awd['add_stone_array'][0]['level'] = random.randint(stone_levelf, stone_levelt)
+									stone.install(usr, i, -1, k, awd['add_stone_array'][0]['id'])
+						card['strength'] = random.randint(strengthenf, strengthent)
+						card['intelligence'] = random.randint(intelligencef, intelligencet)
+						card['artifice'] = random.randint(artificef, artificet)
+						
+						medalConf = config.getConfig('medal')
+						
+						for medalid in medalConf:
+							inv.medal[medalid] =  {'level':0, 'chip': [0] * medalConf[medalid]['chip'], 'id':medalid, 'gravel':0}
+							inv.medal[medalid]['level'] = random.randint(medal_levelf, medal_levelt)
+									
+			usr.practice['critical_level'] = random.randint(practicef, practicet)
+			usr.practice['tenacity_level'] = random.randint(practicef, practicet)
+			usr.practice['block_level'] = random.randint(practicef, practicet)
+			usr.practice['wreck_level'] = random.randint(practicef, practicet)			
+			
+																	
 			usr.save()
 			res = arena.stand_ladder(usr)	
 			if isinstance(res, str):
@@ -69,7 +169,7 @@ def tool_create_player(request):
 	return render(request, 'arena_tool.html', {'ladder':ld})
 		
 def tool_ladder_remove(request):
-	if request.method == 'POST':		
+	if request.method == 'POST':
 		optid = request.POST['optid']
 		operator = request.POST['operator']
 		if operator == 'remove':

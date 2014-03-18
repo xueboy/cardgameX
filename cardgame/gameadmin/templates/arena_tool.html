@@ -16,93 +16,219 @@
        <td colspan="4"><div align="center">创建排行榜玩家</div></td>
       </tr>
      <tr>
+       <td>玩家名字</td>
+       <td><label>
+         <input type="text" name="player_name" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+     </tr>
+     <tr>
        <td width="163">玩家等级从</td>
         <td width="171"><label>
-          <input type="text" name="levelf" />
+          <input name="levelf" type="text" value="30" />
         </label></td>
         <td width="33">到</td>
         <td width="484"><label>
-          <input type="text" name="levelt" />
+          <input name="levelt" type="text" value="30" />
         </label></td>
       </tr>
      <tr>
-       <td>生成数量是</td>
-        <td><input type="text" name="count" /></td>
+       <td>随机主角卡</td>
+        <td><input name="protagonist_card" type="text" value="zhujuecard" /></td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
       </tr>
      <tr>
-       <td>主角卡抽取掉落ID</td>
+       <td>主角卡外上阵卡牌库</td>
         <td colspan="3"><label>
-          <input type="text" name="main_card_dropid" />
+          <input name="other_card" type="text" value="jiqirencard" />
         </label></td>
       </tr>
      
      
      <tr>
-       <td>其它卡片抽取掉落ID</td>
+       <td>顺序和数量</td>
         <td colspan="3"><label>
-          <input type="text" name="other_card_dropid" />
+          <input type="text" name="card_count" />
         </label></td>
       </tr>
      <tr>
-       <td>卡片等级范围从</td>
-        <td><label>
-          <input type="text" name="card_levelf" />
-        </label></td>
-        <td>到</td>
-        <td><label>
-          <input type="text" name="card_levelt" />
-        </label></td>
-      </tr>
+       <td>卡牌等级范围从</td>
+       <td><label>
+         <input name="card_levelf" type="text" value="30" />
+       </label></td>
+       <td>到</td>
+       <td><label>
+         <input name="card_levelt" type="text" value="30" />
+       </label></td>
+     </tr>
      <tr>
-       <td>装备强化等级范围从</td>
-        <td><label>
-          <input type="text" name="equip_strenght_levelf" />
-        </label></td>
-        <td>到</td>
-        <td><label>
-          <input type="text" name="equip_strenght_levelt" />
-        </label></td>
-      </tr>
-     <tr>
-       <td>技能等级范围从</td>
-        <td><label>
-          <input type="text" name="skill_levelf" />
-        </label></td>
-        <td>到</td>
-        <td><label>
-          <input type="text" name="skill_levelt" />
-        </label></td>
-      </tr>
-     <tr>
-       <td>宝石等级范围从</td>
-        <td><label>
-          <input type="text" name="stone_levelf" />
-        </label></td>
-        <td>到</td>
-        <td><label>
-          <input type="text" name="stone_levelt" />
-        </label></td>
-      </tr>
-     <tr>
-       <td>主人宠爱等级从</td>
-        <td>&nbsp;</td>
-        <td>到</td>
-        <td>&nbsp;</td>
-      </tr>
-     <tr>
-       <td>勋章等级</td>
-        <td></td>
-        <td>到</td>
-        <td></td>
-      </tr>
-     <tr>
+       <td>攻击装随机库</td>
+       <td><label>
+         <input name="attack_equipment" type="text" value="jiqireneqatk" />
+       </label></td>
        <td>&nbsp;</td>
-        <td><label></label></td>
-        <td>&nbsp;</td>
-        <td></td>
-      </tr>
+       <td></td>
+     </tr>
+     <tr>
+       <td>hp装随机库</td>
+       <td><label>
+         <input name="hp_equipment" type="text" value="jiqireneqhp" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>物穿随机库</td>
+       <td><label>
+         <input name="defence_equipment" type="text" value="jiqireneqpa" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>物防随机库</td>
+       <td><label>
+         <input name="pd_equipment" type="text" value="jiqireneqpd" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>魔防随机库</td>
+       <td><label>
+         <input name="md_equipment" type="text" value="jiqireneqmd" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>装备强化等级范围</td>
+       <td><label>
+         <input name="equipment_strength_levelf" type="text" value="30" />
+       </label></td>
+       <td>到</td>
+       <td><input name="equipment_strength_levelt" type="text" value="30" /></td>
+     </tr>
+     <tr>
+       <td>火系技能库抽取</td>
+       <td><label>
+         <input name="fire_skill" type="text" value="jiqirenskhuo" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>水系技能库</td>
+       <td><label>
+         <input name="water_skill" type="text" value="jiqirenskshui" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>毒系技能库</td>
+       <td><label>
+         <input name="poison_skill" type="text" value="jiqirenskdu" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>超能力系技能库</td>
+       <td><label>
+         <input name="super_skill" type="text" value="jiqirenskchao" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>草系技能库</td>
+       <td><label>
+         <input name="straw_skill" type="text" value="jiqirenskcao" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>普通系技能库</td>
+       <td><label>
+         <input name="general_skill" type="text" value="jiqirenskpu" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>技能等级从</td>
+       <td><label>
+         <input name="skill_levelf" type="text" value="30" />
+       </label></td>
+       <td>到</td>
+       <td><label>
+         <input name="skill_levelt" type="text" value="30" />
+       </label></td>
+     </tr>
+     <tr>
+       <td>拥有宝石</td>
+       <td><label>
+         <input name="stone" type="text" value="jiqirenbs" />
+       </label></td>
+       <td>&nbsp;</td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>宝石等级范围</td>
+       <td><label>
+         <input name="stone_levelf" type="text" value="3" />
+       </label></td>
+       <td>到</td>
+       <td><label>
+         <input name="stone_levelt" type="text" value="3" />
+       </label></td>
+     </tr>
+     <tr>
+       <td>主人宠爱等级</td>
+       <td><label>
+         <input name="practicef" type="text" value="3" />
+       </label></td>
+       <td>到</td>
+       <td><label>
+         <input name="practicet" type="text" value="3" />
+       </label></td>
+     </tr>
+     <tr>
+       <td>力量范围从</td>
+       <td><label>
+         <input name="strengthenf" type="text" value="60" />
+       </label></td>
+       <td>到</td>
+       <td><input name="strengthent" type="text" value="60" /></td>
+     </tr>
+     <tr>
+       <td>智慧范围从</td>
+       <td><label>
+         <input name="intelligencef" type="text" value="60" />
+       </label></td>
+       <td>到</td>
+       <td><input name="intelligencet" type="text" value="60" /></td>
+     </tr>
+     <tr>
+       <td>技巧范围从</td>
+       <td><label>
+         <input name="artificef" type="text" value="60" />
+       </label></td>
+       <td>到</td>
+       <td><input name="artificet" type="text" value="60" /></td>
+     </tr>
+     <tr>
+       <td>勋章等级范围从</td>
+       <td><label>
+         <input name="medal_levelf" type="text" value="2" />
+       </label></td>
+       <td>到</td>
+       <td><input name="medal_levelt" type="text" value="2" /></td>
+     </tr>
      <tr>
        <td colspan="4"><label>
          <div align="center">
