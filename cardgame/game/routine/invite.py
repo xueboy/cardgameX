@@ -99,7 +99,7 @@ class invite:
 				
 		inviteConf = config.getConfig('invite')
 		
-		dropid = inviteConf['invite_award'][inviteCount]
+		dropid = inviteConf['invite_award'][inviteCount - 1]
 		if not dropid:
 			return {'msg': 'invite_not_have_award'}
 					
