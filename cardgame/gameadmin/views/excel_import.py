@@ -1447,7 +1447,7 @@ class excel_import:
 				repeat = row[2]
 				dialogid = row[3]
 				drama = {}
-				drama['repeat'] = repeat
+				drama['repeat'] = int(repeat)
 				drama['talkId'] = dialogid
 				
 				if not conf.has_key(type):
