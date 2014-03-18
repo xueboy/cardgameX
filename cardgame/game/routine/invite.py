@@ -30,7 +30,7 @@ class invite:
 		data['invite_award'] = []
 		for (i, di) in enumerate(usr.invite['invite_award']):
 			if di:
-				data['invite_award'].append(i)
+				data['invite_award'].append(i + 1)
 			
 		
 		return data
@@ -112,11 +112,12 @@ class invite:
 		awd = {}
 		awd = drop.open(usr, dropid, awd)		
 		data = drop.makeData(awd, {})				
-		data.update(invite.getClientData(usr))
+		#data.update(invite.getClientData(usr))
 		usr.save()
 		
 		data['invite_award'] = []
 		for (i, di) in enumerate(usr.invite['invite_award']):
-			data['invite_award'].append(i)
+			if di:
+				data['invite_award'].append(i + 1)			
 		
 		return data

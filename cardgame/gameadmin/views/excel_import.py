@@ -1484,7 +1484,7 @@ class excel_import:
 				trigerIcon = row[20]
 				dropid = row[21]
 				desc = row[30]
-				isOpen = row[31]
+				isOpen = int(row[31])
 				beginTime = row[32]
 				endTime = row[33]
 								
