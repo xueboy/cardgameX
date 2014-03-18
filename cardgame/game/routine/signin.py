@@ -55,8 +55,8 @@ class signin:
 			data['continue_award_time'] = [True]
 		else:
 			data['continue_award_time'] = [False]
-		#data['continue_award'] = usr.signin['continue_award_time']
-		#data['draw_award'] = usr.signin['draw_award_time']
+		data['continue_award'] = usr.signin['continue_award_time']
+		data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
 		return data
 							
