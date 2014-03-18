@@ -116,7 +116,7 @@ class invite:
 		usr.save()
 		
 		data['invite_award'] = []
-		for (i di) in enumerate(usr.invite['invite_code']):
+		for (i, di) in enumerate(usr.invite['invite_code']):
 			data['invite_award'].append(i)
 		
 		return data
