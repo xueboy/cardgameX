@@ -112,6 +112,8 @@ class config(gcconfig):
 			return conf
 		if confname == 'ladder_score':
 			return conf
+		if confname == 'invite':
+			return config.inviteFilter(conf)
 		return None
 	
 	
@@ -339,4 +341,11 @@ class config(gcconfig):
 				d.append(i)
 			
 			data[medalid] = d			
+		return data
+		
+	@staticmethod
+	def inviteFilter(conf):
+		data = conf.copy()
+		del data['invitee_award']
+		
 		return data
