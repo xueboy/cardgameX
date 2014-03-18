@@ -28,7 +28,7 @@ class invite:
 		data['invite'] = usr.invite['invite']
 		data['open_time'] = usr.invite['open_time']
 		data['invite_award'] = []
-		for (i, di) in enumerate(usr.invite['invite_code']):
+		for (i, di) in enumerate(usr.invite['invite_award']):
 			if di:
 				data['invite_award'].append(i)
 			
@@ -116,7 +116,7 @@ class invite:
 		usr.save()
 		
 		data['invite_award'] = []
-		for (i, di) in enumerate(usr.invite['invite_code']):
+		for (i, di) in enumerate(usr.invite['invite_award']):
 			data['invite_award'].append(i)
 		
 		return data
