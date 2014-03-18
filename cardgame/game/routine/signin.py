@@ -200,7 +200,7 @@ class signin:
 			usr.signin['draw_award_time'].append(None)
 		usr.signin['draw_award_time'][adidx] = currentTime()
 		usr.save()
-		drop.makeData(awd, {})
+		data = drop.makeData(awd, {})
 		
 		return data	
 		
