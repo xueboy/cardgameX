@@ -61,7 +61,12 @@ class signin:
 		for d in usr.signin['draw_award_time']:
 			if d:
 				data['draw_award'] = True
-				if is_same_day(d['time'], now):
+				t = 0
+				if isinstance(d, dict):
+					t = d['time']
+				else:
+					t =d
+				if is_same_day(t, now):
 					data['have_draw_award'] = False			
 			else: 
 				data['draw_award'] = False
