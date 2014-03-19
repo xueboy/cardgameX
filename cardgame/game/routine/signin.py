@@ -56,6 +56,15 @@ class signin:
 		else:
 			data['continue_award_time'] = [False, False]
 		data['continue_award'] = usr.signin['continue_award_time']
+		data['draw_award'] = []
+		data['have_draw_award'] = True
+		for d in usr.signin['draw_award_time']:
+			if d:
+				data['draw_award'] = True
+				if is_same_day(d['time'], now):
+					data['have_draw_award'] = False			
+			else: 
+				data['draw_award'] = False
 		data['draw_award'] = usr.signin['draw_award_time']
 		usr.save()		
 		return data
@@ -171,7 +180,7 @@ class signin:
 		return data
 		
 	@staticmethod
-	def draw_award(usr):
+	def draw_award(usr, position):
 		"""
 		开服奖励
 		"""
@@ -197,8 +206,8 @@ class signin:
 		awd = {}
 		awd = drop.open(usr, ad['dropid'], awd)
 		while len(usr.signin['draw_award_time']) <= adidx:
-			usr.signin['draw_award_time'].append(None)
-		usr.signin['draw_award_time'][adidx] = currentTime()
+			usr.signin['draw_award_time'].append({})
+		usr.signin['draw_award_time'][adidx] = {'time':currentTime(), 'position': position}
 		usr.save()
 		data = drop.makeData(awd, {})
 		

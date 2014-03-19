@@ -147,7 +147,7 @@ class tower:
 		if ehc != -1:
 			if not usr.tower['current'].has_key('enhance'):
 				return {'msg':'tower_enhance_not_exsit'}
-			tower.do_enhance(usr, ehc)
+			tower.do_enhance(usr, ehc, gameConf)
 				
 		enhance = []
 		if usr.tower['current']['floor'] % gameConf['tower_enhance_interval_floor'] == 0:

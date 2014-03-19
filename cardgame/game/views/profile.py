@@ -170,14 +170,15 @@ def continue_award(request):
 	"""
 	usr = request.user
 	no = request.GET['no']
-	return signin.continue_award(usr, int(no))
+	return signin.continue_award(usr)
 	
 def draw_award(request):
 	"""
 	开服登陆奖励
 	"""
-	usr = request.user	
-	return signin.draw_award(usr)
+	usr = request.user
+	position = int(request.GET['position'])
+	return signin.draw_award(usr, position)
 	
 def detail(request):
 	"""
